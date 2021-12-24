@@ -21,8 +21,8 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "0.9.0",   
-      VersionList = { "[0.9.0] - Pre Release", },
+      Version =         "0.9.1",   
+      VersionList = { "[0.9.1] - Pre Release", },
       
   },
 --  ---------------
