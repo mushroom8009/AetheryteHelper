@@ -1,0 +1,8 @@
+[Module]
+Name=AetheryteHelper
+Dependencies=minionlib,AceLib,FFXIVMINION
+Version=1
+Files=AetheryteHelper.lua
+Enabled=1
+CreateFolders=image
+ExportFiles=image/love_mushroom.png,image/AetheryteHelper.png
