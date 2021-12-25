@@ -9,9 +9,9 @@ but it's still tangled
 chang whole GUI mechanism
 maybe,made it easier to manage
 !!!Merry Christmas!!!
------2021/xx/xx----------
-wip
-
+-----2021/12/25----------
+Add features and change UI
+-------------------------
 mushroom#8009
 ]]
 
@@ -21,8 +21,12 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "0.9.1",   
-      VersionList = { "[0.9.1] - Pre Release", },
+      Version =         "0.9.5",   
+      VersionList = { "[0.9.0] - Pre Release",
+                      "[0.9.1] - hot fix",
+                      "[0.9.5] - Add tool・UIchange", 
+
+                    },
       
   },
 --  ---------------
@@ -52,7 +56,7 @@ local kinokoProject = {
 --  ---------------
   Windows = {
     MainWindows = {
-      Name =          "Addon Main Windows",
+      Name =          "AetheryteHelper Main Windows",
       Open =          true,
       Option =        GUI.WindowFlags_ShowBorders 
                     + GUI.WindowFlags_AlwaysAutoResize
@@ -67,13 +71,41 @@ local kinokoProject = {
   },
 
 }
-
+-------------------
 Links = {
       Name = "Minion Discord JP",
-      link = [[https://discord.com/channels/127540472812929024/335225564803891210]],
-      tooltip = "it's a hobby,\nso i don't know if it's possible,\nbut let me know if you have any requests.\n\n不具合とかあれば教えて下さい",
+       link1 = [[https://discord.com/channels/127540472812929024/335225564803891210]],
+       link2 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
+      tooltip1 = "it's a hobby,\nso i don't know if it's possible,\nbut let me know if you have any requests.\n\n不具合とかあれば教えて下さい",
+      tooltip2 = "Github link,\n\n更新確認はこちら",
 
 }
+-------------------
+AetheryteHelper.GUI = {
+  name = "AetheryteHelper###AetheryteHelper",
+  open = false,
+  visible = true,
+  tabs = {
+    [1] = {
+      isselected = true,
+      name = "[Main Helper]"
+    },
+    [2] = {
+      isselected = false,
+      name = "[other tool]"
+    },
+    [3] = {
+      isselected = false,
+      name = "[..wip..]"
+    },
+  },
+  tabstyle = {
+    selected = {r =.1, g = 1 , b =.1 , a = 1},
+        hovered = {r =1, g = 1, b = 0, a = 1 },
+        normal = {r = 1, g = 1, b = 1, a = 1},
+  },
+}
+
 
 
 
@@ -82,7 +114,7 @@ local gstate = MGetGameState()
 local language = GetGameLanguage()
 --local nowServer = 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
--- local
+-- maintool local
 local selectins = false
 local autooff = true
 local isins = 4
@@ -97,6 +129,17 @@ local modechg = nil
 local Update = kinokoProject.Update
 local aetheID = 0
 local delay = 200
+----------------------------------------
+--subtool local
+local isMateriaEnabled = false
+local isSalvageEnabled = false
+local isPotionEnabled = false
+local isManualEnabled = false
+local lastUpdatePulse = 0
+----------------------------------------
+--wip local
+local PTadd = false
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Fonction Menu MMOMinion 
@@ -133,7 +176,7 @@ function AetheryteHelper.Init()
 end
 
 
-------------------CurrentWorld---------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 -- 
 function AetheryteHelper.ModuleInit()
   local Windows = kinokoProject.Windows.MainWindows
@@ -146,29 +189,65 @@ function AetheryteHelper.ModuleInit()
   table.insert(ml_global_information.menu.windows,menutab)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
---
+-- close
 function AetheryteHelper.SwitchOpen()
   kinokoProject.Windows.MainWindows.Open = not kinokoProject.Windows.MainWindows.Open
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- tab
+function AetheryteHelper.DrawTabs()
+  local tabs = AetheryteHelper.GUI.tabs
+  local tabstyle = AetheryteHelper.GUI.tabstyle
+
+    if (ValidTable(tabs)) then
+        GUI:PushStyleColor(GUI.Col_Button,0,0,0,0)
+        GUI:PushStyleColor(GUI.Col_ButtonHovered,0,0,0,0)
+        GUI:PushStyleColor(GUI.Col_ButtonActive,0,0,0,0)
+        for i, tab in spairs(tabs) do
+          if (i ~= 1) then
+              GUI:SameLine()
+          else
+            GUI:SameLine()
+          end
+            tab.order = i
+           if tab.isselected then
+              GUI:PushStyleColor(GUI.Col_Text, tabstyle.selected.r, tabstyle.selected.g, tabstyle.selected.b, tabstyle.selected.a)
+              elseif tab.ishovered then
+              GUI:PushStyleColor(GUI.Col_Text, tabstyle.hovered.r, tabstyle.hovered.g, tabstyle.hovered.b, tabstyle.hovered.a)
+              else
+              GUI:PushStyleColor(GUI.Col_Text, tabstyle.normal.r, tabstyle.normal.g, tabstyle.normal.b, tabstyle.normal.a)
+              end
+              if (GUI:Button(tab.name,nil,70)) then
+              for k,v in pairs(tabs) do v.isselected = false end
+              tab.isselected = true
+              end
+              if GUI:IsItemHovered() then 
+              tab.ishovered = true
+              else
+              tab.ishovered = false
+              end
+                
+       GUI:PopStyleColor()
+       GUI:SameLine()
+       --GUI:Spacing() 
+       end
+       GUI:PopStyleColor(3)
+       GUI:InvisibleButton(" ") -- break SameLine()
+    end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- main GUI
 function AetheryteHelper.Drawinsselect()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Spacing()
---      BStyle.SetStringInCenter("use MobHunt & Rare F.A.T.E")
       GUI:Text("use MobHunt & Rare F.A.T.E")      
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         GUI:SetTooltip("--instance select--\nonly use EW area\n・Labyrinthos\n・Thavnair\n・Garlemald\n・Mare Lamentorum\n・Elpis\n・Ultima Thule\n--move server--\n・Gridania\n・Limsa\n・Uldah")
       end
-      GUI:Separator()
-      GUI:Spacing()
-
-      GUI:BeginGroup()
-      GUI:Text("MAPID: "..tostring(Player.localmapid).." - "..GetMapName(Player.localmapid))
-      GUI:EndGroup()
-      
+  
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
@@ -177,7 +256,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:BeginGroup()
       GUI:Checkbox("##select_ins", selectins)
       GUI:SameLine(30)
-      GUI:Text("Instance Selector")
+      GUI:Text("Helper Enable")
       GUI:EndGroup()      
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
@@ -357,7 +436,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- sub GUI
 
-function AetheryteHelper.DrawaddButton()
+function AetheryteHelper.DrawadButton()
       GUI:Separator()
       GUI:Spacing(10)
       GUI:AlignFirstTextHeightToWidgets()
@@ -380,7 +459,7 @@ function AetheryteHelper.Drawhelp(_entext)
     for id, e in pairs(_entext) do
       GUI:Text(e)
     end
-    BStyle.SetStringInCenter("----------------")
+    GUI:Text("--------------------------------")
     GUI:TreePop()
   end
 end
@@ -390,14 +469,14 @@ function AetheryteHelper.Drawhelp(_jptext)
     for id, e in pairs(_jptext) do
       GUI:Text(e)
     end
-    BStyle.SetStringInCenter("----------------")
+    GUI:Text("--------------------------------")
     GUI:TreePop()
   end
 end
 
 function AetheryteHelper.DrawInside()
   if kinokoProject.Windows.MainWindows.Open == false then
-    BStyle.SetStringInCenter("-------")
+        GUI:Text("--------------------------------")
   end 
   ----
 if language == 0 then
@@ -407,6 +486,147 @@ else
   ----  
 end
 end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--materia UI
+function AetheryteHelper.DrawSubtool(event, ticks)
+      GUI:Spacing()      
+      GUI:BeginGroup()
+      GUI:Text("Materia Extract & Desynth\npowered by Rhakin#1093 // fix by mushroom")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          isMateriaEnabled = not isMateriaEnabled
+        end
+        GUI:SetTooltip("Materia Extract & Desynth")
+        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
+      end
+
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("##Materia", isMateriaEnabled)
+      GUI:SameLine()
+      GUI:Text("Materia Extract")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          isMateriaEnabled = not isMateriaEnabled
+        end
+        GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
+        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
+      end
+      
+      GUI:Spacing()
+
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("##Desynth", isSalvageEnabled)
+      GUI:SameLine()
+      GUI:Text("Desynth equipment in Bag")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          isSalvageEnabled = not isSalvageEnabled
+        end
+        GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
+        --GUI:SetTooltip("Automatic desynthesis of equipment in inventory\nWARNING: once enabled, all items in inventory will be desynthesized, make sure you do not have any items in inventory that you want to keep")
+      end
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("##Potion", isPotionEnabled)
+      GUI:SameLine()
+      GUI:Text("Spiritbond Potion")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          isPotionEnabled = not isPotionEnabled
+        end
+        GUI:SetTooltip("錬精薬の自動使用")
+        --GUI:SetTooltip("Automatic usage of a spiritbond potion whenever it expires")
+      end
+      
+      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("##Manual", isManualEnabled)
+      GUI:SameLine()      
+      GUI:Text("Spiritbond Manual")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          isManualEnabled = not isManualEnabled
+        end
+        GUI:SetTooltip("スピリットマニュアルの自動使用")
+        --分離
+      end
+ end
+-------------------------------------------------------------------------------------------------------------------------------------------
+----footer
+function AetheryteHelper.Drawafooter()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("[")
+      GUI:EndGroup()
+
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:TextColored( 0.8,0.2,0.2,1,"Github")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      if GUI:IsItemClicked(0) then
+            io.popen([[cmd /c start "" "]]..Links.link2..[["]]):close()
+      end
+      GUI:SetTooltip(Links.tooltip2)
+      end
+
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("]")
+      GUI:EndGroup()
+
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("[")
+      GUI:EndGroup()
+      
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:TextColored( 0.2,0.8,0.8,1, "Discord")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      if GUI:IsItemClicked(0) then
+            io.popen([[cmd /c start "" "]]..Links.link1..[["]]):close()
+      end
+      GUI:SetTooltip(Links.tooltip1)
+      end
+      
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("]")
+      GUI:EndGroup()
+      GUI:SameLine()
+  end
+      
+      --GUI:Image([[\AetheryteHelper\image\love_mushroom.png]], 20, 20) 
+-------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+-- list
+function AetheryteHelper.Drawalist()
+local DCvalue = 1  
+local DC_list = {"---","DC1","DC2","DC3","DC4","DC5","DC6","DC7"} 
+GUI:BeginGroup()
+DCvalue = GUI:Combo( "##test", DCvalue, DC_list, 0)
+
+GUI:EndGroup()
+end
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 -- call
@@ -419,56 +639,69 @@ if (Windows.Open) then
     GUI:SetNextWindowSize(280,350,GUI.SetCond_FirstUseEver)
     Windows.Visible, Windows.Open = GUI:Begin(Addon.Name.." - "..Addon.Version.."##MainWindows_begin", Windows.Open, Windows.Option)
     if (Windows.Visible) then
-      
+      GUI:BeginGroup()
+      GUI:Text("WoLdo"..":[")
+      GUI:SameLine()
+      GUI:TextColored(0.7,0.8,0.1,1,GetMapName(Player.localmapid))
+      GUI:SameLine()
+      GUI:Text("]:MAPID:"..tostring(Player.localmapid))
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+
+      AetheryteHelper.DrawTabs()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+
+
+      if (AetheryteHelper.GUI.tabs[1].isselected) then
       AetheryteHelper.Drawinsselect()
       AetheryteHelper.DrawChangeServer()
-      AetheryteHelper.DrawaddButton()
-      AetheryteHelper.DrawInside()
+      AetheryteHelper.DrawadButton()
+      AetheryteHelper.Drawalist()
+      AetheryteHelper.DrawInside()      
 
+      elseif (AetheryteHelper.GUI.tabs[2].isselected) then
+      AetheryteHelper.DrawSubtool()
+  
+      elseif (AetheryteHelper.GUI.tabs[3].isselected) then
+      GUI:BeginGroup()
+      GUI:Text("wip\nなんか思いついたらつくるための空き地")
+      GUI:Spacing()
+      GUI:Separator()
+---------------------------------------------
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:Spacing(80)
+      GUI:BeginGroup()
+      GUI:Checkbox("##PTadd", PTadd)
+      GUI:SameLine()
+      GUI:Text("test")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          PTadd = not PTadd
+        end
+      end
+      GUI:EndGroup()
+      end
+-------------------------------------------------------------------------------------------------------------------------------------------
+--close Button
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:Spacing(20)
       GUI:Separator()
       if GUI:Button("Close##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
         Windows.Open = false
       end
-      GUI:SameLine()
+      GUI:SameLine(60)
       GUI:BeginGroup()
-      GUI:SameLine(20)
-      GUI:Text("Discord >> ")
+      GUI:Text("v."..kinokoProject.Addon.Version)
       GUI:EndGroup()
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:TextColored( 0.2, 0.8, 0.8,1, "mushroom#8009")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then   
-      if GUI:IsItemClicked(0) then
-            io.popen([[cmd /c start "" "]]..Links.link..[["]]):close()
-      end
-      GUI:SetTooltip(Links.tooltip)
-      end
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Text(" <<")
-      GUI:EndGroup()
-      GUI:SameLine()
 
-      --GUI:Image([[\AetheryteHelper\image\love_mushroom.png]], 20, 20) 
+      AetheryteHelper.Drawafooter()
+-------------------------------------------------------------------------------------------------------------------------------------------
     end
     GUI:End()
-  end
-end
-
-
-
-
-
-local control = GetControl("SelectString")
-if table.valid(control) then
-  local data = control:GetData()
-  if table.valid(data) then
-    if WKT[language] == data[2] then
-      control:Action("SelectIndex",2)
-    end
   end
 end
 
@@ -562,11 +795,97 @@ function AetheryteHelper.Update(Event, ticks)
   end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+-- sub function
+function AetheryteHelper.subUpdate(Event, ticks)
+  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
+    lastUpdatePulse = Now()
+
+    if (IsControlOpen("SalvageResult")) then
+      UseControlAction("SalvageResult", "Close")
+    end
+
+    if (Player.incombat or Busy()) then
+      return
+    end
+
+    if (isPotionEnabled and MissingBuffs(Player,"49")) then
+      local potionid = {7059, 19885, 27960}
+      --錬精薬　強錬精薬　極錬精薬
+      for i = 0, 3 do
+        for _, id in pairs(potionid) do
+          local potion = Inventory:Get(i):Get(id)
+          if (potion and potion:GetAction():IsReady()) then
+            potion:Cast()
+            return
+          end
+        end
+      end
+    end
+    if (isManualEnabled and MissingBuffs(Player,"1083")) then
+      local manualid = {14951}
+      --スピリットマニュアル
+      for i = 0, 3 do
+        for _, id in pairs(manualid) do
+          local manual = Inventory:Get(i):Get(id)
+          if (manual and manual:GetAction():IsReady()) then
+            manual:Cast()
+            return
+          end
+        end
+      end
+    end
+    if (isMateriaEnabled) then
+      if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
+        UseControlAction("MaterializeDialog","Yes")
+        return
+      end
+      local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+      for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+          local ilist = bag:GetList()
+          if (table.valid(ilist)) then
+            for _, item in pairs(ilist) do
+              if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+                item:Convert()
+                return
+              end
+            end
+          end
+        end
+      end
+    end
+
+    if (isSalvageEnabled) then
+      if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
+        UseControlAction("SalvageDialog","Confirm")
+        return
+      end
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+          local ilist = bag:GetList()
+          if (table.valid(ilist)) then
+            for _, item in pairs(ilist) do
+              if ((item.equipslot > 0 and item.requiredlevel > 1) or item.searchcategory == 46) then
+                item:Salvage()
+                return
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Register
 RegisterEventHandler("Module.Initalize",AetheryteHelper.Init) 
 RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit)
 RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall)
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.Update)
+RegisterEventHandler("Gameloop.Update", AetheryteHelper.subUpdate)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Debug
 --d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
