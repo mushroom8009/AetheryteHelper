@@ -11,6 +11,7 @@ maybe,made it easier to manage
 !!!Merry Christmas!!!
 -----2021/12/25----------
 Add features and change UI
+Create an explanation (guide)
 -------------------------
 mushroom#8009
 ]]
@@ -21,18 +22,21 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "0.9.5",   
+      Version =         "0.9.6",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
-                      "[0.9.5] - Add tool・UIchange", 
+                      "[0.9.5] - Add tool・UIchange",
+                      "[0.9.6] - Add tool・UIchange", 
 
                     },
       
   },
 --  ---------------
   HELP   = {
-      entext =       { "wip\ndon't think\nfeel\nby Zodiark", }, 
-      jptext =       { "準備中\nとりあえず感覚で使ってください\nサーバーセレクトは作成中なので\nリストが出たら手動で選択してください", },
+      entext =       { "guide on Github wiki.\n\n\nlink:", }, 
+      jptext =       { "Githubのwikiを御覧ください\n\n\nlink:", },
+      linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
+      linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
   },
 --  ---------------
   Menu = {
@@ -80,6 +84,25 @@ Links = {
       tooltip2 = "Github link,\n\n更新確認はこちら",
 
 }
+
+-------------------------------------------------------------------------------------------------------------------------------------  
+--wip
+FFXIVDClist = { "----", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal" }
+
+FFXIVServerlist = {  
+    [1] = { "-" },
+    [2] = { "-", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Ramuh", "Tonberry", "Typhon", "Unicorn" },
+    [3] = { "-", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima", "Valefor", "Yojimbo", "Zeromus" },
+    [4] = { "-", "Anima", "Asura", "Belias", "Chocobo", "Hades", "Ixion", "Mandragora", "Pandaemonium", "Shinryu", "Titan", "Masamune" },
+    [5] = { "-", "Adamantoise", "Cactuar", "Faerie", "Gilgamesh", "Jenova", "Midgardsormr", "Sargatanas", "Siren" },
+    [6] = { "-", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
+    [7] = { "-", "Spriggan", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" },
+    [8] = { "-", "Twintania", "Lich", "Odin", "Phoenix", "Shiva", "Zodiark" },
+    [9] = { "-", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
+    [10] = { "----" },
+  }
+-------------------------------------------------------------------------------------------------------------------------------------
+
 -------------------
 AetheryteHelper.GUI = {
   name = "AetheryteHelper###AetheryteHelper",
@@ -88,11 +111,11 @@ AetheryteHelper.GUI = {
   tabs = {
     [1] = {
       isselected = true,
-      name = "[Main Helper]"
+      name = "[Main]"
     },
     [2] = {
       isselected = false,
-      name = "[other tool]"
+      name = "[tools]"
     },
     [3] = {
       isselected = false,
@@ -107,11 +130,11 @@ AetheryteHelper.GUI = {
 }
 
 
-
-
 local gRegion = GetGameRegion()
 local gstate = MGetGameState()
 local language = GetGameLanguage()
+local uuid = GetUUID()
+
 --local nowServer = 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- maintool local
@@ -123,7 +146,7 @@ local WVaetheID = 0
 local moveSVR = false
 local isServer = 0
 --local pmap = Player.localmapid
-local modechg = nil
+local modechg = 0
 --local MoveServer = { 132, 129, 130 }
 --local ploc = { 956, 957, 958, 959, 960, 961 }
 local Update = kinokoProject.Update
@@ -139,7 +162,7 @@ local lastUpdatePulse = 0
 ----------------------------------------
 --wip local
 local PTadd = false
-
+----------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Fonction Menu MMOMinion 
@@ -366,6 +389,7 @@ end
 
 function AetheryteHelper.DrawChangeServer()
       GUI:Separator()
+      GUI:Separator()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()      
       GUI:Checkbox("##move_svr", moveSVR)
@@ -458,6 +482,12 @@ function AetheryteHelper.Drawhelp(_entext)
   if GUI:TreeNode("HOW TO USE##AetheryteHelper") then
     for id, e in pairs(_entext) do
       GUI:Text(e)
+      GUI:BeginGroup()
+      GUI:TextColored( 1,1,0,1,"How to use  Autheryte Helper" )
+      GUI:EndGroup()
+      if GUI:IsItemClicked(0) then
+            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linken..[["]]):close()
+      end
     end
     GUI:Text("--------------------------------")
     GUI:TreePop()
@@ -468,6 +498,13 @@ function AetheryteHelper.Drawhelp(_jptext)
   if GUI:TreeNode("HOW TO USE##AetheryteHelper") then
     for id, e in pairs(_jptext) do
       GUI:Text(e)
+      GUI:BeginGroup()
+      GUI:TextColored( 1,1,0,1,"Autheryte Helperの使い方" )
+      GUI:EndGroup()
+   if GUI:IsItemClicked(0) then
+            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linkjp..[["]]):close()
+      end
+
     end
     GUI:Text("--------------------------------")
     GUI:TreePop()
@@ -480,11 +517,13 @@ function AetheryteHelper.DrawInside()
   end 
   ----
 if language == 0 then
-  AetheryteHelper.Drawhelp(kinokoProject.HELP.jptext)
+      AetheryteHelper.Drawhelp(kinokoProject.HELP.jptext)
+      
 else
-  AetheryteHelper.Drawhelp(kinokoProject.HELP.entext)
+      AetheryteHelper.Drawhelp(kinokoProject.HELP.entext)
+ 
   ----  
-end
+  end
 end
 
 
@@ -614,17 +653,19 @@ function AetheryteHelper.Drawafooter()
       GUI:SameLine()
   end
       
-      --GUI:Image([[\AetheryteHelper\image\love_mushroom.png]], 20, 20) 
+       
 -------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------------------
 -- list
-function AetheryteHelper.Drawalist()
-local DCvalue = 1  
-local DC_list = {"---","DC1","DC2","DC3","DC4","DC5","DC6","DC7"} 
-GUI:BeginGroup()
-DCvalue = GUI:Combo( "##test", DCvalue, DC_list, 0)
-
-GUI:EndGroup()
+function AetheryteHelper.DCSVselect()
+local dummy = 1
+      
+     GUI:BeginGroup()
+     GUI:Text("DCselec-wip")
+     dummy = GUI:Combo( "##test", dummy, FFXIVDClist,FFXIVDClist)
+     GUI:EndGroup() 
+    
+     
 end
 
 
@@ -659,8 +700,8 @@ if (Windows.Open) then
       if (AetheryteHelper.GUI.tabs[1].isselected) then
       AetheryteHelper.Drawinsselect()
       AetheryteHelper.DrawChangeServer()
-      AetheryteHelper.DrawadButton()
-      AetheryteHelper.Drawalist()
+      AetheryteHelper.DrawadButton()    
+      AetheryteHelper.DCSVselect()   ---------------wip
       AetheryteHelper.DrawInside()      
 
       elseif (AetheryteHelper.GUI.tabs[2].isselected) then
@@ -682,7 +723,7 @@ if (Windows.Open) then
         if (GUI:IsMouseClicked(0)) then
           PTadd = not PTadd
         end
-      end
+      end    
       GUI:EndGroup()
       end
 -------------------------------------------------------------------------------------------------------------------------------------------
@@ -697,6 +738,7 @@ if (Windows.Open) then
       GUI:BeginGroup()
       GUI:Text("v."..kinokoProject.Addon.Version)
       GUI:EndGroup()
+
 
       AetheryteHelper.Drawafooter()
 -------------------------------------------------------------------------------------------------------------------------------------------
