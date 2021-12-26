@@ -12,7 +12,15 @@ maybe,made it easier to manage
 -----2021/12/25----------
 Add features and change UI
 Create an explanation (guide)
--------------------------
+-----2021/12/27---------
+Added a drop-down list for WorldVisit.
+However, it doesn't work because it hasn't been configured yet.
+Geted home world and current world.
+This information is not for showing, but is necessary for mechanic.
+my great thanks to Madao & denvo for their help and advice.
+
+--------------------------
+
 mushroom#8009
 ]]
 
@@ -22,19 +30,20 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "0.9.6",   
+      Version =         "0.9.8",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
-                      "[0.9.6] - Add tool・UIchange", 
+                      "[0.9.6] - Add tool・UIchange",
+                      "[0.9.8] - Add UI",  
 
                     },
       
   },
 --  ---------------
   HELP   = {
-      entext =       { "guide on Github wiki.\n\n\nlink:", }, 
-      jptext =       { "Githubのwikiを御覧ください\n\n\nlink:", },
+      entext =       { "・Auto select of DC\n・Saving settings\n・language switching\n\nlink:", }, 
+      jptext =       { "・DCの自動選択\n・設定の保存\n・各項目のローカライズ\n\nlink:", },
       linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
       linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
   },
@@ -87,20 +96,40 @@ Links = {
 
 -------------------------------------------------------------------------------------------------------------------------------------  
 --wip
-FFXIVDClist = { "----", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal" }
+FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal" }
+noDClist = { "sorry" }
 
 FFXIVServerlist = {  
-    [1] = { "-" },
-    [2] = { "-", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Ramuh", "Tonberry", "Typhon", "Unicorn" },
-    [3] = { "-", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima", "Valefor", "Yojimbo", "Zeromus" },
-    [4] = { "-", "Anima", "Asura", "Belias", "Chocobo", "Hades", "Ixion", "Mandragora", "Pandaemonium", "Shinryu", "Titan", "Masamune" },
-    [5] = { "-", "Adamantoise", "Cactuar", "Faerie", "Gilgamesh", "Jenova", "Midgardsormr", "Sargatanas", "Siren" },
-    [6] = { "-", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
-    [7] = { "-", "Spriggan", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" },
-    [8] = { "-", "Twintania", "Lich", "Odin", "Phoenix", "Shiva", "Zodiark" },
-    [9] = { "-", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
-    [10] = { "----" },
+    [1] = { "------" },
+    [2] = { "------", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Ramuh", "Tonberry", "Typhon", "Unicorn" },
+    [3] = { "------", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima", "Valefor", "Yojimbo", "Zeromus" },
+    [4] = { "------", "Anima", "Asura", "Belias", "Chocobo", "Hades", "Ixion", "Mandragora", "Pandaemonium", "Shinryu", "Titan", "Masamune" },
+    [5] = { "------", "Adamantoise", "Cactuar", "Faerie", "Gilgamesh", "Jenova", "Midgardsormr", "Sargatanas", "Siren" },
+    [6] = { "------", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
+    [7] = { "------", "Spriggan", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" },
+    [8] = { "------", "Twintania", "Lich", "Odin", "Phoenix", "Shiva", "Zodiark" },
+    [9] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
+    [10] = { "not support region" },
   }
+
+--DCID = { 1 = "Elemental", 2 = "Gaia", 3 = "Mana", 4 = "Aether", 5 = "Primal", 6 = "Chaos", 7 = "Light", 8 = "Crystal" }
+
+WorldID = {
+{id=1,Name="Unknown",DC="-"},{id=2,Name="Unknown",DC="-"},{id=3,Name="Unknown",DC="-"},{id=4,Name="Unknown",DC="-"},{id=5,Name="Unknown",DC="-"},{id=6,Name="Unknown",DC="-"},{id=7,Name="Unknown",DC="-"},{id=8,Name="Unknown",DC="-"},
+{id=9,Name="Unknown",DC="-"},{id=10,Name="Unknown",DC="-"},{id=11,Name="Unknown",DC="-"},{id=12,Name="Unknown",DC="-"},{id=13,Name="Unknown",DC="-"},{id=14,Name="Unknown",DC="-"},{id=15,Name="Unknown",DC="-"},{id=16,Name="Unknown",DC="-"},
+{id=17,Name="Unknown",DC="-"},{id=18,Name="Unknown",DC="-"},{id=19,Name="Unknown",DC="-"},{id=20,Name="Unknown",DC="-"},{id=21,Name="Unknown",DC="-"},{id=22,Name="Unknown",DC="-"},{id=23,Name="Asura",DC="Mana"},{id=24,Name="Belias",DC="Mana"},
+{id=25,Name="Chaos",DC="-"},{id=26,Name="Hecatoncheir",DC="-"},{id=27,Name="Moomba",DC="-"},{id=28,Name="Pandaemonium",DC="Mana"},{id=29,Name="Shinryu",DC="Mana"},{id=30,Name="Unicorn",DC="Elemental"},{id=31,Name="Yojimbo",DC="Gaia"},
+{id=32,Name="Zeromus",DC="Gaia"},{id=33,Name="Twintania",DC="Light"},{id=34,Name="Brynhildr",DC="Crystal"},{id=35,Name="Famfrit",DC="Primal"},{id=36,Name="Lich",DC="Light"},{id=37,Name="Mateus",DC="Crystal"},{id=38,Name="Shemhazai",DC="-"},
+{id=39,Name="Omega",DC="Chaos"},{id=40,Name="Jenova",DC="Aether"},{id=41,Name="Zalera",DC="Crystal"},{id=42,Name="Zodiark",DC="Light"},{id=43,Name="Alexander",DC="Gaia"},{id=44,Name="Anima",DC="Mana"},{id=45,Name="Carbuncle",DC="Elemental"},
+{id=46,Name="Fenrir",DC="Gaia"},{id=47,Name="Hades",DC="Mana"},{id=48,Name="Ixion",DC="Mana"},{id=49,Name="Kujata",DC="Elemental"},{id=50,Name="Typhon",DC="Elemental"},{id=51,Name="Ultima",DC="Gaia"},{id=52,Name="Valefor",DC="Gaia"},
+{id=53,Name="Exodus",DC="Primal"},{id=54,Name="Faerie",DC="Aether"},{id=55,Name="Lamia",DC="Primal"},{id=56,Name="Phoenix",DC="Light"},{id=57,Name="Siren",DC="Aether"},{id=58,Name="Garuda",DC="Elemental"},{id=59,Name="Ifrit",DC="Gaia"},
+{id=60,Name="Ramuh",DC="Elemental"},{id=61,Name="Titan",DC="Mana"},{id=62,Name="Diabolos",DC="Crystal"},{id=63,Name="Gilgamesh",DC="Aether"},{id=64,Name="Leviathan",DC="Primal"},{id=65,Name="Midgardsormr",DC="Aether"},
+{id=66,Name="Odin",DC="Light"},{id=67,Name="Shiva",DC="Light"},{id=68,Name="Atomos",DC="Elemental"},{id=69,Name="Bahamut",DC="Gaia"},{id=70,Name="Chocobo",DC="Mana"},{id=71,Name="Moogle",DC="Chaos"},{id=72,Name="Tonberry",DC="Elemental"},
+{id=73,Name="Adamantoise",DC="Aether"},{id=74,Name="Coeurl",DC="Crystal"},{id=75,Name="Malboro",DC="Crystal"},{id=76,Name="Tiamat",DC="Gaia"},{id=77,Name="Ultros",DC="Primal"},{id=78,Name="Behemoth",DC="Primal"},{id=79,Name="Cactuar",DC="Aether"},
+{id=80,Name="Cerberus",DC="Chaos"},{id=81,Name="Goblin",DC="Crystal"},{id=82,Name="Mandragora",DC="Mana"},{id=83,Name="Louisoix",DC="Chaos"},{id=84,Name="Syldra",DC="-"},{id=85,Name="Spriggan",DC="Chaos"},{id=90,Name="Aegis",DC="Elemental"},
+{id=91,Name="Balmung",DC="Crystal"},{id=92,Name="Durandal",DC="Gaia"},{id=93,Name="Excalibur",DC="Primal"},{id=94,Name="Gungnir",DC="Elemental"},{id=95,Name="Hyperion",DC="Primal"},{id=96,Name="Masamune",DC="Mana"},{id=97,Name="Ragnarok",DC="Chaos"},
+{id=98,Name="Ridill",DC="Gaia"},{id=99,Name="Sargatanas",DC="Aether"}, 
+}
 -------------------------------------------------------------------------------------------------------------------------------------
 
 -------------------
@@ -133,7 +162,7 @@ AetheryteHelper.GUI = {
 local gRegion = GetGameRegion()
 local gstate = MGetGameState()
 local language = GetGameLanguage()
-local uuid = GetUUID()
+--local uuid = GetUUID()
 
 --local nowServer = 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,6 +191,10 @@ local lastUpdatePulse = 0
 ----------------------------------------
 --wip local
 local PTadd = false
+local selectDC = 1
+local selectSVR = 1
+--local pldc = Player.homeworld
+--local plcw = Player.currentworld
 ----------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -472,14 +505,11 @@ function AetheryteHelper.DrawadButton()
               SendTextCommand("/e <flag>")
               end
               GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")              
-            end
-      GUI:BeginGroup()
-      GUI:Text("coming soon...")
-      GUI:EndGroup()      
+            end     
 end
 
 function AetheryteHelper.Drawhelp(_entext)
-  if GUI:TreeNode("HOW TO USE##AetheryteHelper") then
+  if GUI:TreeNode("Upcoming Features##AetheryteHelper") then
     for id, e in pairs(_entext) do
       GUI:Text(e)
       GUI:BeginGroup()
@@ -495,7 +525,7 @@ function AetheryteHelper.Drawhelp(_entext)
 end
 
 function AetheryteHelper.Drawhelp(_jptext)
-  if GUI:TreeNode("HOW TO USE##AetheryteHelper") then
+  if GUI:TreeNode("今後の予定##AetheryteHelper") then
     for id, e in pairs(_jptext) do
       GUI:Text(e)
       GUI:BeginGroup()
@@ -516,10 +546,10 @@ function AetheryteHelper.DrawInside()
         GUI:Text("--------------------------------")
   end 
   ----
-if language == 0 then
+  if language == 0 then
       AetheryteHelper.Drawhelp(kinokoProject.HELP.jptext)
       
-else
+  else
       AetheryteHelper.Drawhelp(kinokoProject.HELP.entext)
  
   ----  
@@ -655,28 +685,51 @@ function AetheryteHelper.Drawafooter()
       
        
 -------------------------------------------------------------------------------------------------------------------------------------------
+----now DC
+function AetheryteHelper.homeDC()
+    GUI:BeginGroup()
+    for k,v in pairs(WorldID) do   
+       if (k == Player.homeworld) then local homeWorld = v 
+          GUI:Text("Home：" ..tostring(homeWorld.Name).."["..tostring(homeWorld.DC).."]")
+       end    
+    end
+    --GUI:SameLine()
+    for k,v in pairs(WorldID) do
+       if (k == Player.currentworld) then local NowWorld = v 
+          GUI:Text("Now：" ..tostring(NowWorld.Name).."["..tostring(NowWorld.DC).."]")     
+       end
+    end
+    GUI:EndGroup()
+end
+---------------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------------------------------------------------------------------
 -- list
 function AetheryteHelper.DCSVselect()
-local dummy = 1
-      
      GUI:BeginGroup()
-     GUI:Text("DCselec-wip")
-     dummy = GUI:Combo( "##test", dummy, FFXIVDClist,FFXIVDClist)
-     GUI:EndGroup() 
-    
-     
+     GUI:PushItemWidth(180)
+     GUI:Text("select server(World Visit)")
+     if ( gRegion == 1) then
+     selectDC = GUI:Combo( "DC", selectDC,FFXIVDClist,height or 20)
+     if (table.valid(FFXIVServerlist[selectDC])) then
+     selectSVR = GUI:Combo( "server",selectSVR,FFXIVServerlist[selectDC],height or 20) 
+     --d("num:"selectSVR)
+     end
+     else
+     GUI:Combo( "DC",1,noDClist,1)
+     GUI:Combo( "server",10,FFXIVServerlist[10],1)
+     end
+     GUI:EndGroup()
 end
 
-
 -------------------------------------------------------------------------------------------------------------------------------------------
--- call
+-- header & Drowcall
 
 function AetheryteHelper.DrawCall(event, ticks)
   local Windows = kinokoProject.Windows.MainWindows
   local Addon = kinokoProject.Addon
 
-if (Windows.Open) then
+ if (Windows.Open) then
     GUI:SetNextWindowSize(280,350,GUI.SetCond_FirstUseEver)
     Windows.Visible, Windows.Open = GUI:Begin(Addon.Name.." - "..Addon.Version.."##MainWindows_begin", Windows.Open, Windows.Option)
     if (Windows.Visible) then
@@ -691,6 +744,11 @@ if (Windows.Open) then
       GUI:Separator()
       GUI:Spacing()
 
+      GUI:BeginGroup()
+      --GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+
       AetheryteHelper.DrawTabs()
       GUI:Spacing()
       GUI:Separator()
@@ -700,8 +758,17 @@ if (Windows.Open) then
       if (AetheryteHelper.GUI.tabs[1].isselected) then
       AetheryteHelper.Drawinsselect()
       AetheryteHelper.DrawChangeServer()
-      AetheryteHelper.DrawadButton()    
+      AetheryteHelper.DrawadButton()
+      
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()      
+          
       AetheryteHelper.DCSVselect()   ---------------wip
+      AetheryteHelper.homeDC()
+
+      GUI:Separator()
+      GUI:Spacing()
       AetheryteHelper.DrawInside()      
 
       elseif (AetheryteHelper.GUI.tabs[2].isselected) then
@@ -712,7 +779,7 @@ if (Windows.Open) then
       GUI:Text("wip\nなんか思いついたらつくるための空き地")
       GUI:Spacing()
       GUI:Separator()
----------------------------------------------
+    ---------------------------------------------
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:Checkbox("##PTadd", PTadd)
@@ -729,7 +796,7 @@ if (Windows.Open) then
 -------------------------------------------------------------------------------------------------------------------------------------------
 --close Button
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:Spacing(20)
+      GUI:Spacing(5)
       GUI:Separator()
       if GUI:Button("Close##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
         Windows.Open = false
@@ -923,11 +990,11 @@ function AetheryteHelper.subUpdate(Event, ticks)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Register
-RegisterEventHandler("Module.Initalize",AetheryteHelper.Init) 
-RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit)
-RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall)
-RegisterEventHandler("Gameloop.Update", AetheryteHelper.Update)
-RegisterEventHandler("Gameloop.Update", AetheryteHelper.subUpdate)
+RegisterEventHandler("Module.Initalize",AetheryteHelper.Init,"AetheryteHelper.Init") 
+RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit,"AetheryteHelper.ModuleInit")
+RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall,"AetheryteHelper.DrawCall")
+RegisterEventHandler("Gameloop.Update", AetheryteHelper.Update,"AetheryteHelper.Update")
+RegisterEventHandler("Gameloop.Update", AetheryteHelper.subUpdate,"AetheryteHelper.subUpdate")
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Debug
 --d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
