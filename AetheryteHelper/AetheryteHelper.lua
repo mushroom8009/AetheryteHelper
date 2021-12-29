@@ -191,6 +191,9 @@ WorldID = {
 {id=91,Name="Balmung",DC="Crystal"},{id=92,Name="Durandal",DC="Gaia"},{id=93,Name="Excalibur",DC="Primal"},{id=94,Name="Gungnir",DC="Elemental"},{id=95,Name="Hyperion",DC="Primal"},{id=96,Name="Masamune",DC="Mana"},{id=97,Name="Ragnarok",DC="Chaos"},
 {id=98,Name="Ridill",DC="Gaia"},{id=99,Name="Sargatanas",DC="Aether"}, 
 }
+MoveServer = { 132, 129, 130 }
+ploc = { 956, 957, 958, 959, 960, 961 }
+
 -------------------------------------------------------------------------------------------------------------------------------------
 
 -------------------
@@ -211,8 +214,7 @@ local moveSVR = false
 local isServer = 0
 --local pmap = Player.localmapid
 local modechg = 0
---local MoveServer = { 132, 129, 130 }
---local ploc = { 956, 957, 958, 959, 960, 961 }
+
 local Update = kinokoProject.Update
 local aetheID = 0
 
@@ -391,6 +393,12 @@ function AetheryteHelper.Drawinsselect()
       GUI:Checkbox("##AutoOffmode", autooff)
       GUI:SameLine()
       GUI:Text("Mode: ins select")
+      for _,v in pairs(ploc) do
+        if (v == Player.localmapid) then
+          GUI:SameLine()
+          GUI:TextColored(0,1,0,1," Ready")
+        end
+      end
       GUI:EndGroup()      
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
@@ -412,6 +420,12 @@ function AetheryteHelper.Drawinsselect()
       GUI:Checkbox("##move_svr", moveSVR)
       GUI:SameLine()
       GUI:Text( "Mode: World Visit" )
+      for _,v in pairs(MoveServer) do
+        if (v == Player.localmapid) then
+          GUI:SameLine()
+          GUI:TextColored(0,1,0,1," Ready")
+        end
+      end
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
           if (GUI:IsMouseClicked(0)) then
@@ -429,7 +443,7 @@ function AetheryteHelper.Drawinsselect()
            autheStep = 0            
           
         end       
-        GUI:SetTooltip("World Visit Mode")
+        GUI:SetTooltip("World Visit Mode\nAuto change")
       end           
       GUI:Separator()    
       GUI:Spacing()
@@ -676,63 +690,11 @@ function AetheryteHelper.desynthIL(Event, ticks)
      
   end
 end
-
-
 ---------------------------------------------------------------------------------------------------------------------------------------------------
---materia UI(tab2) GUI
+--materia option tree GUI
 
-function AetheryteHelper.DrawSubtool(event, ticks)
-      GUI:Spacing()      
-      GUI:BeginGroup()
-      GUI:Text("Materia Extract & Desynth\npowered by Rhakin#1093 // fix by mushroom")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("Materia Extract & Desynth")
-        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
-      end
-
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("##Materia", AetheryteHelper.settings.SET.isMateriaEnabled)
-      GUI:SameLine()
-      GUI:Text("Materia Extract")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
-        end
-        GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
-        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
-      end      
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("##Desynth", AetheryteHelper.settings.SET.isSalvageEnabled)
-      GUI:SameLine()
-      GUI:Text("Desynth equipment in Bag")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isSalvageEnabled = not AetheryteHelper.settings.SET.isSalvageEnabled
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
-        --GUI:SetTooltip("Automatic desynthesis of equipment in inventory\nWARNING: once enabled, all items in inventory will be desynthesized, make sure you do not have any items in inventory that you want to keep")
-      end
-      GUI:Spacing()
-      AetheryteHelper.desynthIL()
-
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-
+function AetheryteHelper.extractOption(Event, ticks)
+  if GUI:TreeNode("Extract Option##AetheryteHelper") then
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:Checkbox("##Potion", AetheryteHelper.settings.SET.isPotionEnabled)
@@ -760,10 +722,74 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.settings.SET.isManualEnabled = not AetheryteHelper.settings.SET.isManualEnabled
           AetheryteHelper.SaveSettings()
         end
-        GUI:SetTooltip("スピリットマニュアルの自動使用")
-        --分離
+        GUI:SetTooltip("スピリットマニュアルの自動使用") 
       end
+      GUI:TreePop()
+
+     
+  end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--materia UI(tab2) GUI
+
+function AetheryteHelper.DrawSubtool(event, ticks)
+      GUI:Spacing()      
+      GUI:BeginGroup()
+      GUI:Text("Materia Extract & Desynthesis")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("Materia Extract & Desynthesis")
+        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
+      end
+
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      local seisen = ActionList:Get(5,14)
+      if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
+      elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
+      GUI:Checkbox("##Materia", AetheryteHelper.settings.SET.isMateriaEnabled)
+      GUI:SameLine()
+      GUI:Text("Materia Extract")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
+        end
+        GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
+        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
+      end
+      AetheryteHelper.extractOption()
       
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      local bunkai = ActionList:Get(5,5)
+      if bunkai.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
+      elseif bunkai.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
+      GUI:Checkbox("##Desynthesis", AetheryteHelper.settings.SET.isSalvageEnabled)
+      GUI:SameLine()
+      GUI:Text("Desynthesis equipment in Bag")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isSalvageEnabled = not AetheryteHelper.settings.SET.isSalvageEnabled
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
+        --GUI:SetTooltip("Automatic desynthesis of equipment in inventory\nWARNING: once enabled, all items in inventory will be desynthesized, make sure you do not have any items in inventory that you want to keep")
+      end
+      GUI:Spacing()
+      AetheryteHelper.desynthIL()
+
  end
 
 -------------------------------------------------------------------------------------------------------------------------------------------
@@ -1074,17 +1100,26 @@ function AetheryteHelper.fixfunc(Event, ticks)
   --  Update.Timer = ticks   
   --end
 
-  if(moveSVR == true) and (Player.localmapid == 130) then
-      d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+  if(selectins == true) and (Player.localmapid == 130) then
+      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+      moveSVR = true
+      modechg = 2
+      autooff = false
       AetheryteHelper.insselect()
-  elseif (moveSVR == true) and (Player.localmapid == 129) then
-      d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+  elseif (selectins == true) and (Player.localmapid == 129) then
+      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+      moveSVR = true
+      modechg = 2
+      autooff = false
       AetheryteHelper.insselect()
-  elseif (moveSVR == true) and (Player.localmapid == 132) then
-      d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+  elseif (selectins == true) and (Player.localmapid == 132) then
+      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+      moveSVR = true
+      modechg = 2
+      autooff = false
       AetheryteHelper.insselect()
-    elseif (selectins == true) then
-      d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitNG")
+  elseif (selectins == true) then
+      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitNG")
       moveSVR = false
       modechg = 3
       autooff = true
@@ -1102,26 +1137,24 @@ function AetheryteHelper.materia(Event, ticks)
 
   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
+       if (IsControlOpen("SalvageResult")) then
+           UseControlAction("SalvageResult", "Close")
+       end
 
-
-    if (IsControlOpen("SalvageResult")) then
-      UseControlAction("SalvageResult", "Close")
-    end
-
-    if (Player.incombat or Busy()) then
-      return
-    end
+       if (Player.incombat or Busy()) then
+       return
+       end
 
     if (AetheryteHelper.settings.SET.isPotionEnabled and MissingBuffs(Player,"49")) then
       local potionid = {7059, 19885, 27960}
       --錬精薬　強錬精薬　極錬精薬
       for i = 0, 3 do
         for _, id in pairs(potionid) do
-          local potion = Inventory:Get(i):Get(id)
-          if (potion and potion:GetAction():IsReady()) then
-            potion:Cast()
-            return
-          end
+        local potion = Inventory:Get(i):Get(id)
+        if (potion and potion:GetAction():IsReady()) then
+        potion:Cast()
+        return
+        end
         end
       end
     end
@@ -1130,11 +1163,11 @@ function AetheryteHelper.materia(Event, ticks)
       --スピリットマニュアル
       for i = 0, 3 do
         for _, id in pairs(manualid) do
-          local manual = Inventory:Get(i):Get(id)
-          if (manual and manual:GetAction():IsReady()) then
-            manual:Cast()
-            return
-          end
+        local manual = Inventory:Get(i):Get(id)
+        if (manual and manual:GetAction():IsReady()) then
+        manual:Cast()
+        return
+        end
         end
       end
     end
@@ -1147,15 +1180,15 @@ function AetheryteHelper.materia(Event, ticks)
       for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
         if (table.valid(bag)) then
-          local ilist = bag:GetList()
-          if (table.valid(ilist)) then
-            for _, item in pairs(ilist) do
-              if (item.spiritbond == 100 and item:CanCast(5, 14)) then
-                item:Convert()
-                return
-              end
-            end
-          end
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+        if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+        item:Convert()
+        return
+        end
+        end
+        end
         end
       end
     end
@@ -1169,16 +1202,16 @@ function AetheryteHelper.materia(Event, ticks)
       for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
         if (table.valid(bag)) then
-          local ilist = bag:GetList()
-          if (table.valid(ilist)) then
-            for _, item in pairs(ilist) do
---              if ((item.equipslot > 0 and item.requiredlevel > AetheryteHelper.settings.SET.dminil and item.requiredlevel < AetheryteHelper.settings.SET.dmaxil ) or item.searchcategory == 46) then
-              if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil ) then
-                item:Salvage()
-                return
-              end
-            end
-          end
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+--      if ((item.equipslot > 0 and item.requiredlevel > AetheryteHelper.settings.SET.dminil and item.requiredlevel < AetheryteHelper.settings.SET.dmaxil ) or item.searchcategory == 46) then
+        if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil ) then
+        item:Salvage()
+        return
+        end
+        end
+        end
         end
       end
     end
