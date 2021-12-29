@@ -4,5 +4,5 @@ Dependencies=minionlib,AceLib,FFXIVMINION
 Version=1
 Files=AetheryteHelper.lua
 Enabled=1
-CreateFolders=image
+CreateFolders=image,UserSettings
 ExportFiles=image/love_mushroom.png,image/AetheryteHelper.png
