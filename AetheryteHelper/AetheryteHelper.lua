@@ -1173,7 +1173,7 @@ function AetheryteHelper.materia(Event, ticks)
           if (table.valid(ilist)) then
             for _, item in pairs(ilist) do
 --              if ((item.equipslot > 0 and item.requiredlevel > AetheryteHelper.settings.SET.dminil and item.requiredlevel < AetheryteHelper.settings.SET.dmaxil ) or item.searchcategory == 46) then
-              if (item.equipslot > 0 item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil ) then
+              if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil ) then
                 item:Salvage()
                 return
               end
