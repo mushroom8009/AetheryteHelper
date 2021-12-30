@@ -28,6 +28,11 @@ my great thanks to Madao & denvo for their help and advice.
 Some items will be automatically saved as user data.
 -----2021/12/29---------
 Desynth can now specify IL.
+-----2021/12/30---------
+If you have select a server from list, 
+you can check enable checkbox for a quick worldvisit.
+
+i will enhance desynthesis function in the future.
 
 
 mushroom#8009
@@ -41,6 +46,23 @@ mushroom#8009
 
 AetheryteHelper = {}
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--load fanction
+local uuid = GetUUID()
+AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CharacterID'..uuid.. '_setting.lua'
+function AetheryteHelper.LoadSettings()
+  if FileExists(AetheryteHelper.savefile) then
+    local save = persistence.load(AetheryteHelper.savefile)
+    if (ValidTable(save)) then
+      table.merge(AetheryteHelper.settings,save)
+    end
+  end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--save fanction
+function AetheryteHelper.SaveSettings()
+  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
+end
 -----------------------------------------------------------------------------------------------------------------
 --table
 
@@ -48,20 +70,21 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "0.9.9",   
+      Version =         "1.0.0",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
                       "[0.9.6] - Add tool・UIchange",
-                      "[0.9.9] - Add UI & bug fix",  
+                      "[0.9.9] - Add UI & bug fix",
+                      "[1.0.0] - Release",  
 
                     },
       
   },
 --  ---------------
   HELP   = {
-      entext =       { "・Code optimization\nAuto select of DC\n・language switching\n\nlink:", }, 
-      jptext =       { "・コードの最適化\n・DCの自動選択\n・各項目のローカライズ\n\nlink:", },
+      entext =       { "・Code optimization\nExpansion of desynthesise\n・language switching\n\nlink:", }, 
+      jptext =       { "・コードの最適化\n・分解機能の拡充\n・各項目のローカライズ\n\nlink:", },
       linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
       linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
   },
@@ -141,6 +164,7 @@ AetheryteHelper.GUI = {
     dminil = 5,
     dmaxil = 600,
     selectDC = 1,
+    Pcurrnt = Player.currentworld
 
   },
 }
@@ -194,41 +218,34 @@ WorldID = {
 MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
 
--------------------------------------------------------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
 local gstate = MGetGameState()
 local language = GetGameLanguage()
-local uuid = GetUUID()
+
 
 --local nowServer = 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- maintool local
-
 local selectins = false
 local autooff = true
 local isins = 4
 local WVaetheID = 0
 local moveSVR = false
 local isServer = 0
---local pmap = Player.localmapid
 local modechg = 0
-
 local Update = kinokoProject.Update
 local aetheID = 0
 
+local selectSVR = 1
 ----------------------------------------
 --subtool local
 local lastUpdatePulse = 0
 ----------------------------------------
 --wip local
 local PTadd = false
---local selectDC = 1
-local selectSVR = 1
---local pldc = Player.homeworld
---local plcw = Player.currentworld
-----------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- add Menu MMOMinion
@@ -266,6 +283,8 @@ function AetheryteHelper.Init()
 end
 
 
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- window open
 
@@ -279,33 +298,13 @@ function AetheryteHelper.ModuleInit()
   }
   table.insert(ml_global_information.menu.windows,menutab)
   AetheryteHelper.LoadSettings()
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- close
 
 function AetheryteHelper.SwitchOpen()
   kinokoProject.Windows.MainWindows.Open = not kinokoProject.Windows.MainWindows.Open
-end
-
-
----------------------------------------------------------------------------------------------------------------------------------------------------
---load fanction
-AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CharacterID'..uuid.. '_setting.lua'
-
-function AetheryteHelper.LoadSettings()
-  if FileExists(AetheryteHelper.savefile) then
-    local save = persistence.load(AetheryteHelper.savefile)
-    if (ValidTable(save)) then
-      table.merge(AetheryteHelper.settings,save)
-    end
-  end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------------------
---save fanction
-
-function AetheryteHelper.SaveSettings()
-  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -666,7 +665,6 @@ function AetheryteHelper.desynthIL(Event, ticks)
      if (AetheryteHelper.settings.SET.dmaxil < 5) then AetheryteHelper.settings.SET.dmaxil = 5 end
      if (AetheryteHelper.settings.SET.dmaxil > 1000) then AetheryteHelper.settings.SET.dmaxil = 1000 end
      if (AetheryteHelper.settings.SET.dminil > AetheryteHelper.settings.SET.dmaxil) then AetheryteHelper.settings.SET.dminil = AetheryteHelper.settings.SET.dmaxil end
-     --if (AetheryteHelper.settings.SET.dmaxil < AetheryteHelper.settings.SET.dminil) then AetheryteHelper.settings.SET.dmaxil = AetheryteHelper.settings.SET.dminil end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
@@ -878,9 +876,47 @@ function AetheryteHelper.autoDCset()
       end
 end
 
+-----------------------------------------------------------
+--Player CurrentWorld save
+local mushPcurrnt = AetheryteHelper.settings.SET.Pcurrnt
+if mushPcurrnt ~= nil then AetheryteHelper.SaveSettings() end
 -------------------------------------------------------------------------------------------------------------------------------------------
 -- list GUI
+
+function AetheryteHelper.Origin()
+           Origin_list = {} 
+           musholist = FFXIVServerlist[AetheryteHelper.settings.SET.selectDC]
+           for k, v in ipairs(musholist) do
+           Origin_list[k] = v
+--d(Origin_list)
+           end
+end
+
 function AetheryteHelper.DCSVselect()
+            AetheryteHelper.Origin()
+         if (mushPcerrnt ~= Player.currentworld) then
+            AetheryteHelper.SaveSettings()
+            MushmoveServerlist = Origin_list
+            for k, v in pairs(MushmoveServerlist) do
+                local templist = MushmoveServerlist
+--d(templist)
+                for k,v in pairs(WorldID) do
+                    if (k == Player.currentworld) then local tempWorld = v 
+                    tempname = tostring(tempWorld.Name)
+--d(tempname)
+                    for k,v in pairs(templist) do
+                    local tempindex = table.find(templist, tempname)
+--d(tempindex)     
+                    if (tempindex ~= nil) then 
+                    table.remove(templist,tempindex)
+                    else tempindex = 0
+                    end 
+                    end
+                    end
+
+                end      
+            end
+          end
      AetheryteHelper.autoDCset()
      GUI:BeginGroup()
      GUI:PushItemWidth(100)
@@ -895,14 +931,16 @@ function AetheryteHelper.DCSVselect()
      GUI:BeginGroup()
      GUI:PushItemWidth(180)
      if (table.valid(FFXIVServerlist[AetheryteHelper.settings.SET.selectDC])) then
-     selectSVR = GUI:Combo( "server",selectSVR,FFXIVServerlist[AetheryteHelper.settings.SET.selectDC],height or 20) 
-     --d("num:"selectSVR)
+     selectSVR = GUI:Combo( "server",selectSVR,MushmoveServerlist,height or 20) 
+     --d("num:"..selectSVR)
      else
      GUI:Combo( "DC",1,noDClist,1)
      GUI:Combo( "server",10,FFXIVServerlist[10],1)
      end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then GUI:SetTooltip("Select Server") end
+     isServer = selectSVR
+
 end
 
 --------------------------------------------------------------------------------
@@ -1008,7 +1046,7 @@ end
 -- main function
 
 function AetheryteHelper.insselect(Event, ticks)
-  --d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
+--d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
   if autheVar == nil then
     autheVar = true
     autheStep = 0
@@ -1052,29 +1090,22 @@ function AetheryteHelper.insselect(Event, ticks)
                             autheStep = 0
                       end
               end
-              if (autheStep == 2) then
-                         Player:SetTarget(aetheID)
-                         Player:Interact(aetheID)
-                         UseControlAction("Aetheryte")
-                         GetControl("SelectString"):Action("SelectIndex",isServer)
---                         GetControl("WorldTravelSelect"):Action("SelectIndex",isServer) ----wip
-                         autheStep = 3
-              end
-              if autheStep == 3 then
+              if autheStep == 2 then
+--                        Player:SetTarget(aetheID)
+--                        Player:Interact(aetheID)
+                        GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
                         UseControlAction("SelectYesno")
                      if IsControlOpen("SelectYesno") then
                         UseControlAction("SelectYesno","Yes")
                            moveSVR = not moveSVR
                            selectins = not selectins
                            autooff = not autooff
-                           --autheStep = 0
-
-                           --autheStep = 0
+                           autheStep = 0
                      elseif Player:GetTarget() == nil then
                            isTime = Now()
                            Player:SetTarget(aetheID)
                            Player:Interact(aetheID)
-                           --isServer = 0
+                           isServer = 1
                            autheStep = 0                           
                       end
               end
