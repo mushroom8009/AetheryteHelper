@@ -34,6 +34,10 @@ you can check enable checkbox for a quick worldvisit.
 
 i will enhance desynthesis function in the future.
 
+-----2021/12/31---------
+The order of the servers in some Data Centers was different, so I fixed it.
+Materia Extract and Desythesis will stop when the bag is full.
+
 
 mushroom#8009
 ]]
@@ -70,13 +74,14 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.0.0",   
+      Version =         "1.0.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
                       "[0.9.6] - Add tool・UIchange",
                       "[0.9.9] - Add UI & bug fix",
-                      "[1.0.0] - Release",  
+                      "[1.0.0] - Release",
+                      "[1.0.1] - hot fix",  
 
                     },
       
@@ -188,11 +193,11 @@ FFXIVServerlist = {
     [1] = { "------" },
     [2] = { "------", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Ramuh", "Tonberry", "Typhon", "Unicorn" },
     [3] = { "------", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima", "Valefor", "Yojimbo", "Zeromus" },
-    [4] = { "------", "Anima", "Asura", "Belias", "Chocobo", "Hades", "Ixion", "Mandragora", "Pandaemonium", "Shinryu", "Titan", "Masamune" },
+    [4] = { "------", "Anima", "Asura", "Belias", "Chocobo", "Hades", "Ixion", "Mandragora", "Masamune", "Pandaemonium", "Shinryu", "Titan",  },
     [5] = { "------", "Adamantoise", "Cactuar", "Faerie", "Gilgamesh", "Jenova", "Midgardsormr", "Sargatanas", "Siren" },
     [6] = { "------", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
-    [7] = { "------", "Spriggan", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" },
-    [8] = { "------", "Twintania", "Lich", "Odin", "Phoenix", "Shiva", "Zodiark" },
+    [7] = { "------", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" ,"Spriggan" },
+    [8] = { "------", "Lich", "Odin", "Phoenix","Shiva","Twintania","Zodiark" },
     [9] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
     [10] = { "not support region" },
   }
@@ -590,7 +595,10 @@ function AetheryteHelper.DrawadButton()
               SendTextCommand("/e <flag>")
               end
               GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")              
-            end     
+            end
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+     GUI:EndGroup()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -730,17 +738,25 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --materia UI(tab2) GUI
+function AetheryteHelper.Inventoryfree()
+      local bags1 = {0} for _, e in pairs(bags1) do local bag1 = Inventory:Get(e)
+      Pbfree1 = tonumber(bag1.free) end
+      local bags2 = {1} for _, e in pairs(bags2) do local bag2 = Inventory:Get(e)
+      Pbfree2 = tonumber(bag2.free) end
+      local bags3 = {2} for _, e in pairs(bags3) do local bag3 = Inventory:Get(e)
+      Pbfree3 = tonumber(bag3.free) end
+      local bags4 = {3} for _, e in pairs(bags4) do local bag4 = Inventory:Get(e)
+      Pbfree4 = tonumber(bag4.free) end
+      mushPbtotal = (Pbfree1 + Pbfree2 + Pbfree3 + Pbfree4) 
+end  
 
 function AetheryteHelper.DrawSubtool(event, ticks)
+      AetheryteHelper.Inventoryfree()
       GUI:Spacing()      
       GUI:BeginGroup()
       GUI:Text("Materia Extract & Desynthesis")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
-          AetheryteHelper.SaveSettings()
-        end
         GUI:SetTooltip("Materia Extract & Desynthesis")
         --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
       end
@@ -751,8 +767,11 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:BeginGroup()
       local seisen = ActionList:Get(5,14)
       if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
+      elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Checkbox("##Materia", AetheryteHelper.settings.SET.isMateriaEnabled)
+      AetheryteHelper.SaveSettings()
+      
       GUI:SameLine()
       GUI:Text("Materia Extract")
       GUI:EndGroup()
@@ -772,6 +791,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:BeginGroup()
       local bunkai = ActionList:Get(5,5)
       if bunkai.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
+      elseif (mushPbtotal < 3) then AetheryteHelper.settings.SET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif bunkai.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Checkbox("##Desynthesis", AetheryteHelper.settings.SET.isSalvageEnabled)
       GUI:SameLine()
