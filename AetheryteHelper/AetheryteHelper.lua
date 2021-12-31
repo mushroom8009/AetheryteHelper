@@ -38,7 +38,9 @@ i will enhance desynthesis function in the future.
 The order of the servers in some Data Centers was different, so I fixed it.
 Materia Extract and Desythesis will stop when the bag is full.
 
+Add Aetherial Reduction
 
+bug fix
 mushroom#8009
 ]]
 -----------------------------------------------------------------------------------------------------------------
@@ -63,10 +65,7 @@ function AetheryteHelper.LoadSettings()
   end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
---save fanction
-function AetheryteHelper.SaveSettings()
-  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
-end
+
 -----------------------------------------------------------------------------------------------------------------
 --table
 
@@ -74,14 +73,16 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.0.1",   
+      Version =         "1.0.25",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
                       "[0.9.6] - Add tool・UIchange",
                       "[0.9.9] - Add UI & bug fix",
                       "[1.0.0] - Release",
-                      "[1.0.1] - hot fix",  
+                      "[1.0.1] - hot fix",
+                      "[1.0.2] - Add Aetherial Reduction",
+                      "[1.0.25] - bug fix",  
 
                     },
       
@@ -165,6 +166,8 @@ AetheryteHelper.GUI = {
     isSalvageEnabled = false,
     isPotionEnabled = false,
     isManualEnabled = false,
+    isReductionEnabled = false,
+    isQuestEnabled = false,
     --autoDCchk = true,
     dminil = 5,
     dmaxil = 600,
@@ -305,6 +308,12 @@ function AetheryteHelper.ModuleInit()
   AetheryteHelper.LoadSettings()
 
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--save fanction
+function AetheryteHelper.SaveSettings()
+  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- close
 
@@ -374,6 +383,7 @@ function AetheryteHelper.Drawinsselect()
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
+      GUI:SameLine()
       GUI:Checkbox("##select_ins", selectins)
       GUI:SameLine(30)
       GUI:Text("Helper Enable")
@@ -383,9 +393,8 @@ function AetheryteHelper.Drawinsselect()
           selectins = not selectins
           autheStep = 0
         if ( moveSVR == false ) then  modechg = 3 end 
-
           end       
-         GUI:SetTooltip("on/off\nOnly possible in front of Aetheryte")
+         GUI:SetTooltip("Auto on/off\nOnly possible in front of Aetheryte")
       end
       
       GUI:Spacing()
@@ -485,6 +494,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
+          if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
           isins = 1
           --if (selectins)then GetControl("SelectString"):Action("SelectIndex",1) end     
        end
@@ -498,6 +508,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
+           if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
          isins = 2
         --if (selectins)then GetControl("SelectString"):Action("SelectIndex",2) end
         end
@@ -511,6 +522,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
+          if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
          isins = 3
         --if (selectins)then GetControl("SelectString"):Action("SelectIndex",3) end
         end
@@ -524,6 +536,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
+          if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
         isins = 0
        --if (selectins)then GetControl("SelectString"):Action("SelectIndex",0) end       
         end
@@ -803,10 +816,31 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
-        --GUI:SetTooltip("Automatic desynthesis of equipment in inventory\nWARNING: once enabled, all items in inventory will be desynthesized, make sure you do not have any items in inventory that you want to keep")
       end
       GUI:Spacing()
       AetheryteHelper.desynthIL()
+
+            GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      local seisen = ActionList:Get(5,21)
+      if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
+      elseif (mushPbtotal < 1) then AetheryteHelper.settings.SET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
+      elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
+      GUI:Checkbox("##AetherialReduction", AetheryteHelper.settings.SET.isReductionEnabled)
+      GUI:SameLine()
+      GUI:Text("Aetherial Reduction in Bag (Beta)")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isReductionEnabled = not AetheryteHelper.settings.SET.isReductionEnabled
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("Aetherial Reduction\n\n精選")
+      end
+      GUI:Spacing()
 
  end
 
@@ -951,7 +985,7 @@ function AetheryteHelper.DCSVselect()
      GUI:BeginGroup()
      GUI:PushItemWidth(180)
      if (table.valid(FFXIVServerlist[AetheryteHelper.settings.SET.selectDC])) then
-     selectSVR = GUI:Combo( "server",selectSVR,MushmoveServerlist,height or 20) 
+     selectSVR = GUI:Combo( "server",selectSVR,MushmoveServerlist,height or 20)
      --d("num:"..selectSVR)
      else
      GUI:Combo( "DC",1,noDClist,1)
@@ -1186,7 +1220,7 @@ function AetheryteHelper.fixfunc(Event, ticks)
 -- materia function
 function AetheryteHelper.materia(Event, ticks)
 
-  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
+  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
     lastUpdatePulse = Now()
        if (IsControlOpen("SalvageResult")) then
            UseControlAction("SalvageResult", "Close")
@@ -1260,6 +1294,29 @@ function AetheryteHelper.materia(Event, ticks)
         if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil ) then
         item:Salvage()
         return
+        end
+        end
+        end
+        end
+      end
+    end
+    if (AetheryteHelper.settings.SET.isReductionEnabled) then
+        if (IsControlOpen("PurifyResult")) then
+          UseControlAction("PurifyResult", "Close")
+        return
+        end
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+        AetheryteHelper.Inventoryfree()
+        
+        if( item.IsCollectable == true and item.IsBinding == true and Player.IsMounted == false) then
+           item:Purify()
+        return    
         end
         end
         end
