@@ -21,6 +21,12 @@ When you attach minion, it will open automatically.<br>
 Please close it if you don't need it.<br>
 You can reopen it from the menu.<br>
 
+# Installation
+ 
+```bash
+MINIONAPP\Bots\FFXIVMinion64\LuaMods\
+```
+
 
  
 # Note
