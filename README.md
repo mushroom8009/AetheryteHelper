@@ -1,7 +1,7 @@
 # Autheryte Helper
 this is a module in MMOminion(FFXIV Minion64)
 
-# DEMO
+# sample
 ![sample image](https://github.com/mushroom8009/AutheryteHelper/blob/main/%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB.png)
  
 # Features
