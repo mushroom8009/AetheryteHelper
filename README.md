@@ -26,7 +26,8 @@ You can reopen it from the menu.<br>
 ```bash
 MINIONAPP\Bots\FFXIVMinion64\LuaMods\
 ```
-![Installation](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/installation.png)
+![Installation](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/installation.png)<br>
+Without such a structure, the module will not start
 
  
 # Note
