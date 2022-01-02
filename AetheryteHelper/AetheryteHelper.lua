@@ -151,7 +151,6 @@ AetheryteHelper.GUI = {
         normal = {r = 1, g = 1, b = 1, a = 1},
   },
 }
-
  AetheryteHelper.settings = {
   SET = {
 
@@ -162,6 +161,7 @@ AetheryteHelper.GUI = {
     isManualEnabled = false,
     isReductionEnabled = false,
     isQuestEnabled = false,
+    isReductionOption = true,
     --autoDCchk = true,
     dminil = 5,
     dmaxil = 600,
@@ -246,9 +246,12 @@ AetheryteHelper.GUI = {
 Links = {
       Name = "Minion Discord JP",
        link1 = [[https://discord.com/channels/127540472812929024/335225564803891210]],
-       link2 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
+       link2 = [[https://github.com/mushroom8009/AetheryteHelper]],
+       link3 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
       tooltip1 = "it's a hobby,\nso i don't know if it's possible,\nbut let me know if you have any requests.\n\n不具合とかあれば教えて下さい",
-      tooltip2 = "Github link,\n\n更新確認はこちら",
+      tooltip2 = "Github link,\nLeft click:home\nRight click:Release",
+
+      
 
 }
 
@@ -1581,6 +1584,21 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
       end
       GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:Checkbox("##use option", AetheryteHelper.settings.SET.isReductionOption)
+      GUI:SameLine()
+      GUI:Text("use option")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isReductionOption = not AetheryteHelper.settings.SET.isReductionOption
+        end
+        GUI:SetTooltip("use settings to Desynthesis")
+        AetheryteHelper.SaveSettings()
+      end
+
       AetheryteHelper.desynthIL()
 
             GUI:Spacing()
@@ -1623,6 +1641,9 @@ function AetheryteHelper.Drawafooter()
       if (GUI:IsItemHovered()) then
       if GUI:IsItemClicked(0) then
             io.popen([[cmd /c start "" "]]..Links.link2..[["]]):close()
+      
+      elseif GUI:IsItemClicked(1) then
+            io.popen([[cmd /c start "" "]]..Links.link3..[["]]):close()
       end
       GUI:SetTooltip(Links.tooltip2)
       end
@@ -1843,7 +1864,7 @@ function AetheryteHelper.DrawCall(event, ticks)
       GUI:Spacing(5)
       GUI:Separator()
       if GUI:Button("Close##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
-        Windows.Open = false
+         Windows.Open = false
       end
       GUI:SameLine(60)
       GUI:BeginGroup()
@@ -1976,6 +1997,29 @@ function AetheryteHelper.fixfunc(Event, ticks)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Desynthesis filter
+function AetheryteHelper.SalvageAll()
+     local bags = {0, 1, 2, 3}
+     for _, e in pairs(bags) do
+     local bag = Inventory:Get(e)
+     if (table.valid(bag)) then
+     local ilist = bag:GetList()
+     if (table.valid(ilist)) then
+     for _, item in pairs(ilist) do
+
+      if (item.equipslot > 0 and item.requiredlevel > 1 ) then
+      item:Salvage()     
+      return
+      end
+      end
+         
+
+      end
+      end
+      end
+end
+
+
+
 function AetheryteHelper.SalvageSlotfilter()
      local bags = {0, 1, 2, 3}
      for _, e in pairs(bags) do
@@ -2962,35 +3006,38 @@ function AetheryteHelper.materia(Event, ticks)
       if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
         UseControlAction("SalvageDialog","Confirm")
         return
-      end    
-      AetheryteHelper.SalvageJobTank()
-      AetheryteHelper.SalvageJobHealer()
-      AetheryteHelper.SalvageJobSlaying()
-      AetheryteHelper.SalvageJobStriking()
-      AetheryteHelper.SalvageJobAiming()
-      AetheryteHelper.SalvageJobSorcerer()
-      AetheryteHelper.SalvageJobMaiming()
-      AetheryteHelper.SalvageJobScouting()  
-      AetheryteHelper.SalvageJobPrimary()   
-      AetheryteHelper.SalvageJobGatherer() 
-      AetheryteHelper.SalvageJobCrafter()
-      --AetheryteHelper.SalvageSlotfilter()
+      end
+       if (AetheryteHelper.settings.SET.isReductionOption)then    
+          AetheryteHelper.SalvageJobTank()
+          AetheryteHelper.SalvageJobHealer()
+          AetheryteHelper.SalvageJobSlaying()
+          AetheryteHelper.SalvageJobStriking()
+          AetheryteHelper.SalvageJobAiming()
+          AetheryteHelper.SalvageJobSorcerer()
+          AetheryteHelper.SalvageJobMaiming()
+          AetheryteHelper.SalvageJobScouting()  
+          AetheryteHelper.SalvageJobPrimary()   
+          AetheryteHelper.SalvageJobGatherer() 
+          AetheryteHelper.SalvageJobCrafter()
+    else
+          AetheryteHelper.SalvageAll()
+    --      AetheryteHelper.SalvageSlotfilter()
+    end
     end
     
-    if (AetheryteHelper.settings.SET.isReductionEnabled) then
-      AetheryteHelper.EquipmentFilter()
+    if (AetheryteHelper.settings.SET.isReductionEnabled == true) then
         if (IsControlOpen("PurifyResult")) then
           UseControlAction("PurifyResult", "Close")
         return
         end
-      local bags = {0, 1, 2, 3}
-      for _, e in pairs(bags) do
+        local bags = {0, 1, 2, 3}
+        for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
         if (table.valid(bag)) then
-        local ilist = bag:GetList()
-        if (table.valid(ilist)) then
-        for _, item in pairs(ilist) do
-     
+        local Rlist = bag:GetList()
+        if (table.valid(Rlist)) then
+        for _, item in pairs(Rlist) do
+
         
         if( item.IsCollectable == true and item.IsBinding == true and Player.IsMounted == false) then
          item:Purify()
@@ -2999,8 +3046,8 @@ function AetheryteHelper.materia(Event, ticks)
         end
         end
         end
-    end
-  end
+     end
+   end
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
