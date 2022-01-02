@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.1.2",   
+      Version =         "1.1.3",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -77,6 +77,7 @@ local kinokoProject = {
                       "[1.1.0] - add desynthesise filter",
                       "[1.1.1] - bug fix",
                       "[1.1.2] - Changed so that saved data is loaded correctly.",
+                      "[1.1.3] - linked bot status in materia extract options",
 
                     },
       
@@ -162,6 +163,8 @@ AetheryteHelper.GUI = {
     isReductionEnabled = false,
     isQuestEnabled = false,
     isReductionOption = true,
+    isBotStatusP = false,
+    isBotStatusM = false,
     --autoDCchk = true,
     dminil = 5,
     dmaxil = 600,
@@ -1494,7 +1497,22 @@ function AetheryteHelper.extractOption(Event, ticks)
         GUI:SetTooltip("錬精薬の自動使用")
         --GUI:SetTooltip("Automatic usage of a spiritbond potion whenever it expires")
       end
-      
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:Checkbox("##MPoption", AetheryteHelper.settings.SET.isBotStatusP)
+      GUI:SameLine()      
+      GUI:Text("Link to Bot Status")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isBotStatusP = not AetheryteHelper.settings.SET.isBotStatusP
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("Automatically uncheck option(Potion)\nwhen Bot status:Not Running") 
+      end    
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -1509,6 +1527,36 @@ function AetheryteHelper.extractOption(Event, ticks)
         end
         GUI:SetTooltip("スピリットマニュアルの自動使用") 
       end
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:Checkbox("##MPoption", AetheryteHelper.settings.SET.isBotStatusM)
+      GUI:SameLine()      
+      GUI:Text("Link to Bot Status")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isBotStatusM = not AetheryteHelper.settings.SET.isBotStatusM
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("Automatically uncheck option(Manual)\nwhen Bot status:Not Running") 
+      end
+      if (FFXIV_Common_BotRunning == false) and (AetheryteHelper.settings.SET.isBotStatusP == true) then
+        AetheryteHelper.settings.SET.isPotionEnabled = false
+      elseif (FFXIV_Common_BotRunning == true) and (AetheryteHelper.settings.SET.isBotStatusP == true) then
+        AetheryteHelper.settings.SET.isPotionEnabled = true
+
+      end
+      if (FFXIV_Common_BotRunning == false) and (AetheryteHelper.settings.SET.isBotStatusM == true) then
+        AetheryteHelper.settings.SET.isManualEnabled = false
+      elseif (FFXIV_Common_BotRunning == true) and (AetheryteHelper.settings.SET.isBotStatusM == true) then
+        AetheryteHelper.settings.SET.isManualEnabled = true
+
+      end
+
+
       GUI:TreePop()
 
      
