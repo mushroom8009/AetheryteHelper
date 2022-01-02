@@ -1,4 +1,4 @@
-# Autheryte Helper
+# Aetheryte Helper
 this is a module in MMOminion(FFXIV Minion64)
 
 # sample
