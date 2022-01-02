@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.1.3",   
+      Version =         "1.1.3.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -1618,7 +1618,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:BeginGroup()
       local bunkai = ActionList:Get(5,5)
       if bunkai.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 3) then AetheryteHelper.settings.SET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
+      elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif bunkai.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Checkbox("##Desynthesis", AetheryteHelper.settings.SET.isSalvageEnabled)
       GUI:SameLine()
@@ -2991,8 +2991,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- materia function
 function AetheryteHelper.materia(Event, ticks)
-
-  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
+ if (Player.CurrentAction ~= 92) then
+  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
        if (IsControlOpen("SalvageResult")) then
            UseControlAction("SalvageResult", "Close")
@@ -3028,7 +3028,7 @@ function AetheryteHelper.materia(Event, ticks)
         end
       end
     end
-    if (AetheryteHelper.settings.SET.isMateriaEnabled) then
+    if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil) then
       if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
         UseControlAction("MaterializeDialog","Yes")
         return
@@ -3050,7 +3050,7 @@ function AetheryteHelper.materia(Event, ticks)
       end
     end
 
-    if (AetheryteHelper.settings.SET.isSalvageEnabled) then   
+    if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil) then   
       if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
         UseControlAction("SalvageDialog","Confirm")
         return
@@ -3073,7 +3073,7 @@ function AetheryteHelper.materia(Event, ticks)
     end
     end
     
-    if (AetheryteHelper.settings.SET.isReductionEnabled == true) then
+    if (AetheryteHelper.settings.SET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil ) then
         if (IsControlOpen("PurifyResult")) then
           UseControlAction("PurifyResult", "Close")
         return
@@ -3087,7 +3087,7 @@ function AetheryteHelper.materia(Event, ticks)
         for _, item in pairs(Rlist) do
 
         
-        if( item.IsCollectable == true and item.IsBinding == true and Player.IsMounted == false) then
+        if( item.IsCollectable == true and item.IsBinding == true) then
          item:Purify()
         return    
         end
@@ -3098,6 +3098,13 @@ function AetheryteHelper.materia(Event, ticks)
    end
 end
 end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Register
 RegisterEventHandler("Module.Initalize",AetheryteHelper.Init,"AetheryteHelper.Init") 
