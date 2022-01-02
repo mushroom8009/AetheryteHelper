@@ -2,7 +2,7 @@
 this is a module in MMOminion(FFXIV Minion64)
 
 # sample
-![sample image](https://github.com/mushroom8009/AutheryteHelper/blob/main/%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB.png)
+![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/sample.png)
  
 # Features
 There are many excellent paid add-ons.<br>
