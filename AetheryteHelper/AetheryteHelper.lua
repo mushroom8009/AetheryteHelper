@@ -56,18 +56,15 @@ mushroom#8009
 
 
 
-AetheryteHelper = {}
-
 ---------------------------------------------------------------------------------------------------------------------------------
-
+AetheryteHelper = {}
 -----------------------------------------------------------------------------------------------------------------
 --table
-
 local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.1.1",   
+      Version =         "1.1.2",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -79,6 +76,7 @@ local kinokoProject = {
                       "[1.0.25] - bug fix",
                       "[1.1.0] - add desynthesise filter",
                       "[1.1.1] - bug fix",
+                      "[1.1.2] - Changed so that saved data is loaded correctly.",
 
                     },
       
@@ -293,7 +291,8 @@ WorldID = {
 }
 MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
-
+local uuid = GetUUID()
+AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CharacterID'..uuid.. '_setting.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -322,6 +321,9 @@ local lastUpdatePulse = 0
 ----------------------------------------
 --wip local
 local PTadd = false
+
+
+------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- add Menu MMOMinion
@@ -359,26 +361,8 @@ function AetheryteHelper.Init()
 end
 
 
-
----------------------------------------------------------------------------------------------------------------------------------------------------
---load fanction
-local uuid = GetUUID()
-AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CharacterID'..uuid.. '_setting.lua'
-function AetheryteHelper.LoadSettings()
-  if FileExists(AetheryteHelper.savefile) then
-    local save = persistence.load(AetheryteHelper.savefile)
-    if (ValidTable(save)) then
-      table.merge(AetheryteHelper.settings,save)      
-    end
-  end
-end
-------------------
----------------------------------------------------------------------------------------------------------------------------------------------------
---save fanction
-function AetheryteHelper.SaveSettings()
-  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
-end
----------------------------------------------------------------------------------------------------------------------------------------------------
+--------
+-------------------------------------------------------------------------------------------------------------------------------------------
 -- window open
 
 function AetheryteHelper.ModuleInit()
@@ -390,7 +374,6 @@ function AetheryteHelper.ModuleInit()
     isOpen = function () return Windows.Open end
   }
   table.insert(ml_global_information.menu.windows,menutab)
-  AetheryteHelper.LoadSettings()
 
 end
 
@@ -447,6 +430,24 @@ function AetheryteHelper.DrawTabs()
     end
 end
 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--load fanction
+function AetheryteHelper.LoadSettings()
+  if FileExists(AetheryteHelper.savefile) then
+    local save = persistence.load(AetheryteHelper.savefile)
+    if (ValidTable(save)) then
+      table.merge(AetheryteHelper.settings,save)      
+    end
+  end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--save fanction
+AetheryteHelper.LoadSettings()
+function AetheryteHelper.SaveSettings()
+  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
+  
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- ins select GUI
 function AetheryteHelper.Drawinsselect()
@@ -545,9 +546,10 @@ function AetheryteHelper.Drawinsselect()
       GUI:BeginGroup()
       local changed
         AetheryteHelper.settings.SET.delay, changed = GUI:SliderInt("ms",AetheryteHelper.settings.SET.delay,100,1000)
-        AetheryteHelper.SaveSettings()
+        
         if (GUI:IsItemHovered()) then
         GUI:SetTooltip("access delay\n100ms-1000ms")
+        AetheryteHelper.SaveSettings()
         end
 
       GUI:EndGroup()
@@ -757,7 +759,6 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
-     AetheryteHelper.LoadSettings() 
            GUI:SetTooltip("IL1-IL1000\nこの数字より大きいIL装備を分解します")              
             end
      GUI:SameLine()
@@ -770,7 +771,6 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
-     AetheryteHelper.LoadSettings() 
            GUI:SetTooltip("IL5-IL1000\nIL1を除きこれ未満のIL装備を分解します")              
             end
       GUI:BeginGroup()
@@ -781,7 +781,6 @@ function AetheryteHelper.desynthIL(Event, ticks)
               AetheryteHelper.settings.SET.dminil = 5
               AetheryteHelper.settings.SET.dmaxil = 600
               AetheryteHelper.SaveSettings()
-              AetheryteHelper.LoadSettings()
               end
               GUI:SetTooltip("Setting IL Reset")              
             end
@@ -1547,7 +1546,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Checkbox("##Materia", AetheryteHelper.settings.SET.isMateriaEnabled)
-      AetheryteHelper.SaveSettings()
+      
       
       GUI:SameLine()
       GUI:Text("Materia Extract")
@@ -1557,7 +1556,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
         end
         GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
-        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
+        AetheryteHelper.SaveSettings()
       end
       AetheryteHelper.extractOption()
       
@@ -1741,7 +1740,7 @@ function AetheryteHelper.DCSVselect()
      
      if ( gRegion == 1) then 
         AetheryteHelper.settings.SET.selectDC = GUI:Combo( "DC", AetheryteHelper.settings.SET.selectDC,FFXIVDClist,1)
-        AetheryteHelper.SaveSettings()
+        --AetheryteHelper.SaveSettings()
      end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then GUI:SetTooltip("Auto select DC") end
@@ -2870,7 +2869,7 @@ function AetheryteHelper.SalvageJobPrimary()
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SMN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 )) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 or item.category == 69 )) then
       item:Salvage()     
       return
       end
@@ -2991,10 +2990,10 @@ function AetheryteHelper.materia(Event, ticks)
         local ilist = bag:GetList()
         if (table.valid(ilist)) then
         for _, item in pairs(ilist) do
-       -- AetheryteHelper.Inventoryfree()
+     
         
         if( item.IsCollectable == true and item.IsBinding == true and Player.IsMounted == false) then
-           item:Purify()
+         item:Purify()
         return    
         end
         end
