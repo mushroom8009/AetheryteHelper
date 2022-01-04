@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.1.3.1",   
+      Version =         "1.1.5",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -78,6 +78,7 @@ local kinokoProject = {
                       "[1.1.1] - bug fix",
                       "[1.1.2] - Changed so that saved data is loaded correctly.",
                       "[1.1.3] - linked bot status in materia extract options",
+                      "[1.1.5] - Add Aetherial Reduction Botmode and more",
 
                     },
       
@@ -88,6 +89,7 @@ local kinokoProject = {
       jptext =       { "・コードの最適化\n・各項目のローカライズ\n\nlink:", },
       linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
       linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
+      mykofi = [[https://ko-fi.com/mushroom8009]],
   },
 --  ---------------
   Menu = {
@@ -165,6 +167,9 @@ AetheryteHelper.GUI = {
     isReductionOption = true,
     isBotStatusP = false,
     isBotStatusM = false,
+    isQuestmode = false,
+    nohousing = false,
+
     --autoDCchk = true,
     dminil = 5,
     dmaxil = 600,
@@ -238,6 +243,7 @@ AetheryteHelper.GUI = {
              BLM = true,
              SMN = true,
              RDM = true,
+             ALL = true,
              
   },
 
@@ -280,25 +286,110 @@ FFXIVServerlist = {
 --DCID = { 1 = "Elemental", 2 = "Gaia", 3 = "Mana", 4 = "Aether", 5 = "Primal", 6 = "Chaos", 7 = "Light", 8 = "Crystal" }
 
 WorldID = {
-{id=1,Name="Unknown",DC="-"},{id=2,Name="Unknown",DC="-"},{id=3,Name="Unknown",DC="-"},{id=4,Name="Unknown",DC="-"},{id=5,Name="Unknown",DC="-"},{id=6,Name="Unknown",DC="-"},{id=7,Name="Unknown",DC="-"},{id=8,Name="Unknown",DC="-"},
-{id=9,Name="Unknown",DC="-"},{id=10,Name="Unknown",DC="-"},{id=11,Name="Unknown",DC="-"},{id=12,Name="Unknown",DC="-"},{id=13,Name="Unknown",DC="-"},{id=14,Name="Unknown",DC="-"},{id=15,Name="Unknown",DC="-"},{id=16,Name="Unknown",DC="-"},
-{id=17,Name="Unknown",DC="-"},{id=18,Name="Unknown",DC="-"},{id=19,Name="Unknown",DC="-"},{id=20,Name="Unknown",DC="-"},{id=21,Name="Unknown",DC="-"},{id=22,Name="Unknown",DC="-"},{id=23,Name="Asura",DC="Mana"},{id=24,Name="Belias",DC="Mana"},
-{id=25,Name="Chaos",DC="-"},{id=26,Name="Hecatoncheir",DC="-"},{id=27,Name="Moomba",DC="-"},{id=28,Name="Pandaemonium",DC="Mana"},{id=29,Name="Shinryu",DC="Mana"},{id=30,Name="Unicorn",DC="Elemental"},{id=31,Name="Yojimbo",DC="Gaia"},
-{id=32,Name="Zeromus",DC="Gaia"},{id=33,Name="Twintania",DC="Light"},{id=34,Name="Brynhildr",DC="Crystal"},{id=35,Name="Famfrit",DC="Primal"},{id=36,Name="Lich",DC="Light"},{id=37,Name="Mateus",DC="Crystal"},{id=38,Name="Shemhazai",DC="-"},
-{id=39,Name="Omega",DC="Chaos"},{id=40,Name="Jenova",DC="Aether"},{id=41,Name="Zalera",DC="Crystal"},{id=42,Name="Zodiark",DC="Light"},{id=43,Name="Alexander",DC="Gaia"},{id=44,Name="Anima",DC="Mana"},{id=45,Name="Carbuncle",DC="Elemental"},
-{id=46,Name="Fenrir",DC="Gaia"},{id=47,Name="Hades",DC="Mana"},{id=48,Name="Ixion",DC="Mana"},{id=49,Name="Kujata",DC="Elemental"},{id=50,Name="Typhon",DC="Elemental"},{id=51,Name="Ultima",DC="Gaia"},{id=52,Name="Valefor",DC="Gaia"},
-{id=53,Name="Exodus",DC="Primal"},{id=54,Name="Faerie",DC="Aether"},{id=55,Name="Lamia",DC="Primal"},{id=56,Name="Phoenix",DC="Light"},{id=57,Name="Siren",DC="Aether"},{id=58,Name="Garuda",DC="Elemental"},{id=59,Name="Ifrit",DC="Gaia"},
-{id=60,Name="Ramuh",DC="Elemental"},{id=61,Name="Titan",DC="Mana"},{id=62,Name="Diabolos",DC="Crystal"},{id=63,Name="Gilgamesh",DC="Aether"},{id=64,Name="Leviathan",DC="Primal"},{id=65,Name="Midgardsormr",DC="Aether"},
-{id=66,Name="Odin",DC="Light"},{id=67,Name="Shiva",DC="Light"},{id=68,Name="Atomos",DC="Elemental"},{id=69,Name="Bahamut",DC="Gaia"},{id=70,Name="Chocobo",DC="Mana"},{id=71,Name="Moogle",DC="Chaos"},{id=72,Name="Tonberry",DC="Elemental"},
-{id=73,Name="Adamantoise",DC="Aether"},{id=74,Name="Coeurl",DC="Crystal"},{id=75,Name="Malboro",DC="Crystal"},{id=76,Name="Tiamat",DC="Gaia"},{id=77,Name="Ultros",DC="Primal"},{id=78,Name="Behemoth",DC="Primal"},{id=79,Name="Cactuar",DC="Aether"},
-{id=80,Name="Cerberus",DC="Chaos"},{id=81,Name="Goblin",DC="Crystal"},{id=82,Name="Mandragora",DC="Mana"},{id=83,Name="Louisoix",DC="Chaos"},{id=84,Name="Syldra",DC="-"},{id=85,Name="Spriggan",DC="Chaos"},{id=90,Name="Aegis",DC="Elemental"},
-{id=91,Name="Balmung",DC="Crystal"},{id=92,Name="Durandal",DC="Gaia"},{id=93,Name="Excalibur",DC="Primal"},{id=94,Name="Gungnir",DC="Elemental"},{id=95,Name="Hyperion",DC="Primal"},{id=96,Name="Masamune",DC="Mana"},{id=97,Name="Ragnarok",DC="Chaos"},
-{id=98,Name="Ridill",DC="Gaia"},{id=99,Name="Sargatanas",DC="Aether"}, 
+{id=1,Name="Unknown",DC="-"},
+{id=2,Name="Unknown",DC="-"},
+{id=3,Name="Unknown",DC="-"},
+{id=4,Name="Unknown",DC="-"},
+{id=5,Name="Unknown",DC="-"},
+{id=6,Name="Unknown",DC="-"},
+{id=7,Name="Unknown",DC="-"},
+{id=8,Name="Unknown",DC="-"},
+{id=9,Name="Unknown",DC="-"},
+{id=10,Name="Unknown",DC="-"},
+{id=11,Name="Unknown",DC="-"},
+{id=12,Name="Unknown",DC="-"},
+{id=13,Name="Unknown",DC="-"},
+{id=14,Name="Unknown",DC="-"},
+{id=15,Name="Unknown",DC="-"},
+{id=16,Name="Unknown",DC="-"},
+{id=17,Name="Unknown",DC="-"},
+{id=18,Name="Unknown",DC="-"},
+{id=19,Name="Unknown",DC="-"},
+{id=20,Name="Unknown",DC="-"},
+{id=21,Name="Unknown",DC="-"},
+{id=22,Name="Unknown",DC="-"},
+{id=23,Name="Asura",DC="Mana"},
+{id=24,Name="Belias",DC="Mana"},
+{id=25,Name="Chaos",DC="-"},
+{id=26,Name="Hecatoncheir",DC="-"},
+{id=27,Name="Moomba",DC="-"},
+{id=28,Name="Pandaemonium",DC="Mana"},
+{id=29,Name="Shinryu",DC="Mana"},
+{id=30,Name="Unicorn",DC="Elemental"},
+{id=31,Name="Yojimbo",DC="Gaia"},
+{id=32,Name="Zeromus",DC="Gaia"},
+{id=33,Name="Twintania",DC="Light"},
+{id=34,Name="Brynhildr",DC="Crystal"},
+{id=35,Name="Famfrit",DC="Primal"},
+{id=36,Name="Lich",DC="Light"},
+{id=37,Name="Mateus",DC="Crystal"},
+{id=38,Name="Shemhazai",DC="-"},
+{id=39,Name="Omega",DC="Chaos"},
+{id=40,Name="Jenova",DC="Aether"},
+{id=41,Name="Zalera",DC="Crystal"},
+{id=42,Name="Zodiark",DC="Light"},
+{id=43,Name="Alexander",DC="Gaia"},
+{id=44,Name="Anima",DC="Mana"},
+{id=45,Name="Carbuncle",DC="Elemental"},
+{id=46,Name="Fenrir",DC="Gaia"},
+{id=47,Name="Hades",DC="Mana"},
+{id=48,Name="Ixion",DC="Mana"},
+{id=49,Name="Kujata",DC="Elemental"},
+{id=50,Name="Typhon",DC="Elemental"},
+{id=51,Name="Ultima",DC="Gaia"},
+{id=52,Name="Valefor",DC="Gaia"},
+{id=53,Name="Exodus",DC="Primal"},
+{id=54,Name="Faerie",DC="Aether"},
+{id=55,Name="Lamia",DC="Primal"},
+{id=56,Name="Phoenix",DC="Light"},
+{id=57,Name="Siren",DC="Aether"},
+{id=58,Name="Garuda",DC="Elemental"},
+{id=59,Name="Ifrit",DC="Gaia"},
+{id=60,Name="Ramuh",DC="Elemental"},
+{id=61,Name="Titan",DC="Mana"},
+{id=62,Name="Diabolos",DC="Crystal"},
+{id=63,Name="Gilgamesh",DC="Aether"},
+{id=64,Name="Leviathan",DC="Primal"},
+{id=65,Name="Midgardsormr",DC="Aether"},
+{id=66,Name="Odin",DC="Light"},
+{id=67,Name="Shiva",DC="Light"},
+{id=68,Name="Atomos",DC="Elemental"},
+{id=69,Name="Bahamut",DC="Gaia"},
+{id=70,Name="Chocobo",DC="Mana"},
+{id=71,Name="Moogle",DC="Chaos"},
+{id=72,Name="Tonberry",DC="Elemental"},
+{id=73,Name="Adamantoise",DC="Aether"},
+{id=74,Name="Coeurl",DC="Crystal"},
+{id=75,Name="Malboro",DC="Crystal"},
+{id=76,Name="Tiamat",DC="Gaia"},
+{id=77,Name="Ultros",DC="Primal"},
+{id=78,Name="Behemoth",DC="Primal"},
+{id=79,Name="Cactuar",DC="Aether"},
+{id=80,Name="Cerberus",DC="Chaos"},
+{id=81,Name="Goblin",DC="Crystal"},
+{id=82,Name="Mandragora",DC="Mana"},
+{id=83,Name="Louisoix",DC="Chaos"},
+{id=84,Name="Syldra",DC="-"},
+{id=85,Name="Spriggan",DC="Chaos"},
+{id=86,Name="Unknown",DC="-"},
+{id=87,Name="Unknown",DC="-"},
+{id=88,Name="Unknown",DC="-"},
+{id=89,Name="Unknown",DC="-"},
+{id=90,Name="Aegis",DC="Elemental"},
+{id=91,Name="Balmung",DC="Crystal"},
+{id=92,Name="Durandal",DC="Gaia"},
+{id=93,Name="Excalibur",DC="Primal"},
+{id=94,Name="Gungnir",DC="Elemental"},
+{id=95,Name="Hyperion",DC="Primal"},
+{id=96,Name="Masamune",DC="Mana"},
+{id=97,Name="Ragnarok",DC="Chaos"},
+{id=98,Name="Ridill",DC="Gaia"},
+{id=99,Name="Sargatanas",DC="Aether"}, 
 }
 MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
 local uuid = GetUUID()
-AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CharacterID'..uuid.. '_setting.lua'
+AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userID'..uuid.. '_setting.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -327,6 +418,10 @@ local lastUpdatePulse = 0
 ----------------------------------------
 --wip local
 local PTadd = false
+local MinionPath = GetStartupPath()
+local LuaPath = GetLuaModsPath()
+local ModulePath = LuaPath .. [[AetheryteHelper\]]
+local ImageFolder = ModulePath .. [[image\]]
 
 
 ------------------
@@ -462,7 +557,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:Text("Tips : use MobHunt & Rare F.A.T.E")      
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
-        GUI:SetTooltip("--instance select--\nonly use EW area\n・Labyrinthos\n・Thavnair\n・Garlemald\n・Mare Lamentorum\n・Elpis\n・Ultima Thule\n--move server--\n・Gridania\n・Limsa\n・Uldah")
+        GUI:SetTooltip("--instance select--\nonly use EW area\n・Labyrinthos\n・Thavnair\n・Garlemald\n・Mare Lamentorum\n・Elpis\n・Ultima Thule\n\n--World visit--\n・Gridania\n・Limsa\n・Uldah")
       end
   
       GUI:Spacing()
@@ -473,7 +568,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:BeginGroup()
       GUI:SameLine()
       GUI:Checkbox("##select_ins", selectins)
-      GUI:SameLine(30)
+      GUI:SameLine()
       GUI:Text("Helper Enable")
       GUI:EndGroup()      
       if (GUI:IsItemHovered()) then
@@ -482,10 +577,22 @@ function AetheryteHelper.Drawinsselect()
           autheStep = 0
         if ( moveSVR == false ) then  modechg = 3 end 
           end       
-         GUI:SetTooltip("Auto on/off\nOnly possible in front of Aetheryte")
+         GUI:SetTooltip("on/auto off\nOnly possible in front of Aetheryte")
       end
-      
-      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Text("----")
+      GUI:SameLine()
+      GUI:Checkbox("##nohousing", AetheryteHelper.settings.SET.nohousing)
+      GUI:SameLine()
+      GUI:TextColored(1,0,0,1,"residential no visible")
+      GUI:EndGroup()      
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.nohousing = not AetheryteHelper.settings.SET.nohousing
+          end       
+         GUI:SetTooltip("didn't complete quest of residential\nonly Worldvisit mode\nmean [Mist][Lavender Beds][Goblet] thing")
+      end
       
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -538,7 +645,7 @@ function AetheryteHelper.Drawinsselect()
            end
           if (moveSVR == true) then
            modechg = 2
-           else
+          else
            modechg = 3
            end
            autheStep = 0            
@@ -650,7 +757,7 @@ function AetheryteHelper.GLUtelepo()
               Player:Teleport(2,0)
               moveSVR = true
               autooff = false
-              modechg = 2
+            modechg = 2
             end
             GUI:SetTooltip("Teleport to Gridania")
             end
@@ -686,7 +793,6 @@ end
 -- wip tab3 button GUI
 
 function AetheryteHelper.DrawadButton()
-      GUI:Separator()
       GUI:Spacing(10)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -698,61 +804,70 @@ function AetheryteHelper.DrawadButton()
               end
               GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")              
             end
-      GUI:AlignFirstTextHeightToWidgets()
+      GUI:Spacing()
+      if GUI:TreeNode("VersionList##AetheryteHelper")then
+      for id, e in pairs(kinokoProject.Addon.VersionList) do
+      GUI:Text(e)
+      end
+      end
+      GUI:TreePop()
+      GUI:Spacing(10)
+      GUI:SameLine(20)
       GUI:BeginGroup()
-     GUI:EndGroup()
+      GUI:TextColored(1,0,0,1,"work in progress")
+      GUI:EndGroup()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 --help tree GUI
+--
+--function AetheryteHelper.Drawhelp(_entext)
+--  if GUI:TreeNode("Upcoming Features##AetheryteHelper") then
+--    for id, e in pairs(_entext) do
+--      GUI:Text(e)
+--      GUI:BeginGroup()
+--      GUI:TextColored( 1,1,0,1,"How to use  Autheryte Helper" )
+--      GUI:EndGroup()
+--      if GUI:IsItemClicked(0) then
+--            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linken..[["]]):close()
+--      end
+--    end
+--    GUI:Text("--------------------------------")
+--    GUI:TreePop()
+--  end
+--end
 
-function AetheryteHelper.Drawhelp(_entext)
-  if GUI:TreeNode("Upcoming Features##AetheryteHelper") then
-    for id, e in pairs(_entext) do
-      GUI:Text(e)
-      GUI:BeginGroup()
-      GUI:TextColored( 1,1,0,1,"How to use  Autheryte Helper" )
-      GUI:EndGroup()
-      if GUI:IsItemClicked(0) then
-            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linken..[["]]):close()
-      end
-    end
-    GUI:Text("--------------------------------")
-    GUI:TreePop()
-  end
-end
+--function AetheryteHelper.Drawhelp(_jptext)
+--  if GUI:TreeNode("今後の予定##AetheryteHelper") then
+--    for id, e in pairs(_jptext) do
+--      GUI:Text(e)
+--      GUI:BeginGroup()
+--      GUI:TextColored( 1,1,0,1,"Autheryte Helperの使い方" )
+--      GUI:EndGroup()
+--   if GUI:IsItemClicked(0) then
+--            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linkjp..[["]]):close()
+--      end
 
-function AetheryteHelper.Drawhelp(_jptext)
-  if GUI:TreeNode("今後の予定##AetheryteHelper") then
-    for id, e in pairs(_jptext) do
-      GUI:Text(e)
-      GUI:BeginGroup()
-      GUI:TextColored( 1,1,0,1,"Autheryte Helperの使い方" )
-      GUI:EndGroup()
-   if GUI:IsItemClicked(0) then
-            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linkjp..[["]]):close()
-      end
+--    end
+--    GUI:Text("--------------------------------")
+--    GUI:TreePop()
+--  end
+--end
 
-    end
-    GUI:Text("--------------------------------")
-    GUI:TreePop()
-  end
-end
-
-function AetheryteHelper.DrawInside()
-  if kinokoProject.Windows.MainWindows.Open == false then
-        GUI:Text("--------------------------------")
-  end 
+--function AetheryteHelper.DrawInside()
+--  if kinokoProject.Windows.MainWindows.Open == false then
+--        GUI:Text("--------------------------------")
+--  end 
   ----
-  if language == 0 then
-      AetheryteHelper.Drawhelp(kinokoProject.HELP.jptext)
+--  if language == 0 then
+--      AetheryteHelper.Drawhelp(kinokoProject.HELP.jptext)
       
-  else
-      AetheryteHelper.Drawhelp(kinokoProject.HELP.entext)
+--  else
+--      AetheryteHelper.Drawhelp(kinokoProject.HELP.entext)
  
   ----  
-  end
-end
+--  end
+--end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --desyunth ilset tree GUI
@@ -1084,6 +1199,18 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            end
       GUI:SetTooltip("DRG / RPR")              
       end
+      GUI:SameLine(150)
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("All Job", AetheryteHelper.settings.Job.ALL)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+            AetheryteHelper.settings.Job.ALL = not  AetheryteHelper.settings.Job.ALL
+      AetheryteHelper.SaveSettings()
+           end
+      GUI:SetTooltip("All Job")              
+      end
 
       GUI:Spacing()
 
@@ -1113,7 +1240,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            AetheryteHelper.settings.Job.Striking = true
            AetheryteHelper.settings.Job.Sorcerer = true
            AetheryteHelper.settings.Job.Maiming = true
+           AetheryteHelper.settings.Job.ALL = true
            AetheryteHelper.settings.Job.Scouting = true
+
            AetheryteHelper.SaveSettings()
            end
         if (GUI:IsMouseClicked(1)) then
@@ -1125,6 +1254,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            AetheryteHelper.settings.Job.Sorcerer = not  AetheryteHelper.settings.Job.Sorcerer
            AetheryteHelper.settings.Job.Maiming = not  AetheryteHelper.settings.Job.Maiming
            AetheryteHelper.settings.Job.Scouting = not  AetheryteHelper.settings.Job.Scouting
+           AetheryteHelper.settings.Job.ALL = not  AetheryteHelper.settings.Job.ALL
            AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Left click : all on\nRight click : Reverse")              
@@ -1502,7 +1632,7 @@ function AetheryteHelper.extractOption(Event, ticks)
       GUI:Text("---")
       GUI:SameLine()
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:Checkbox("##MPoption", AetheryteHelper.settings.SET.isBotStatusP)
+      GUI:Checkbox("##Poption", AetheryteHelper.settings.SET.isBotStatusP)
       GUI:SameLine()      
       GUI:Text("Link to Bot Status")
       GUI:EndGroup()
@@ -1532,7 +1662,7 @@ function AetheryteHelper.extractOption(Event, ticks)
       GUI:Text("---")
       GUI:SameLine()
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:Checkbox("##MPoption", AetheryteHelper.settings.SET.isBotStatusM)
+      GUI:Checkbox("##Moption", AetheryteHelper.settings.SET.isBotStatusM)
       GUI:SameLine()      
       GUI:Text("Link to Bot Status")
       GUI:EndGroup()
@@ -1660,14 +1790,31 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Checkbox("##AetherialReduction", AetheryteHelper.settings.SET.isReductionEnabled)
       GUI:SameLine()
-      GUI:Text("Aetherial Reduction in Bag (Beta)")
+      GUI:Text("Aetherial Reduction in Bag")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isReductionEnabled = not AetheryteHelper.settings.SET.isReductionEnabled
+          AetheryteHelper.settings.SET.isQuestmode = false
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Aetherial Reduction\n\n精選")
+      end
+      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("##Qmode", AetheryteHelper.settings.SET.isQuestmode)
+      GUI:SameLine()      
+      GUI:Text("Aetherial Reduction:QuestMode(Beta)")
+      GUI:TextColored(1,0,0,1,"   ---features for sebbs addons")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isQuestmode = not AetheryteHelper.settings.SET.isQuestmode
+          AetheryteHelper.settings.SET.isReductionEnabled = false
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("Automatically Bot Running\nStop Bot before inventory is low space.\nPerform Aetherial Reduction & Running Bot again.\n") 
       end
       GUI:Spacing()
 
@@ -1870,47 +2017,34 @@ function AetheryteHelper.DrawCall(event, ticks)
       GUI:Spacing()
       AetheryteHelper.GLUtelepo() ----telepo
       AetheryteHelper.homeDCinfo()---info
-      
-      
-      
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()            
-      
-      GUI:Separator()
-      GUI:Spacing()
-      AetheryteHelper.DrawInside()  ---tree    
+      GUI:SameLine(180,0)
+      --GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[kofi.png]],90,25)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if GUI:IsItemClicked(0) then
+            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
+      end
+      GUI:SetTooltip("please support me to make good\n\nfor my cat....")
+      end
+
+
+
+      --AetheryteHelper.DrawInside()  ---tree    
 
       elseif (AetheryteHelper.GUI.tabs[2].isselected) then
       AetheryteHelper.DrawSubtool()
   
       elseif (AetheryteHelper.GUI.tabs[3].isselected) then
-      GUI:BeginGroup()
-      GUI:Text("wip\nなんか思いついたらつくるための空き地")
-      GUI:EndGroup()
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("##PTadd", PTadd)
-      GUI:SameLine()
-      GUI:Text("test")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          PTadd = not PTadd
-        end
-      end    
-
-      GUI:SameLine()
+   
       AetheryteHelper.DrawadButton() ------button
       end
 --------------------------------------------------------------------
 --close Button
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:Spacing(5)
+      --GUI:AlignFirstTextHeightToWidgets()
       GUI:Separator()
+      GUI:Spacing(5)
       if GUI:Button("Close##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
          Windows.Open = false
       end
@@ -1953,15 +2087,20 @@ function AetheryteHelper.insselect(Event, ticks)
                       end
               end
               if autheStep == 0 then
+                  if (AetheryteHelper.settings.SET.nohousing)then autheStep = 4
+                  else autheStep = 1
+                  end
+              end
+              if autheStep == 1 then
                       Player:SetTarget(aetheID)
                       Player:Interact(aetheID)
                       UseControlAction("Aetheryte") 
                       if IsControlOpen("SelectString") then
                          GetControl("SelectString"):Action("SelectIndex",modechg)
-                         if (modechg == 3) then autheStep = 1 else autheStep = 2 end
+                         if (modechg == 3) then autheStep = 2 else autheStep = 3 end
                       end
               end
-              if (autheStep == 1) then                      
+              if (autheStep == 2) then                      
                      if IsControlOpen("SelectYesno") then
                             UseControlAction("SelectYesno","No")
                             selectins = not selectins
@@ -1975,10 +2114,11 @@ function AetheryteHelper.insselect(Event, ticks)
                             autheStep = 0
                       end
               end
-              if autheStep == 2 then
+              if autheStep == 3 then
 --                        Player:SetTarget(aetheID)
 --                        Player:Interact(aetheID)
                         GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
+                     if (isServer < 2) then selectins = not selectins end 
                         UseControlAction("SelectYesno")
                      if IsControlOpen("SelectYesno") then
                         UseControlAction("SelectYesno","Yes")
@@ -1994,18 +2134,45 @@ function AetheryteHelper.insselect(Event, ticks)
                            autheStep = 0                           
                       end
               end
-         end  
-
+              if autheStep == 4 then
+                      Player:SetTarget(aetheID)
+                      Player:Interact(aetheID)
+                      UseControlAction("Aetheryte") 
+                      if IsControlOpen("SelectString") then
+                         GetControl("SelectString"):Action("SelectIndex",1)
+                         autheStep = 5
+                      end
+              end
+              if autheStep == 5 then
+--                        Player:SetTarget(aetheID)
+--                        Player:Interact(aetheID)
+                        GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
+                        UseControlAction("SelectYesno")
+                     if IsControlOpen("SelectYesno") then
+                        UseControlAction("SelectYesno","Yes")
+                           moveSVR = not moveSVR
+                           selectins = not selectins
+                           autooff = not autooff
+                           autheStep = 3
+                     elseif Player:GetTarget() == nil then
+                           isTime = Now()
+                           Player:SetTarget(aetheID)
+                           Player:Interact(aetheID)
+                           isServer = 1
+                           autheStep = 4                           
+                      end
+              end
+           
       if Player:GetTarget() == nil then
          if( autooff ) then
           selectins = not selectins
         --else
         --autheStep = 0
          end
+         end
       end
     end
-  end
-
+end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2150,6 +2317,82 @@ function AetheryteHelper.SalvageSlotfilter()
       end
       end
 end
+
+function AetheryteHelper.SalvageAlljob()
+     local bags = {0, 1, 2, 3}
+     for _, e in pairs(bags) do
+     local bag = Inventory:Get(e)
+     if (table.valid(bag)) then
+     local ilist = bag:GetList()
+     if (table.valid(ilist)) then
+     for _, item in pairs(ilist) do
+
+
+      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end 
+      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end 
+      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.ALL ) then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.ALL )  then                     
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 1) then
+      item:Salvage()     
+      return
+      end
+      end
+         
+
+      end
+      end
+      end
+      end
+
+
+end
+
+
 
 
 function AetheryteHelper.SalvageJobTank()
@@ -2991,6 +3234,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- materia function
 function AetheryteHelper.materia(Event, ticks)
+    AetheryteHelper.Inventoryfree()
  if (Player.CurrentAction ~= 92) then
   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
@@ -3067,6 +3311,8 @@ function AetheryteHelper.materia(Event, ticks)
           AetheryteHelper.SalvageJobPrimary()   
           AetheryteHelper.SalvageJobGatherer() 
           AetheryteHelper.SalvageJobCrafter()
+          AetheryteHelper.SalvageAlljob()
+
     else
           AetheryteHelper.SalvageAll()
     --      AetheryteHelper.SalvageSlotfilter()
@@ -3089,17 +3335,50 @@ function AetheryteHelper.materia(Event, ticks)
         
         if( item.IsCollectable == true and item.IsBinding == true) then
          item:Purify()
-        return    
+        return
         end
         end
         end
         end
      end
    end
-end
-end
-end
 
+     
+    if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 5 and FFXIV_Common_BotRunning == true ) then 
+        ml_global_information.ToggleRun()
+            if ( Player.IsMounted == true ) then
+            ActionList:Get(1,4):Cast()
+            return
+            end
+    end
+    if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false ) then
+       if (IsControlOpen("PurifyResult")) then
+           UseControlAction("PurifyResult", "Close")
+           return
+       end
+       local bags = {0, 1, 2, 3}
+       for _, e in pairs(bags) do
+       local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local Rlist = bag:GetList()
+            if (table.valid(Rlist)) then
+               for _, item in pairs(Rlist) do    
+                   if( item.IsCollectable == true and item.IsBinding == true) then
+                   item:Purify()
+                   return
+                   end
+                   end  
+               end
+            end
+          end
+        end 
+       if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false ) then
+           ml_global_information.ToggleRun()
+        end
+end
+end
+end
+        
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
