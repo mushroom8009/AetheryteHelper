@@ -10,6 +10,8 @@ However, this is a feature that add-ons do not have.<br>
 ・Smoothly switch between instances.<br>
 ・Smoothly perform world visit<br>
 ・Detailed specification of equipment desynthesis<br>
+
+[How to use (youtube)](https://www.youtube.com/watch?v=mEjWnAR3Ht0)
  
 # Requirement
 [MMOminion(FFXIV Minion64)](https://www.mmominion.com/misc.php?page=ffxivbot)
@@ -33,6 +35,7 @@ Without such a structure, the module will not start
 # Note
 I'm making this for myself, so there may be some bugs.<br>
 I have not done a lot of testing.<br>
+
  
 # Author
  
