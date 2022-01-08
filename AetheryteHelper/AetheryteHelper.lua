@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.1.5",   
+      Version =         "1.2.0",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -79,6 +79,7 @@ local kinokoProject = {
                       "[1.1.2] - Changed so that saved data is loaded correctly.",
                       "[1.1.3] - linked bot status in materia extract options",
                       "[1.1.5] - Add Aetherial Reduction Botmode and more",
+                      "[1.2.0] - I done lot of add things."
 
                     },
       
@@ -141,9 +142,13 @@ AetheryteHelper.GUI = {
     },
     [2] = {
       isselected = false,
-      name = "[tool]"
+      name = "[Tools]"
     },
     [3] = {
+      isselected = false,
+      name = "[Option]"
+    },
+    [4] = {
       isselected = false,
       name = "[-wip-]"
     },
@@ -153,6 +158,12 @@ AetheryteHelper.GUI = {
         hovered = {r =.4, g = .7, b = .1, a = 1 },
         normal = {r = 1, g = 1, b = 1, a = 1},
   },
+}
+AetheryteHelper.miniGUI = {
+  name = "miniinfo###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false
 }
  AetheryteHelper.settings = {
   SET = {
@@ -165,15 +176,16 @@ AetheryteHelper.GUI = {
     isReductionEnabled = false,
     isQuestEnabled = false,
     isReductionOption = true,
+    isExchangeOption = true,
     isBotStatusP = false,
     isBotStatusM = false,
     isQuestmode = false,
     nohousing = false,
-
-    --autoDCchk = true,
+    CrafterMode = true,
     dminil = 5,
-    dmaxil = 600,
+    dmaxil = 540,
     selectDC = 1,
+    selectGC = 1,
     Pcurrnt = Player.currentworld
     
     },
@@ -247,9 +259,6 @@ AetheryteHelper.GUI = {
              
   },
 
-
-
-
 }
 -------------------
 Links = {
@@ -282,8 +291,6 @@ FFXIVServerlist = {
     [9] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
     [10] = { "not support region" },
   }
-
---DCID = { 1 = "Elemental", 2 = "Gaia", 3 = "Mana", 4 = "Aether", 5 = "Primal", 6 = "Chaos", 7 = "Light", 8 = "Crystal" }
 
 WorldID = {
 {id=1,Name="Unknown",DC="-"},
@@ -386,6 +393,30 @@ WorldID = {
 {id=98,Name="Ridill",DC="Gaia"},
 {id=99,Name="Sargatanas",DC="Aether"}, 
 }
+mushPlayerGCrank = {
+      {rank = 1, max = "10000"},
+      {rank = 2, max = "15000"},
+      {rank = 3, max = "20000"},
+      {rank = 4, max = "25000"},
+      {rank = 5, max = "30000"},
+      {rank = 6, max = "35000"},
+      {rank = 7, max = "40000"},
+      {rank = 8, max = "45000"},
+      {rank = 9, max = "50000"},
+      {rank = 10, max = "80000"},
+      {rank = 11, max = "90000"},
+}
+mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
+mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
+mushGC = {"Maelst","Adders","Flames","------"}
+GCexchangeItems = {
+         jp = {"------","ベンチャースクリップ","ダークマターG8","グラスファイバー","転送網利用券(GC)"},
+         En = {"------","Ventures","G8 Dark Matter","Glass Fiber","Aetheryte Ticket(GC)"},
+}
+
+
+
+
 MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
 local uuid = GetUUID()
@@ -395,7 +426,6 @@ AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\User
 local gRegion = GetGameRegion()
 local gstate = MGetGameState()
 local language = GetGameLanguage()
-
 
 --local nowServer = 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -409,12 +439,13 @@ local isServer = 0
 local modechg = 0
 local Update = kinokoProject.Update
 local aetheID = 0
-
+local GCexchange = false
+local AutoMoveGC = false
 local selectSVR = 1
+local mushEXstep = 0
 ----------------------------------------
 --subtool local
 local lastUpdatePulse = 0
-
 ----------------------------------------
 --wip local
 local PTadd = false
@@ -422,7 +453,8 @@ local MinionPath = GetStartupPath()
 local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
-
+local koukanhin = 1
+local hosiikazu = 1
 
 ------------------
 
@@ -579,6 +611,7 @@ function AetheryteHelper.Drawinsselect()
           end       
          GUI:SetTooltip("on/auto off\nOnly possible in front of Aetheryte")
       end
+      if GUI:TreeNode("AH-option") then
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:Text("----")
@@ -652,10 +685,14 @@ function AetheryteHelper.Drawinsselect()
           
         end       
         GUI:SetTooltip("World Visit Mode\nAuto change")
-      end           
+      end
+      GUI:TreePop()
+      end
+      GUI:Spacing()           
       GUI:Separator()    
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
+      GUI:PushItemWidth(140)
       GUI:BeginGroup()
       local changed
         AetheryteHelper.settings.SET.delay, changed = GUI:SliderInt("ms",AetheryteHelper.settings.SET.delay,100,1000)
@@ -680,7 +717,26 @@ function AetheryteHelper.Drawinsselect()
         GUI:SetTooltip("delay RESET")
         end
       GUI:EndGroup()
-      
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Button("F",20,20)
+      GUI:EndGroup()
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              SendTextCommand("/e <flag>")
+              end
+              GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")              
+            end
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Button("i",20,20)
+      GUI:EndGroup()
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open 
+              end
+              GUI:SetTooltip("info")              
+            end
       GUI:Separator()
       GUI:Spacing()
       --GUI:AlignFirstTextHeightToWidgets()
@@ -792,33 +848,79 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- wip tab3 button GUI
 
-function AetheryteHelper.DrawadButton()
+function AetheryteHelper.DrawadWIP()
       GUI:Spacing(10)
-      GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Button("flag",40,20)
+      GUI:TextColored(1,0,0,1,"work in progress")
+      GUI:Text("---Exchange seals to items")
       GUI:EndGroup()
-            if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) then
-              SendTextCommand("/e <flag>")
-              end
-              GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")              
-            end
-      GUI:Spacing()
-      if GUI:TreeNode("VersionList##AetheryteHelper")then
-      for id, e in pairs(kinokoProject.Addon.VersionList) do
-      GUI:Text(e)
+      GUI:SameLine(200,10)
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if GUI:IsMouseDown(0) then              
+        GUI:SetTooltip("please don't poke me...")
+        else GUI:SetTooltip("・・・i need more time")
       end
       end
       GUI:TreePop()
       GUI:Spacing(10)
       GUI:SameLine(20)
-      GUI:BeginGroup()
-      GUI:TextColored(1,0,0,1,"work in progress")
-      GUI:EndGroup()
+       if GUI:TreeNode("VersionList##AetheryteHelper")then
+      for id, e in pairs(kinokoProject.Addon.VersionList) do
+      GUI:Text(e)
+      end
+      end
+      GUI:Spacing()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.SubWindow()
+  if (AetheryteHelper.miniGUI.open) then
+    local miniGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+    GUI:SetNextWindowSize(260,140)
+     AetheryteHelper.miniGUI.visible, AetheryteHelper.miniGUI.open = GUI:Begin('miniinfo', AetheryteHelper.miniGUI.open,miniGUIflags)
+    if (AetheryteHelper.miniGUI.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,0,1,"instance info")
+      GUI:EndGroup()
+      GUI:SameLine(230)
+      GUI:BeginGroup()
+      GUI:Button("X",20,20)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if GUI:IsMouseDown(0) then              
+        AetheryteHelper.miniGUI.open = false
+        end
+      GUI:SetTooltip("close info")
+      end
+      GUI:Separator()
+      GUI:BeginGroup()
+      GUI:TextColored(1,0,0,1,"Probably (350) is limit")
+      GUI:EndGroup()
+      
+      GUI:Spacing()
+      GUI:BeginGroup()
+      if mushins == nil or selectins == false then
+      GUI:TextColored(1,1,1,1,"-------")
+      GUI:TextColored(1,1,1,1,"-------")
+      GUI:TextColored(1,1,1,1,"-------")
+      else      
+      GUI:TextColored(0,1,1,1,"ins1:"..mushins[9].value)
+      GUI:Spacing()
+      GUI:TextColored(0,1,1,1,"ins2:"..mushins[10].value)
+      GUI:Spacing()
+      GUI:TextColored(0,1,1,1,"ins3:"..mushins[11].value)
+      end
+      GUI:EndGroup()
+    end        
+    GUI:End()
+    
+  end
+  
+end
 --help tree GUI
 --
 --function AetheryteHelper.Drawhelp(_entext)
@@ -873,6 +975,30 @@ end
 --desyunth ilset tree GUI
 
 function AetheryteHelper.desynthIL(Event, ticks)
+     GUI:Spacing()
+     GUI:BeginGroup()
+     GUI:Text("Desynthesis option")
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+           GUI:SetTooltip("turn on Desynthesis option\nto reflect the settings here")              
+            end
+     GUI:Spacing()
+     GUI:Separator()
+     GUI:Spacing()
+     GUI:AlignFirstTextHeightToWidgets()
+     GUI:BeginGroup()
+     GUI:Checkbox("Crafter mode",AetheryteHelper.settings.SET.CrafterMode)
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+     if (GUI:IsMouseClicked(0)) then
+        AetheryteHelper.settings.SET.CrafterMode = not AetheryteHelper.settings.SET.CrafterMode
+        AetheryteHelper.SaveSettings()
+        end   
+        GUI:SetTooltip("Auto off in Crafter")
+     end
+     GUI:Spacing()
+     GUI:Separator()
+     GUI:Spacing()
   if GUI:TreeNode("IL Setting##AetheryteHelper") then 
      GUI:BeginGroup()
      GUI:PushItemWidth(80)
@@ -881,7 +1007,7 @@ function AetheryteHelper.desynthIL(Event, ticks)
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
            GUI:SetTooltip("IL1-IL1000\nこの数字より大きいIL装備を分解します")              
-            end
+     end
      GUI:SameLine()
      GUI:BeginGroup()
      AetheryteHelper.settings.SET.dmaxil = GUI:InputInt("> IL",AetheryteHelper.settings.SET.dmaxil,1,500)
@@ -900,7 +1026,7 @@ function AetheryteHelper.desynthIL(Event, ticks)
             if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
               AetheryteHelper.settings.SET.dminil = 5
-              AetheryteHelper.settings.SET.dmaxil = 600
+              AetheryteHelper.settings.SET.dmaxil = 540
               AetheryteHelper.SaveSettings()
               end
               GUI:SetTooltip("Setting IL Reset")              
@@ -1570,7 +1696,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SetTooltip("Left click : all on\nRight click : Reverse")              
       end
       GUI:Spacing()
-      GUI:Text("------------------------------")
+      GUI:Text("Desynthesis option")
       GUI:Spacing()
       GUI:Spacing()
       GUI:TextColored(0,1,1,1,"・Tool & Armor & Accessories" ) 
@@ -1603,7 +1729,35 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:Spacing()
      GUI:TreePop()
   end
-
+     GUI:Spacing()
+     GUI:Separator()
+     GUI:BeginGroup()
+     GUI:Spacing()
+     GUI:Text("GCexchange option")
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+           GUI:SetTooltip("Exchange seals for items")             
+     end
+     GUI:Spacing()
+     GUI:Separator()
+     GUI:Spacing()
+     GUI:BeginGroup()
+     GUI:TextColored(1,0,0,1,"wip")
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(80)
+     hosiikazu = GUI:InputInt("Quantity",hosiikazu,1,500)
+     if hosiikazu > 999 then hosiikazu = 999 end  
+     if hosiikazu < 1 then hosiikazu = 1 end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(150)
+     if language == 0 then
+     koukanhin = GUI:Combo("item",koukanhin,GCexchangeItems.jp,5)
+     else koukanhin = GUI:Combo("item",koukanhin,GCexchangeItems.En,5)
+     end
+     GUI:EndGroup()
+     GUI:Spacing()
 
 
 end
@@ -1705,17 +1859,61 @@ function AetheryteHelper.Inventoryfree()
       local bags4 = {3} for _, e in pairs(bags4) do local bag4 = Inventory:Get(e)
       Pbfree4 = tonumber(bag4.free) end
       mushPbtotal = (Pbfree1 + Pbfree2 + Pbfree3 + Pbfree4) 
-end  
+end
+
+function AetheryteHelper.GCseals()
+     GUI:BeginGroup()
+     GUI:Text("GC")
+     GUI:EndGroup()
+     GUI:AlignFirstTextHeightToWidgets()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(100)
+     AetheryteHelper.settings.SET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGC,1)
+     if Player.GrandCompany == 0 then 
+     AetheryteHelper.settings.SET.selectGC = GUI:Combo("GCseals:",4,mushGC,1) end
+     AetheryteHelper.SaveSettings()
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+        GUI:SetTooltip("Your GC\nautomatically select\n\nMaelst(Limsa)/Adders(Gridania)/Flames(Uldah)") 
+     end
+     GUI:SameLine()
+     GUI:BeginGroup()
+     if AetheryteHelper.settings.SET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AetheryteHelper.settings.SET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AetheryteHelper.settings.SET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AetheryteHelper.settings.SET.selectGC == 4 then mushGseals  = nil end  
+
+     for k,v in pairs(mushPlayerGCrank) do
+     if (k == Player.GrandCompanyRank) then mushmaxseal = v
+     if mushGseals == nil then
+     GUI:TextColored(1,1,1,.8,"0/"..mushmaxseal.max)
+     elseif mushGseals.count == mushmaxseal.max then
+     GUI:TextColored(1,0,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+     elseif mushGseals.count < mushmaxseal.max/2 then
+     GUI:TextColored(0,1,1,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+     elseif mushGseals.count ~= mushmaxseal.max then
+     GUI:TextColored(1,1,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+     elseif Player.GrandCompany == 0 then GUI:Text("GCseals:---/---")
+     end
+     end
+     end
+     GUI:EndGroup()
+
+end
+
+
 
 function AetheryteHelper.DrawSubtool(event, ticks)
       AetheryteHelper.Inventoryfree()
       GUI:Spacing()      
       GUI:BeginGroup()
-      GUI:Text("Materia Extract & Desynthesis")
+      GUI:Text("Useful tools for items")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
-        GUI:SetTooltip("Materia Extract & Desynthesis")
-        --GUI:SetTooltip("Automatic materia extraction out of combat of spiritbonded items")
+        GUI:SetTooltip("Materia Extract / Desynthesis / Exchange for GC seals / Aetherial Reduction")
       end
 
       GUI:Spacing()
@@ -1726,9 +1924,8 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
       elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
+      GUI:Spacing()
       GUI:Checkbox("##Materia", AetheryteHelper.settings.SET.isMateriaEnabled)
-      
-      
       GUI:SameLine()
       GUI:Text("Materia Extract")
       GUI:EndGroup()
@@ -1739,8 +1936,8 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
         AetheryteHelper.SaveSettings()
       end
-      AetheryteHelper.extractOption()
-      
+      AetheryteHelper.extractOption() 
+    
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
@@ -1750,6 +1947,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       if bunkai.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
       elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif bunkai.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
+      GUI:Spacing()
       GUI:Checkbox("##Desynthesis", AetheryteHelper.settings.SET.isSalvageEnabled)
       GUI:SameLine()
       GUI:Text("Desynthesis equipment in Bag")
@@ -1757,9 +1955,17 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isSalvageEnabled = not AetheryteHelper.settings.SET.isSalvageEnabled
+          GCexchange = false
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
+      end
+      if AetheryteHelper.settings.SET.CrafterMode == true then
+        if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
+        Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
+         AetheryteHelper.settings.SET.isSalvageEnabled = false
+        --else AetheryteHelper.settings.SET.isSalvageEnabled = true
+        end
       end
       GUI:Spacing()
       GUI:BeginGroup()
@@ -1767,19 +1973,87 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:SameLine()
       GUI:Checkbox("##use option", AetheryteHelper.settings.SET.isReductionOption)
       GUI:SameLine()
-      GUI:Text("use option")
+      GUI:Text("use settings")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isReductionOption = not AetheryteHelper.settings.SET.isReductionOption
+          
         end
-        GUI:SetTooltip("use settings to Desynthesis")
+        GUI:SetTooltip("use settings in Option Tab")
         AetheryteHelper.SaveSettings()
       end
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()    
+      if Player.GrandCompanyRank < 6 then GUI:TextColored(1,0,0,1,"need GC rank 6 over")
+      else GUI:TextColored(0,1,0,1,"available") end
+      GUI:Spacing()
+      GUI:Checkbox("##Exchange", GCexchange)
+      GUI:SameLine()
+      GUI:Text("Exchange gear in Bag")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          mushEXstep = 0
+          GCexchange = not GCexchange
+          if Player.GrandCompanyRank < 6 then GCexchange = false end
+          if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
+          AetheryteHelper.settings.SET.isSalvageEnabled = false
+          AetheryteHelper.SaveSettings()
+        end
+        GUI:SetTooltip("for GC seals ")
+      end
+      GUI:Spacing()
 
-      AetheryteHelper.desynthIL()
-
-            GUI:Spacing()
+--[[  GUI:BeginGroup()
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:Checkbox("##use option", AetheryteHelper.settings.SET.isExchangeOption)
+      GUI:SameLine()
+      GUI:Text("use option")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AetheryteHelper.settings.SET.isExchangeOption = not AetheryteHelper.settings.SET.isExchangeOption
+        end
+        GUI:SetTooltip("use Option")
+        AetheryteHelper.SaveSettings()
+      end
+      GUI:Spacing()           ]]
+      GUI:BeginGroup()
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:Checkbox("##AutoMoveGC", AutoMoveGC)
+      GUI:SameLine()
+      GUI:Text("Auto Move to GC(Beta)")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          AutoMoveGC = not AutoMoveGC
+          AetheryteHelper.settings.SET.isSalvageEnabled = false
+        end
+        GUI:SetTooltip("Trial\nYou'd better move yourself")
+        AetheryteHelper.SaveSettings()
+      end
+      GUI:SameLine(230)
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Button("X",20,20)
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+           Player:Stop()
+           AutoMoveGC = false
+        end
+        GUI:SetTooltip("move to stop")
+        AetheryteHelper.SaveSettings()
+      end
+      GUI:EndGroup()  
+      GUI:Spacing()           
+      AetheryteHelper.GCseals()
+      GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
@@ -1788,6 +2062,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
       elseif (mushPbtotal < 1) then AetheryteHelper.settings.SET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
+      GUI:Spacing()
       GUI:Checkbox("##AetherialReduction", AetheryteHelper.settings.SET.isReductionEnabled)
       GUI:SameLine()
       GUI:Text("Aetherial Reduction in Bag")
@@ -1990,7 +2265,8 @@ function AetheryteHelper.DrawCall(event, ticks)
       GUI:BeginGroup()
       GUI:Text("[")
       GUI:SameLine()
-      GUI:TextColored(0.7,0.8,0.1,1,GetMapName(Player.localmapid))
+      if Player.localmapid == nil then GUI:TextColored(0,0.8,0,1,"Loading...")
+      else GUI:TextColored(0.7,0.8,0.1,1,GetMapName(Player.localmapid)) end
       GUI:SameLine()
       GUI:Text("]:MAPID:"..tostring(Player.localmapid))
       GUI:EndGroup()
@@ -2035,10 +2311,14 @@ function AetheryteHelper.DrawCall(event, ticks)
 
       elseif (AetheryteHelper.GUI.tabs[2].isselected) then
       AetheryteHelper.DrawSubtool()
-  
+
       elseif (AetheryteHelper.GUI.tabs[3].isselected) then
+
+      AetheryteHelper.desynthIL(Event, ticks)
+
+      elseif (AetheryteHelper.GUI.tabs[4].isselected) then
    
-      AetheryteHelper.DrawadButton() ------button
+      AetheryteHelper.DrawadWIP() ------button
       end
 --------------------------------------------------------------------
 --close Button
@@ -2058,6 +2338,7 @@ function AetheryteHelper.DrawCall(event, ticks)
     end
     GUI:End()
   end
+  AetheryteHelper.SubWindow()
 end
 
 
@@ -2105,10 +2386,12 @@ function AetheryteHelper.insselect(Event, ticks)
                             UseControlAction("SelectYesno","No")
                             selectins = not selectins
                      elseif IsControlOpen("SelectString") then
+                  mushins = GetControl("SelectString"):GetRawData()                  
                             GetControl("SelectString"):Action("SelectIndex",isins)
                             isTime = Now()
                             isins = 4
                             autheStep = 0
+
                      elseif Player:GetTarget() == nil then
                             isTime = Now()
                             autheStep = 0
@@ -2144,8 +2427,6 @@ function AetheryteHelper.insselect(Event, ticks)
                       end
               end
               if autheStep == 5 then
---                        Player:SetTarget(aetheID)
---                        Player:Interact(aetheID)
                         GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
                         UseControlAction("SelectYesno")
                      if IsControlOpen("SelectYesno") then
@@ -2209,6 +2490,184 @@ function AetheryteHelper.fixfunc(Event, ticks)
       AetheryteHelper.insselect()
    end
  end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--move to GC (beta)
+GCStep = 0
+function AetheryteHelper.movetoCOMPANY()
+  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
+   if (AetheryteHelper.settings.SET.selectGC == 1) then
+         if( Player.localmapid == 129 ) then GCStep = 0 end    
+         if( Player.localmapid == 128 ) then GCStep = 3 end    
+         if Player.localmapid ~= 129 and Player.localmapid ~= 128  then GCStep = 5 end
+         if ( AutoMoveGC ) then
+       
+              if (GCStep == 0) then
+                      Player:SetTarget(4298661156)
+                      limsaAethe = Player:GetTarget()
+                      local pos = limsaAethe.pos
+                      Player:MoveTo(pos.x,pos.y,pos.z,15,true,true)
+                      GCStep = 1
+                      
+              end
+              if (GCStep == 1) then
+                     Player:Interact(4298661156)                      
+                     if IsControlOpen("SelectString") then
+                     GetControl("SelectString"):Action("SelectIndex",0)
+                     GCStep = 2
+                     end
+                     
+              end
+              if (GCStep == 2) then                      
+                     if IsControlOpen("TelepotTown") then
+                        GetControl("TelepotTown"):Action("Teleport",1)
+                        GCStep = 3            
+                     end
+              end
+         
+              if (GCStep == 3) then
+                       Player:MoveTo(92.68,40.28,75.63,15,true,true)             
+                       GCStep = 4
+              end
+              if (GCStep == 4) then
+                       if Player:IsMoving() then  
+                       AutoMoveGC = false
+                       GCexchange = true
+                       end
+              end
+              if (GCStep == 5)then
+                  if(ActionList:Get(5,7):IsReady() == true) then               
+                  Player:Teleport(8,0)
+                  GCStep = 0
+                  end
+             end
+
+       elseif (AetheryteHelper.settings.SET.selectGC == 2 ) then
+              if( Player.localmapid == 132 ) then
+                Player:MoveTo(-66.87,-0.50,-7.71,15,true,true)
+                if Player:IsMoving() then  
+                       AutoMoveGC = false
+                       GCexchange = true
+                       end
+              
+              elseif ( Player.localmapid ~= 132 ) then
+                  if Player.localmapid ~= 132  and (Player:GetTarget() == nil) then        
+                  if(ActionList:Get(5,7):IsReady() == true) then
+                  Player:Teleport(2,0)
+                  end
+                  end
+              end  
+
+       elseif (AetheryteHelper.settings.SET.selectGC == 3 ) then
+              if( Player.localmapid == 130 ) then
+                Player:MoveTo(-140.2,4.10,-106.6,15,true,true)
+                if Player:IsMoving() then  
+                       AutoMoveGC = false
+                       GCexchange = true
+                       end
+
+              elseif ( Player.localmapid ~= 130 ) then
+                  if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then        
+                  if(ActionList:Get(5,7):IsReady() == true) then
+                  Player:Teleport(2,0)
+                  end
+                  end
+              end  
+       end
+       end        
+  end
+end
+
+---------------------------------------------------------------------------------------------------------------------------
+
+function AetheryteHelper.Exchange()
+   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
+
+       if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
+       elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
+       elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
+       else GCexchange = false end
+
+       if (GCexchange)then
+               d("[AetheryteHelper]--Excange step--"..mushEXstep)
+              if( mushEXstep == 0) then
+                
+                 Player:SetTarget(GCID1)  
+                 Player:Interact(GCID1)
+                 if IsControlOpen("SelectString") then                           
+                 GetControl("SelectString"):Action("SelectIndex",0)
+                 mushEXstep = 1
+                 else
+                 mushEXstep = 0                   
+                 end
+              end
+              if (mushEXstep == 1) then
+                  if IsControlOpen("GrandCompanySupplyList") then
+                  GetControl("GrandCompanySupplyList"):Action("SelectCategory",2)
+                  mushEXstep = 2
+                  end
+              end
+              if (mushEXstep == 2) then
+                  if IsControlOpen("GrandCompanySupplyList") then
+                  GetControl("GrandCompanySupplyList"):Action("SelectFilterIndex",2)
+                  mushEXstep = 3
+                  end
+              end
+              if (mushEXstep == 3) then
+                  if IsControlOpen("SelectYesno") then 
+                  UseControlAction("SelectYesno","Yes")
+                  mushEXstep = 7
+                  elseif GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
+                  mushEXstep = 7
+                  elseif IsControlOpen("GrandCompanySupplyList") then
+                  GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
+                  mushEXstep = 4
+                  end
+              end
+              if (mushEXstep == 4) then
+                  if IsControlOpen("GrandCompanySupplyReward") then
+                  GetControl("GrandCompanySupplyReward"):Action("Deliver")
+                  mushEXstep = 3
+                  elseif IsControlOpen("SelectYesno") then 
+                  UseControlAction("SelectYesno","Yes")
+                  mushEXstep = 5
+                  elseif IsControlOpen("Request") then 
+                  UseControlAction("Request","Cancel")
+                  mushEXstep = 7
+                  end                
+              end
+              if (mushEXstep == 5) then
+                  if IsControlOpen("GrandCompanySupplyReward") then
+                  GetControl("GrandCompanySupplyReward"):Action("Deliver")
+                  mushEXstep = 3
+                  end
+                  
+              end
+              if (mushEXstep == 7) then
+                  if IsControlOpen("GrandCompanySupplyList") then
+                  UseControlAction("GrandCompanySupplyList","Close")
+                  mushEXstep = 8
+                  end 
+              end
+              if (mushEXstep == 8) then
+                  if IsControlOpen("SelectString") then
+                  UseControlAction("SelectString","Close")
+                  Player:ClearTarget()
+                  GCexchange = false 
+                  end 
+              end
+              if Player:GetTarget() == nil then
+              GCexchange = false   
+              end
+              
+
+          
+
+
+ end
+end
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Desynthesis filter
@@ -3233,11 +3692,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- materia function
+local GCdelistep = 0
 function AetheryteHelper.materia(Event, ticks)
+    AetheryteHelper.movetoCOMPANY()
+    AetheryteHelper.Exchange()  
     AetheryteHelper.Inventoryfree()
- if (Player.CurrentAction ~= 92) then
   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
+  if (Player.CurrentAction ~= 92 and ActionList:Get(5,7):IsReady() == true) then
        if (IsControlOpen("SalvageResult")) then
            UseControlAction("SalvageResult", "Close")
        end
@@ -3246,7 +3708,7 @@ function AetheryteHelper.materia(Event, ticks)
        return
        end
 
-    if (AetheryteHelper.settings.SET.isPotionEnabled and MissingBuffs(Player,"49")) then
+    if (AetheryteHelper.settings.SET.isMateriaEnabled and AetheryteHelper.settings.SET.isPotionEnabled and MissingBuffs(Player,"49")) then
       local potionid = {7059, 19885, 27960}
       --錬精薬　強錬精薬　極錬精薬
       for i = 0, 3 do
@@ -3259,7 +3721,7 @@ function AetheryteHelper.materia(Event, ticks)
         end
       end
     end
-    if (AetheryteHelper.settings.SET.isManualEnabled and MissingBuffs(Player,"1083")) then
+    if (AetheryteHelper.settings.SET.isMateriaEnabled and AetheryteHelper.settings.SET.isManualEnabled and MissingBuffs(Player,"1083")) then
       local manualid = {14951}
       --スピリットマニュアル
       for i = 0, 3 do
@@ -3272,7 +3734,8 @@ function AetheryteHelper.materia(Event, ticks)
         end
       end
     end
-    if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil) then
+    if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) or
+       (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Dawn")) then
       if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
         UseControlAction("MaterializeDialog","Yes")
         return
@@ -3294,7 +3757,8 @@ function AetheryteHelper.materia(Event, ticks)
       end
     end
 
-    if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil) then   
+    if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) or
+       (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Dawn")) then   
       if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
         UseControlAction("SalvageDialog","Confirm")
         return
@@ -3315,11 +3779,12 @@ function AetheryteHelper.materia(Event, ticks)
 
     else
           AetheryteHelper.SalvageAll()
-    --      AetheryteHelper.SalvageSlotfilter()
     end
     end
+
+
     
-    if (AetheryteHelper.settings.SET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil ) then
+    if (AetheryteHelper.settings.SET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
         if (IsControlOpen("PurifyResult")) then
           UseControlAction("PurifyResult", "Close")
         return
@@ -3347,11 +3812,11 @@ function AetheryteHelper.materia(Event, ticks)
     if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 5 and FFXIV_Common_BotRunning == true ) then 
         ml_global_information.ToggleRun()
             if ( Player.IsMounted == true ) then
-            ActionList:Get(1,4):Cast()
-            return
+            ActionList:Get(5,23):Cast()
+            --return
             end
     end
-    if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false ) then
+    if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
        if (IsControlOpen("PurifyResult")) then
            UseControlAction("PurifyResult", "Close")
            return
@@ -3375,7 +3840,8 @@ function AetheryteHelper.materia(Event, ticks)
        if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false ) then
            ml_global_information.ToggleRun()
         end
-end
+    end
+           
 end
 end
         
@@ -3391,6 +3857,8 @@ RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit,"AetheryteHel
 RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall,"AetheryteHelper.DrawCall")
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.fixfunc,"AetheryteHelper.fixfunc")
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.materia,"AetheryteHelper.materia")
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- Debug
 --d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
