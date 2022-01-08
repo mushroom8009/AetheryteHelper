@@ -590,8 +590,11 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         GUI:SetTooltip("--instance select--\nonly use EW area\n・Labyrinthos\n・Thavnair\n・Garlemald\n・Mare Lamentorum\n・Elpis\n・Ultima Thule\n\n--World visit--\n・Gridania\n・Limsa\n・Uldah")
+      if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("--インスタンスセレクト--\nEWエリアのみ対応です\n・ラビリンソス\n・サベネア\n・ガレマルド\n・嘆きの海\n・エルピス\n・ウルティマ・トゥーレ\n\n--サーバーテレポ対応都市--\n・グリダニア\n・リムサ\n・ウルダハ")
       end
-  
+      end
+
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
@@ -608,8 +611,11 @@ function AetheryteHelper.Drawinsselect()
           selectins = not selectins
           autheStep = 0
         if ( moveSVR == false ) then  modechg = 3 end 
-          end       
-         GUI:SetTooltip("on/auto off\nOnly possible in front of Aetheryte")
+          end
+        GUI:SetTooltip("on/auto off\nOnly possible in front of Aetheryte")
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("エーテライトのそばで使用してください。\nオンは手動ですがオフは自動です")
+      end
       end
       if GUI:TreeNode("AH-option") then
       GUI:AlignFirstTextHeightToWidgets()
@@ -625,8 +631,11 @@ function AetheryteHelper.Drawinsselect()
           AetheryteHelper.settings.SET.nohousing = not AetheryteHelper.settings.SET.nohousing
           end       
          GUI:SetTooltip("didn't complete quest of residential\nonly Worldvisit mode\nmean [Mist][Lavender Beds][Goblet] thing")
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("サーバーテレポ時のみ、冒険者居住区未解放のエリアでオンにしてください\n具体的にはミストビレッジ・ラベンダーベッド・ゴブレットビュートです")
       end
-      
+      end
+
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:Text("----")
@@ -651,8 +660,11 @@ function AetheryteHelper.Drawinsselect()
           --moveSVR = not moveSVR
            modechg = 3  
           end 
-        end       
+        end
         GUI:SetTooltip("Instance Select Mode\nAuto change")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("インスタンスセレクトモード\n対象エリアで内部的に自動で切り替わります")
+        end 
       end
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -685,6 +697,9 @@ function AetheryteHelper.Drawinsselect()
           
         end       
         GUI:SetTooltip("World Visit Mode\nAuto change")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("サーバーテレポモード\n対象エリアで内部的に自動で切り替わります")
+        end 
       end
       GUI:TreePop()
       end
@@ -700,6 +715,9 @@ function AetheryteHelper.Drawinsselect()
         if (GUI:IsItemHovered()) then
         GUI:SetTooltip("access delay\n100ms-1000ms")
         AetheryteHelper.SaveSettings()
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("アクセス間隔\n100ミリ秒から1秒まで選べます")
+        end 
         end
 
       GUI:EndGroup()
@@ -715,6 +733,9 @@ function AetheryteHelper.Drawinsselect()
           autheStep = 0
         end
         GUI:SetTooltip("delay RESET")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("ディレイの値を初期値に戻します")
+        end 
         end
       GUI:EndGroup()
       GUI:SameLine()
@@ -725,7 +746,10 @@ function AetheryteHelper.Drawinsselect()
             if (GUI:IsMouseClicked(0)) then
               SendTextCommand("/e <flag>")
               end
-              GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")              
+              GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")
+              if (GUI:IsMouseDown(1)) then
+              GUI:SetTooltip("ゲーム内マクロと同じですが、「/e <flag>」を実行します")
+             end               
             end
       GUI:SameLine()
       GUI:BeginGroup()
@@ -735,7 +759,10 @@ function AetheryteHelper.Drawinsselect()
             if (GUI:IsMouseClicked(0)) then
              AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open 
               end
-              GUI:SetTooltip("info")              
+              GUI:SetTooltip("info")
+              if (GUI:IsMouseDown(1)) then
+              GUI:SetTooltip("別窓でインスタンスの人数が見れます")
+              end 
             end
       GUI:Separator()
       GUI:Spacing()
@@ -749,8 +776,11 @@ function AetheryteHelper.Drawinsselect()
           if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
           isins = 1
           --if (selectins)then GetControl("SelectString"):Action("SelectIndex",1) end     
-       end
+       end 
       GUI:SetTooltip("go to instance 1\nrepeate click")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("インスタンス1へ移動\n混雑時は連打してください")
+        end
       end
       
       --GUI:AlignFirstTextHeightToWidgets()
@@ -765,6 +795,9 @@ function AetheryteHelper.Drawinsselect()
         --if (selectins)then GetControl("SelectString"):Action("SelectIndex",2) end
         end
         GUI:SetTooltip("go to instance 2\nrepeate click")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("インスタンス2へ移動\n混雑時は連打してください")
+        end 
       end
       
       --GUI:AlignFirstTextHeightToWidgets()
@@ -779,6 +812,9 @@ function AetheryteHelper.Drawinsselect()
         --if (selectins)then GetControl("SelectString"):Action("SelectIndex",3) end
         end
         GUI:SetTooltip("go to instance 3\nrepeate click")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("インスタンス3へ移動\n混雑時は連打してください")
+        end 
       end
       
       --GUI:AlignFirstTextHeightToWidgets()
@@ -791,8 +827,11 @@ function AetheryteHelper.Drawinsselect()
           if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
         isins = 0
        --if (selectins)then GetControl("SelectString"):Action("SelectIndex",0) end       
-        end
+        end 
         GUI:SetTooltip("auto select")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("自動選択です")
+        end
       end
 end
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -804,6 +843,9 @@ function AetheryteHelper.GLUtelepo()
       GUI:EndGroup()
             if (GUI:IsItemHovered()) then
             GUI:SetTooltip("available from the central aetheryte")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("三国エーテライトへテレポします")
+            end 
             end
       GUI:BeginGroup()  
       GUI:Button("Gridania",80,20)
@@ -816,6 +858,9 @@ function AetheryteHelper.GLUtelepo()
             modechg = 2
             end
             GUI:SetTooltip("Teleport to Gridania")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("グルダニア")
+            end 
             end
       GUI:SameLine()
       GUI:BeginGroup()
@@ -829,6 +874,9 @@ function AetheryteHelper.GLUtelepo()
               modechg = 2
             end
             GUI:SetTooltip("Teleport to Limsa")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("リムサ")
+            end 
             end
       GUI:SameLine()
       GUI:BeginGroup()
@@ -842,6 +890,9 @@ function AetheryteHelper.GLUtelepo()
               modechg = 2
             end
             GUI:SetTooltip("Teleport to Uldah")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("ウルダハ")
+            end 
             end
 end
 
@@ -862,6 +913,9 @@ function AetheryteHelper.DrawadWIP()
         if GUI:IsMouseDown(0) then              
         GUI:SetTooltip("please don't poke me...")
         else GUI:SetTooltip("・・・i need more time")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("つつかないでｗ")
+        end 
       end
       end
       GUI:TreePop()
@@ -895,6 +949,9 @@ function AetheryteHelper.SubWindow()
         AetheryteHelper.miniGUI.open = false
         end
       GUI:SetTooltip("close info")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("インフォメーションウィンドウを閉じる")
+        end 
       end
       GUI:Separator()
       GUI:BeginGroup()
@@ -980,8 +1037,11 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:Text("Desynthesis option")
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
-           GUI:SetTooltip("turn on Desynthesis option\nto reflect the settings here")              
-            end
+           GUI:SetTooltip("turn on Desynthesis option\nto reflect the settings here")
+           if (GUI:IsMouseDown(1)) then
+           GUI:SetTooltip("分解のオプション設定を有効にする")
+           end               
+           end
      GUI:Spacing()
      GUI:Separator()
      GUI:Spacing()
@@ -995,6 +1055,9 @@ function AetheryteHelper.desynthIL(Event, ticks)
         AetheryteHelper.SaveSettings()
         end   
         GUI:SetTooltip("Auto off in Crafter")
+        if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("クラフターで分解をオフにします")
+        end 
      end
      GUI:Spacing()
      GUI:Separator()
@@ -1006,7 +1069,10 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
-           GUI:SetTooltip("IL1-IL1000\nこの数字より大きいIL装備を分解します")              
+     GUI:SetTooltip("IL1-IL1000\nDesynth IL equipment larger than this number")              
+     if (GUI:IsMouseDown(1)) then
+     GUI:SetTooltip("IL1-IL1000\nこの数字より大きいIL装備を分解します")
+     end 
      end
      GUI:SameLine()
      GUI:BeginGroup()
@@ -1018,11 +1084,14 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
-           GUI:SetTooltip("IL5-IL1000\nIL1を除きこれ未満のIL装備を分解します")              
-            end
-      GUI:BeginGroup()
-      GUI:Button("Reset",40,20)
-      GUI:EndGroup()
+     GUI:SetTooltip("IL5-IL1000\nDesynth any IL equipment\nless than this except IL1")              
+     if (GUI:IsMouseDown(1)) then
+     GUI:SetTooltip("IL1-IL1000\nIL1を除きこれ未満のIL装備を分解します")
+     end 
+     end
+     GUI:BeginGroup()
+     GUI:Button("Reset",40,20)
+     GUI:EndGroup()
             if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
               AetheryteHelper.settings.SET.dminil = 5
@@ -1030,6 +1099,9 @@ function AetheryteHelper.desynthIL(Event, ticks)
               AetheryteHelper.SaveSettings()
               end
               GUI:SetTooltip("Setting IL Reset")              
+              if (GUI:IsMouseDown(1)) then
+              GUI:SetTooltip("IL設定を初期化")
+              end 
             end
       GUI:Spacing()
       GUI:Text("------------------------------")
@@ -1043,7 +1115,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:TextColored(1,0,0,1,"selection will be Desynthesis\nValuable equipment\nis in armoury chest" ) 
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
-          GUI:SetTooltip("チェックを入れたものを分解します。\n大事な装備はアーマリーチェストへ入れましょう")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("チェックを入れたものを分解します。\n大事な装備はアーマリーチェストへ入れましょう")
+      end 
       end
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()      
@@ -1057,6 +1131,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("Primary")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("武器・主道具")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1069,6 +1146,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("Secondary & Shield")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("盾・副道具")
+      end
       end
 
       GUI:Spacing()
@@ -1083,6 +1163,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Head")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("頭装備")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1095,6 +1178,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Earrings")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("耳アクセ")
+      end
       end
 
       GUI:Spacing()
@@ -1109,6 +1195,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Body")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("胴装備")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1121,6 +1210,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Necklace")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("胴装備")
+      end
       end
 
       GUI:Spacing()
@@ -1135,6 +1227,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Hand")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("手装備")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1147,6 +1242,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Bracelets")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("腕輪（アクセ）")
+      end
       end
       
       GUI:Spacing()
@@ -1161,6 +1259,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Legs")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("脚装備")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1173,6 +1274,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Ring")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("指輪")
+      end
       end
       
       GUI:Spacing()
@@ -1187,6 +1291,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Feet")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("足装備")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1222,7 +1329,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            AetheryteHelper.settings.Filter.Ring = not AetheryteHelper.settings.Filter.Ring
         AetheryteHelper.SaveSettings()
            end
-      GUI:SetTooltip("Left click : all on\nRight click : Reverse")              
+      GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
       end
 
      GUI:Spacing()
@@ -1246,6 +1353,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("PLD / WAR / DRK / GNB")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("タンク共通装備")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1258,6 +1368,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("WHM / SCH / AST / SGE")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("ヒーラー共通装備")
+      end
       end
 
       GUI:Spacing()
@@ -1272,6 +1385,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Accessories :\nMNK / DRG / SAM / RPR")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("アタッカーアクセ")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1284,6 +1400,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("BRD / MCN / DNC")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("レンジ共通装備")
+      end
       end
 
       GUI:Spacing()
@@ -1298,6 +1417,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("MNK / SAM")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("ストライカー装備（モンク・侍）")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1310,6 +1432,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("BLM / SMN / RDM")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("キャスター共通装備")
+      end
       end
 
       GUI:Spacing()
@@ -1324,6 +1449,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("DRG / RPR")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("スレイヤー装備（竜・鎌）")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1336,6 +1464,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("All Job")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("低レベル用の全ジョブ対応装備")
+      end
       end
 
       GUI:Spacing()
@@ -1350,6 +1481,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("NIN")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("スカウト装備(忍)")
+      end
       end
       
       GUI:SameLine(150)
@@ -1383,7 +1517,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            AetheryteHelper.settings.Job.ALL = not  AetheryteHelper.settings.Job.ALL
            AetheryteHelper.SaveSettings()
            end
-      GUI:SetTooltip("Left click : all on\nRight click : Reverse")              
+      GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
       end
 
       GUI:Spacing()
@@ -1402,6 +1536,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary / Secondary")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("剣/盾")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1414,6 +1551,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary / Secondary")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("白杖/盾")
+      end
       end
 
       GUI:Spacing()
@@ -1428,6 +1568,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("斧")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1440,6 +1583,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("学本")
+      end
       end
       
       GUI:Spacing()
@@ -1454,6 +1600,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("大剣")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1466,6 +1615,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("天球儀")
+      end
       end
       
       GUI:Spacing()
@@ -1480,6 +1632,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("ガンブレード")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1492,6 +1647,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("賢具")
+      end
       end
       
       GUI:Spacing()
@@ -1506,6 +1664,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("格闘武器")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1518,6 +1679,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("弓")
+      end
       end
       
       GUI:Spacing()      
@@ -1532,6 +1696,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("槍")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1544,6 +1711,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("銃")
+      end
       end
       
       GUI:Spacing()      
@@ -1558,6 +1728,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("双剣")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1570,6 +1743,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("投擲武器")
+      end
       end
       
       GUI:Spacing()      
@@ -1584,6 +1760,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("刀")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1596,6 +1775,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary / Secondary")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("黒杖/盾")
+      end
       end
       
       GUI:Spacing()      
@@ -1610,6 +1792,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("鎌")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1622,6 +1807,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("召本")
+      end
       end
 
       GUI:Spacing()
@@ -1637,6 +1825,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("レイピア")
+      end
       end
      
       GUI:Spacing()
@@ -1693,7 +1884,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
             AetheryteHelper.settings.Job.RDM = not  AetheryteHelper.settings.Job.RDM
             AetheryteHelper.SaveSettings()
            end
-      GUI:SetTooltip("Left click : all on\nRight click : Reverse")              
+      GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
       end
       GUI:Spacing()
       GUI:Text("Desynthesis option")
@@ -1712,6 +1903,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Tool & Armor & Accessories")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("クラフターの道具・防具・アクセサリー")
+      end
       end
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
@@ -1724,6 +1918,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Tool & Armor & Accessories")              
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("ギャザラーの道具・防具・アクセサリー")
+      end
       end
 
      GUI:Spacing()
@@ -1737,6 +1934,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
            GUI:SetTooltip("Exchange seals for items")             
+           if (GUI:IsMouseDown(1)) then
+           GUI:SetTooltip("軍票をアイテムに交換")
+           end
      end
      GUI:Spacing()
      GUI:Separator()
@@ -1778,8 +1978,10 @@ function AetheryteHelper.extractOption(Event, ticks)
           AetheryteHelper.settings.SET.isPotionEnabled = not AetheryteHelper.settings.SET.isPotionEnabled
           AetheryteHelper.SaveSettings()         
         end
-        GUI:SetTooltip("錬精薬の自動使用")
-        --GUI:SetTooltip("Automatic usage of a spiritbond potion whenever it expires")
+       GUI:SetTooltip("auto use potion")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("錬精薬の自動使用")
+       end
       end
       GUI:Spacing()
       GUI:BeginGroup()
@@ -1796,6 +1998,9 @@ function AetheryteHelper.extractOption(Event, ticks)
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Automatically uncheck option(Potion)\nwhen Bot status:Not Running") 
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("minionに連動してオンオフする\nminionから独立して動くアドオンは不可")
+       end
       end    
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
@@ -1809,7 +2014,10 @@ function AetheryteHelper.extractOption(Event, ticks)
           AetheryteHelper.settings.SET.isManualEnabled = not AetheryteHelper.settings.SET.isManualEnabled
           AetheryteHelper.SaveSettings()
         end
-        GUI:SetTooltip("スピリットマニュアルの自動使用") 
+        GUI:SetTooltip("auto use spiritbond manual") 
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("スピリットマニュアルの自動使用")
+        end
       end
       GUI:Spacing()
       GUI:BeginGroup()
@@ -1826,6 +2034,9 @@ function AetheryteHelper.extractOption(Event, ticks)
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Automatically uncheck option(Manual)\nwhen Bot status:Not Running") 
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("minionに連動してオンオフする\nminionから独立して動くアドオンは不可")
+        end
       end
       if (FFXIV_Common_BotRunning == false) and (AetheryteHelper.settings.SET.isBotStatusP == true) then
         AetheryteHelper.settings.SET.isPotionEnabled = false
@@ -1875,6 +2086,9 @@ function AetheryteHelper.GCseals()
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
         GUI:SetTooltip("Your GC\nautomatically select\n\nMaelst(Limsa)/Adders(Gridania)/Flames(Uldah)") 
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("所属GCが自動で選ばれます\n\n黒渦団(リムサ)/双蛇党(グリダニア)/不滅隊(ウルダハ)")
+        end
      end
      GUI:SameLine()
      GUI:BeginGroup()
@@ -1914,6 +2128,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         GUI:SetTooltip("Materia Extract / Desynthesis / Exchange for GC seals / Aetherial Reduction")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("マテリア錬成/装備分解/GCへの希少品納品/精選")
+        end
       end
 
       GUI:Spacing()
@@ -1933,8 +2150,11 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
         end
-        GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
+        GUI:SetTooltip("in non combat")
         AetheryteHelper.SaveSettings()
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
+        end
       end
       AetheryteHelper.extractOption() 
     
@@ -1958,7 +2178,10 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           GCexchange = false
           AetheryteHelper.SaveSettings()
         end
+        GUI:SetTooltip("desynthesis all equipment in your inventory\nWarning: Turning on this option will desynthesis all equipment in your inventory\nHowever, IL1 equipment will not be desynthesis")
+        if (GUI:IsMouseDown(1)) then
         GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
+        end
       end
       if AetheryteHelper.settings.SET.CrafterMode == true then
         if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
@@ -1982,6 +2205,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         end
         GUI:SetTooltip("use settings in Option Tab")
         AetheryteHelper.SaveSettings()
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("オプションタブの設定を有効にする")
+        end
       end
       GUI:Spacing()
       GUI:Separator()
@@ -2005,6 +2231,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("for GC seals ")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("GCの希少品納品")
+        end
       end
       GUI:Spacing()
 
@@ -2037,6 +2266,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         end
         GUI:SetTooltip("Trial\nYou'd better move yourself")
         AetheryteHelper.SaveSettings()
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("自動でGCに移動して納品します\n試験運用中：自分で移動したほうがいいときもある")
+        end
       end
       GUI:SameLine(230)
       GUI:AlignFirstTextHeightToWidgets()
@@ -2049,6 +2281,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         end
         GUI:SetTooltip("move to stop")
         AetheryteHelper.SaveSettings()
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("自動移動を停止")
+        end
       end
       GUI:EndGroup()  
       GUI:Spacing()           
@@ -2073,7 +2308,10 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.settings.SET.isQuestmode = false
           AetheryteHelper.SaveSettings()
         end
-        GUI:SetTooltip("Aetherial Reduction\n\n精選")
+        GUI:SetTooltip("Aetherial Reduction")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("精選")
+        end
       end
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
@@ -2090,6 +2328,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Automatically Bot Running\nStop Bot before inventory is low space.\nPerform Aetherial Reduction & Running Bot again.\n") 
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("minion連動\nカバンの空きが少なくなるとボットを停止し、精選を始めます。\n全て精選が終わると再びminionをオンにします")
+        end
       end
       GUI:Spacing()
 
@@ -2234,7 +2475,12 @@ function AetheryteHelper.DCSVselect()
         --AetheryteHelper.SaveSettings()
      end
      GUI:EndGroup()
-     if (GUI:IsItemHovered()) then GUI:SetTooltip("Auto select DC") end
+     if (GUI:IsItemHovered()) then
+     GUI:SetTooltip("Auto select DC")
+     if (GUI:IsMouseDown(1)) then
+     GUI:SetTooltip("DCは自動で選択されます")
+     end
+     end
      GUI:Text("select server(World Visit)")
      GUI:BeginGroup()
      GUI:PushItemWidth(180)
@@ -2246,7 +2492,12 @@ function AetheryteHelper.DCSVselect()
      GUI:Combo( "server",10,FFXIVServerlist[10],1)
      end
      GUI:EndGroup()
-     if (GUI:IsItemHovered()) then GUI:SetTooltip("Select Server") end
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("Select Server")
+     if (GUI:IsMouseDown(1)) then
+     GUI:SetTooltip("移動先のサーバーを選択")
+     end
+     end
      isServer = selectSVR
 
 end
@@ -2303,6 +2554,9 @@ function AetheryteHelper.DrawCall(event, ticks)
             io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
       end
       GUI:SetTooltip("please support me to make good\n\nfor my cat....")
+      if (GUI:IsMouseDown(1)) then
+      GUI:SetTooltip("良い物を作るためにサポートしてください\n\nうちのねこのご飯が豪華になります")
+      end
       end
 
 
