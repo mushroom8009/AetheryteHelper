@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.2.0",   
+      Version =         "1.2.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -79,7 +79,8 @@ local kinokoProject = {
                       "[1.1.2] - Changed so that saved data is loaded correctly.",
                       "[1.1.3] - linked bot status in materia extract options",
                       "[1.1.5] - Add Aetherial Reduction Botmode and more",
-                      "[1.2.0] - I done lot of add things."
+                      "[1.2.0] - I done lot of add things.",
+                      "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips\nMouse over to view English,\nRight button Press to view Japanese.",
 
                     },
       
@@ -127,6 +128,11 @@ local kinokoProject = {
       Pulse =         500,
       Timer =         0,
   },
+
+
+
+
+
 
  }
 -------------------------------
@@ -186,7 +192,7 @@ AetheryteHelper.miniGUI = {
     dmaxil = 540,
     selectDC = 1,
     selectGC = 1,
-    Pcurrnt = Player.currentworld
+    Pcurrnt = Player.currentworld,
     
     },
 
@@ -266,8 +272,8 @@ Links = {
        link1 = [[https://discord.com/channels/127540472812929024/335225564803891210]],
        link2 = [[https://github.com/mushroom8009/AetheryteHelper]],
        link3 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
-      tooltip1 = "it's a hobby,\nso i don't know if it's possible,\nbut let me know if you have any requests.\n\n不具合とかあれば教えて下さい",
-      tooltip2 = "Github link,\nLeft click:home\nRight click:Release",
+      tooltip1 = "Please DM me if you have any problems or requests\nalso, please promote it.\n\n不具合とか要望あればDMで教えて下さい\nあと褒められるとモチベーションあがります",
+      tooltip2 = "Github link,\nLeft click:home\nRight click:Release\n\n左クリックでgitのAHのホーム\n右クリックでリリースページ",
 
       
 
@@ -421,6 +427,7 @@ MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
 local uuid = GetUUID()
 AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userID'..uuid.. '_setting.lua'
+AetheryteHelper.settingfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'kinoko_setting.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -455,6 +462,7 @@ local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
 local koukanhin = 1
 local hosiikazu = 1
+local GCdelistep = 0
 
 ------------------
 
@@ -573,12 +581,21 @@ function AetheryteHelper.LoadSettings()
       table.merge(AetheryteHelper.settings,save)      
     end
   end
+  if FileExists(AetheryteHelper.settingfile) then
+    local settings = persistence.load(AetheryteHelper.settingfile)
+    if (ValidTable(settings)) then
+      table.merge(kinokoProject.Windows.MainWindows,settings)      
+    end
+  end
+
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
 AetheryteHelper.LoadSettings()
 function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
+  persistence.store(AetheryteHelper.settingfile, kinokoProject.Windows.MainWindows)
   
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -779,7 +796,7 @@ function AetheryteHelper.Drawinsselect()
        end 
       GUI:SetTooltip("go to instance 1\nrepeate click")
         if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンス1へ移動\n混雑時は連打してください")
+        GUI:SetTooltip("インスタンス1へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
         end
       end
       
@@ -796,7 +813,7 @@ function AetheryteHelper.Drawinsselect()
         end
         GUI:SetTooltip("go to instance 2\nrepeate click")
         if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンス2へ移動\n混雑時は連打してください")
+        GUI:SetTooltip("インスタンス2へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
         end 
       end
       
@@ -813,7 +830,7 @@ function AetheryteHelper.Drawinsselect()
         end
         GUI:SetTooltip("go to instance 3\nrepeate click")
         if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンス3へ移動\n混雑時は連打してください")
+        GUI:SetTooltip("インスタンス3へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
         end 
       end
       
@@ -844,7 +861,7 @@ function AetheryteHelper.GLUtelepo()
             if (GUI:IsItemHovered()) then
             GUI:SetTooltip("available from the central aetheryte")
             if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("三国エーテライトへテレポします")
+            GUI:SetTooltip("三国へのテレポボタン")
             end 
             end
       GUI:BeginGroup()  
@@ -859,7 +876,7 @@ function AetheryteHelper.GLUtelepo()
             end
             GUI:SetTooltip("Teleport to Gridania")
             if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("グルダニア")
+            GUI:SetTooltip("グリダニア")
             end 
             end
       GUI:SameLine()
@@ -2178,7 +2195,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           GCexchange = false
           AetheryteHelper.SaveSettings()
         end
-        GUI:SetTooltip("desynthesis all equipment in your inventory\nWarning: Turning on this option will desynthesis all equipment in your inventory\nHowever, IL1 equipment will not be desynthesis")
+        GUI:SetTooltip("desynthesis all equipment in your inventory\nWarning: Turning on this option will desynthesis\nall equipment in your inventory\nHowever, IL1 equipment will not be desynthesis")
         if (GUI:IsMouseDown(1)) then
         GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
         end
@@ -2308,9 +2325,9 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           AetheryteHelper.settings.SET.isQuestmode = false
           AetheryteHelper.SaveSettings()
         end
-        GUI:SetTooltip("Aetherial Reduction")
+        GUI:SetTooltip("Aetherial Reduction\nStop when there is no more space in inventory")
         if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("精選")
+        GUI:SetTooltip("精選\nカバンの空きが0になると動作しません")
         end
       end
       GUI:Spacing()
@@ -2318,18 +2335,19 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:BeginGroup()
       GUI:Checkbox("##Qmode", AetheryteHelper.settings.SET.isQuestmode)
       GUI:SameLine()      
-      GUI:Text("Aetherial Reduction:QuestMode(Beta)")
-      GUI:TextColored(1,0,0,1,"   ---features for sebbs addons")
+      GUI:Text("Aetherial Reduction:QuestMode")
+      GUI:TextColored(1,0,0,1,"   ---features for FFXIVminion")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isQuestmode = not AetheryteHelper.settings.SET.isQuestmode
+          if (mushPbtotal < 1) then AetheryteHelper.settings.SET.isQuestmode = false end
           AetheryteHelper.settings.SET.isReductionEnabled = false
           AetheryteHelper.SaveSettings()
         end
-        GUI:SetTooltip("Automatically Bot Running\nStop Bot before inventory is low space.\nPerform Aetherial Reduction & Running Bot again.\n") 
+        GUI:SetTooltip("Stop Bot before inventory is low space.\nPerform Aetherial Reduction & Running Bot again.\nneed at least 4 free spaces in inventory") 
         if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("minion連動\nカバンの空きが少なくなるとボットを停止し、精選を始めます。\n全て精選が終わると再びminionをオンにします")
+        GUI:SetTooltip("minion連動\nカバンの空きが3以下になるとボットを停止し、精選を始めます。\n全て精選が終わると再びminionをオンにします")
         end
       end
       GUI:Spacing()
@@ -2713,7 +2731,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --fix function
 
-function AetheryteHelper.fixfunc(Event, ticks)
+function AetheryteHelper.mushMaintool(Event, ticks)
   --if (not Update.Timer or ticks - Update.Timer > Update.Pulse) then
   --  Update.Timer = ticks   
   --end
@@ -3946,14 +3964,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- materia function
-local GCdelistep = 0
-function AetheryteHelper.materia(Event, ticks)
-    AetheryteHelper.movetoCOMPANY()
-    AetheryteHelper.Exchange()  
-    AetheryteHelper.Inventoryfree()
-  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
+
+function AetheryteHelper.mushsubtool(Event, ticks)
+      
+  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
     lastUpdatePulse = Now()
-  if (Player.CurrentAction ~= 92 and ActionList:Get(5,7):IsReady() == true) then
+  if (Player.CurrentAction ~= 92) then
        if (IsControlOpen("SalvageResult")) then
            UseControlAction("SalvageResult", "Close")
        end
@@ -4036,6 +4052,47 @@ function AetheryteHelper.materia(Event, ticks)
     end
     end
 
+    if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 4 and FFXIV_Common_BotRunning == true ) then
+           Player:Stop()
+           ml_global_information.ToggleRun()
+      end
+    
+    if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
+           if (IsControlOpen("PurifyResult")) then
+           UseControlAction("PurifyResult", "Close")
+           return
+           end
+           if (IsControlOpen("GatheringMasterpiece")) then
+           UseControlAction("GatheringMasterpiece", "Destroy")
+           Player:ClearTarget()
+           end
+           if (IsControlOpen("Gathering")) then
+           UseControlAction("Gathering", "Close")
+           Player:ClearTarget()
+           end
+           if ( Player.IsMounted == true ) then
+           ActionList:Get(5,23):Cast()
+           return
+           end
+             local bags = {0, 1, 2, 3}
+             for _, e in pairs(bags) do
+             local bag = Inventory:Get(e)
+             if (table.valid(bag)) then
+             local Rlist = bag:GetList()
+             if (table.valid(Rlist)) then
+             for _, item in pairs(Rlist) do    
+             if( item.IsCollectable == true and item.IsBinding == true) then
+             item:Purify()
+             return
+             end
+             end
+             end
+             end
+             end 
+          if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and mushPbtotal > 4) then
+             ml_global_information.ToggleRun()
+             end   
+        end
 
     
     if (AetheryteHelper.settings.SET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
@@ -4060,45 +4117,14 @@ function AetheryteHelper.materia(Event, ticks)
         end
         end
      end
-   end
-
-     
-    if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 5 and FFXIV_Common_BotRunning == true ) then 
-        ml_global_information.ToggleRun()
-            if ( Player.IsMounted == true ) then
-            ActionList:Get(5,23):Cast()
-            --return
-            end
-    end
-    if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
-       if (IsControlOpen("PurifyResult")) then
-           UseControlAction("PurifyResult", "Close")
-           return
-       end
-       local bags = {0, 1, 2, 3}
-       for _, e in pairs(bags) do
-       local bag = Inventory:Get(e)
-         if (table.valid(bag)) then
-         local Rlist = bag:GetList()
-            if (table.valid(Rlist)) then
-               for _, item in pairs(Rlist) do    
-                   if( item.IsCollectable == true and item.IsBinding == true) then
-                   item:Purify()
-                   return
-                   end
-                   end  
-               end
-            end
-          end
-        end 
-       if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false ) then
-           ml_global_information.ToggleRun()
-        end
-    end
-           
+   end    
 end
 end
-        
+    AetheryteHelper.movetoCOMPANY()
+    AetheryteHelper.Exchange()  
+    AetheryteHelper.Inventoryfree()
+    
+end  
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -4109,8 +4135,9 @@ end
 RegisterEventHandler("Module.Initalize",AetheryteHelper.Init,"AetheryteHelper.Init") 
 RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit,"AetheryteHelper.ModuleInit")
 RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall,"AetheryteHelper.DrawCall")
-RegisterEventHandler("Gameloop.Update", AetheryteHelper.fixfunc,"AetheryteHelper.fixfunc")
-RegisterEventHandler("Gameloop.Update", AetheryteHelper.materia,"AetheryteHelper.materia")
+RegisterEventHandler("Gameloop.Update", AetheryteHelper.mushMaintool,"AetheryteHelper.mushMaintool")
+RegisterEventHandler("Gameloop.Update", AetheryteHelper.mushsubtool,"AetheryteHelper.mushsubtool")
+
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
