@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.2.1",   
+      Version =         "1.2.2",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -81,6 +81,8 @@ local kinokoProject = {
                       "[1.1.5] - Add Aetherial Reduction Botmode and more",
                       "[1.2.0] - I done lot of add things.",
                       "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips\nMouse over to view English,\nRight button Press to view Japanese.",
+                      "[1.2.2] - desynth bug fix & add Trust mode",
+
 
                     },
       
@@ -169,7 +171,7 @@ AetheryteHelper.miniGUI = {
   name = "miniinfo###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false
+  locked = false,
 }
  AetheryteHelper.settings = {
   SET = {
@@ -188,6 +190,7 @@ AetheryteHelper.miniGUI = {
     isQuestmode = false,
     nohousing = false,
     CrafterMode = true,
+    DesynthTrust = false,
     dminil = 5,
     dmaxil = 540,
     selectDC = 1,
@@ -1074,6 +1077,21 @@ function AetheryteHelper.desynthIL(Event, ticks)
         GUI:SetTooltip("Auto off in Crafter")
         if (GUI:IsMouseDown(1)) then
             GUI:SetTooltip("クラフターで分解をオフにします")
+        end 
+     end
+     GUI:SameLine()
+     GUI:AlignFirstTextHeightToWidgets()
+     GUI:BeginGroup()
+     GUI:Checkbox("Trust mode",AetheryteHelper.settings.SET.DesynthTrust)
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+     if (GUI:IsMouseClicked(0)) then
+        AetheryteHelper.settings.SET.DesynthTrust = not AetheryteHelper.settings.SET.DesynthTrust
+        AetheryteHelper.SaveSettings()
+        end   
+        GUI:SetTooltip("for use with the Trust addon")
+        if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("Trustアドオンを使用するとき以外はオフ推奨")
         end 
      end
      GUI:Spacing()
@@ -2952,12 +2970,12 @@ function AetheryteHelper.SalvageAll()
      if (table.valid(ilist)) then
      for _, item in pairs(ilist) do
 
-      if (item.equipslot > 0 and item.requiredlevel > 1 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0) then
       item:Salvage()     
       return
       end
       end
-         
+   
 
       end
       end
@@ -2976,67 +2994,67 @@ function AetheryteHelper.SalvageSlotfilter()
      for _, item in pairs(ilist) do
 
       if (AetheryteHelper.settings.Filter.Main) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Sub) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Head) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12) then
       item:Salvage()     
       return
       end
@@ -3060,55 +3078,55 @@ function AetheryteHelper.SalvageAlljob()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 1) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 1) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 1) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 1) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 1) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 1) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 1) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 1) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.ALL )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 1) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 1) then
       item:Salvage()     
       return
       end
@@ -3137,55 +3155,55 @@ function AetheryteHelper.SalvageJobTank()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 59) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 59) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 59) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 59) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 59) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 59) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 59) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 59) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Tank )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 59) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 59) then
       item:Salvage()     
       return
       end
@@ -3212,55 +3230,55 @@ function AetheryteHelper.SalvageJobHealer()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 64) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 64) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 64) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 64) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 64) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 64) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 64) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 64) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Healer )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 64) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 64) then
       item:Salvage()     
       return
       end
@@ -3286,55 +3304,55 @@ function AetheryteHelper.SalvageJobSlaying()
 
   
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 84) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 84) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 84) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 84) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 84) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 84) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 84) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 84) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Slaying )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 84) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 84) then
       item:Salvage()     
       return
       end
@@ -3360,31 +3378,31 @@ function AetheryteHelper.SalvageJobStriking()
 
      
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 65) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 65) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 65) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 65) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 65) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 65) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 65) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 65) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 65) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 65) then
       item:Salvage()     
       return
       end
@@ -3410,55 +3428,55 @@ function AetheryteHelper.SalvageJobAiming()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 66) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 66) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 66) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 66) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 66) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 66) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 66) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 66) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 66) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 66) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 105) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 105) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 105) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 105) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 105) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 105) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Aiming )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 105) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 105) then
       item:Salvage()     
       return
       end
@@ -3484,55 +3502,55 @@ function AetheryteHelper.SalvageJobSorcerer()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 63) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 63) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 63) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 63) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 63) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 63) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 63) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 63) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Sorcerer )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 63) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 63) then
       item:Salvage()     
       return
       end
@@ -3558,31 +3576,31 @@ function AetheryteHelper.SalvageJobMaiming()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 76) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 76) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 76) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 76) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 76) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 76) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 76) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 76) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 76) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 76) then
       item:Salvage()     
       return
       end
@@ -3607,31 +3625,31 @@ function AetheryteHelper.SalvageJobScouting()
 
 
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 103) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 103) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 103) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 103) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 103) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 103) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 103) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 103) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 103) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 103) then
       item:Salvage()     
       return
       end
@@ -3656,69 +3674,69 @@ function AetheryteHelper.SalvageJobGatherer()
      for _, item in pairs(ilist) do
 
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)
         and (item.category == 17 or item.category == 18 or item.category == 19))then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2
         and (item.category == 17 or item.category == 18 or item.category == 19)) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11  and item.category == 32 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12  and item.category == 32 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12  and item.category == 32 ) then
       item:Salvage()     
       return
       end
@@ -3741,69 +3759,69 @@ function AetheryteHelper.SalvageJobCrafter()
      for _, item in pairs(ilist) do
 
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)
         and (item.category == 9 or item.category == 10 or item.category == 11 or item.category == 12 or item.category == 13 or item.category == 14 or item.category == 15 or item.category == 16))then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2
         and (item.category == 9 or item.category == 10 or item.category == 11 or item.category == 12 or item.category == 13 or item.category == 14 or item.category == 15 or item.category == 16)) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end 
       if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11  and item.category == 33 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12  and item.category == 33 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12  and item.category == 33 ) then
       item:Salvage()     
       return
       end
@@ -3827,128 +3845,128 @@ function AetheryteHelper.SalvageJobPrimary()
      for _, item in pairs(ilist) do
 
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.PLD ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 38) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 38) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.WAR ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 44 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 44 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.DRK ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 98 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 98 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.GNB ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 149 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 149 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.WHM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 53 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 53 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SCH ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 29 or item.category == 68 )) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 29 or item.category == 68 )) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.AST ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 99 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 99 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SGE ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 181 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 181 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.MNK ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 41 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 41 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.DRG ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 47 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 47 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SAM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 111 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 111 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.NIN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 93 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 93 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.RPR ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 180 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 180 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.BRD ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 50 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 50 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.MCN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 96 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 96 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.DNC ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 150 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 150 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.BLM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 55 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 55 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.RDM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 112 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 112 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SMN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 or item.category == 69 )) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 or item.category == 69 )) then
       item:Salvage()     
       return
       end
       end
 
       if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.WHM ) or ( AetheryteHelper.settings.Job.BLM )then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2 and item.category == 56 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2 and item.category == 56 ) then
       item:Salvage()     
       return
       end
       end
       if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.PLD )then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2 and item.category == 38 ) then
+      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2 and item.category == 38 ) then
       item:Salvage()     
       return
       end
@@ -3966,8 +3984,11 @@ end
 -- materia function
 
 function AetheryteHelper.mushsubtool(Event, ticks)
+    AetheryteHelper.movetoCOMPANY()
+    AetheryteHelper.Exchange()  
+    AetheryteHelper.Inventoryfree()
       
-  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
+  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
   if (Player.CurrentAction ~= 92) then
        if (IsControlOpen("SalvageResult")) then
@@ -3977,7 +3998,6 @@ function AetheryteHelper.mushsubtool(Event, ticks)
        if (Player.incombat or Busy()) then
        return
        end
-
     if (AetheryteHelper.settings.SET.isMateriaEnabled and AetheryteHelper.settings.SET.isPotionEnabled and MissingBuffs(Player,"49")) then
       local potionid = {7059, 19885, 27960}
       --錬精薬　強錬精薬　極錬精薬
@@ -4004,14 +4024,14 @@ function AetheryteHelper.mushsubtool(Event, ticks)
         end
       end
     end
-    if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) or
-       (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Dawn")) then
-      if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
+    if (AetheryteHelper.settings.SET.DesynthTrust) then
+        if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == true ) then
+        if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
         UseControlAction("MaterializeDialog","Yes")
         return
-      end
-      local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
-      for _, e in pairs(bags) do
+        end
+        local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+        for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
         if (table.valid(bag)) then
         local ilist = bag:GetList()
@@ -4024,15 +4044,37 @@ function AetheryteHelper.mushsubtool(Event, ticks)
         end
         end
         end
-      end
+        end
+        end
+
+    elseif(AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+        if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
+        UseControlAction("MaterializeDialog","Yes")
+        return
+        end
+        local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+        for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+        if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+        item:Convert()
+        return
+        end
+        end
+        end
+        end
+        end
     end
 
-    if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) or
-       (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Dawn")) then   
-      if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
-        UseControlAction("SalvageDialog","Confirm")
-        return
-      end
+   if (AetheryteHelper.settings.SET.DesynthTrust) then
+       if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:IsQueued() == true ) then
+       if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
+       UseControlAction("SalvageDialog","Confirm")
+       return
+       end
        if (AetheryteHelper.settings.SET.isReductionOption)then    
           AetheryteHelper.SalvageJobTank()
           AetheryteHelper.SalvageJobHealer()
@@ -4046,12 +4088,36 @@ function AetheryteHelper.mushsubtool(Event, ticks)
           AetheryteHelper.SalvageJobGatherer() 
           AetheryteHelper.SalvageJobCrafter()
           AetheryteHelper.SalvageAlljob()
-
-    else
+       else
           AetheryteHelper.SalvageAll()
-    end
-    end
+       end
+       end      
+   elseif (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then   
+       if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
+       UseControlAction("SalvageDialog","Confirm")
+       return
+       end
+       if (AetheryteHelper.settings.SET.isReductionOption)then    
+          AetheryteHelper.SalvageJobTank()
+          AetheryteHelper.SalvageJobHealer()
+          AetheryteHelper.SalvageJobSlaying()
+          AetheryteHelper.SalvageJobStriking()
+          AetheryteHelper.SalvageJobAiming()
+          AetheryteHelper.SalvageJobSorcerer()
+          AetheryteHelper.SalvageJobMaiming()
+          AetheryteHelper.SalvageJobScouting()  
+          AetheryteHelper.SalvageJobPrimary()   
+          AetheryteHelper.SalvageJobGatherer() 
+          AetheryteHelper.SalvageJobCrafter()
+          AetheryteHelper.SalvageAlljob()
+       else
+          AetheryteHelper.SalvageAll()
+       end
+       end
+   end
 
+    if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
+    lastUpdatePulse = Now()
     if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 4 and FFXIV_Common_BotRunning == true ) then
            Player:Stop()
            ml_global_information.ToggleRun()
@@ -4120,9 +4186,7 @@ function AetheryteHelper.mushsubtool(Event, ticks)
    end    
 end
 end
-    AetheryteHelper.movetoCOMPANY()
-    AetheryteHelper.Exchange()  
-    AetheryteHelper.Inventoryfree()
+
     
 end  
 ---------------------------------------------------------------------------------------------------------------------------------------------------
