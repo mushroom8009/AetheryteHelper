@@ -1076,7 +1076,7 @@ function AetheryteHelper.jumboWindow()
     if (AetheryteHelper.Jumbocactpot.visible) then
       GUI:Spacing()
       GUI:BeginGroup()
-      GUI:TextColored(0,1,0,1,"Once a week! Jambo cactpot")
+      GUI:TextColored(0,1,0,1,"Once a week! Jumbo cactpot")
       GUI:EndGroup()
   
       GUI:Separator()
