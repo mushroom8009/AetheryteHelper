@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.2.2",   
+      Version =         "1.3.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -82,6 +82,8 @@ local kinokoProject = {
                       "[1.2.0] - I done lot of add things.",
                       "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips\nMouse over to view English,\nRight button Press to view Japanese.",
                       "[1.2.2] - desynth bug fix & add Trust mode",
+                      "[1.3.0] - add trun in & Organize code(just a little bit)",
+                      "[1.3.1] - add Jumbo cactpot assist",
 
 
                     },
@@ -158,7 +160,7 @@ AetheryteHelper.GUI = {
     },
     [4] = {
       isselected = false,
-      name = "[-wip-]"
+      name = "[Jank]"
     },
   },
   tabstyle = {
@@ -169,6 +171,12 @@ AetheryteHelper.GUI = {
 }
 AetheryteHelper.miniGUI = {
   name = "miniinfo###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.Jumbocactpot = {
+  name = "jumbocactpot###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
@@ -195,6 +203,21 @@ AetheryteHelper.miniGUI = {
     dmaxil = 540,
     selectDC = 1,
     selectGC = 1,
+    hosiikazu = 1,
+    koukanhin = 1,
+    syojigunpyou = 10000,
+    jumbo11 = 0,
+    jumbo12 = 0,
+    jumbo13 = 0,
+    jumbo14 = 0,
+    jumbo21 = 0,
+    jumbo22= 0,
+    jumbo23 = 0,
+    jumbo24 = 0,
+    jumbo31 = 0,
+    jumbo32 = 0,
+    jumbo33 = 0,
+    jumbo34 = 0,
     Pcurrnt = Player.currentworld,
     
     },
@@ -419,8 +442,25 @@ mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
 mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
 mushGC = {"Maelst","Adders","Flames","------"}
 GCexchangeItems = {
-         jp = {"------","ベンチャースクリップ","ダークマターG8","グラスファイバー","転送網利用券(GC)"},
-         En = {"------","Ventures","G8 Dark Matter","Glass Fiber","Aetheryte Ticket(GC)"},
+         jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンテナ(紅蓮)","転送網利用券(GC)"},           
+         En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},
+         cost = {
+         [1] = 200,
+         [2] = 600,
+         [3] = 7000,
+         [4] = 20000,
+         [5] = 20000,
+         [6] = 2000,
+         },
+         id = {
+         [1] = 21072,
+         [2] = 33916,
+         [3] = 15649,
+         [4] = 36635,
+         [5] = 36636,
+         [6] = nil,
+         },             
+
 }
 
 
@@ -453,6 +493,7 @@ local GCexchange = false
 local AutoMoveGC = false
 local selectSVR = 1
 local mushEXstep = 0
+local mushtoItemstep = 0
 ----------------------------------------
 --subtool local
 local lastUpdatePulse = 0
@@ -463,9 +504,17 @@ local MinionPath = GetStartupPath()
 local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
-local koukanhin = 1
-local hosiikazu = 1
 local GCdelistep = 0
+local GCStep = 0
+local mushtruninGCitem = nil
+local mushtruninGCseals = nil
+local sealstoitem = false
+local mushloopmode = false
+local mushJumbocactpothelper = false
+local mushJumbocactpotrandom1 = false
+local mushJumbocactpotrandom2 = false
+local mushJumbocactpotrandom3 = false
+local mushGSjcpstep = 0
 
 ------------------
 
@@ -922,9 +971,28 @@ end
 function AetheryteHelper.DrawadWIP()
       GUI:Spacing(10)
       GUI:BeginGroup()
-      GUI:TextColored(1,0,0,1,"work in progress")
-      GUI:Text("---Exchange seals to items")
+      GUI:Button("Jambo cactpot assist",160,20)
       GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AetheryteHelper.Jumbocactpot.open = not AetheryteHelper.Jumbocactpot.open 
+              end
+              GUI:SetTooltip("help with number entry")
+              if (GUI:IsMouseDown(1)) then
+              GUI:SetTooltip("数字入力がめんどうな人向け")
+              end 
+            end      
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,1,1,"Notice")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      GUI:SetTooltip("i have added too many features than we originally planned.\ni will only fix bugs, not add more.\ni'll create another module.")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("機能が増えすぎたのでこれ以上追加はせずバグ修正のみ行い\n今後は別のモジュールを作成します")
+        end
+      end
       GUI:SameLine(200,10)
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
@@ -938,13 +1006,13 @@ function AetheryteHelper.DrawadWIP()
         end 
       end
       end
-      GUI:TreePop()
       GUI:Spacing(10)
       GUI:SameLine(20)
        if GUI:TreeNode("VersionList##AetheryteHelper")then
       for id, e in pairs(kinokoProject.Addon.VersionList) do
       GUI:Text(e)
       end
+      GUI:TreePop()
       end
       GUI:Spacing()
 end
@@ -998,55 +1066,201 @@ function AetheryteHelper.SubWindow()
   end
   
 end
---help tree GUI
---
---function AetheryteHelper.Drawhelp(_entext)
---  if GUI:TreeNode("Upcoming Features##AetheryteHelper") then
---    for id, e in pairs(_entext) do
---      GUI:Text(e)
---      GUI:BeginGroup()
---      GUI:TextColored( 1,1,0,1,"How to use  Autheryte Helper" )
---      GUI:EndGroup()
---      if GUI:IsItemClicked(0) then
---            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linken..[["]]):close()
---      end
---    end
---    GUI:Text("--------------------------------")
---    GUI:TreePop()
---  end
---end
 
---function AetheryteHelper.Drawhelp(_jptext)
---  if GUI:TreeNode("今後の予定##AetheryteHelper") then
---    for id, e in pairs(_jptext) do
---      GUI:Text(e)
---      GUI:BeginGroup()
---      GUI:TextColored( 1,1,0,1,"Autheryte Helperの使い方" )
---      GUI:EndGroup()
---   if GUI:IsItemClicked(0) then
---            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.linkjp..[["]]):close()
---      end
-
---    end
---    GUI:Text("--------------------------------")
---    GUI:TreePop()
---  end
---end
-
---function AetheryteHelper.DrawInside()
---  if kinokoProject.Windows.MainWindows.Open == false then
---        GUI:Text("--------------------------------")
---  end 
-  ----
---  if language == 0 then
---      AetheryteHelper.Drawhelp(kinokoProject.HELP.jptext)
+--------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.jumboWindow()
+  if (AetheryteHelper.Jumbocactpot.open) then
+    local Jumboflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(380,320)
+     AetheryteHelper.Jumbocactpot.visible, AetheryteHelper.Jumbocactpot.open = GUI:Begin('jumbocactpot', AetheryteHelper.Jumbocactpot.open,Jumboflags)
+    if (AetheryteHelper.Jumbocactpot.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,0,1,"Once a week! Jambo cactpot")
+      GUI:EndGroup()
+  
+      GUI:Separator()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,1,1,"Enter 4 numbers")
+      GUI:EndGroup()
+      GUI:SameLine(220)
+      if Inventory:Get(2000):GetList()[10] ~= nil then
+      mushPmgp = Inventory:Get(2000):GetList()[10]      
+      GUI:BeginGroup()
+      GUI:TextColored(1,1,0,1,"MGP:"..mushPmgp.count.."/9999999")
+      GUI:EndGroup()  
+      else 
+      GUI:BeginGroup()
+      GUI:TextColored(1,0,0,1,"MGP:0/9999999")
+      GUI:EndGroup()
+      end
+      if mushPmgp == nil or mushPmgp.count < 450 then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(1,0,0,1,"Requires 450 MGP")
+      GUI:EndGroup()
+      GUI:Spacing()
+      end
+      GUI:BeginGroup()
+      GUI:Text("1st--100MGP---------------------------------------")
+      GUI:EndGroup()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("random",mushJumbocactpotrandom1)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+         if (GUI:IsMouseClicked(0)) then
+         mushJumbocactpotrandom1 = not mushJumbocactpotrandom1
+         mushGSjcpstep = 0
+        end   
+        if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("ランダム番号で購入します")
+        end 
+     end
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo11 = GUI:InputInt("###11",AetheryteHelper.settings.SET.jumbo11,1,1)
+      if AetheryteHelper.settings.SET.jumbo11 < 0 then AetheryteHelper.settings.SET.jumbo11 = 9 end
+      if AetheryteHelper.settings.SET.jumbo11 > 9 then AetheryteHelper.settings.SET.jumbo11 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo12 = GUI:InputInt("###12",AetheryteHelper.settings.SET.jumbo12,1,1)
+      if AetheryteHelper.settings.SET.jumbo12 < 0 then AetheryteHelper.settings.SET.jumbo12 = 9 end
+      if AetheryteHelper.settings.SET.jumbo12 > 9 then AetheryteHelper.settings.SET.jumbo12 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo13 = GUI:InputInt("###13",AetheryteHelper.settings.SET.jumbo13,1,1)
+      if AetheryteHelper.settings.SET.jumbo13 < 0 then AetheryteHelper.settings.SET.jumbo13 = 9 end
+      if AetheryteHelper.settings.SET.jumbo13 > 9 then AetheryteHelper.settings.SET.jumbo13 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo14 = GUI:InputInt("###14",AetheryteHelper.settings.SET.jumbo14,1,1)
+      if AetheryteHelper.settings.SET.jumbo14 < 0 then AetheryteHelper.settings.SET.jumbo14 = 9 end
+      if AetheryteHelper.settings.SET.jumbo14 > 9 then AetheryteHelper.settings.SET.jumbo14 = 0 end
+      AetheryteHelper.SaveSettings()
+      GUI:EndGroup()
       
---  else
---      AetheryteHelper.Drawhelp(kinokoProject.HELP.entext)
- 
-  ----  
---  end
---end
+      GUI:Spacing()
+      
+      GUI:BeginGroup()
+      GUI:Text("2nd--150MGP---------------------------------------")
+      GUI:EndGroup()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("random",mushJumbocactpotrandom2)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+         if (GUI:IsMouseClicked(0)) then
+         mushJumbocactpotrandom2 = not mushJumbocactpotrandom2
+         mushGSjcpstep = 0
+        end   
+        if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("ランダム番号で購入します")
+        end 
+      end
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo21 = GUI:InputInt("###21",AetheryteHelper.settings.SET.jumbo21,1,1)
+      if AetheryteHelper.settings.SET.jumbo21 < 0 then AetheryteHelper.settings.SET.jumbo21 = 9 end
+      if AetheryteHelper.settings.SET.jumbo21 > 9 then AetheryteHelper.settings.SET.jumbo21 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo22 = GUI:InputInt("###22",AetheryteHelper.settings.SET.jumbo22,1,1)
+      if AetheryteHelper.settings.SET.jumbo22 < 0 then AetheryteHelper.settings.SET.jumbo22 = 9 end
+      if AetheryteHelper.settings.SET.jumbo22 > 9 then AetheryteHelper.settings.SET.jumbo22 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo23 = GUI:InputInt("###23",AetheryteHelper.settings.SET.jumbo23,1,1)
+      if AetheryteHelper.settings.SET.jumbo23 < 0 then AetheryteHelper.settings.SET.jumbo23= 9 end
+      if AetheryteHelper.settings.SET.jumbo23 > 9 then AetheryteHelper.settings.SET.jumbo23 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo24 = GUI:InputInt("###24",AetheryteHelper.settings.SET.jumbo24,1,1)
+      if AetheryteHelper.settings.SET.jumbo24 < 0 then AetheryteHelper.settings.SET.jumbo24 = 9 end
+      if AetheryteHelper.settings.SET.jumbo24 > 9 then AetheryteHelper.settings.SET.jumbo24 = 0 end
+      AetheryteHelper.SaveSettings()
+      GUI:EndGroup()
+
+
+      GUI:Spacing()
+      
+      GUI:BeginGroup()
+      GUI:Text("3rd--200MGP---------------------------------------")
+      GUI:EndGroup()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("random",mushJumbocactpotrandom3)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+         if (GUI:IsMouseClicked(0)) then
+         mushJumbocactpotrandom3 = not mushJumbocactpotrandom3
+         mushGSjcpstep = 0
+        end   
+        if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("ランダム番号で購入します")
+        end 
+     end
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo31 = GUI:InputInt("###31",AetheryteHelper.settings.SET.jumbo31,1,1)
+      if AetheryteHelper.settings.SET.jumbo31 < 0 then AetheryteHelper.settings.SET.jumbo31 = 9 end
+      if AetheryteHelper.settings.SET.jumbo31 > 9 then AetheryteHelper.settings.SET.jumbo31 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo32 = GUI:InputInt("###32",AetheryteHelper.settings.SET.jumbo32,1,1)
+      if AetheryteHelper.settings.SET.jumbo32 < 0 then AetheryteHelper.settings.SET.jumbo32 = 9 end
+      if AetheryteHelper.settings.SET.jumbo32 > 9 then AetheryteHelper.settings.SET.jumbo32 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo33 = GUI:InputInt("###33",AetheryteHelper.settings.SET.jumbo33,1,1)
+      if AetheryteHelper.settings.SET.jumbo33 < 0 then AetheryteHelper.settings.SET.jumbo33 = 9 end
+      if AetheryteHelper.settings.SET.jumbo33 > 9 then AetheryteHelper.settings.SET.jumbo33 = 0 end
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AetheryteHelper.settings.SET.jumbo34 = GUI:InputInt("###34",AetheryteHelper.settings.SET.jumbo34,1,1)
+      if AetheryteHelper.settings.SET.jumbo34 < 0 then AetheryteHelper.settings.SET.jumbo34 = 9 end
+      if AetheryteHelper.settings.SET.jumbo34 > 9 then AetheryteHelper.settings.SET.jumbo34 = 0 end
+      AetheryteHelper.SaveSettings()
+      GUI:EndGroup()
+
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:Checkbox("ticket purchases",mushJumbocactpothelper)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+         if (GUI:IsMouseClicked(0)) then
+         mushJumbocactpothelper = not mushJumbocactpothelper
+         mushGSjcpstep = 0
+        end   
+        if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("ジャンボくじテンダーを3枚買います")
+        end 
+      end
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:TextColored(1,0,0,1,"[[Warning]]")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+          GUI:SetTooltip(" I only get one chance a week,\nand I haven't been able to test much.\nIf it does not work well, please report it.")
+      if (GUI:IsMouseDown(1)) then
+          GUI:SetTooltip("週一しかテストのチャンスがなく\nうまく動作しない可能性は充分あります\nうまく動作しない場合教えて下さい")
+      end 
+      end
+
+
+    end        
+    GUI:End()
+    
+  end
+  
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --desyunth ilset tree GUI
@@ -1963,8 +2177,8 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
   end
      GUI:Spacing()
      GUI:Separator()
-     GUI:BeginGroup()
      GUI:Spacing()
+     GUI:BeginGroup()
      GUI:Text("GCexchange option")
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
@@ -1976,25 +2190,179 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:Spacing()
      GUI:Separator()
      GUI:Spacing()
+ 
+     GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
-     GUI:TextColored(1,0,0,1,"wip")
+     GUI:Checkbox("Trun in", sealstoitem )
      GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          sealstoitem = not sealstoitem
+          mushtoItemstep = 0
+        end
+       GUI:SetTooltip("Trun in")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("軍票をアイテムに交換")
+       end
+     end
+     GUI:SameLine(130)
+     GUI:AlignFirstTextHeightToWidgets()
+     GUI:BeginGroup()
+     GUI:Checkbox("adjust off", mushloopmode )
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          mushloopmode = not mushloopmode
+        end
+       GUI:SetTooltip("Quantity adjustment off")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("現在の軍票所持量で交換数量の上限を決めず\n交換開始軍票を数量の上限にします")
+       end
+     end
+     GUI:Spacing()
+     GUI:BeginGroup()
+     GUI:Text("Start amount")
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("amount to start trun in")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("軍票がこれ以上になると交換を開始")
+       end
+     end
+     
+     GUI:AlignFirstTextHeightToWidgets()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(120)
+     AetheryteHelper.settings.SET.syojigunpyou = GUI:InputInt("seals",AetheryteHelper.settings.SET.syojigunpyou,100,10000)
+     AetheryteHelper.SaveSettings()
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("enter 0 to get the max value")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("0を入力すると最大値になります")
+       end
+     end
+     for k,v in pairs(mushPlayerGCrank) do
+     if (k == Player.GrandCompanyRank) then mushmaxseal = v
+     if AetheryteHelper.settings.SET.syojigunpyou < 1 then AetheryteHelper.settings.SET.syojigunpyou = tonumber(mushmaxseal.max) end
+     if AetheryteHelper.settings.SET.syojigunpyou > tonumber(mushmaxseal.max) then AetheryteHelper.settings.SET.syojigunpyou = tonumber(mushmaxseal.max) end
+     end
+     end
+     GUI:Spacing()
+     GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
      GUI:PushItemWidth(80)
-     hosiikazu = GUI:InputInt("Quantity",hosiikazu,1,500)
-     if hosiikazu > 999 then hosiikazu = 999 end  
-     if hosiikazu < 1 then hosiikazu = 1 end
+     AetheryteHelper.settings.SET.hosiikazu = GUI:InputInt("Quantity",AetheryteHelper.settings.SET.hosiikazu,1,10000)
+     AetheryteHelper.SaveSettings()
      GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("number want(auto adjustment)")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("交換数(自動で最大値になります)")
+       end
+     end
+     GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
-     GUI:PushItemWidth(150)
+     GUI:PushItemWidth(170)
      if language == 0 then
-     koukanhin = GUI:Combo("item",koukanhin,GCexchangeItems.jp,5)
-     else koukanhin = GUI:Combo("item",koukanhin,GCexchangeItems.En,5)
+     AetheryteHelper.settings.SET.koukanhin = GUI:Combo("",AetheryteHelper.settings.SET.koukanhin,GCexchangeItems.jp,5)
+     AetheryteHelper.SaveSettings()
+     else 
+     AetheryteHelper.settings.SET.koukanhin = GUI:Combo("",AetheryteHelper.settings.SET.koukanhin,GCexchangeItems.En,5)   
+     AetheryteHelper.SaveSettings()
      end
      GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("Note that if you do not meet GC rank,\nyou cannot trun in")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("交換に必要なGCランクに満たないものを選ぶと\nチェックが外れます")
+       end
+     end
      GUI:Spacing()
+     if AetheryteHelper.settings.SET.koukanhin == 1 and Player.GrandCompanyRank < 1 then                           
+        sealstoitem = false
+     elseif AetheryteHelper.settings.SET.koukanhin == 2 and Player.GrandCompanyRank < 1 then 
+        sealstoitem = false
+     elseif AetheryteHelper.settings.SET.koukanhin == 3 and Player.GrandCompanyRank < 9 then 
+        sealstoitem = false
+     elseif AetheryteHelper.settings.SET.koukanhin == 4 and Player.GrandCompanyRank < 11 then 
+        sealstoitem = false
+     elseif AetheryteHelper.settings.SET.koukanhin == 5 and Player.GrandCompanyRank < 11 then 
+        sealstoitem = false
+     elseif AetheryteHelper.settings.SET.koukanhin == 6 and Player.GrandCompanyRank < 10 then 
+        sealstoitem = false
+     end   
+     if AetheryteHelper.settings.SET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AetheryteHelper.settings.SET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AetheryteHelper.settings.SET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AetheryteHelper.settings.SET.selectGC == 4 then mushGseals  = nil end 
+     local mushcost = GCexchangeItems.cost[AetheryteHelper.settings.SET.koukanhin]
+     if mushGseals ~= nil then
+     if mushGseals.count < 200 then AetheryteHelper.settings.SET.hosiikazu = 0 end
+     if (mushloopmode == false) then
+      while (mushcost * AetheryteHelper.settings.SET.hosiikazu ) <  mushGseals.count do AetheryteHelper.settings.SET.hosiikazu = AetheryteHelper.settings.SET.hosiikazu + 1 end
+      if mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) end
+     else
+      if mushGseals.count >= 200 and AetheryteHelper.settings.SET.hosiikazu < 0 then AetheryteHelper.settings.SET.hosiikazu = 450
+      elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  AetheryteHelper.settings.SET.syojigunpyou then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) 
+      end
+     end
+
+     GUI:BeginGroup()
+     GUI:TextColored(1,1,0,1,"COST:"..mushcost)
+     GUI:EndGroup()
+     GUI:SameLine(100)
+     GUI:BeginGroup()
+     if mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then
+     GUI:TextColored(1,0,0,1,mushcost * AetheryteHelper.settings.SET.hosiikazu.."/"..mushGseals.count)
+     else GUI:TextColored(0,1,1,1,mushcost * AetheryteHelper.settings.SET.hosiikazu.."/"..mushGseals.count) end
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("Required seals/have seals")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("交換に必要な軍票/現在の軍票")
+       end
+     end
+     if AetheryteHelper.settings.SET.syojigunpyou <= mushGseals.count then mushtruninGCitem = true
+     elseif AetheryteHelper.settings.SET.syojigunpyou > mushGseals.count then mushtruninGCitem = false 
+     end
+     if mushcost * AetheryteHelper.settings.SET.hosiikazu <=  mushGseals.count then mushtruninGCseals = true
+     elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then mushtruninGCseals = false 
+     end
+     elseif mushGseals == nil then
+     if (mushloopmode == false) then
+      if AetheryteHelper.settings.SET.hosiikazu < 0 then AetheryteHelper.settings.SET.hosiikazu = 450
+      elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  0 then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) 
+      end
+     else
+      if AetheryteHelper.settings.SET.hosiikazu < 0 then AetheryteHelper.settings.SET.hosiikazu = 450
+      elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  AetheryteHelper.settings.SET.syojigunpyou then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) 
+      end
+     end
 
 
+     GUI:BeginGroup()
+     GUI:TextColored(1,1,0,1,"COST:"..mushcost)
+     GUI:EndGroup()
+     GUI:SameLine(100)
+     GUI:BeginGroup()
+     GUI:TextColored(1,0,0,1,mushcost * AetheryteHelper.settings.SET.hosiikazu.."/"..0)
+     GUI:EndGroup()
+     if (GUI:IsItemHovered()) then
+       GUI:SetTooltip("Required seals/have seals")
+       if (GUI:IsMouseDown(1)) then
+       GUI:SetTooltip("交換に必要な軍票/現在の軍票")
+       end
+     end
+     end
+     mushitemid = GCexchangeItems.id[AetheryteHelper.settings.SET.koukanhin]
+     mushhosiikazu = AetheryteHelper.settings.SET.hosiikazu
+
+
+    
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2222,7 +2590,6 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
         Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
          AetheryteHelper.settings.SET.isSalvageEnabled = false
-        --else AetheryteHelper.settings.SET.isSalvageEnabled = true
         end
       end
       GUI:Spacing()
@@ -2272,21 +2639,6 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       end
       GUI:Spacing()
 
---[[  GUI:BeginGroup()
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:Checkbox("##use option", AetheryteHelper.settings.SET.isExchangeOption)
-      GUI:SameLine()
-      GUI:Text("use option")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isExchangeOption = not AetheryteHelper.settings.SET.isExchangeOption
-        end
-        GUI:SetTooltip("use Option")
-        AetheryteHelper.SaveSettings()
-      end
-      GUI:Spacing()           ]]
       GUI:BeginGroup()
       GUI:Text("---")
       GUI:SameLine()
@@ -2629,6 +2981,7 @@ function AetheryteHelper.DrawCall(event, ticks)
     GUI:End()
   end
   AetheryteHelper.SubWindow()
+  AetheryteHelper.jumboWindow()
 end
 
 
@@ -2781,22 +3134,18 @@ function AetheryteHelper.mushMaintool(Event, ticks)
    end
  end
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --move to GC (beta)
-GCStep = 0
-function AetheryteHelper.movetoCOMPANY()
-  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
-   if (AetheryteHelper.settings.SET.selectGC == 1) then
+function AetheryteHelper.movetoCOMPANYlimsa()
          if( Player.localmapid == 129 ) then GCStep = 0 end    
          if( Player.localmapid == 128 ) then GCStep = 3 end    
          if Player.localmapid ~= 129 and Player.localmapid ~= 128  then GCStep = 5 end
-         if ( AutoMoveGC ) then
-       
-              if (GCStep == 0) then
+             if (GCStep == 0) then
                       Player:SetTarget(4298661156)
                       limsaAethe = Player:GetTarget()
                       local pos = limsaAethe.pos
-                      Player:MoveTo(pos.x,pos.y,pos.z,15,true,true)
+                      Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
                       GCStep = 1
                       
               end
@@ -2832,7 +3181,12 @@ function AetheryteHelper.movetoCOMPANY()
                   end
              end
 
-       elseif (AetheryteHelper.settings.SET.selectGC == 2 ) then
+      
+end
+              
+
+---------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.movetoCOMPANYgridania()
               if( Player.localmapid == 132 ) then
                 Player:MoveTo(-66.87,-0.50,-7.71,15,true,true)
                 if Player:IsMoving() then  
@@ -2848,7 +3202,11 @@ function AetheryteHelper.movetoCOMPANY()
                   end
               end  
 
-       elseif (AetheryteHelper.settings.SET.selectGC == 3 ) then
+end
+
+---------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.movetoCOMPANYuldah()
+
               if( Player.localmapid == 130 ) then
                 Player:MoveTo(-140.2,4.10,-106.6,15,true,true)
                 if Player:IsMoving() then  
@@ -2863,26 +3221,15 @@ function AetheryteHelper.movetoCOMPANY()
                   end
                   end
               end  
-       end
-       end        
-  end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.Exchange()
-   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
-
-       if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
-       elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
-       elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
-       else GCexchange = false end
-
-       if (GCexchange)then
-               d("[AetheryteHelper]--Excange step--"..mushEXstep)
+         --d("[AetheryteHelper]--Excange step--"..mushEXstep)
               if( mushEXstep == 0) then
                 
-                 Player:SetTarget(GCID1)  
+                 Player:SetTarget(GCID1)
                  Player:Interact(GCID1)
                  if IsControlOpen("SelectString") then                           
                  GetControl("SelectString"):Action("SelectIndex",0)
@@ -2943,11 +3290,12 @@ function AetheryteHelper.Exchange()
                   if IsControlOpen("SelectString") then
                   UseControlAction("SelectString","Close")
                   Player:ClearTarget()
-                  GCexchange = false 
+                  GCexchange = false
+                  mushEXstep = 0
                   end 
               end
               if Player:GetTarget() == nil then
-              GCexchange = false   
+                 GCexchange = false
               end
               
 
@@ -2955,9 +3303,396 @@ function AetheryteHelper.Exchange()
 
 
  end
-end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--seals to items
+function AetheryteHelper.mushSealstoItem()
+
+     if Player.GrandCompany == 1 then
+      GCID2 = tonumber(mushCD2.limsa)
+        GCexchangeItems.id[6] = 26518
+       elseif Player.GrandCompany == 2 then
+        GCID2 = tonumber(mushCD2.Gridania)
+        GCexchangeItems.id[6] = 26519
+       elseif Player.GrandCompany  == 3 then
+        GCID2 = tonumber(mushCD2.Uldah)
+        GCexchangeItems.id[6] = 26520
+       else sealstoitem = false end
+
+    
+              if( mushtoItemstep == 0) then            
+                 Player:SetTarget(GCID2)  
+                 Player:Interact(GCID2)
+                 if IsControlOpen("GrandCompanyExchange") then
+                 if AetheryteHelper.settings.SET.koukanhin == 1 then                           
+                 mushtoItemstep = 1
+               elseif AetheryteHelper.settings.SET.koukanhin == 2 then 
+                 mushtoItemstep = 10
+               elseif AetheryteHelper.settings.SET.koukanhin == 3 then 
+                 mushtoItemstep = 20
+               elseif AetheryteHelper.settings.SET.koukanhin == 4 then 
+                 mushtoItemstep = 30
+               elseif AetheryteHelper.settings.SET.koukanhin == 5 then 
+                 mushtoItemstep = 40
+               elseif AetheryteHelper.settings.SET.koukanhin == 6 then 
+                 mushtoItemstep = 50
+               else
+                sealstoitem = false
+                 end
+                 end
+              end
+
+              if (mushtoItemstep == 1) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetRankIndex",0)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 0 then
+                   mushtoItemstep = 2
+                   else
+                   mushtoItemstep = 1
+                   end
+                end                  
+              end
+               if (mushtoItemstep == 2) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[68].value == 200 then
+                   mushtoItemstep = 3
+                   else
+                   mushtoItemstep = 2
+                   end
+                end                   
+               end
+               if (mushtoItemstep == 3) then
+                 if IsControlOpen("GrandCompanyExchange") then
+                   GetControl("GrandCompanyExchange"):Action("SelectItem",0,mushhosiikazu)
+                   mushtoItemstep = 4
+                 end
+               end
+               if (mushtoItemstep == 4) then
+                if IsControlOpen("SelectYesno") then
+                   UseControlAction("SelectYesno","Yes")
+                   mushtoItemstep = 20
+                end
+               end
+              if (mushtoItemstep == 20) then
+                if IsControlOpen("GrandCompanyExchange") then
+                mushtoItemstep = 99  
+                end
+              end
+
+               if (mushtoItemstep == 10) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                   mushtoItemstep = 11
+                   else
+                   mushtoItemstep = 10
+                   end
+                end                  
+              end
+              if (mushtoItemstep == 11) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[70].value == 600 then
+                   mushtoItemstep = 12
+                   else
+                   mushtoItemstep = 11
+                   end
+                end                   
+               end
+               if (mushtoItemstep == 12) then
+                if IsControlOpen("GrandCompanyExchange") then
+                   GetControl("GrandCompanyExchange"):Action("SelectItem",2,mushhosiikazu)
+                   mushtoItemstep = 4
+                end
+               end
+
+               if (mushtoItemstep == 20) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                   mushtoItemstep = 21
+                   else
+                   mushtoItemstep = 20
+                   end
+                end                  
+              end
+              if (mushtoItemstep == 21) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetTabIndex",4)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[69].value == 7000 then
+                   mushtoItemstep = 22
+                   else
+                   mushtoItemstep = 21
+                   end
+                end                   
+               end
+               if (mushtoItemstep == 22) then
+                if IsControlOpen("GrandCompanyExchange") then
+                   GetControl("GrandCompanyExchange"):Action("SelectItem",1,mushhosiikazu)
+                   mushtoItemstep = 4
+                end
+               end
+
+               if (mushtoItemstep == 30) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                   mushtoItemstep = 31
+                   else
+                   mushtoItemstep = 30
+                   end
+                end                  
+              end
+              if (mushtoItemstep == 31) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[103].value == 20000 then
+                   mushtoItemstep = 32
+                   else
+                   mushtoItemstep = 31
+                   end
+                end                   
+               end
+               if (mushtoItemstep == 32) then
+                if IsControlOpen("GrandCompanyExchange") then
+                   GetControl("GrandCompanyExchange"):Action("SelectItem",35,mushhosiikazu)
+                   mushtoItemstep = 4
+                end
+               end
+
+               if (mushtoItemstep == 40) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                   mushtoItemstep = 41
+                   else
+                   mushtoItemstep = 40
+                   end
+                end                  
+              end
+              if (mushtoItemstep == 41) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[104].value == 20000 then
+                   mushtoItemstep = 42
+                   else
+                   mushtoItemstep = 41
+                   end
+                end                   
+               end
+               if (mushtoItemstep == 42) then
+                if IsControlOpen("GrandCompanyExchange") then
+                   GetControl("GrandCompanyExchange"):Action("SelectItem",36,mushhosiikazu)
+                   mushtoItemstep = 4
+                end
+               end
+
+               if (mushtoItemstep == 50) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                   mushtoItemstep = 51
+                   else
+                   mushtoItemstep = 50
+                   end
+                end                  
+              end
+              if (mushtoItemstep == 51) then
+                if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                   UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                   if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 20000 then
+                   mushtoItemstep = 52
+                   else
+                   mushtoItemstep = 51
+                   end
+                end                   
+               end
+               if (mushtoItemstep == 52) then
+                if IsControlOpen("GrandCompanyExchange") then
+                   GetControl("GrandCompanyExchange"):Action("SelectItem",29,mushhosiikazu)
+                   mushtoItemstep = 4
+                end
+               end
+
+              if (mushtoItemstep == 99) then
+                if IsControlOpen("GrandCompanyExchange") then
+                UseControlAction("GrandCompanyExchange","Close")  
+                end
+                Player:ClearTarget()
+                sealstoitem = false
+                mushtoItemstep = 0
+              end
+
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--
+function AetheryteHelper.Jumbocactpothelper()
+    local jbc11 = AetheryteHelper.settings.SET.jumbo11
+    local jbc12 = AetheryteHelper.settings.SET.jumbo12
+    local jbc13 = AetheryteHelper.settings.SET.jumbo13
+    local jbc14 = AetheryteHelper.settings.SET.jumbo14
+    local jbc21 = AetheryteHelper.settings.SET.jumbo21
+    local jbc22 = AetheryteHelper.settings.SET.jumbo22
+    local jbc23 = AetheryteHelper.settings.SET.jumbo23
+    local jbc24 = AetheryteHelper.settings.SET.jumbo24
+    local jbc31 = AetheryteHelper.settings.SET.jumbo31
+    local jbc32 = AetheryteHelper.settings.SET.jumbo32
+    local jbc33 = AetheryteHelper.settings.SET.jumbo33
+    local jbc34 = AetheryteHelper.settings.SET.jumbo34
+
+
+
+     if mushGSjcpstep == 0 then
+      Player:SetTarget(4299949120)
+      Player:Interact(4299949120)
+      mushGSjcpstep = 1
+      d("mushGSjcpstep"..mushGSjcpstep)
+     end
+
+     if mushGSjcpstep == 1 then
+       if IsControlOpen("Talk") then                           
+          UseControlAction("Talk", "Close")
+          mushGSjcpstep = 2
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 2 then
+       if IsControlOpen("SelectString") then                           
+          UseControlAction("SelectString", "SelectIndex",0)
+          mushGSjcpstep = 3
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+
+     if mushGSjcpstep == 3 then
+       if IsControlOpen("LotteryWeeklyInput")then 
+          mushGSjcpstep = 4
+       elseif IsControlOpen("LotteryWeeklyRewardList") then 
+          mushGSjcpstep = 11
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+
+     if mushGSjcpstep == 4 then
+       if IsControlOpen("LotteryWeeklyInput") then
+          if(TimeSince(lastUpdatePulse) > 3000) then
+            if mushJumbocactpotrandom1 == true then
+            GetControl("LotteryWeeklyInput"):PushButton(25,2)
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 5
+            else
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc11+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc12+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc13+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc14+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 5
+            end
+         end
+       end
+      d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 5 then
+         if IsControlOpen("SelectYesno") then
+         UseControlAction("SelectYesno","Yes")
+         mushGSjcpstep = 5
+         elseif IsControlOpen("LotteryWeeklyInput") then
+         mushGSjcpstep = 6
+         end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 6 then
+       if IsControlOpen("LotteryWeeklyInput") then
+         if(TimeSince(lastUpdatePulse) > 3000) then
+            if mushJumbocactpotrandom2 == true then
+            GetControl("LotteryWeeklyInput"):PushButton(25,2)
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 7
+            else
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc21+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc22+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc23+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc24+8)
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 7
+            end
+         end
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 7 then
+         if IsControlOpen("SelectYesno") then
+         mushGSjcpstep = 8
+         end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 8 then
+         if IsControlOpen("SelectYesno") then
+         UseControlAction("SelectYesno","Yes")
+         mushGSjcpstep = 8
+         elseif IsControlOpen("LotteryWeeklyInput") then 
+          mushGSjcpstep = 9
+         end
+         d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 9 then
+       if IsControlOpen("LotteryWeeklyInput") then
+          if(TimeSince(lastUpdatePulse) > 3000) then
+             if mushJumbocactpotrandom1 == true then
+             GetControl("LotteryWeeklyInput"):PushButton(25,2)
+             GetControl("LotteryWeeklyInput"):PushButton(25,1)
+             mushGSjcpstep = 10
+             else
+             GetControl("LotteryWeeklyInput"):PushButton(25,jbc31+8)
+             GetControl("LotteryWeeklyInput"):PushButton(25,jbc32+8)
+             GetControl("LotteryWeeklyInput"):PushButton(25,jbc33+8)
+             GetControl("LotteryWeeklyInput"):PushButton(25,jbc34+8)
+             GetControl("LotteryWeeklyInput"):PushButton(25,1)
+             mushGSjcpstep = 10
+             end
+           end
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 10 then
+         if IsControlOpen("SelectYesno") then
+         UseControlAction("SelectYesno","Yes")
+         mushGSjcpstep = 10
+         elseif IsControlOpen("SelectString") then 
+         mushGSjcpstep = 12
+         end
+         d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 11 then
+       if IsControlOpen("LotteryWeeklyRewardList") then                           
+          UseControlAction("LotteryWeeklyRewardList", "Close")
+          mushGSjcpstep = 12
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 12 then
+          if IsControlOpen("SelectString") then                           
+             UseControlAction("SelectString", "SelectIndex",4)
+             mushGSjcpstep = 13
+          end
+       d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 13 then
+       if IsControlOpen("Talk") then                           
+          UseControlAction("Talk", "Destroy")
+       end
+       d("mushGSjcpstep"..mushGSjcpstep)
+       mushJumbocactpothelper = false
+     end
+
+
+
+
+
+       
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Desynthesis filter
@@ -3981,13 +4716,48 @@ end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
--- materia function
+-- sub function
 
 function AetheryteHelper.mushsubtool(Event, ticks)
-    AetheryteHelper.movetoCOMPANY()
-    AetheryteHelper.Exchange()  
     AetheryteHelper.Inventoryfree()
-      
+    
+    if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
+
+       if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
+       elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
+       elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
+       else GCexchange = false end
+
+       if (GCexchange)then
+       AetheryteHelper.Exchange()
+
+
+       end
+     end
+
+   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
+       if ( AutoMoveGC ) then
+       if (AetheryteHelper.settings.SET.selectGC == 1) then
+              AetheryteHelper.movetoCOMPANYlimsa()
+       elseif (AetheryteHelper.settings.SET.selectGC == 2 ) then
+             AetheryteHelper.movetoCOMPANYgridania()
+       elseif (AetheryteHelper.settings.SET.selectGC == 3 ) then
+             AetheryteHelper.movetoCOMPANYuldah()
+
+       end
+       end
+   end
+
+   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
+       if (sealstoitem == true and mushtruninGCitem == true and mushtruninGCseals == true) then
+       AetheryteHelper.mushSealstoItem()
+       end
+   end
+   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1000) then
+       if (mushJumbocactpothelper) then
+       AetheryteHelper.Jumbocactpothelper()
+       end
+   end
   if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
   if (Player.CurrentAction ~= 92) then
@@ -4184,9 +4954,8 @@ function AetheryteHelper.mushsubtool(Event, ticks)
         end
      end
    end    
-end
-end
-
+   end
+   end
     
 end  
 ---------------------------------------------------------------------------------------------------------------------------------------------------
