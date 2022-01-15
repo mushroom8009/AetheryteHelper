@@ -971,7 +971,7 @@ end
 function AetheryteHelper.DrawadWIP()
       GUI:Spacing(10)
       GUI:BeginGroup()
-      GUI:Button("Jambo cactpot assist",160,20)
+      GUI:Button("Jumbo cactpot assist",160,20)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
