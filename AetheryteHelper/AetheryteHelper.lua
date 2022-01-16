@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.3.2",   
+      Version =         "1.3.3",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -85,6 +85,7 @@ local kinokoProject = {
                       "[1.3.0] - add trun in & Organize code(just a little bit)",
                       "[1.3.1] - add Jumbo cactpot assist",
                       "[1.3.2] - bug fix",
+                      "[1.3.3] - add auto move to Main tool & fewer error message in game.",
 
 
                     },
@@ -3012,20 +3013,35 @@ function AetheryteHelper.insselect(Event, ticks)
                       end
               end
               if autheStep == 0 then
-                  if (AetheryteHelper.settings.SET.nohousing)then autheStep = 4
+                  if (AetheryteHelper.settings.SET.nohousing)then autheStep = 5
                   else autheStep = 1
                   end
               end
               if autheStep == 1 then
                       Player:SetTarget(aetheID)
+                      local pos = Player:GetTarget().pos                    
+                      if Player:GetTarget().Distance < 10 then
                       Player:Interact(aetheID)
-                      UseControlAction("Aetheryte") 
-                      if IsControlOpen("SelectString") then
-                         GetControl("SelectString"):Action("SelectIndex",modechg)
-                         if (modechg == 3) then autheStep = 2 else autheStep = 3 end
+                      autheStep = 2
+                      elseif Player:GetTarget().Distance > 10 then 
+                      Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                      if Player:GetTarget().Distance < 10 then
+                         if ( Player.IsMounted == true ) then
+                         ActionList:Get(5,23):Cast()
+                         end
+                      Player:Interact(aetheID)
+                      autheStep = 2
                       end
+                      end                      
               end
               if (autheStep == 2) then                      
+                      if IsControlOpen("SelectString") then
+                         GetControl("SelectString"):Action("SelectIndex",modechg)
+                         if (modechg == 3) then autheStep = 3 else autheStep = 4 end
+                      end
+              end
+              if (autheStep == 3) then
+                        Player:Stop()                      
                      if IsControlOpen("SelectYesno") then
                             UseControlAction("SelectYesno","No")
                             selectins = not selectins
@@ -3041,9 +3057,8 @@ function AetheryteHelper.insselect(Event, ticks)
                             autheStep = 0
                       end
               end
-              if autheStep == 3 then
---                        Player:SetTarget(aetheID)
---                        Player:Interact(aetheID)
+              if autheStep == 4 then
+                        Player:Stop()
                         GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
                      if (isServer < 2) then selectins = not selectins end 
                         UseControlAction("SelectYesno")
@@ -3061,16 +3076,17 @@ function AetheryteHelper.insselect(Event, ticks)
                            autheStep = 0                           
                       end
               end
-              if autheStep == 4 then
+              if autheStep == 5 then
+                      Player:Stop()
                       Player:SetTarget(aetheID)
                       Player:Interact(aetheID)
                       UseControlAction("Aetheryte") 
                       if IsControlOpen("SelectString") then
                          GetControl("SelectString"):Action("SelectIndex",1)
-                         autheStep = 5
+                         autheStep = 6
                       end
               end
-              if autheStep == 5 then
+              if autheStep == 6 then
                         GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
                         UseControlAction("SelectYesno")
                      if IsControlOpen("SelectYesno") then
@@ -3078,13 +3094,13 @@ function AetheryteHelper.insselect(Event, ticks)
                            moveSVR = not moveSVR
                            selectins = not selectins
                            autooff = not autooff
-                           autheStep = 3
+                           autheStep = 4
                      elseif Player:GetTarget() == nil then
                            isTime = Now()
                            Player:SetTarget(aetheID)
                            Player:Interact(aetheID)
                            isServer = 1
-                           autheStep = 4                           
+                           autheStep = 5                           
                       end
               end
            
@@ -3146,9 +3162,11 @@ function AetheryteHelper.movetoCOMPANYlimsa()
                       Player:SetTarget(4298661156)
                       limsaAethe = Player:GetTarget()
                       local pos = limsaAethe.pos
+                      local dis = limsaAethe.Distance
                       Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                      if dis < 5 then
                       GCStep = 1
-                      
+                      end
               end
               if (GCStep == 1) then
                      Player:Interact(4298661156)                      
@@ -3231,7 +3249,9 @@ function AetheryteHelper.Exchange()
               if( mushEXstep == 0) then
                 
                  Player:SetTarget(GCID1)
+                 if Player:GetTarget().Distance < 6 then
                  Player:Interact(GCID1)
+                 end
                  if IsControlOpen("SelectString") then                           
                  GetControl("SelectString"):Action("SelectIndex",0)
                  mushEXstep = 1
@@ -3322,8 +3342,10 @@ function AetheryteHelper.mushSealstoItem()
 
     
               if( mushtoItemstep == 0) then            
-                 Player:SetTarget(GCID2)  
+                 Player:SetTarget(GCID2)
+                 if Player:GetTarget().Distance < 6 then  
                  Player:Interact(GCID2)
+                 end
                  if IsControlOpen("GrandCompanyExchange") then
                  if AetheryteHelper.settings.SET.koukanhin == 1 then                           
                  mushtoItemstep = 1
@@ -3547,7 +3569,9 @@ function AetheryteHelper.Jumbocactpothelper()
 
      if mushGSjcpstep == 0 then
       Player:SetTarget(4299949120)
+      if Player:GetTarget().Distance < 6 then
       Player:Interact(4299949120)
+      end
       mushGSjcpstep = 1
       d("mushGSjcpstep"..mushGSjcpstep)
      end
