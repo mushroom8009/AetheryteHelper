@@ -3020,12 +3020,12 @@ function AetheryteHelper.insselect(Event, ticks)
               if autheStep == 1 then
                       Player:SetTarget(aetheID)
                       local pos = Player:GetTarget().pos                    
-                      if Player:GetTarget().Distance < 10 then
+                      if Player:GetTarget().Distance < 8 then
                       Player:Interact(aetheID)
                       autheStep = 2
                       elseif Player:GetTarget().Distance > 10 then 
                       Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
-                      if Player:GetTarget().Distance < 10 then
+                      if Player:GetTarget().Distance < 8 then
                          if ( Player.IsMounted == true ) then
                          ActionList:Get(5,23):Cast()
                          end
