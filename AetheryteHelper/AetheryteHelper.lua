@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.3.1",   
+      Version =         "1.3.2",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -84,6 +84,7 @@ local kinokoProject = {
                       "[1.2.2] - desynth bug fix & add Trust mode",
                       "[1.3.0] - add trun in & Organize code(just a little bit)",
                       "[1.3.1] - add Jumbo cactpot assist",
+                      "[1.3.2] - bug fix",
 
 
                     },
@@ -3371,10 +3372,10 @@ function AetheryteHelper.mushSealstoItem()
                if (mushtoItemstep == 4) then
                 if IsControlOpen("SelectYesno") then
                    UseControlAction("SelectYesno","Yes")
-                   mushtoItemstep = 20
+                   mushtoItemstep = 98
                 end
                end
-              if (mushtoItemstep == 20) then
+              if (mushtoItemstep == 98) then
                 if IsControlOpen("GrandCompanyExchange") then
                 mushtoItemstep = 99  
                 end
@@ -3501,7 +3502,7 @@ function AetheryteHelper.mushSealstoItem()
               if (mushtoItemstep == 51) then
                 if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                    UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
-                   if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 20000 then
+                   if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 2000 then
                    mushtoItemstep = 52
                    else
                    mushtoItemstep = 51
