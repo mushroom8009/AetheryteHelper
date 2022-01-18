@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.3.3",   
+      Version =         "1.3.5",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -86,6 +86,8 @@ local kinokoProject = {
                       "[1.3.1] - add Jumbo cactpot assist",
                       "[1.3.2] - bug fix",
                       "[1.3.3] - add auto move to Main tool & fewer error message in game.",
+                      "[1.3.4] - fine tuning of auto move (Mare Lamentorum)",
+                      "[1.3.5] - add Retrieve Materia & Exchange less max",
 
 
                     },
@@ -500,7 +502,7 @@ local mushtoItemstep = 0
 --subtool local
 local lastUpdatePulse = 0
 ----------------------------------------
---wip local
+--subtool local
 local PTadd = false
 local MinionPath = GetStartupPath()
 local LuaPath = GetLuaModsPath()
@@ -517,7 +519,8 @@ local mushJumbocactpotrandom1 = false
 local mushJumbocactpotrandom2 = false
 local mushJumbocactpotrandom3 = false
 local mushGSjcpstep = 0
-
+local GCexlessmax = false
+local Remateria = false
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1462,7 +1465,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            end
       GUI:SetTooltip("Necklace")              
       if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("胴装備")
+      GUI:SetTooltip("首アクセ")
       end
       end
 
@@ -2640,26 +2643,25 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         end
       end
       GUI:Spacing()
-
       GUI:BeginGroup()
       GUI:Text("---")
       GUI:SameLine()
       GUI:Checkbox("##AutoMoveGC", AutoMoveGC)
       GUI:SameLine()
-      GUI:Text("Auto Move to GC(Beta)")
+      GUI:Text("Auto Move to GC")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AutoMoveGC = not AutoMoveGC
           AetheryteHelper.settings.SET.isSalvageEnabled = false
         end
-        GUI:SetTooltip("Trial\nYou'd better move yourself")
+        GUI:SetTooltip("You'd better move yourself")
         AetheryteHelper.SaveSettings()
         if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("自動でGCに移動して納品します\n試験運用中：自分で移動したほうがいいときもある")
+        GUI:SetTooltip("自動でGCに移動して納品します\n自分で移動したほうがいいときもある")
         end
       end
-      GUI:SameLine(230)
+      GUI:SameLine(200)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:Button("X",20,20)
@@ -2674,7 +2676,47 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         GUI:SetTooltip("自動移動を停止")
         end
       end
-      GUI:EndGroup()  
+      GUI:EndGroup()
+
+if GUI:TreeNode("check before exchange") then
+      GUI:BeginGroup() 
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:Checkbox("##lessmax", GCexlessmax)
+      GUI:SameLine()
+      GUI:Text("less max")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          GCexlessmax = not GCexlessmax
+        end
+        GUI:SetTooltip("not done exchange over max seals")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("軍票の最大を超えて納品しない")
+        end
+      end
+      GUI:Spacing()
+      GUI:BeginGroup() 
+      GUI:Text("---")
+      GUI:SameLine()
+      GUI:Checkbox("##Remateria", Remateria)
+      GUI:SameLine()
+      GUI:TextColored(1,0,0,1,"Retrieve Materia")
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+          Remateria = not Remateria
+        end
+        GUI:SetTooltip("Remove materia from equipment in inventory")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("カバンの中の装備のマテリアを外す")
+        end
+      end
+      GUI:TreePop()
+      end
+
+
+
       GUI:Spacing()           
       AetheryteHelper.GCseals()
       GUI:Spacing()
@@ -2991,7 +3033,7 @@ end
 -- main function
 
 function AetheryteHelper.insselect(Event, ticks)
---d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
+d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
   if autheVar == nil then
     autheVar = true
     autheStep = 0
@@ -3019,22 +3061,27 @@ function AetheryteHelper.insselect(Event, ticks)
               end
               if autheStep == 1 then
                       Player:SetTarget(aetheID)
-                      local pos = Player:GetTarget().pos                    
-                      if Player:GetTarget().Distance < 8 then
-                      Player:Interact(aetheID)
+                      local pos = Player:GetTarget().pos
+                   if Player.localmapid == 959 then
+                      if Player:GetTarget().Distance < 10 and Player.IsMounted == true then 
+                      autheStep = 99
+                      elseif Player:GetTarget().Distance < 10 and Player.IsMounted == false then
                       autheStep = 2
-                      elseif Player:GetTarget().Distance > 10 then 
+                      elseif Player:GetTarget().Distance > 10 and Player.IsMounted == false then 
                       Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
-                      if Player:GetTarget().Distance < 8 then
-                         if ( Player.IsMounted == true ) then
-                         ActionList:Get(5,23):Cast()
-                         end
-                      Player:Interact(aetheID)
-                      autheStep = 2
                       end
-                      end                      
+                   else
+                      if Player:GetTarget().Distance < 6.5 and Player.IsMounted == true then 
+                      autheStep = 99
+                      elseif Player:GetTarget().Distance < 6.5 and Player.IsMounted == false then
+                      autheStep = 2
+                      elseif Player:GetTarget().Distance > 6.5 and Player.IsMounted == false then 
+                      Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                      end
+                   end
               end
-              if (autheStep == 2) then                      
+              if (autheStep == 2) then
+                      Player:Interact(aetheID)              
                       if IsControlOpen("SelectString") then
                          GetControl("SelectString"):Action("SelectIndex",modechg)
                          if (modechg == 3) then autheStep = 3 else autheStep = 4 end
@@ -3103,12 +3150,19 @@ function AetheryteHelper.insselect(Event, ticks)
                            autheStep = 5                           
                       end
               end
+              if autheStep == 99 then
+                  if Player.IsMounted == true then
+                  ActionList:Get(5,23):Cast()
+                  return
+                  end
+                  if Player.IsMounted == false then
+                  autheStep = 1
+                  end                  
+              end
            
       if Player:GetTarget() == nil then
          if( autooff ) then
           selectins = not selectins
-        --else
-        --autheStep = 0
          end
          end
       end
@@ -3272,6 +3326,17 @@ function AetheryteHelper.Exchange()
                   end
               end
               if (mushEXstep == 3) then
+                if  GCexlessmax == true then
+                  if IsControlOpen("SelectYesno") then 
+                  UseControlAction("SelectYesno","No")
+                  mushEXstep = 7
+                  elseif GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
+                  mushEXstep = 7
+                  elseif IsControlOpen("GrandCompanySupplyList") then
+                  GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
+                  mushEXstep = 4
+                  end
+                elseif GCexlessmax == false then
                   if IsControlOpen("SelectYesno") then 
                   UseControlAction("SelectYesno","Yes")
                   mushEXstep = 7
@@ -3281,6 +3346,7 @@ function AetheryteHelper.Exchange()
                   GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
                   mushEXstep = 4
                   end
+                end
               end
               if (mushEXstep == 4) then
                   if IsControlOpen("GrandCompanySupplyReward") then
@@ -4819,6 +4885,44 @@ function AetheryteHelper.mushsubtool(Event, ticks)
         end
       end
     end
+
+    if (Remateria) then
+        if mushPbtotal < 1 then
+        Remateria = false
+        end
+        if (Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == false and not IsControlOpen("Trade")) then
+        if (IsControlOpen("MateriaRetrieveDialog")) then
+        UseControlAction("MateriaRetrieveDialog"):PushButton(25,0)
+        return
+        end
+        local bags = {0,1,2,3}
+        for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        local materia = 0
+        for _, item in pairs(ilist) do
+        materia = materia + table.size(item.materias)
+        end
+        if materia == 0 then
+           Remateria = false
+        end
+        for _, item in pairs(ilist) do
+        if table.size(item.materias) > 0 and item.equipslot > 0 and item.requiredlevel > 1 then
+        if ActionList:IsReady() then
+        item:RetrieveMateria()
+        return
+        end
+        end
+        end
+        end
+        end
+        end
+        end
+     end
+
+
     if (AetheryteHelper.settings.SET.DesynthTrust) then
         if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == true ) then
         if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
