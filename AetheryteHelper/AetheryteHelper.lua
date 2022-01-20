@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.4.0",   
+      Version =         "1.4.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -89,6 +89,7 @@ local kinokoProject = {
                       "[1.3.4] - fine tuning of auto move (Mare Lamentorum)",
                       "[1.3.5] - add Retrieve Materia & Exchange less max",
                       "[1.4.0] - please read Readme.txt in UserSettings folder",
+                      "[1.4.1] - AR function was broken, and I fixed it",
 
 
                     },
@@ -3222,7 +3223,7 @@ d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."
                       end
               end
               if autheStep == 99 then
-                  if Player.IsMounted == true then
+                  if Player.IsMounted == true and ActionList:Get(5,23):IsReady() == true then
                   ActionList:Get(5,23):Cast()
                   return
                   end
@@ -4930,7 +4931,7 @@ end
 -- sub function
 
 function AetheryteHelper.mushsubtool(Event, ticks)
-    AetheryteHelper.Inventoryfree()
+    
    
     if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
 
@@ -4967,7 +4968,9 @@ function AetheryteHelper.mushsubtool(Event, ticks)
        AetheryteHelper.Jumbocactpothelper()
        end
    end
-  if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
+
+---------------------------------------------------------------   
+if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 3000) then
     lastUpdatePulse = Now()
   if (Player.CurrentAction ~= 92) then
        if (IsControlOpen("SalvageResult")) then
@@ -5126,7 +5129,7 @@ function AetheryteHelper.mushsubtool(Event, ticks)
                              if sealstoitem == true then
                                 AetheryteHelper.mushSealstoItem()
                                 times = os.time()
-                                if TimeSince(timestamp) > 5000 then
+                                if TimeSince(times) > 5000 then
                                 step = 1
                                 end
                              end
@@ -5207,15 +5210,16 @@ function AetheryteHelper.mushsubtool(Event, ticks)
        end
        end
    end
-
+ end 
+--------------------------------------------------------------
     if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 2000) then
-    lastUpdatePulse = Now()
-    if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 4 and FFXIV_Common_BotRunning == true ) then
+       if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 4 and FFXIV_Common_BotRunning == true ) then
            Player:Stop()
            ml_global_information.ToggleRun()
-      end
-    
-    if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
+       end
+    end
+
+       if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
            if (IsControlOpen("PurifyResult")) then
            UseControlAction("PurifyResult", "Close")
            return
@@ -5228,7 +5232,7 @@ function AetheryteHelper.mushsubtool(Event, ticks)
            UseControlAction("Gathering", "Close")
            Player:ClearTarget()
            end
-           if ( Player.IsMounted == true ) then
+           if Player.IsMounted == true and ActionList:Get(5,23):IsReady() == true then
            ActionList:Get(5,23):Cast()
            return
            end
@@ -5238,20 +5242,22 @@ function AetheryteHelper.mushsubtool(Event, ticks)
              if (table.valid(bag)) then
              local Rlist = bag:GetList()
              if (table.valid(Rlist)) then
-             for _, item in pairs(Rlist) do    
-             if( item.IsCollectable == true and item.IsBinding == true) then
-             item:Purify()
-             return
+             for _, item in pairs(Rlist) do
+             if( item.IsCollectable == true and item.IsBinding == true and item:CanCast(5, 21)) then
+                if(not MIsCasting() and Player.CurrentAction ~= 3191) then
+                item:Purify()
+                return
+                end
              end
              end
              end
              end
              end 
-          if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and mushPbtotal > 4) then
+             if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and mushPbtotal > 4) then
              ml_global_information.ToggleRun()
              end   
         end
-
+        
     
     if (AetheryteHelper.settings.SET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
         if (IsControlOpen("PurifyResult")) then
@@ -5264,20 +5270,22 @@ function AetheryteHelper.mushsubtool(Event, ticks)
         if (table.valid(bag)) then
         local Rlist = bag:GetList()
         if (table.valid(Rlist)) then
-        for _, item in pairs(Rlist) do
+        for _, item in pairs(Rlist) do        
+        if( item.IsCollectable == true and item.IsBinding == true and item:CanCast(5, 21)) then
+           if(not MIsCasting() and Player.CurrentAction ~= 3191) then
+           item:Purify()         
+           return
+           end
+        end
+        end
+        end
+        end
+        end
+   end
 
-        
-        if( item.IsCollectable == true and item.IsBinding == true) then
-         item:Purify()
-        return
-        end
-        end
-        end
-        end
-     end
-   end    
-   end
-   end
+   
+
+   AetheryteHelper.Inventoryfree()
     
 end 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
