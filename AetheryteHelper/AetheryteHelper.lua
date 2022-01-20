@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.3.5",   
+      Version =         "1.4.0",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -88,6 +88,7 @@ local kinokoProject = {
                       "[1.3.3] - add auto move to Main tool & fewer error message in game.",
                       "[1.3.4] - fine tuning of auto move (Mare Lamentorum)",
                       "[1.3.5] - add Retrieve Materia & Exchange less max",
+                      "[1.4.0] - please read Readme.txt in UserSettings folder",
 
 
                     },
@@ -181,6 +182,12 @@ AetheryteHelper.miniGUI = {
 }
 AetheryteHelper.Jumbocactpot = {
   name = "jumbocactpot###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.trustmode = {
+  name = "trustmode(DEMO)###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
@@ -521,6 +528,10 @@ local mushJumbocactpotrandom3 = false
 local mushGSjcpstep = 0
 local GCexlessmax = false
 local Remateria = false
+local mushTrustmode = false
+local Dawncloser = nil
+local times = os.time()
+
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -829,7 +840,18 @@ function AetheryteHelper.Drawinsselect()
       GUI:BeginGroup()
       GUI:Button("i",20,20)
       GUI:EndGroup()
+      if AetheryteHelper.settings.SET.delay == 194 then
             if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AetheryteHelper.trustmode.open = not AetheryteHelper.trustmode.open 
+              end
+              GUI:SetTooltip("Exchange TrustMode")
+              if (GUI:IsMouseDown(1)) then
+              GUI:SetTooltip("HMTrustアドオンでExchange使いたい人向け")
+              end 
+            end
+      else
+      if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
              AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open 
               end
@@ -838,6 +860,7 @@ function AetheryteHelper.Drawinsselect()
               GUI:SetTooltip("別窓でインスタンスの人数が見れます")
               end 
             end
+      end
       GUI:Separator()
       GUI:Spacing()
       --GUI:AlignFirstTextHeightToWidgets()
@@ -1266,6 +1289,50 @@ function AetheryteHelper.jumboWindow()
   
 end
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.TMwindow()
+  if (AetheryteHelper.trustmode.open) then
+    local trustmodeflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+    GUI:SetNextWindowSize(220,100)
+     AetheryteHelper.trustmode.visible, AetheryteHelper.trustmode.open = GUI:Begin('trustmode', AetheryteHelper.trustmode.open,trustmodeflags)
+    if (AetheryteHelper.trustmode.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(1,0,0,1,"Trust Mode(DEMO version)")
+      GUI:EndGroup()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      if language == 0 then
+      GUI:TextColored(1,1,0,1,"冒険者小隊では使えません")
+      else
+      GUI:TextColored(1,1,0,1,"can't use in Squadrons")
+      end
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Checkbox("Exchange on Trust",mushTrustmode)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if GUI:IsMouseDown(0) then              
+        mushTrustmode = not mushTrustmode
+        GCexchange = false
+        sealstoitem = false
+        end
+        GUI:SetTooltip("Enable")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("オン")
+        end 
+      end
+      
+    end        
+    GUI:End()
+    
+  end
+  
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --desyunth ilset tree GUI
@@ -2202,8 +2269,9 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          sealstoitem = not sealstoitem
-          mushtoItemstep = 0
+           sealstoitem = not sealstoitem
+           GCexchange = false
+           mushtoItemstep = 0
         end
        GUI:SetTooltip("Trun in")
        if (GUI:IsMouseDown(1)) then
@@ -2306,8 +2374,8 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      if AetheryteHelper.settings.SET.selectGC == 4 then mushGseals  = nil end 
      local mushcost = GCexchangeItems.cost[AetheryteHelper.settings.SET.koukanhin]
      if mushGseals ~= nil then
-     if mushGseals.count < 200 then AetheryteHelper.settings.SET.hosiikazu = 0 end
      if (mushloopmode == false) then
+     if mushGseals.count < 200 then AetheryteHelper.settings.SET.hosiikazu = 0 end
       while (mushcost * AetheryteHelper.settings.SET.hosiikazu ) <  mushGseals.count do AetheryteHelper.settings.SET.hosiikazu = AetheryteHelper.settings.SET.hosiikazu + 1 end
       if mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) end
      else
@@ -2632,6 +2700,8 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         if (GUI:IsMouseClicked(0)) then
           mushEXstep = 0
           GCexchange = not GCexchange
+          sealstoitem = false
+          if sealstoitem == true then GCexchange = false end
           if Player.GrandCompanyRank < 6 then GCexchange = false end
           if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
           AetheryteHelper.settings.SET.isSalvageEnabled = false
@@ -3026,6 +3096,7 @@ function AetheryteHelper.DrawCall(event, ticks)
   end
   AetheryteHelper.SubWindow()
   AetheryteHelper.jumboWindow()
+  AetheryteHelper.TMwindow()
 end
 
 
@@ -3299,9 +3370,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.Exchange()
-         --d("[AetheryteHelper]--Excange step--"..mushEXstep)
               if( mushEXstep == 0) then
-                
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                  Player:SetTarget(GCID1)
                  if Player:GetTarget().Distance < 6 then
                  Player:Interact(GCID1)
@@ -3314,19 +3384,34 @@ function AetheryteHelper.Exchange()
                  end
               end
               if (mushEXstep == 1) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyList") then
                   GetControl("GrandCompanySupplyList"):Action("SelectCategory",2)
                   mushEXstep = 2
                   end
               end
               if (mushEXstep == 2) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyList") then
                   GetControl("GrandCompanySupplyList"):Action("SelectFilterIndex",2)
                   mushEXstep = 3
                   end
               end
               if (mushEXstep == 3) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                 if  GCexlessmax == true then
+                  if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true) then
+                  if IsControlOpen("SelectYesno") then 
+                  UseControlAction("SelectYesno","No")
+                  mushEXstep = 7
+                  elseif GetControl("GrandCompanySupplyList") == nil then
+                  mushEXstep = 0
+                  elseif IsControlOpen("GrandCompanySupplyList") then
+                  GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
+                  mushEXstep = 4
+                  else mushEXstep = 0
+                  end
+                  else
                   if IsControlOpen("SelectYesno") then 
                   UseControlAction("SelectYesno","No")
                   mushEXstep = 7
@@ -3335,8 +3420,23 @@ function AetheryteHelper.Exchange()
                   elseif IsControlOpen("GrandCompanySupplyList") then
                   GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
                   mushEXstep = 4
+                  else mushEXstep = 0
+                  end
                   end
                 elseif GCexlessmax == false then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
+                  if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true) then
+                  if IsControlOpen("SelectYesno") then 
+                  UseControlAction("SelectYesno","Yes")
+                  mushEXstep = 7
+                  elseif GetControl("GrandCompanySupplyList") == nil then
+                  mushEXstep = 0
+                  elseif IsControlOpen("GrandCompanySupplyList") then
+                  GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
+                  mushEXstep = 4
+                  else mushEXstep = 0
+                  end
+                  else
                   if IsControlOpen("SelectYesno") then 
                   UseControlAction("SelectYesno","Yes")
                   mushEXstep = 7
@@ -3345,10 +3445,13 @@ function AetheryteHelper.Exchange()
                   elseif IsControlOpen("GrandCompanySupplyList") then
                   GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
                   mushEXstep = 4
+                  else mushEXstep = 0
+                  end
                   end
                 end
               end
               if (mushEXstep == 4) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyReward") then
                   GetControl("GrandCompanySupplyReward"):Action("Deliver")
                   mushEXstep = 3
@@ -3358,27 +3461,39 @@ function AetheryteHelper.Exchange()
                   elseif IsControlOpen("Request") then 
                   UseControlAction("Request","Cancel")
                   mushEXstep = 7
+                  else mushEXstep = 0
                   end                
               end
               if (mushEXstep == 5) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyReward") then
                   GetControl("GrandCompanySupplyReward"):Action("Deliver")
                   mushEXstep = 3
+                  else mushEXstep = 0
                   end
                   
               end
               if (mushEXstep == 7) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyList") then
                   UseControlAction("GrandCompanySupplyList","Close")
                   mushEXstep = 8
+                  else mushEXstep = 0
                   end 
               end
               if (mushEXstep == 8) then
+              --d("[AetheryteHelper]--Excange step--"..mushEXstep)
                   if IsControlOpen("SelectString") then
                   UseControlAction("SelectString","Close")
                   Player:ClearTarget()
-                  GCexchange = false
+                  if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true) then
+                  sealstoitem = true
                   mushEXstep = 0
+                  GCexchange = false
+                  else
+                  mushEXstep = 0
+                  GCexchange = false
+                  end
                   end 
               end
               if Player:GetTarget() == nil then
@@ -3405,7 +3520,6 @@ function AetheryteHelper.mushSealstoItem()
         GCID2 = tonumber(mushCD2.Uldah)
         GCexchangeItems.id[6] = 26520
        else sealstoitem = false end
-
     
               if( mushtoItemstep == 0) then            
                  Player:SetTarget(GCID2)
@@ -3609,8 +3723,14 @@ function AetheryteHelper.mushSealstoItem()
                 UseControlAction("GrandCompanyExchange","Close")  
                 end
                 Player:ClearTarget()
+                if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true) then
+                GCexchange = true
                 sealstoitem = false
                 mushtoItemstep = 0
+                else
+                sealstoitem = false
+                mushtoItemstep = 0
+                end
               end
 
 end
@@ -3639,7 +3759,7 @@ function AetheryteHelper.Jumbocactpothelper()
       Player:Interact(4299949120)
       end
       mushGSjcpstep = 1
-      d("mushGSjcpstep"..mushGSjcpstep)
+      --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 1 then
@@ -3647,14 +3767,14 @@ function AetheryteHelper.Jumbocactpothelper()
           UseControlAction("Talk", "Close")
           mushGSjcpstep = 2
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 2 then
        if IsControlOpen("SelectString") then                           
           UseControlAction("SelectString", "SelectIndex",0)
           mushGSjcpstep = 3
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 3 then
@@ -3663,7 +3783,7 @@ function AetheryteHelper.Jumbocactpothelper()
        elseif IsControlOpen("LotteryWeeklyRewardList") then 
           mushGSjcpstep = 11
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 4 then
@@ -3683,7 +3803,7 @@ function AetheryteHelper.Jumbocactpothelper()
             end
          end
        end
-      d("mushGSjcpstep"..mushGSjcpstep)
+      --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 5 then
          if IsControlOpen("SelectYesno") then
@@ -3692,7 +3812,7 @@ function AetheryteHelper.Jumbocactpothelper()
          elseif IsControlOpen("LotteryWeeklyInput") then
          mushGSjcpstep = 6
          end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 6 then
        if IsControlOpen("LotteryWeeklyInput") then
@@ -3711,13 +3831,13 @@ function AetheryteHelper.Jumbocactpothelper()
             end
          end
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 7 then
          if IsControlOpen("SelectYesno") then
          mushGSjcpstep = 8
          end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 8 then
          if IsControlOpen("SelectYesno") then
@@ -3726,7 +3846,7 @@ function AetheryteHelper.Jumbocactpothelper()
          elseif IsControlOpen("LotteryWeeklyInput") then 
           mushGSjcpstep = 9
          end
-         d("mushGSjcpstep"..mushGSjcpstep)
+         --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 9 then
        if IsControlOpen("LotteryWeeklyInput") then
@@ -3745,7 +3865,7 @@ function AetheryteHelper.Jumbocactpothelper()
              end
            end
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 10 then
          if IsControlOpen("SelectYesno") then
@@ -3754,27 +3874,27 @@ function AetheryteHelper.Jumbocactpothelper()
          elseif IsControlOpen("SelectString") then 
          mushGSjcpstep = 12
          end
-         d("mushGSjcpstep"..mushGSjcpstep)
+         --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 11 then
        if IsControlOpen("LotteryWeeklyRewardList") then                           
           UseControlAction("LotteryWeeklyRewardList", "Close")
           mushGSjcpstep = 12
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 12 then
           if IsControlOpen("SelectString") then                           
              UseControlAction("SelectString", "SelectIndex",4)
              mushGSjcpstep = 13
           end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 13 then
        if IsControlOpen("Talk") then                           
           UseControlAction("Talk", "Destroy")
        end
-       d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
        mushJumbocactpothelper = false
      end
 
@@ -4811,7 +4931,7 @@ end
 
 function AetheryteHelper.mushsubtool(Event, ticks)
     AetheryteHelper.Inventoryfree()
-    
+   
     if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 1500) then
 
        if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
@@ -4821,8 +4941,6 @@ function AetheryteHelper.mushsubtool(Event, ticks)
 
        if (GCexchange)then
        AetheryteHelper.Exchange()
-
-
        end
      end
 
@@ -4967,7 +5085,82 @@ function AetheryteHelper.mushsubtool(Event, ticks)
         end
         end
     end
+ 
 
+        local nohinsoubi = 0
+      if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true ) then
+        local bags = {0,1,2,3}
+        for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+        if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.Rarity > 1) then 
+        nohinsoubi = nohinsoubi + 1
+        end
+        if Duty:IsQueued() == true then
+        Dawncloser = nil
+        elseif nohinsoubi == 0 and AetheryteHelper.settings.SET.hosiikazu == 0 and Duty:IsQueued() == false then
+        Dawncloser = false
+        elseif nohinsoubi == 0 and AetheryteHelper.settings.SET.syojigunpyou > mushGseals.count and Duty:IsQueued() == false then
+        Dawncloser = false
+        elseif nohinsoubi > 0 and Duty:IsQueued() == false then
+        Dawncloser = true
+        end
+
+
+        if Dawncloser == true then
+          d("[AH TrustMode(DEMO)]-working")
+          
+             if IsControlOpen("Dawn") then
+                UseControlAction("Dawn","Close")
+             end
+             if not IsControlOpen("Dawn") then
+                    local step = 0
+                    if step == 0 then
+                       if GCexchange == false then
+                          if (mushtruninGCitem == true and mushtruninGCseals == true) then
+                          mushtoItemstep = 0
+                          sealstoitem = true
+                             if sealstoitem == true then
+                                AetheryteHelper.mushSealstoItem()
+                                times = os.time()
+                                if TimeSince(timestamp) > 5000 then
+                                step = 1
+                                end
+                             end
+                          else step = 1
+                          end
+                      else
+                        step = 1
+                       end
+                    end
+                    if step == 1 then
+                       mushEXstep = 0
+                       GCexchange = true
+                       sealstoitem = false
+                       if GCexchange == true then
+                       AetheryteHelper.Exchange()
+                       step = 0
+                       end
+                    end
+             end
+        elseif Dawncloser == false then
+            d("[AH TrustMode(DEMO)]--trust Que waiting")
+        elseif Dawncloser == nil then
+            d("[AH TrustMode(DEMO)]--on standby[itemcount:"..nohinsoubi.."]")
+             sealstoitem = false
+             GCexchange = false
+        end
+
+        end
+        end
+        end
+        end
+
+      end
+ 
    if (AetheryteHelper.settings.SET.DesynthTrust) then
        if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:IsQueued() == true ) then
        if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
@@ -5086,7 +5279,7 @@ function AetheryteHelper.mushsubtool(Event, ticks)
    end
    end
     
-end  
+end 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
