@@ -56,7 +56,7 @@ mushroom#8009
 
 
 
----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 AetheryteHelper = {}
 -----------------------------------------------------------------------------------------------------------------
 --table
@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.4.1",   
+      Version =         "1.4.3",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -90,6 +90,8 @@ local kinokoProject = {
                       "[1.3.5] - add Retrieve Materia & Exchange less max",
                       "[1.4.0] - please read Readme.txt in UserSettings folder",
                       "[1.4.1] - AR function was broken, and I fixed it",
+                      "[1.4.2] - add auto Repair in TrustMode(DEMO) & bug fix",
+                      "[1.4.3] - add mini button",
 
 
                     },
@@ -130,7 +132,19 @@ local kinokoProject = {
       Option =        GUI.WindowFlags_ShowBorders 
                     + GUI.WindowFlags_AlwaysAutoResize
                     + GUI.WindowFlags_NoScrollbar,
-      Visible =         false,
+      Visible =       false,
+
+    },
+    minibutton = {
+      Name =          "kinoko",
+      Open =          false,
+      Option =        GUI.WindowFlags_NoTitleBar
+                    + GUI.WindowFlags_NoFocusOnAppearing
+                    + GUI.WindowFlags_AlwaysAutoResize
+                    + GUI.WindowFlags_NoBringToFrontOnFocus
+                    + GUI.WindowFlags_NoScrollbar,
+      Visible =       true,
+
     },
   },
 --  ---------------
@@ -530,6 +544,7 @@ local mushGSjcpstep = 0
 local GCexlessmax = false
 local Remateria = false
 local mushTrustmode = false
+local mushrepairGear = 60
 local Dawncloser = nil
 local times = os.time()
 
@@ -653,7 +668,7 @@ function AetheryteHelper.LoadSettings()
   if FileExists(AetheryteHelper.settingfile) then
     local settings = persistence.load(AetheryteHelper.settingfile)
     if (ValidTable(settings)) then
-      table.merge(kinokoProject.Windows.MainWindows,settings)      
+      table.merge(kinokoProject.Windows,settings)      
     end
   end
 
@@ -664,7 +679,7 @@ end
 AetheryteHelper.LoadSettings()
 function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
-  persistence.store(AetheryteHelper.settingfile, kinokoProject.Windows.MainWindows)
+  persistence.store(AetheryteHelper.settingfile, kinokoProject.Windows)
   
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -871,9 +886,10 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
           isins = 1
-          --if (selectins)then GetControl("SelectString"):Action("SelectIndex",1) end     
+          if AetheryteHelper.settings.SET.delay == 114 then selectins = true
+          autheStep = 2
+          end     
        end 
       GUI:SetTooltip("go to instance 1\nrepeate click")
         if (GUI:IsMouseDown(1)) then
@@ -888,10 +904,11 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-           if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
          isins = 2
-        --if (selectins)then GetControl("SelectString"):Action("SelectIndex",2) end
-        end
+           if AetheryteHelper.settings.SET.delay == 114 then selectins = true
+           autheStep = 2
+           end
+         end
         GUI:SetTooltip("go to instance 2\nrepeate click")
         if (GUI:IsMouseDown(1)) then
         GUI:SetTooltip("インスタンス2へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
@@ -905,9 +922,10 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
-         isins = 3
-        --if (selectins)then GetControl("SelectString"):Action("SelectIndex",3) end
+          isins = 3
+          if AetheryteHelper.settings.SET.delay == 114 then selectins = true
+          autheStep = 2
+          end
         end
         GUI:SetTooltip("go to instance 3\nrepeate click")
         if (GUI:IsMouseDown(1)) then
@@ -922,9 +940,10 @@ function AetheryteHelper.Drawinsselect()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          if AetheryteHelper.settings.SET.delay == 114 then selectins = true end
-        isins = 0
-       --if (selectins)then GetControl("SelectString"):Action("SelectIndex",0) end       
+          isins = 0
+          if AetheryteHelper.settings.SET.delay == 114 then selectins = true 
+          autheStep = 2
+          end
         end 
         GUI:SetTooltip("auto select")
         if (GUI:IsMouseDown(1)) then
@@ -1045,7 +1064,29 @@ function AetheryteHelper.DrawadWIP()
       end
       GUI:Spacing()
 end
-
+--------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.minimush()
+   local minikinoko = kinokoProject.Windows.minibutton
+   local Windows = kinokoProject.Windows.MainWindows
+   if (minikinoko.Open) then
+      GUI:SetNextWindowSize(40,40)
+      minikinoko.Visible, minikinoko.Open = GUI:Begin('mini', minikinoko.Open,minikinoko.Option)
+      if (minikinoko.Visible) then
+      GUI:SameLine(5)
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[AetheryteHelper.png]],30,30)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+         if GUI:IsMouseDoubleClicked(0) then
+         Windows.Open = true
+         minikinoko.Open = false
+         end
+         GUI:SetTooltip("open AH\ndouble click")
+      end
+      end
+      GUI:End()
+   end
+end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.SubWindow()
   if (AetheryteHelper.miniGUI.open) then
@@ -1294,7 +1335,7 @@ end
 function AetheryteHelper.TMwindow()
   if (AetheryteHelper.trustmode.open) then
     local trustmodeflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
-    GUI:SetNextWindowSize(220,100)
+    GUI:SetNextWindowSize(220,140)
      AetheryteHelper.trustmode.visible, AetheryteHelper.trustmode.open = GUI:Begin('trustmode', AetheryteHelper.trustmode.open,trustmodeflags)
     if (AetheryteHelper.trustmode.visible) then
       GUI:Spacing()
@@ -1313,6 +1354,20 @@ function AetheryteHelper.TMwindow()
       GUI:Separator()
       GUI:EndGroup()
       GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:PushItemWidth(80)
+      GUI:Text("Repair Gear(self only)")
+      mushrepairGear = GUI:InputInt("%",mushrepairGear,1,1000)
+      GUI:EndGroup()
+      if mushrepairGear < 1 then mushrepairGear = 99 end
+      if mushrepairGear > 99 then mushrepairGear = 1 end
+      if (GUI:IsItemHovered()) then
+        if language == 0 then
+        GUI:SetTooltip("装備の修理です。\nHMDMの初期値は50なので60に設定していますが\nHMDMの設定値より上にして下さい。\n自分で修理するのでクラフター必須です")
+        else
+        GUI:SetTooltip("default HMDM value is 50, so i've set it to 60,\nyou can change,but please it should be higher than HMDM setting.\nyou'll need a crafter to do repairs yourself.")
+        end 
+     end
       GUI:BeginGroup()
       GUI:Checkbox("Exchange on Trust",mushTrustmode)
       GUI:EndGroup()
@@ -3011,6 +3066,7 @@ end
 function AetheryteHelper.DrawCall(event, ticks)
   local Windows = kinokoProject.Windows.MainWindows
   local Addon = kinokoProject.Addon
+  local minikinoko = kinokoProject.Windows.minibutton
 
  if (Windows.Open) then
     GUI:SetNextWindowSize(280,350,GUI.SetCond_FirstUseEver)
@@ -3082,8 +3138,10 @@ function AetheryteHelper.DrawCall(event, ticks)
       --GUI:AlignFirstTextHeightToWidgets()
       GUI:Separator()
       GUI:Spacing(5)
-      if GUI:Button("Close##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
+      if GUI:Button("Mini##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
          Windows.Open = false
+         minikinoko.Open = true
+      AetheryteHelper.SaveSettings()
       end
       GUI:SameLine(60)
       GUI:BeginGroup()
@@ -3098,6 +3156,7 @@ function AetheryteHelper.DrawCall(event, ticks)
   AetheryteHelper.SubWindow()
   AetheryteHelper.jumboWindow()
   AetheryteHelper.TMwindow()
+  AetheryteHelper.minimush()
 end
 
 
@@ -3105,7 +3164,7 @@ end
 -- main function
 
 function AetheryteHelper.insselect(Event, ticks)
-d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
+--d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
   if autheVar == nil then
     autheVar = true
     autheStep = 0
@@ -3153,6 +3212,7 @@ d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."
                    end
               end
               if (autheStep == 2) then
+                      Player:SetTarget(aetheID)
                       Player:Interact(aetheID)              
                       if IsControlOpen("SelectString") then
                          GetControl("SelectString"):Action("SelectIndex",modechg)
@@ -5092,6 +5152,31 @@ if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 30
 
         local nohinsoubi = 0
       if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true ) then
+         if Duty:IsQueued() == true then
+           local equip = {1000}
+           for _, e in pairs(equip) do
+           local equip_item = Inventory:Get(e)
+           if (table.valid(equip_item)) then
+           local equiplist = equip_item:GetList()
+           if (table.valid(equiplist)) then
+           for _, item in pairs(equiplist) do
+               if item.Condition < mushrepairGear then
+                  ActionList:Get(5,6):Cast()
+                 if IsControlOpen("Repair") then
+                   GetControl("Repair"):PushButton(25,0)
+                   if IsControlOpen("SelectYesno") then
+                   UseControlAction("SelectYesno","Yes")
+                   UseControlAction("Repair","Close")
+               d("[AH TrustMode(DEMO)]--auto Repair")
+                   end
+                 end
+               end
+           end
+           end
+           end
+           end
+         end
+
         local bags = {0,1,2,3}
         for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
@@ -5160,8 +5245,7 @@ if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > 30
         end
         end
         end
-        end
-
+        end        
       end
  
    if (AetheryteHelper.settings.SET.DesynthTrust) then
