@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.4.7",   
+      Version =         "1.4.7.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -95,7 +95,7 @@ local kinokoProject = {
                       "[1.4.5] - Organize all code",
                       "[1.4.6] - add DC & move to MB on switch",
                       "[1.4.7] - adjusted behavior of trust mode",
-
+                      "[1.4.7.1] - fix MBmode",
 
                     },
       
@@ -996,6 +996,7 @@ function AetheryteHelper.GLUtelepo()
       GUI:EndGroup()
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
+              Player:ClearTarget()
               mushlooptimer = 0
               MBStep = 0
               mushMBgri = true
@@ -1006,6 +1007,7 @@ function AetheryteHelper.GLUtelepo()
               modechg = 2
             end
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == true ) then
+              Player:ClearTarget()
               mushMBgri = true
               mushMBlim = false
               mushMBul = false
@@ -1040,6 +1042,7 @@ function AetheryteHelper.GLUtelepo()
       GUI:EndGroup()
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
+              Player:ClearTarget()
               mushlooptimer = 0
               MBStep = 0
               mushMBgri = false
@@ -1050,6 +1053,7 @@ function AetheryteHelper.GLUtelepo()
               modechg = 2
             end
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == true ) then
+              Player:ClearTarget()
               mushMBlim = true
               mushMBul = false
               mushMBgri = false
@@ -1084,6 +1088,7 @@ function AetheryteHelper.GLUtelepo()
       GUI:EndGroup()
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
+              Player:ClearTarget()
               mushlooptimer = 0
               MBStep = 0
               mushMBgri = false
@@ -1094,6 +1099,7 @@ function AetheryteHelper.GLUtelepo()
               modechg = 2
             end
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == true ) then
+              Player:ClearTarget()
               mushMBul = true
               mushMBlim = false
               mushMBgri = false
@@ -3610,7 +3616,10 @@ function AetheryteHelper.moveMBlimsa()
 
           if MBStep == 0 then
                Player:MoveTo(-121.8,18.0,12.20,10,true,true)
+               MBStep = 0
+               if Player:IsMoving() then
                MBStep = 1
+               end
           end
           if MBStep == 1 then
             Player:SetTarget(4299134660)
