@@ -11,9 +11,9 @@ However, this is a feature that add-ons do not have.<br>
 ・Smoothly perform world visit<br>
 ・Detailed specification of equipment desynthesis<br>
 
-[How to use (youtube)](https://youtu.be/mEjWnAR3Ht0)
-[new features to main tool (youtube)](https://youtu.be/Q5BXGo9t4jc)
-[sub tool (youtube)](https://youtu.be/0DerL9EFZxw)
+[How to use (youtube)](https://youtu.be/mEjWnAR3Ht0)<br>
+[new features to main tool (youtube)](https://youtu.be/Q5BXGo9t4jc)<br>
+[sub tool (youtube)](https://youtu.be/0DerL9EFZxw)<br>
 
  
 # Requirement
