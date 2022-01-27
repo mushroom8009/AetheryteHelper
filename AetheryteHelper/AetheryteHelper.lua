@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.4.7.1",   
+      Version =         "1.4.8",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -96,6 +96,7 @@ local kinokoProject = {
                       "[1.4.6] - add DC & move to MB on switch",
                       "[1.4.7] - adjusted behavior of trust mode",
                       "[1.4.7.1] - fix MBmode",
+                      "[1.4.8] - Organize code for MBmode",
 
                     },
       
@@ -522,6 +523,12 @@ local isServer = 0
 local modechg = 0
 local Update = kinokoProject.Update
 local aetheID = 0
+local limaetheID = 0
+local limMBID = 0
+local griaetheID = 0
+local griMBID = 0
+local uldaetheID = 0
+local uldMBID = 0
 local GCexchange = false
 local AutoMoveGC = false
 local selectSVR = 1
@@ -542,7 +549,9 @@ local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
 local GCdelistep = 0
 local GCStep = 0
-local MBStep = 0
+local limMBStep = 0
+local griMBStep = 0
+local uldMBStep = 0
 local mushtruninGCitem = nil
 local mushtruninGCseals = nil
 local sealstoitem = false
@@ -998,7 +1007,7 @@ function AetheryteHelper.GLUtelepo()
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
               Player:ClearTarget()
               mushlooptimer = 0
-              MBStep = 0
+              griMBStep = 0
               mushMBgri = true
               mushMBlim = false
               mushMBul = false
@@ -1011,8 +1020,8 @@ function AetheryteHelper.GLUtelepo()
               mushMBgri = true
               mushMBlim = false
               mushMBul = false
-              MBStep = 0
-              mushlooptimer = 500
+              griMBStep = 0
+              mushlooptimer = 100
             end
             if AetheryteHelper.settings.SET.mushmovetoMB == false then
             GUI:SetTooltip("Teleport to Gridania")
@@ -1044,7 +1053,7 @@ function AetheryteHelper.GLUtelepo()
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
               Player:ClearTarget()
               mushlooptimer = 0
-              MBStep = 0
+              limMBStep = 0
               mushMBgri = false
               mushMBlim = true
               mushMBul = false
@@ -1057,8 +1066,8 @@ function AetheryteHelper.GLUtelepo()
               mushMBlim = true
               mushMBul = false
               mushMBgri = false
-              MBStep = 0
-              mushlooptimer = 500
+              limMBStep = 0
+              mushlooptimer = 100
             end
             if AetheryteHelper.settings.SET.mushmovetoMB == false then
             GUI:SetTooltip("Teleport to Limsa")
@@ -1090,7 +1099,7 @@ function AetheryteHelper.GLUtelepo()
             if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
               Player:ClearTarget()
               mushlooptimer = 0
-              MBStep = 0
+              uldMBStep = 0
               mushMBgri = false
               mushMBlim = false
               mushMBul = true
@@ -1103,8 +1112,8 @@ function AetheryteHelper.GLUtelepo()
               mushMBul = true
               mushMBlim = false
               mushMBgri = false
-              MBStep = 0
-              mushlooptimer = 500
+              uldMBStep = 0
+              mushlooptimer = 100
             end
             if AetheryteHelper.settings.SET.mushmovetoMB == false then
             GUI:SetTooltip("Teleport to Uldah")
@@ -3521,7 +3530,12 @@ end
 --move to GC (beta)
 function AetheryteHelper.movetoCOMPANYlimsa()
          if( Player.localmapid == 129 ) then GCStep = 0 end    
-         if( Player.localmapid == 128 ) then GCStep = 3 end    
+         if( Player.localmapid == 128 ) then GCStep = 3 end
+         if ( Player.localmapid ~= 129 )and( Player.localmapid ~= 128 ) and (Player:GetTarget() == nil) then        
+             if(ActionList:Get(5,7):IsReady() == true) then
+             Player:Teleport(8,0)
+             end
+         end      
 
              if (GCStep == 0) then
                       Player:SetTarget(4298661156)
@@ -3594,7 +3608,7 @@ function AetheryteHelper.movetoCOMPANYuldah()
               elseif ( Player.localmapid ~= 130 ) then
                   if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then        
                   if(ActionList:Get(5,7):IsReady() == true) then
-                  Player:Teleport(2,0)
+                  Player:Teleport(9,0)
                   end
                   end
               end 
@@ -3602,186 +3616,348 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.moveMBlimsa()
-      --d("MBStep:"..MBStep)
-      if mushMBlim == true then
-          if ActionList:IsReady() and (Player.localmapid ~= 129) then
-               Player:Teleport(8,0)
+                limaetheID = 0
+                local el = EntityList("nearest,type=5")
+                if table.valid(el) then
+                for k,v in pairs(el) do
+                limaetheID = v.id
+                end
+                end
+                limMBID = 0
+                local elm = EntityList("nearest,contentID=2000402")
+                if table.valid(elm) then
+                for k,v in pairs(elm) do
+                limMBID = v.id
+                end
+                end
+         if mushMBlim == true then
+         
+            if limMBStep == 0 then
+               if AetheryteHelper.settings.SET.mushmovetoMB == false then
+                  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
+                  Player:Teleport(8,0)
+                  mushlooptimer = 1000
+                  mushMBlim = false
+                  end
+               elseif AetheryteHelper.settings.SET.mushmovetoMB == true then
+                  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
+                  Player:Teleport(8,0)
+                  end           
+                  if Player.localmapid == 129 then
+                  limMBStep = 1
+                  elseif Player.localmapid == 128 then
+                  limMBStep = 10
+                  end
+               end
+            end
+            if limMBStep == 1 then
+            d("limMBStep:"..limMBStep)
+               if Player.localmapid == 129 then
+                  Player:SetTarget(limMBID)
+                  if ActionList:IsReady() and Player:SetTarget(limMBID) == false then
+                  limMBStep = 10
+                  elseif Player:SetTarget(limMBID) then
+                     local pos = Player:GetTarget().pos
+                           if Player:GetTarget().Distance > 50 then
+                           Player:MoveTo(-121.8,18.0,12.20,10,true,true)
+                           limMBStep = 1
+                             if Player:IsMoving() then
+                                if ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+                             limMBStep = 2
+                             end
+                           else
+                           Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                           limMBStep = 1
+                             if Player:IsMoving() then
+                                limMBStep = 2
+                             end
+                           end
+                  end
+               end
+            end
+            if limMBStep == 2 then
+            d("limMBStep:"..limMBStep)
+               Player:SetTarget(limMBID)
+               local limsaMB = Player:GetTarget()
+               local Adis = limsaMB.Distance   
+               if Adis < 4 then
+               Player:Stop()
+               Player:Interact(limMBID)
+               limMBStep = 3
+               end
+            end
+            if limMBStep == 3 then
+            d("limMBStep:"..limMBStep)
+               if IsControlOpen("ItemSearch") then
                mushlooptimer = 1000
-               if AetheryteHelper.settings.SET.mushmovetoMB == true then
-               if Player.localmapid == 129 then MBStep = 0 end
-               else
+               limMBStep = 0           
                mushMBlim = false
                end
-          end
-
-          if MBStep == 0 then
-               Player:MoveTo(-121.8,18.0,12.20,10,true,true)
-               MBStep = 0
-               if Player:IsMoving() then
-               MBStep = 1
-               end
-          end
-          if MBStep == 1 then
-            Player:SetTarget(4299134660)
-            local limsaMB = Player:GetTarget()
-            local Adis = limsaMB.Distance   
-            if Adis < 4 then
-            Player:Interact(4299134660)
-            MBStep = 2
             end
-          end
-          if MBStep == 2 then
-            if IsControlOpen("ItemSearch") then
-            mushlooptimer = 1000           
-            mushMBlim = false
-            end
-          end
-      end
+            if limMBStep == 10 then
+            d("limMBStep:"..limMBStep)
+              Player:SetTarget(limaetheID)
+              local pos = Player:GetTarget().pos
+              if Player:GetTarget().Distance > 4 then 
+                 Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                 if Player:GetTarget().Distance > 50  and ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+              limMBStep = 11
+              end
+           end
+           if limMBStep == 11 then
+            d("limMBStep:"..limMBStep)
+              Player:SetTarget(limaetheID)
+              if Player:GetTarget(limaetheID).Distance < 1 then
+                 Player:Interact(limaetheID)
+                 limMBStep = 12
+              end
+           end
+           if limMBStep == 12 then
+            d("limMBStep:"..limMBStep)
+              if IsControlOpen("TelepotTown") then
+                 GetControl("TelepotTown"):Action("Teleport",0)
+                 limMBStep = 1            
+              end
+           end
+         end
 end
 
 function AetheryteHelper.moveMBgridania()
+                griaetheID = 0
+                local el = EntityList("nearest,type=5")
+                if table.valid(el) then
+                for k,v in pairs(el) do
+                griaetheID = v.id
+                end
+                end
+                griMBID = 0
+                local elm = EntityList("nearest,contentID=2000402")
+                if table.valid(elm) then
+                for k,v in pairs(elm) do
+                griMBID = v.id
+                end
+                end 
          if mushMBgri == true then
-            if ActionList:IsReady() and ( Player.localmapid ~= 132 ) and ( Player.localmapid ~= 133 ) then
-               Player:Teleport(2,0)
-               mushlooptimer = 1000  
-               if AetheryteHelper.settings.SET.mushmovetoMB == true then
-                  if( Player.localmapid == 132 ) then GCStep = 0 end    
-                  if( Player.localmapid == 133 ) then GCStep = 3 end
-               else
+         
+            if griMBStep == 0 then
+               if AetheryteHelper.settings.SET.mushmovetoMB == false then
+                  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
+                  Player:Teleport(2,0)
+                  mushlooptimer = 1000
+                  mushMBlim = false
+                  end
+               elseif AetheryteHelper.settings.SET.mushmovetoMB == true then
+                  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
+                  Player:Teleport(2,0)
+                  end           
+                  if Player.localmapid == 133 then
+                  griMBStep = 1
+                  elseif Player.localmapid == 132 then
+                  griMBStep = 10
+                  end
+               end
+            end
+            if griMBStep == 1 then
+            d("griMBStep:"..griMBStep)
+               if Player.localmapid == 133 then
+                  Player:SetTarget(griMBID)
+                  if ActionList:IsReady() and Player:SetTarget(griMBID) == false then
+                  griMBStep = 10
+                  elseif Player:SetTarget(griMBID) then
+                     local pos = Player:GetTarget().pos
+                           if Player:GetTarget().Distance > 100 then
+                           Player:MoveTo(161.44,15.50,-100.2,10,true,true)
+                           griMBStep = 1
+                             if Player:IsMoving() then
+                                if ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+                             griMBStep = 2
+                             end
+                           else
+                           Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                           griMBStep = 1
+                             if Player:IsMoving() then
+                                griMBStep = 2
+                             end
+                           end
+                  end
+               end
+            end
+            if griMBStep == 2 then
+            d("griMBStep:"..griMBStep)
+               Player:SetTarget(griMBID)
+               local griMB = Player:GetTarget()
+               local Adis = griMB.Distance   
+               if Adis < 4 then
+               Player:Stop()
+               Player:Interact(griMBID)
+               griMBStep = 3
+               end
+            end
+            if griMBStep == 3 then
+            d("griMBStep:"..griMBStep)
+               if IsControlOpen("ItemSearch") then
+               mushlooptimer = 1000
+               griMBStep = 0           
                mushMBgri = false
                end
             end
-          --d("MBStep:"..MBStep)
-         
-              if (MBStep == 0) then
-                      Player:SetTarget(4298660948)
-                      local griAthe = Player:GetTarget()
-                      local Apos = griAthe.pos
-                      local Adis = griAthe.Distance
-                      Player:MoveTo(Apos.x,Apos.y,Apos.z,10,true,true)
-                      if Adis < 5 then
-                      MBStep = 1
-                      end
+            if griMBStep == 10 then
+            d("griMBStep:"..griMBStep)
+              Player:SetTarget(griaetheID)
+              local pos = Player:GetTarget().pos
+              if Player:GetTarget().Distance > 4 then 
+                 Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                 if Player:GetTarget().Distance > 50  and ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+              griMBStep = 11
               end
-              if (MBStep == 1) then
-                     Player:Interact(4298660948)                      
-                     if IsControlOpen("SelectString") then
-                     GetControl("SelectString"):Action("SelectIndex",0)
-                     MBStep = 2
-                     end
-                     
+           end
+           if griMBStep == 11 then
+            d("griMBStep:"..griMBStep)
+              Player:SetTarget(griaetheID)
+              if Player:GetTarget(griaetheID).Distance < 4 then
+                 Player:Interact(griaetheID)
+                 griMBStep = 12
               end
-              if (MBStep == 2) then                      
-                     if IsControlOpen("TelepotTown") then
-                        GetControl("TelepotTown"):Action("Teleport",2)
-                        MBStep = 3            
-                     end
-              end
-              if (MBStep == 3) then
-                 Player:MoveTo(160,15.5,-95,10,true,true)
-                 if Player:IsMoving() then
-                 Player:SetTarget(4298620744)
-                 MBStep = 4
+           end
+           if (griMBStep == 12) then
+             d("griMBStep:"..griMBStep)
+                 Player:Interact(griaetheID)                      
+                 if IsControlOpen("SelectString") then
+                 GetControl("SelectString"):Action("SelectIndex",0)
+                 elseif IsControlOpen("TelepotTown") then
+                 griMBStep = 13
                  else
-                 MBStep = 3
+                 griMBStep = 12
                  end
+           end
+           if griMBStep == 13 then
+            d("griMBStep:"..griMBStep)
+              if IsControlOpen("TelepotTown") then
+                 GetControl("TelepotTown"):Action("Teleport",2)
+                 griMBStep = 1            
               end
-              if (MBStep == 4) then
-                 Player:SetTarget(4298620744)
-                 if Player:GetTarget().Distance > 4 then
-                 MBStep = 4
-                 else
-                 mushMBgri = false
-                 --MBStep = 5
-                 end
-              end
-              --[[if step == 5 then
-                 mushMBgri = false
-                 --Player:Interact(4298620744)               
-                 step = 6
-              end
-              if (MBStep == 6) then
-                if IsControlOpen("ItemSearch") then
-                 mushlooptimer = 1000           
-                 mushMBgri = false
-                end
-              end]]
+           end
          end
-
 end
+
 
 function AetheryteHelper.moveMBuldah()
-
-         if mushMBul == true then
-           if ActionList:IsReady() and (Player.localmapid ~= 130) and ( Player.localmapid ~= 131 )then
-           Player:Teleport(9,0)
-           mushlooptimer = 1000
-           if AetheryteHelper.settings.SET.mushmovetoMB == true then
-              if( Player.localmapid == 130 ) then GCStep = 0 end   
-              if( Player.localmapid == 131 ) then GCStep = 3 end
-           else
-
-           mushMBul = false
-           end
-           end   
-         --d("MBStep:"..MBStep)
-
-              if (MBStep == 0) then
-                      Player:SetTarget(4298852333)
-                      local ulAthe = Player:GetTarget()
-                      local Apos = ulAthe.pos
-                      local Adis = ulAthe.Distance
-                      Player:MoveTo(Apos.x,Apos.y,Apos.z,10,true,true)
-                      if Adis < 5 then
-                      MBStep = 1
-                      end
-              end
-              if (MBStep == 1) then
-                     Player:Interact(4298852333)                      
-                     if IsControlOpen("SelectString") then
-                     GetControl("SelectString"):Action("SelectIndex",0)
-                     MBStep = 2
-                     end
-                     
-              end
-              if (MBStep == 2) then                      
-                     if IsControlOpen("TelepotTown") then
-                        GetControl("TelepotTown"):Action("Teleport",9)
-                        MBStep = 3            
-                     end
-              end
-              if (MBStep == 3) then
-                 Player:MoveTo(144.81,4,-42.87,26,true,true)
-                 if Player:IsMoving() then
-                 Player:SetTarget(4299138498) 
-                 MBStep = 4
-                 else
-                 MBStep = 3
-                 end
-              end
-              if (MBStep == 4) then
-                 Player:SetTarget(4299138498)
-                 if Player:GetTarget().Distance > 4 then
-                 MBStep = 4 
-                 else
-                 mushMBul = false
-                 --MBStep = 5
-                 end
-              end
-              --[[if step == 5 then
-                 mushMBul = false
-                 Player:Interact(4299138498)                 
-                 step = 6
-              end
-              if (MBStep == 6) then
-                if IsControlOpen("ItemSearch") then
-                 mushlooptimer = 1000
-                 mushMBul = false
+                uldaetheID = 0
+                local el = EntityList("nearest,type=5")
+                if table.valid(el) then
+                for k,v in pairs(el) do
+                uldaetheID = v.id
                 end
-              end]]
+                end
+                uldMBID = 0
+                local elm = EntityList("nearest,contentID=2000442")
+                if table.valid(elm) then
+                for k,v in pairs(elm) do
+                uldMBID = v.id
+                end
+                end 
+         if mushMBul == true then
+         
+            if uldMBStep == 0 then
+               if AetheryteHelper.settings.SET.mushmovetoMB == false then
+                  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
+                  Player:Teleport(9,0)
+                  mushlooptimer = 1000
+                  mushMBlim = false
+                  end
+               elseif AetheryteHelper.settings.SET.mushmovetoMB == true then
+                  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
+                  Player:Teleport(9,0)
+                  end           
+                  if Player.localmapid == 130 then
+                  uldMBStep = 10
+                  elseif Player.localmapid == 131 then
+                  uldMBStep = 1
+                  end
+               end
+            end
+            if uldMBStep == 1 then
+            d("uldMBStep:"..uldMBStep)
+               if Player.localmapid == 131 then
+                  Player:SetTarget(uldMBID)
+                  if ActionList:IsReady() and Player:SetTarget(uldMBID) == false then
+                  uldMBStep = 10
+                  elseif Player:SetTarget(uldMBID) then
+                     local pos = Player:GetTarget().pos
+                           if Player:GetTarget().Distance > 50 then
+                           Player:MoveTo(161.44,15.50,-100.2,10,true,true)
+                           uldMBStep = 1
+                             if Player:IsMoving() then
+                                if ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+                             uldMBStep = 2
+                             end
+                           else
+                           Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                           uldMBStep = 1
+                             if Player:IsMoving() then
+                                uldMBStep = 2
+                             end
+                           end
+                  end
+               end
+            end
+            if uldMBStep == 2 then
+            d("uldMBStep:"..uldMBStep)
+               Player:SetTarget(uldMBID)
+               local uldMB = Player:GetTarget()
+               local Adis = uldMB.Distance   
+               if Adis < 4 then
+               Player:Stop()
+               Player:Interact(uldMBID)
+               uldMBStep = 3
+               end
+            end
+            if uldMBStep == 3 then
+            d("uldMBStep:"..uldMBStep)
+               if IsControlOpen("ItemSearch") then
+               mushlooptimer = 1000
+               uldMBStep = 0           
+               mushMBul = false
+               end
+            end
+            if uldMBStep == 10 then
+            d("uldMBStep:"..uldMBStep)
+              Player:SetTarget(uldaetheID)
+              local pos = Player:GetTarget().pos
+              if Player:GetTarget().Distance > 5 then 
+                 Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                 if Player:GetTarget().Distance > 50  and ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+              uldMBStep = 11
+              end
+           end
+           if uldMBStep == 11 then
+            d("uldMBStep:"..uldMBStep)
+              Player:SetTarget(uldaetheID)
+              if Player:GetTarget(uldaetheID).Distance < 5 then
+                 Player:Interact(uldaetheID)
+                 uldMBStep = 12
+              end
+           end
+           if (uldMBStep == 12) then
+             d("uldMBStep:"..uldMBStep)
+                 Player:Interact(uldaetheID)                      
+                 if IsControlOpen("SelectString") then
+                 GetControl("SelectString"):Action("SelectIndex",0)
+                 elseif IsControlOpen("TelepotTown") then
+                 uldMBStep = 13
+                 else
+                 uldMBStep = 12
+                 end
+           end
+           if uldMBStep == 13 then
+            d("uldMBStep:"..uldMBStep)
+              if IsControlOpen("TelepotTown") then
+                 GetControl("TelepotTown"):Action("Teleport",9)
+                 uldMBStep = 1            
+              end
+           end
          end
 end
-
 ---------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.Exchange(Event, ticks)
@@ -3797,7 +3973,8 @@ function AetheryteHelper.Exchange(Event, ticks)
                  if Player:GetTarget().Distance < 6 then
                  Player:Interact(GCID1)
                  end
-                 if IsControlOpen("SelectString") then                           
+                 if IsControlOpen("SelectString") then
+                 Player:Stop()                           
                  GetControl("SelectString"):Action("SelectIndex",0)
                  mushEXstep = 1
                  else
