@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.4.8",   
+      Version =         "1.4.9",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -80,7 +80,9 @@ local kinokoProject = {
                       "[1.1.3] - linked bot status in materia extract options",
                       "[1.1.5] - Add Aetherial Reduction Botmode and more",
                       "[1.2.0] - I done lot of add things.",
-                      "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips\nMouse over to view English,\nRight button Press to view Japanese.",
+                      "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips",
+                      "          Mouse over to view English",
+                      "          Right button Press to view Japanese.",
                       "[1.2.2] - desynth bug fix & add Trust mode",
                       "[1.3.0] - add trun in & Organize code(just a little bit)",
                       "[1.3.1] - add Jumbo cactpot assist",
@@ -97,6 +99,8 @@ local kinokoProject = {
                       "[1.4.7] - adjusted behavior of trust mode",
                       "[1.4.7.1] - fix MBmode",
                       "[1.4.8] - Organize code for MBmode",
+                      "[1.4.9] - remake RetrieveMateria,all function adjust delay",
+                      "          change contents in junk tab",
 
                     },
       
@@ -569,7 +573,8 @@ local mushlooptimer = 1000
 local GCexchangeT = false
 local sealstoitemT = false
 local mushMBinterat = false
-
+local IDUSstep = 0
+local IDexstep = 0
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1134,7 +1139,7 @@ end
 
 function AetheryteHelper.DrawadWIP()
       GUI:Spacing(10)
-      GUI:BeginGroup()
+      --[[[GUI:BeginGroup()
       GUI:Button("Jumbo cactpot assist",160,20)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
@@ -1145,7 +1150,35 @@ function AetheryteHelper.DrawadWIP()
               if (GUI:IsMouseDown(1)) then
               GUI:SetTooltip("数字入力がめんどうな人向け\n\n作成中なので使い物になりません")
               end 
-            end      
+            end]]
+      GUI:BeginGroup()
+      GUI:Button("Undersize shortcut",140,20)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            mushlooptimer = 100
+            IDUSstep = 0
+            mushundersize = true
+            end
+            GUI:SetTooltip("switching undersize for dungeon")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("制限解除の切替ボタンです")
+            end 
+      end
+      GUI:BeginGroup()
+      GUI:Button("Explorer shortcut",140,20)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            mushlooptimer = 100
+            IDexstep = 0
+            mushExplorer = true
+            end
+            GUI:SetTooltip("switching Explorer for dungeon")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("自由探索の切替ボタンです")
+            end 
+      end
       GUI:Spacing()
       GUI:Separator()
       GUI:BeginGroup()
@@ -2823,8 +2856,8 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          mushlooptimer = 1000
           AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
+          mushlooptimer = 2000
         end
         GUI:SetTooltip("in non combat")
         AetheryteHelper.SaveSettings()
@@ -2980,6 +3013,7 @@ if GUI:TreeNode("check before exchange") then
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           Remateria = not Remateria
+          mushlooptimer = 2000
         end
         GUI:SetTooltip("Remove materia from equipment in inventory")
         if (GUI:IsMouseDown(1)) then
@@ -3010,6 +3044,7 @@ if GUI:TreeNode("check before exchange") then
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isReductionEnabled = not AetheryteHelper.settings.SET.isReductionEnabled
+          mushlooptimer = 2000
           AetheryteHelper.settings.SET.isQuestmode = false
           AetheryteHelper.SaveSettings()
         end
@@ -3029,6 +3064,7 @@ if GUI:TreeNode("check before exchange") then
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           AetheryteHelper.settings.SET.isQuestmode = not AetheryteHelper.settings.SET.isQuestmode
+          mushlooptimer = 1000
           if (mushPbtotal < 1) then AetheryteHelper.settings.SET.isQuestmode = false end
           AetheryteHelper.settings.SET.isReductionEnabled = false
           AetheryteHelper.SaveSettings()
@@ -3651,7 +3687,7 @@ function AetheryteHelper.moveMBlimsa()
                end
             end
             if limMBStep == 1 then
-            d("limMBStep:"..limMBStep)
+            --d("limMBStep:"..limMBStep)
                if Player.localmapid == 129 then
                   Player:SetTarget(limMBID)
                   if ActionList:IsReady() and Player:SetTarget(limMBID) == false then
@@ -3676,7 +3712,7 @@ function AetheryteHelper.moveMBlimsa()
                end
             end
             if limMBStep == 2 then
-            d("limMBStep:"..limMBStep)
+            --d("limMBStep:"..limMBStep)
                Player:SetTarget(limMBID)
                local limsaMB = Player:GetTarget()
                local Adis = limsaMB.Distance   
@@ -3687,7 +3723,7 @@ function AetheryteHelper.moveMBlimsa()
                end
             end
             if limMBStep == 3 then
-            d("limMBStep:"..limMBStep)
+            --d("limMBStep:"..limMBStep)
                if IsControlOpen("ItemSearch") then
                mushlooptimer = 1000
                limMBStep = 0           
@@ -3695,7 +3731,7 @@ function AetheryteHelper.moveMBlimsa()
                end
             end
             if limMBStep == 10 then
-            d("limMBStep:"..limMBStep)
+            --d("limMBStep:"..limMBStep)
               Player:SetTarget(limaetheID)
               local pos = Player:GetTarget().pos
               if Player:GetTarget().Distance > 4 then 
@@ -3705,7 +3741,7 @@ function AetheryteHelper.moveMBlimsa()
               end
            end
            if limMBStep == 11 then
-            d("limMBStep:"..limMBStep)
+            --d("limMBStep:"..limMBStep)
               Player:SetTarget(limaetheID)
               if Player:GetTarget(limaetheID).Distance < 1 then
                  Player:Interact(limaetheID)
@@ -3713,7 +3749,7 @@ function AetheryteHelper.moveMBlimsa()
               end
            end
            if limMBStep == 12 then
-            d("limMBStep:"..limMBStep)
+            --d("limMBStep:"..limMBStep)
               if IsControlOpen("TelepotTown") then
                  GetControl("TelepotTown"):Action("Teleport",0)
                  limMBStep = 1            
@@ -3758,7 +3794,7 @@ function AetheryteHelper.moveMBgridania()
                end
             end
             if griMBStep == 1 then
-            d("griMBStep:"..griMBStep)
+            --d("griMBStep:"..griMBStep)
                if Player.localmapid == 133 then
                   Player:SetTarget(griMBID)
                   if ActionList:IsReady() and Player:SetTarget(griMBID) == false then
@@ -3783,7 +3819,7 @@ function AetheryteHelper.moveMBgridania()
                end
             end
             if griMBStep == 2 then
-            d("griMBStep:"..griMBStep)
+            --d("griMBStep:"..griMBStep)
                Player:SetTarget(griMBID)
                local griMB = Player:GetTarget()
                local Adis = griMB.Distance   
@@ -3794,7 +3830,7 @@ function AetheryteHelper.moveMBgridania()
                end
             end
             if griMBStep == 3 then
-            d("griMBStep:"..griMBStep)
+            --d("griMBStep:"..griMBStep)
                if IsControlOpen("ItemSearch") then
                mushlooptimer = 1000
                griMBStep = 0           
@@ -3802,7 +3838,7 @@ function AetheryteHelper.moveMBgridania()
                end
             end
             if griMBStep == 10 then
-            d("griMBStep:"..griMBStep)
+            --d("griMBStep:"..griMBStep)
               Player:SetTarget(griaetheID)
               local pos = Player:GetTarget().pos
               if ActionList:IsReady() and Player:GetTarget().Distance > 4 then 
@@ -3812,7 +3848,7 @@ function AetheryteHelper.moveMBgridania()
               end
            end
            if griMBStep == 11 then
-            d("griMBStep:"..griMBStep)
+            --d("griMBStep:"..griMBStep)
               Player:SetTarget(griaetheID)
               if Player:GetTarget(griaetheID).Distance < 4 then
                  Player:Interact(griaetheID)
@@ -3820,7 +3856,7 @@ function AetheryteHelper.moveMBgridania()
               end
            end
            if (griMBStep == 12) then
-             d("griMBStep:"..griMBStep)
+             --d("griMBStep:"..griMBStep)
                  Player:Interact(griaetheID)                      
                  if IsControlOpen("SelectString") then
                  GetControl("SelectString"):Action("SelectIndex",0)
@@ -3831,7 +3867,7 @@ function AetheryteHelper.moveMBgridania()
                  end
            end
            if griMBStep == 13 then
-            d("griMBStep:"..griMBStep)
+            --d("griMBStep:"..griMBStep)
               if IsControlOpen("TelepotTown") then
                  GetControl("TelepotTown"):Action("Teleport",2)
                  griMBStep = 1            
@@ -3877,7 +3913,7 @@ function AetheryteHelper.moveMBuldah()
                end
             end
             if uldMBStep == 1 then
-            d("uldMBStep:"..uldMBStep)
+            --d("uldMBStep:"..uldMBStep)
                if Player.localmapid == 131 then
                   Player:SetTarget(uldMBID)
                   if ActionList:IsReady() and Player:SetTarget(uldMBID) == false then
@@ -3902,7 +3938,7 @@ function AetheryteHelper.moveMBuldah()
                end
             end
             if uldMBStep == 2 then
-            d("uldMBStep:"..uldMBStep)
+            --d("uldMBStep:"..uldMBStep)
                Player:SetTarget(uldMBID)
                local uldMB = Player:GetTarget()
                local Adis = uldMB.Distance   
@@ -3913,7 +3949,7 @@ function AetheryteHelper.moveMBuldah()
                end
             end
             if uldMBStep == 3 then
-            d("uldMBStep:"..uldMBStep)
+            --d("uldMBStep:"..uldMBStep)
                if IsControlOpen("ItemSearch") then
                mushlooptimer = 1000
                uldMBStep = 0           
@@ -3921,7 +3957,7 @@ function AetheryteHelper.moveMBuldah()
                end
             end
             if uldMBStep == 10 then
-            d("uldMBStep:"..uldMBStep)
+            --d("uldMBStep:"..uldMBStep)
               Player:SetTarget(uldaetheID)
               local pos = Player:GetTarget().pos
               if ActionList:IsReady() and Player:GetTarget().Distance > 5 then 
@@ -3931,7 +3967,7 @@ function AetheryteHelper.moveMBuldah()
               end
            end
            if uldMBStep == 11 then
-            d("uldMBStep:"..uldMBStep)
+            --d("uldMBStep:"..uldMBStep)
               Player:SetTarget(uldaetheID)
               if Player:GetTarget(uldaetheID).Distance < 5 then
                  Player:Interact(uldaetheID)
@@ -3939,7 +3975,7 @@ function AetheryteHelper.moveMBuldah()
               end
            end
            if (uldMBStep == 12) then
-             d("uldMBStep:"..uldMBStep)
+             --d("uldMBStep:"..uldMBStep)
                  Player:Interact(uldaetheID)                      
                  if IsControlOpen("SelectString") then
                  GetControl("SelectString"):Action("SelectIndex",0)
@@ -3950,7 +3986,7 @@ function AetheryteHelper.moveMBuldah()
                  end
            end
            if uldMBStep == 13 then
-            d("uldMBStep:"..uldMBStep)
+            --d("uldMBStep:"..uldMBStep)
               if IsControlOpen("TelepotTown") then
                  GetControl("TelepotTown"):Action("Teleport",9)
                  uldMBStep = 1            
@@ -4770,6 +4806,139 @@ function AetheryteHelper.mushEXchangeTrust(Event, ticks)
    end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--
+function AetheryteHelper.undersizeIDswitch()
+   if mushundersize == true then    
+      if IDUSstep == 0 then
+         if ActionList:IsReady() and Duty:IsQueued() == false then
+         if IsControlOpen("ContentsFinder") then
+         IDUSstep = 5
+         else
+         ActionList:Get(10,33):Cast()
+         IDUSstep = 1
+         end
+         end
+      end
+      if IDUSstep == 1 then
+         if IsControlOpen("ContentsFinder") then
+         GetControl("ContentsFinder"):Action("Settings",0)
+         IDUSstep = 2
+
+         end
+      end
+      if IDUSstep == 2 then
+         if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):PushButton(25,1) 
+             IDUSstep = 3
+          end
+      end
+      if IDUSstep == 3 then
+          if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):Action("Confirm",0)
+          IDUSstep = 4
+          end
+      end
+      if IDUSstep == 4 then
+        d("[AH][undersize switch]complete")
+          if IsControlOpen("ContentsFinder") then
+             UseControlAction("ContentsFinder","Destroy")
+             mushlooptimer = 1000
+             mushundersize = false 
+          end
+      end
+      if IDUSstep == 5 then
+         if IsControlOpen("ContentsFinder") then
+         GetControl("ContentsFinder"):Action("Settings",0)
+         IDUSstep = 6
+
+         end
+      end
+      if IDUSstep == 6 then
+         if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):PushButton(25,1) 
+             IDUSstep = 7
+          end
+      end
+      if IDUSstep == 7 then
+          if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):Action("Confirm",0)
+          IDUSstep = 8
+          end
+      end
+      if IDUSstep == 8 then
+        d("[AH][undersize switch]complete")
+             mushlooptimer = 1000
+             mushundersize = false 
+      end
+   end
+end
+
+            
+
+function AetheryteHelper.explorerIDswitch()
+   if mushExplorer == true then    
+      if IDexstep == 0 then
+         if ActionList:IsReady() and Duty:IsQueued() == false then
+         if IsControlOpen("ContentsFinder") then
+         IDexstep = 5 
+         else
+         ActionList:Get(10,33):Cast()
+         IDexstep = 1
+         end
+         end
+      end
+      if IDexstep == 1 then
+         if IsControlOpen("ContentsFinder") then
+         GetControl("ContentsFinder"):Action("Settings",0)
+         IDexstep = 2
+         end
+      end
+      if IDexstep == 2 then
+         if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):PushButton(25,5) 
+             IDexstep = 3
+          end
+      end
+      if IDexstep == 3 then
+          if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):Action("Confirm",0)
+          IDexstep = 4
+          end
+      end
+      if IDexstep == 4 then
+        d("[AH][Explorer switch]complete")
+          if IsControlOpen("ContentsFinder") then
+             UseControlAction("ContentsFinder","Destroy")
+             mushlooptimer = 1000
+             mushExplorer = false 
+          end
+      end
+      if IDexstep == 5 then
+         if IsControlOpen("ContentsFinder") then
+         GetControl("ContentsFinder"):Action("Settings",0)
+         IDexstep = 6
+         end
+      end
+      if IDexstep == 6 then
+         if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):PushButton(25,5) 
+             IDexstep = 7
+          end
+      end
+      if IDexstep == 7 then
+          if IsControlOpen("ContentsFinderSetting") then
+             GetControl("ContentsFinderSetting"):Action("Confirm",0)
+          IDexstep = 8
+          end
+      end
+      if IDexstep == 8 then
+        d("[AH][Explorer switch]complete")
+             mushlooptimer = 1000
+             mushExplorer = false 
+      end
+   end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --
 function AetheryteHelper.Jumbocactpothelper()
@@ -6295,15 +6464,18 @@ function AetheryteHelper.mushsRemateria(Event, ticks)
         for _, item in pairs(ilist) do
         materia = materia + table.size(item.materias)
         end
-        if materia == 0 then
-           Remateria = false
-        end
+        --if materia == 0 then
+        --Remateria = false
+        --end
         for _, item in pairs(ilist) do
         if table.size(item.materias) > 0 and item.equipslot > 0 and item.requiredlevel > 1 then
-        if ActionList:IsReady() then
-        item:RetrieveMateria()
-        return
-        end
+          if ActionList:IsReady() then
+          d("[AH][RetrieveMateria]:Count["..materia.."]")
+          item:RetrieveMateria()
+          return
+          end
+        elseif table.size(item.materias) == 0 and item.equipslot > 0 and item.requiredlevel > 1 then
+          Remateria = false
         end
         end
         end
@@ -6321,6 +6493,7 @@ function AetheryteHelper.mushsubAR(Event, ticks)
        end       
        local syusyuhin = 0
        if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
+           mushtoItemstep = 2000
            if (IsControlOpen("PurifyResult")) then
            UseControlAction("PurifyResult", "Close")
            return
@@ -6352,6 +6525,7 @@ function AetheryteHelper.mushsubAR(Event, ticks)
              end
              end
              if syusyuhin == 0 then
+               mushtoItemstep = 1000
                if (IsControlOpen("PurifyResult")) then
                UseControlAction("PurifyResult", "Close")
                end
@@ -6449,12 +6623,15 @@ function AetheryteHelper.mushsubtool(Event, ticks)
             AetheryteHelper.moveMBlimsa()
             AetheryteHelper.moveMBgridania()
             AetheryteHelper.moveMBuldah()
-
-    end
             AetheryteHelper.mushsRemateria()
             AetheryteHelper.mushMaterialize()
             AetheryteHelper.mushsubAR()
-            AetheryteHelper.Desynthseis()        
+            AetheryteHelper.Desynthseis()
+            AetheryteHelper.undersizeIDswitch()
+            AetheryteHelper.explorerIDswitch() 
+
+    end          
+       
                 
 AetheryteHelper.Inventoryfree()
 end
