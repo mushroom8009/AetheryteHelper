@@ -3241,7 +3241,7 @@ function AetheryteHelper.DrawCall(event, ticks)
       GUI:BeginGroup()
       GUI:Text("[")
       GUI:SameLine()
-      if Player.localmapid == nil then GUI:TextColored(0,0.8,0,1,"Loading...")
+      if Player.localmapid == 0 then GUI:TextColored(0,0.8,0,1,"Loading...")
       else GUI:TextColored(0.7,0.8,0.1,1,GetMapName(Player.localmapid)) end
       GUI:SameLine()
       GUI:Text("]:MAPID:"..tostring(Player.localmapid))
@@ -3805,7 +3805,7 @@ function AetheryteHelper.moveMBgridania()
             d("griMBStep:"..griMBStep)
               Player:SetTarget(griaetheID)
               local pos = Player:GetTarget().pos
-              if Player:GetTarget().Distance > 4 then 
+              if ActionList:IsReady() and Player:GetTarget().Distance > 4 then 
                  Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
                  if Player:GetTarget().Distance > 50  and ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
               griMBStep = 11
@@ -3924,7 +3924,7 @@ function AetheryteHelper.moveMBuldah()
             d("uldMBStep:"..uldMBStep)
               Player:SetTarget(uldaetheID)
               local pos = Player:GetTarget().pos
-              if Player:GetTarget().Distance > 5 then 
+              if ActionList:IsReady() and Player:GetTarget().Distance > 5 then 
                  Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
                  if Player:GetTarget().Distance > 50  and ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
               uldMBStep = 11
