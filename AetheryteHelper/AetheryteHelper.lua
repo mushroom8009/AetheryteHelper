@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.4.9",   
+      Version =         "1.5.0",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -101,6 +101,7 @@ local kinokoProject = {
                       "[1.4.8] - Organize code for MBmode",
                       "[1.4.9] - remake RetrieveMateria,all function adjust delay",
                       "          change contents in junk tab",
+                      "[1.5.0] - i've made some crazy stuff",
 
                     },
       
@@ -162,10 +163,6 @@ local kinokoProject = {
   },
 
 
-
-
-
-
  }
 -------------------------------
 ---tab
@@ -199,6 +196,12 @@ AetheryteHelper.GUI = {
 }
 AetheryteHelper.miniGUI = {
   name = "miniinfo###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.insSelectGUI = {
+  name = "insselecter###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
@@ -710,6 +713,10 @@ function AetheryteHelper.SaveSettings()
   
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+local AHSET = AetheryteHelper.settings.SET
+local eqFilter = AetheryteHelper.settings.Filter
+local AHeqjob = AetheryteHelper.settings.Job
+---------------------------------------------------------------------------------------------------------------------------------------------------
 -- ins select GUI
 function AetheryteHelper.Drawinsselect()
       GUI:AlignFirstTextHeightToWidgets()
@@ -738,6 +745,9 @@ function AetheryteHelper.Drawinsselect()
         if (GUI:IsMouseClicked(0)) then
           selectins = not selectins
           autheStep = 0
+          if selectins == false then
+          Player:Stop()
+          end
         if ( moveSVR == false ) then  modechg = 3 end 
           end
         GUI:SetTooltip("on/auto off\nOnly possible in front of Aetheryte")
@@ -750,13 +760,13 @@ function AetheryteHelper.Drawinsselect()
       GUI:BeginGroup()
       GUI:Text("----")
       GUI:SameLine()
-      GUI:Checkbox("##nohousing", AetheryteHelper.settings.SET.nohousing)
+      GUI:Checkbox("##nohousing", AHSET.nohousing)
       GUI:SameLine()
       GUI:TextColored(1,0,0,1,"residential no visible")
       GUI:EndGroup()      
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.nohousing = not AetheryteHelper.settings.SET.nohousing
+          AHSET.nohousing = not AHSET.nohousing
           end       
          GUI:SetTooltip("didn't complete quest of residential\nonly Worldvisit mode\nmean [Mist][Lavender Beds][Goblet] thing")
       if (GUI:IsMouseDown(1)) then
@@ -838,7 +848,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:PushItemWidth(140)
       GUI:BeginGroup()
       local changed
-        AetheryteHelper.settings.SET.delay, changed = GUI:SliderInt("ms",AetheryteHelper.settings.SET.delay,100,1000)
+        AHSET.delay, changed = GUI:SliderInt("ms",AHSET.delay,100,1000)
         
         if (GUI:IsItemHovered()) then
         GUI:SetTooltip("access delay\n100ms-1000ms")
@@ -856,7 +866,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:Button( "Reset",40, 20)
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.delay = 200
+          AHSET.delay = 200
           AetheryteHelper.SaveSettings()
           autheStep = 0
         end
@@ -883,7 +893,7 @@ function AetheryteHelper.Drawinsselect()
       GUI:BeginGroup()
       GUI:Button("i",20,20)
       GUI:EndGroup()
-      if AetheryteHelper.settings.SET.delay == 194 then
+      if AHSET.delay == 194 then
             if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
              AetheryteHelper.trustmode.open = not AetheryteHelper.trustmode.open 
@@ -914,7 +924,7 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           isins = 1
-          if AetheryteHelper.settings.SET.delay == 114 then selectins = true
+          if AHSET.delay == 114 then selectins = true
           autheStep = 2
           end     
        end 
@@ -932,7 +942,7 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
          isins = 2
-           if AetheryteHelper.settings.SET.delay == 114 then selectins = true
+           if AHSET.delay == 114 then selectins = true
            autheStep = 2
            end
          end
@@ -950,7 +960,7 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           isins = 3
-          if AetheryteHelper.settings.SET.delay == 114 then selectins = true
+          if AHSET.delay == 114 then selectins = true
           autheStep = 2
           end
         end
@@ -968,7 +978,7 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           isins = 0
-          if AetheryteHelper.settings.SET.delay == 114 then selectins = true 
+          if AHSET.delay == 114 then selectins = true 
           autheStep = 2
           end
         end 
@@ -983,7 +993,7 @@ end
 
 function AetheryteHelper.GLUtelepo()
       GUI:BeginGroup()
-      if AetheryteHelper.settings.SET.mushmovetoMB == false then
+      if AHSET.mushmovetoMB == false then
       GUI:Text("Go to Gridania, Limsa Lominsa, Ul'dah")
       else
       GUI:TextColored(1,1,0,1,"Auto go to MarketBoard button")
@@ -1009,7 +1019,7 @@ function AetheryteHelper.GLUtelepo()
       GUI:Button("Grida",55,20)
       GUI:EndGroup()
          if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
+            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == false ) then
               Player:ClearTarget()
               mushlooptimer = 0
               griMBStep = 0
@@ -1020,7 +1030,7 @@ function AetheryteHelper.GLUtelepo()
               autooff = false
               modechg = 2
             end
-            if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == true ) then
+            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == true ) then
               Player:ClearTarget()
               mushMBgri = true
               mushMBlim = false
@@ -1028,7 +1038,7 @@ function AetheryteHelper.GLUtelepo()
               griMBStep = 0
               mushlooptimer = 100
             end
-            if AetheryteHelper.settings.SET.mushmovetoMB == false then
+            if AHSET.mushmovetoMB == false then
             GUI:SetTooltip("Teleport to Gridania")
             if (GUI:IsMouseDown(1)) then
             GUI:SetTooltip("グリダニア")
@@ -1055,7 +1065,7 @@ function AetheryteHelper.GLUtelepo()
       GUI:Button("Limsa",55,20)
       GUI:EndGroup()
          if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
+            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == false ) then
               Player:ClearTarget()
               mushlooptimer = 0
               limMBStep = 0
@@ -1066,7 +1076,7 @@ function AetheryteHelper.GLUtelepo()
               autooff = false
               modechg = 2
             end
-            if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == true ) then
+            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == true ) then
               Player:ClearTarget()
               mushMBlim = true
               mushMBul = false
@@ -1074,7 +1084,7 @@ function AetheryteHelper.GLUtelepo()
               limMBStep = 0
               mushlooptimer = 100
             end
-            if AetheryteHelper.settings.SET.mushmovetoMB == false then
+            if AHSET.mushmovetoMB == false then
             GUI:SetTooltip("Teleport to Limsa")
             if (GUI:IsMouseDown(1)) then
             GUI:SetTooltip("リムサ")
@@ -1101,7 +1111,7 @@ function AetheryteHelper.GLUtelepo()
       GUI:Button("Uldah",55,20)
       GUI:EndGroup()
          if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == false ) then
+            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == false ) then
               Player:ClearTarget()
               mushlooptimer = 0
               uldMBStep = 0
@@ -1112,7 +1122,7 @@ function AetheryteHelper.GLUtelepo()
               autooff = false
               modechg = 2
             end
-            if (GUI:IsMouseClicked(0)) and (AetheryteHelper.settings.SET.mushmovetoMB == true ) then
+            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == true ) then
               Player:ClearTarget()
               mushMBul = true
               mushMBlim = false
@@ -1120,7 +1130,7 @@ function AetheryteHelper.GLUtelepo()
               uldMBStep = 0
               mushlooptimer = 100
             end
-            if AetheryteHelper.settings.SET.mushmovetoMB == false then
+            if AHSET.mushmovetoMB == false then
             GUI:SetTooltip("Teleport to Uldah")
             if (GUI:IsMouseDown(1)) then
             GUI:SetTooltip("ウルダハ")
@@ -1266,25 +1276,117 @@ function AetheryteHelper.SubWindow()
       GUI:EndGroup()
       
       GUI:Spacing()
-      GUI:BeginGroup()
       if mushins == nil or selectins == false then
-      GUI:TextColored(1,1,1,1,"-------")
-      GUI:TextColored(1,1,1,1,"-------")
-      GUI:TextColored(1,1,1,1,"-------")
-      else      
-      GUI:TextColored(0,1,1,1,"ins1:"..mushins[9].value)
-      GUI:Spacing()
-      GUI:TextColored(0,1,1,1,"ins2:"..mushins[10].value)
-      GUI:Spacing()
-      GUI:TextColored(0,1,1,1,"ins3:"..mushins[11].value)
-      end
+      GUI:BeginGroup()
+      GUI:TextColored(1,1,1,1,"ins1:-------")
       GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(1,1,1,1,"ins2:-------")
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(1,1,1,1,"ins3:-------")
+      GUI:EndGroup()
+      else
+      GUI:BeginGroup()      
+      GUI:TextColored(0,1,1,1,"ins1:"..mushins[9].value)
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,1,1,"ins2:"..mushins[10].value)
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,1,1,"ins3:"..mushins[11].value)
+      GUI:EndGroup()
+      end
     end        
     GUI:End()
     
   end
   
 end
+--------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.insSelecterWindow()
+  if (AetheryteHelper.insSelectGUI.open) then
+    local insSelectGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+    GUI:SetNextWindowSize(220,100)
+     AetheryteHelper.insSelectGUI.visible, AetheryteHelper.insSelectGUI.open = GUI:Begin('insselecter', AetheryteHelper.insSelectGUI.open,insSelectGUIflags)
+    if (AetheryteHelper.insSelectGUI.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Button("1",60,20)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+          isins = 1
+          autheStep = 2
+          selectins = true
+          end
+          GUI:SetTooltip("left Push")
+      end
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Button("2",60,20)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+          isins = 2
+          autheStep = 2
+          selectins = true
+          end
+          GUI:SetTooltip("left Push")
+      end
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Button("3",60,20)
+      GUI:EndGroup()  
+      if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+          isins = 3
+          autheStep = 2
+          selectins = true
+          end
+          GUI:SetTooltip("left Push")
+      end
+      GUI:Separator()  
+      GUI:BeginGroup()
+      GUI:TextColored(1,0,0,1,"don't move it to wrong ins")
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Checkbox("Enable(auto on)",selectins)
+      GUI:EndGroup()
+       if (GUI:IsItemHovered()) then
+         if (GUI:IsMouseClicked(0)) then
+         isins = 4
+         selectins = not selectins
+         if selectins == false then Player:Stop() end
+         end
+      end 
+      GUI:SameLine(190)
+      GUI:BeginGroup()
+      GUI:Button("X",20,20)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+        if GUI:IsMouseDown(0) then              
+        AetheryteHelper.insSelectGUI.open = false
+        end
+      GUI:SetTooltip("close")
+        if (GUI:IsMouseDown(1)) then
+        GUI:SetTooltip("閉じる")
+        end 
+      end
+
+    end        
+    GUI:End()
+    
+  end
+  
+end
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.jumboWindow()
@@ -1339,24 +1441,24 @@ function AetheryteHelper.jumboWindow()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo11 = GUI:InputInt("###11",AetheryteHelper.settings.SET.jumbo11,1,1)
-      if AetheryteHelper.settings.SET.jumbo11 < 0 then AetheryteHelper.settings.SET.jumbo11 = 9 end
-      if AetheryteHelper.settings.SET.jumbo11 > 9 then AetheryteHelper.settings.SET.jumbo11 = 0 end
+      AHSET.jumbo11 = GUI:InputInt("###11",AHSET.jumbo11,1,1)
+      if AHSET.jumbo11 < 0 then AHSET.jumbo11 = 9 end
+      if AHSET.jumbo11 > 9 then AHSET.jumbo11 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo12 = GUI:InputInt("###12",AetheryteHelper.settings.SET.jumbo12,1,1)
-      if AetheryteHelper.settings.SET.jumbo12 < 0 then AetheryteHelper.settings.SET.jumbo12 = 9 end
-      if AetheryteHelper.settings.SET.jumbo12 > 9 then AetheryteHelper.settings.SET.jumbo12 = 0 end
+      AHSET.jumbo12 = GUI:InputInt("###12",AHSET.jumbo12,1,1)
+      if AHSET.jumbo12 < 0 then AHSET.jumbo12 = 9 end
+      if AHSET.jumbo12 > 9 then AHSET.jumbo12 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo13 = GUI:InputInt("###13",AetheryteHelper.settings.SET.jumbo13,1,1)
-      if AetheryteHelper.settings.SET.jumbo13 < 0 then AetheryteHelper.settings.SET.jumbo13 = 9 end
-      if AetheryteHelper.settings.SET.jumbo13 > 9 then AetheryteHelper.settings.SET.jumbo13 = 0 end
+      AHSET.jumbo13 = GUI:InputInt("###13",AHSET.jumbo13,1,1)
+      if AHSET.jumbo13 < 0 then AHSET.jumbo13 = 9 end
+      if AHSET.jumbo13 > 9 then AHSET.jumbo13 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo14 = GUI:InputInt("###14",AetheryteHelper.settings.SET.jumbo14,1,1)
-      if AetheryteHelper.settings.SET.jumbo14 < 0 then AetheryteHelper.settings.SET.jumbo14 = 9 end
-      if AetheryteHelper.settings.SET.jumbo14 > 9 then AetheryteHelper.settings.SET.jumbo14 = 0 end
+      AHSET.jumbo14 = GUI:InputInt("###14",AHSET.jumbo14,1,1)
+      if AHSET.jumbo14 < 0 then AHSET.jumbo14 = 9 end
+      if AHSET.jumbo14 > 9 then AHSET.jumbo14 = 0 end
       AetheryteHelper.SaveSettings()
       GUI:EndGroup()
       
@@ -1381,24 +1483,24 @@ function AetheryteHelper.jumboWindow()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo21 = GUI:InputInt("###21",AetheryteHelper.settings.SET.jumbo21,1,1)
-      if AetheryteHelper.settings.SET.jumbo21 < 0 then AetheryteHelper.settings.SET.jumbo21 = 9 end
-      if AetheryteHelper.settings.SET.jumbo21 > 9 then AetheryteHelper.settings.SET.jumbo21 = 0 end
+      AHSET.jumbo21 = GUI:InputInt("###21",AHSET.jumbo21,1,1)
+      if AHSET.jumbo21 < 0 then AHSET.jumbo21 = 9 end
+      if AHSET.jumbo21 > 9 then AHSET.jumbo21 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo22 = GUI:InputInt("###22",AetheryteHelper.settings.SET.jumbo22,1,1)
-      if AetheryteHelper.settings.SET.jumbo22 < 0 then AetheryteHelper.settings.SET.jumbo22 = 9 end
-      if AetheryteHelper.settings.SET.jumbo22 > 9 then AetheryteHelper.settings.SET.jumbo22 = 0 end
+      AHSET.jumbo22 = GUI:InputInt("###22",AHSET.jumbo22,1,1)
+      if AHSET.jumbo22 < 0 then AHSET.jumbo22 = 9 end
+      if AHSET.jumbo22 > 9 then AHSET.jumbo22 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo23 = GUI:InputInt("###23",AetheryteHelper.settings.SET.jumbo23,1,1)
-      if AetheryteHelper.settings.SET.jumbo23 < 0 then AetheryteHelper.settings.SET.jumbo23= 9 end
-      if AetheryteHelper.settings.SET.jumbo23 > 9 then AetheryteHelper.settings.SET.jumbo23 = 0 end
+      AHSET.jumbo23 = GUI:InputInt("###23",AHSET.jumbo23,1,1)
+      if AHSET.jumbo23 < 0 then AHSET.jumbo23= 9 end
+      if AHSET.jumbo23 > 9 then AHSET.jumbo23 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo24 = GUI:InputInt("###24",AetheryteHelper.settings.SET.jumbo24,1,1)
-      if AetheryteHelper.settings.SET.jumbo24 < 0 then AetheryteHelper.settings.SET.jumbo24 = 9 end
-      if AetheryteHelper.settings.SET.jumbo24 > 9 then AetheryteHelper.settings.SET.jumbo24 = 0 end
+      AHSET.jumbo24 = GUI:InputInt("###24",AHSET.jumbo24,1,1)
+      if AHSET.jumbo24 < 0 then AHSET.jumbo24 = 9 end
+      if AHSET.jumbo24 > 9 then AHSET.jumbo24 = 0 end
       AetheryteHelper.SaveSettings()
       GUI:EndGroup()
 
@@ -1424,24 +1526,24 @@ function AetheryteHelper.jumboWindow()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo31 = GUI:InputInt("###31",AetheryteHelper.settings.SET.jumbo31,1,1)
-      if AetheryteHelper.settings.SET.jumbo31 < 0 then AetheryteHelper.settings.SET.jumbo31 = 9 end
-      if AetheryteHelper.settings.SET.jumbo31 > 9 then AetheryteHelper.settings.SET.jumbo31 = 0 end
+      AHSET.jumbo31 = GUI:InputInt("###31",AHSET.jumbo31,1,1)
+      if AHSET.jumbo31 < 0 then AHSET.jumbo31 = 9 end
+      if AHSET.jumbo31 > 9 then AHSET.jumbo31 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo32 = GUI:InputInt("###32",AetheryteHelper.settings.SET.jumbo32,1,1)
-      if AetheryteHelper.settings.SET.jumbo32 < 0 then AetheryteHelper.settings.SET.jumbo32 = 9 end
-      if AetheryteHelper.settings.SET.jumbo32 > 9 then AetheryteHelper.settings.SET.jumbo32 = 0 end
+      AHSET.jumbo32 = GUI:InputInt("###32",AHSET.jumbo32,1,1)
+      if AHSET.jumbo32 < 0 then AHSET.jumbo32 = 9 end
+      if AHSET.jumbo32 > 9 then AHSET.jumbo32 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo33 = GUI:InputInt("###33",AetheryteHelper.settings.SET.jumbo33,1,1)
-      if AetheryteHelper.settings.SET.jumbo33 < 0 then AetheryteHelper.settings.SET.jumbo33 = 9 end
-      if AetheryteHelper.settings.SET.jumbo33 > 9 then AetheryteHelper.settings.SET.jumbo33 = 0 end
+      AHSET.jumbo33 = GUI:InputInt("###33",AHSET.jumbo33,1,1)
+      if AHSET.jumbo33 < 0 then AHSET.jumbo33 = 9 end
+      if AHSET.jumbo33 > 9 then AHSET.jumbo33 = 0 end
       GUI:SameLine()
       GUI:PushItemWidth(80)
-      AetheryteHelper.settings.SET.jumbo34 = GUI:InputInt("###34",AetheryteHelper.settings.SET.jumbo34,1,1)
-      if AetheryteHelper.settings.SET.jumbo34 < 0 then AetheryteHelper.settings.SET.jumbo34 = 9 end
-      if AetheryteHelper.settings.SET.jumbo34 > 9 then AetheryteHelper.settings.SET.jumbo34 = 0 end
+      AHSET.jumbo34 = GUI:InputInt("###34",AHSET.jumbo34,1,1)
+      if AHSET.jumbo34 < 0 then AHSET.jumbo34 = 9 end
+      if AHSET.jumbo34 > 9 then AHSET.jumbo34 = 0 end
       AetheryteHelper.SaveSettings()
       GUI:EndGroup()
 
@@ -1515,10 +1617,10 @@ function AetheryteHelper.TMwindow()
       GUI:BeginGroup()
       GUI:PushItemWidth(80)
       GUI:Text("Repair Gear(self only)")
-      AetheryteHelper.settings.SET.mushrepairGear = GUI:InputInt("%",AetheryteHelper.settings.SET.mushrepairGear,1,1000)
+      AHSET.mushrepairGear = GUI:InputInt("%",AHSET.mushrepairGear,1,1000)
       GUI:EndGroup()
-      if AetheryteHelper.settings.SET.mushrepairGear < 1 then AetheryteHelper.settings.SET.mushrepairGear = 99 end
-      if AetheryteHelper.settings.SET.mushrepairGear > 99 then AetheryteHelper.settings.SET.mushrepairGear = 1 end
+      if AHSET.mushrepairGear < 1 then AHSET.mushrepairGear = 99 end
+      if AHSET.mushrepairGear > 99 then AHSET.mushrepairGear = 1 end
       if (GUI:IsItemHovered()) then
         if language == 0 then
         GUI:SetTooltip("装備の修理です。\nHMDMの初期値は50なので60に設定していますが\nHMDMの設定値より上にして下さい。\n自分で修理するのでクラフター必須です")
@@ -1533,12 +1635,10 @@ function AetheryteHelper.TMwindow()
         if GUI:IsMouseClicked(0) then
         mushlooptimer = 5000
         mushTrustmode = not mushTrustmode
-        AetheryteHelper.settings.SET.DesynthTrust = true
+        AHSET.DesynthTrust = true
         GCexchange = false
         sealstoitem = false
-        mushtoItemstep = 0
-        mushEXstep = 0
-        end
+        end  
         GUI:SetTooltip("Enable\n\ntab will change to [Option] by itself")
         if (GUI:IsMouseDown(1)) then
         GUI:SetTooltip("オン\n\nタブが強制的に[Option]に切り替わります")
@@ -1554,7 +1654,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --desyunth ilset tree GUI
 
-function AetheryteHelper.desynthIL(Event, ticks)
+function AetheryteHelper.desynthIL()
      GUI:Spacing()
      GUI:BeginGroup()
      GUI:Text("Desynthesis option")
@@ -1570,11 +1670,11 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:Spacing()
      GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
-     GUI:Checkbox("Crafter mode",AetheryteHelper.settings.SET.CrafterMode)
+     GUI:Checkbox("Crafter mode",AHSET.CrafterMode)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      if (GUI:IsMouseClicked(0)) then
-        AetheryteHelper.settings.SET.CrafterMode = not AetheryteHelper.settings.SET.CrafterMode
+        AHSET.CrafterMode = not AHSET.CrafterMode
         AetheryteHelper.SaveSettings()
         end   
         GUI:SetTooltip("Auto off in Crafter")
@@ -1585,11 +1685,11 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:SameLine()
      GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
-     GUI:Checkbox("Trust mode",AetheryteHelper.settings.SET.DesynthTrust)
+     GUI:Checkbox("Trust mode",AHSET.DesynthTrust)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      if (GUI:IsMouseClicked(0)) then
-        AetheryteHelper.settings.SET.DesynthTrust = not AetheryteHelper.settings.SET.DesynthTrust
+        AHSET.DesynthTrust = not AHSET.DesynthTrust
         AetheryteHelper.SaveSettings()
         end   
         GUI:SetTooltip("for use with the Trust addon")
@@ -1598,7 +1698,7 @@ function AetheryteHelper.desynthIL(Event, ticks)
         end 
      end
      if mushTrustmode == true then
-     AetheryteHelper.settings.SET.DesynthTrust = true
+     AHSET.DesynthTrust = true
      end
      GUI:Spacing()
      GUI:Separator()
@@ -1606,7 +1706,7 @@ function AetheryteHelper.desynthIL(Event, ticks)
   if GUI:TreeNode("IL Setting##AetheryteHelper") then 
      GUI:BeginGroup()
      GUI:PushItemWidth(80)
-     AetheryteHelper.settings.SET.dminil = GUI:InputInt("< IL",AetheryteHelper.settings.SET.dminil,1,500)
+     AHSET.dminil = GUI:InputInt("< IL",AHSET.dminil,1,500)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
@@ -1617,11 +1717,11 @@ function AetheryteHelper.desynthIL(Event, ticks)
      end
      GUI:SameLine()
      GUI:BeginGroup()
-     AetheryteHelper.settings.SET.dmaxil = GUI:InputInt("> IL",AetheryteHelper.settings.SET.dmaxil,1,500)
-     if (AetheryteHelper.settings.SET.dminil < 1) then AetheryteHelper.settings.SET.dminil = 1 end        
-     if (AetheryteHelper.settings.SET.dmaxil < 5) then AetheryteHelper.settings.SET.dmaxil = 5 end
-     if (AetheryteHelper.settings.SET.dmaxil > 1000) then AetheryteHelper.settings.SET.dmaxil = 1000 end
-     if (AetheryteHelper.settings.SET.dminil > AetheryteHelper.settings.SET.dmaxil) then AetheryteHelper.settings.SET.dminil = AetheryteHelper.settings.SET.dmaxil end
+     AHSET.dmaxil = GUI:InputInt("> IL",AHSET.dmaxil,1,500)
+     if (AHSET.dminil < 1) then AHSET.dminil = 1 end        
+     if (AHSET.dmaxil < 5) then AHSET.dmaxil = 5 end
+     if (AHSET.dmaxil > 1000) then AHSET.dmaxil = 1000 end
+     if (AHSET.dminil > AHSET.dmaxil) then AHSET.dminil = AHSET.dmaxil end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
@@ -1635,8 +1735,8 @@ function AetheryteHelper.desynthIL(Event, ticks)
      GUI:EndGroup()
             if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
-              AetheryteHelper.settings.SET.dminil = 5
-              AetheryteHelper.settings.SET.dmaxil = 540
+              AHSET.dminil = 5
+              AHSET.dmaxil = 540
               AetheryteHelper.SaveSettings()
               end
               GUI:SetTooltip("Setting IL Reset")              
@@ -1664,11 +1764,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:AlignFirstTextHeightToWidgets()      
       GUI:BeginGroup()
       GUI:PushItemWidth()
-      GUI:Checkbox("Main", AetheryteHelper.settings.Filter.Main)
+      GUI:Checkbox("Main", eqFilter.Main)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Main = not  AetheryteHelper.settings.Filter.Main
+            eqFilter.Main = not  eqFilter.Main
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("Primary")              
@@ -1679,11 +1779,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Sub", AetheryteHelper.settings.Filter.Sub)
+      GUI:Checkbox("Sub", eqFilter.Sub)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Sub = not  AetheryteHelper.settings.Filter.Sub
+            eqFilter.Sub = not  eqFilter.Sub
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("Secondary & Shield")              
@@ -1696,11 +1796,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Head", AetheryteHelper.settings.Filter.Head)
+      GUI:Checkbox("Head", eqFilter.Head)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Head = not  AetheryteHelper.settings.Filter.Head
+            eqFilter.Head = not  eqFilter.Head
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Head")              
@@ -1711,11 +1811,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Earrings", AetheryteHelper.settings.Filter.Earrings)
+      GUI:Checkbox("Earrings", eqFilter.Earrings)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Earrings = not  AetheryteHelper.settings.Filter.Earrings
+            eqFilter.Earrings = not  eqFilter.Earrings
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Earrings")              
@@ -1728,11 +1828,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Body", AetheryteHelper.settings.Filter.Body)
+      GUI:Checkbox("Body", eqFilter.Body)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Body = not  AetheryteHelper.settings.Filter.Body
+            eqFilter.Body = not  eqFilter.Body
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Body")              
@@ -1743,11 +1843,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Necklace", AetheryteHelper.settings.Filter.Necklace)
+      GUI:Checkbox("Necklace", eqFilter.Necklace)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Necklace = not  AetheryteHelper.settings.Filter.Necklace
+            eqFilter.Necklace = not  eqFilter.Necklace
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Necklace")              
@@ -1760,11 +1860,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Hand", AetheryteHelper.settings.Filter.Hand)
+      GUI:Checkbox("Hand", eqFilter.Hand)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Hand = not  AetheryteHelper.settings.Filter.Hand
+            eqFilter.Hand = not  eqFilter.Hand
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Hand")              
@@ -1775,11 +1875,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Bracelets", AetheryteHelper.settings.Filter.Bracelets)
+      GUI:Checkbox("Bracelets", eqFilter.Bracelets)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Bracelets = not  AetheryteHelper.settings.Filter.Bracelets
+            eqFilter.Bracelets = not  eqFilter.Bracelets
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Bracelets")              
@@ -1792,11 +1892,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Legs", AetheryteHelper.settings.Filter.Legs)
+      GUI:Checkbox("Legs", eqFilter.Legs)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Legs = not  AetheryteHelper.settings.Filter.Legs
+            eqFilter.Legs = not  eqFilter.Legs
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Legs")              
@@ -1807,11 +1907,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Ring", AetheryteHelper.settings.Filter.Ring)
+      GUI:Checkbox("Ring", eqFilter.Ring)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Ring = not  AetheryteHelper.settings.Filter.Ring
+            eqFilter.Ring = not  eqFilter.Ring
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Ring")              
@@ -1824,11 +1924,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Feet", AetheryteHelper.settings.Filter.Feet)
+      GUI:Checkbox("Feet", eqFilter.Feet)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Feet = not  AetheryteHelper.settings.Filter.Feet
+            eqFilter.Feet = not  eqFilter.Feet
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Feet")              
@@ -1843,31 +1943,31 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Filter.Main = true
-            AetheryteHelper.settings.Filter.Sub = true 
-            AetheryteHelper.settings.Filter.Head = true
-           AetheryteHelper.settings.Filter.Body = true
-           AetheryteHelper.settings.Filter.Hand = true
-           AetheryteHelper.settings.Filter.Legs = true
-           AetheryteHelper.settings.Filter.Feet = true
-           AetheryteHelper.settings.Filter.Earrings = true
-           AetheryteHelper.settings.Filter.Necklace = true
-           AetheryteHelper.settings.Filter.Bracelets = true
-           AetheryteHelper.settings.Filter.Ring = true
+            eqFilter.Main = true
+            eqFilter.Sub = true 
+            eqFilter.Head = true
+           eqFilter.Body = true
+           eqFilter.Hand = true
+           eqFilter.Legs = true
+           eqFilter.Feet = true
+           eqFilter.Earrings = true
+           eqFilter.Necklace = true
+           eqFilter.Bracelets = true
+           eqFilter.Ring = true
         AetheryteHelper.SaveSettings()
            end
         if (GUI:IsMouseClicked(1)) then
-           AetheryteHelper.settings.Filter.Main = not AetheryteHelper.settings.Filter.Main
-           AetheryteHelper.settings.Filter.Sub = not AetheryteHelper.settings.Filter.Sub
-           AetheryteHelper.settings.Filter.Head = not AetheryteHelper.settings.Filter.Head
-           AetheryteHelper.settings.Filter.Body = not AetheryteHelper.settings.Filter.Body
-           AetheryteHelper.settings.Filter.Hand = not AetheryteHelper.settings.Filter.Hand
-           AetheryteHelper.settings.Filter.Legs = not AetheryteHelper.settings.Filter.Legs
-           AetheryteHelper.settings.Filter.Feet = not AetheryteHelper.settings.Filter.Feet
-           AetheryteHelper.settings.Filter.Earrings = not AetheryteHelper.settings.Filter.Earrings
-           AetheryteHelper.settings.Filter.Necklace = not AetheryteHelper.settings.Filter.Necklace
-           AetheryteHelper.settings.Filter.Bracelets = not AetheryteHelper.settings.Filter.Bracelets
-           AetheryteHelper.settings.Filter.Ring = not AetheryteHelper.settings.Filter.Ring
+           eqFilter.Main = not eqFilter.Main
+           eqFilter.Sub = not eqFilter.Sub
+           eqFilter.Head = not eqFilter.Head
+           eqFilter.Body = not eqFilter.Body
+           eqFilter.Hand = not eqFilter.Hand
+           eqFilter.Legs = not eqFilter.Legs
+           eqFilter.Feet = not eqFilter.Feet
+           eqFilter.Earrings = not eqFilter.Earrings
+           eqFilter.Necklace = not eqFilter.Necklace
+           eqFilter.Bracelets = not eqFilter.Bracelets
+           eqFilter.Ring = not eqFilter.Ring
         AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
@@ -1886,11 +1986,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:AlignFirstTextHeightToWidgets()      
       GUI:BeginGroup()
       GUI:PushItemWidth()
-      GUI:Checkbox("Tank", AetheryteHelper.settings.Job.Tank)
+      GUI:Checkbox("Tank", AHeqjob.Tank)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Tank = not  AetheryteHelper.settings.Job.Tank
+            AHeqjob.Tank = not  AHeqjob.Tank
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("PLD / WAR / DRK / GNB")              
@@ -1901,11 +2001,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Healer", AetheryteHelper.settings.Job.Healer)
+      GUI:Checkbox("Healer", AHeqjob.Healer)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Healer = not  AetheryteHelper.settings.Job.Healer
+            AHeqjob.Healer = not  AHeqjob.Healer
            end
       AetheryteHelper.SaveSettings()
       GUI:SetTooltip("WHM / SCH / AST / SGE")              
@@ -1918,11 +2018,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Slaying", AetheryteHelper.settings.Job.Slaying)
+      GUI:Checkbox("Slaying", AHeqjob.Slaying)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Slaying = not  AetheryteHelper.settings.Job.Slaying
+            AHeqjob.Slaying = not  AHeqjob.Slaying
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Accessories :\nMNK / DRG / SAM / RPR")              
@@ -1933,11 +2033,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Aiming", AetheryteHelper.settings.Job.Aiming)
+      GUI:Checkbox("Aiming", AHeqjob.Aiming)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Aiming = not  AetheryteHelper.settings.Job.Aiming
+            AHeqjob.Aiming = not  AHeqjob.Aiming
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("BRD / MCN / DNC")              
@@ -1950,11 +2050,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Striking", AetheryteHelper.settings.Job.Striking)
+      GUI:Checkbox("Striking", AHeqjob.Striking)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Striking = not  AetheryteHelper.settings.Job.Striking
+            AHeqjob.Striking = not  AHeqjob.Striking
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("MNK / SAM")              
@@ -1965,11 +2065,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Sorcerer", AetheryteHelper.settings.Job.Sorcerer)
+      GUI:Checkbox("Sorcerer", AHeqjob.Sorcerer)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Sorcerer = not  AetheryteHelper.settings.Job.Sorcerer
+            AHeqjob.Sorcerer = not  AHeqjob.Sorcerer
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("BLM / SMN / RDM")              
@@ -1982,11 +2082,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Maiming", AetheryteHelper.settings.Job.Maiming)
+      GUI:Checkbox("Maiming", AHeqjob.Maiming)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Maiming = not  AetheryteHelper.settings.Job.Maiming
+            AHeqjob.Maiming = not  AHeqjob.Maiming
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("DRG / RPR")              
@@ -1997,11 +2097,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("All Job", AetheryteHelper.settings.Job.ALL)
+      GUI:Checkbox("All Job", AHeqjob.ALL)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.ALL = not  AetheryteHelper.settings.Job.ALL
+            AHeqjob.ALL = not  AHeqjob.ALL
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("All Job")              
@@ -2014,11 +2114,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Scouting", AetheryteHelper.settings.Job.Scouting)
+      GUI:Checkbox("Scouting", AHeqjob.Scouting)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Scouting = not  AetheryteHelper.settings.Job.Scouting
+            AHeqjob.Scouting = not  AHeqjob.Scouting
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("NIN")              
@@ -2034,28 +2134,28 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-           AetheryteHelper.settings.Job.Tank = true
-           AetheryteHelper.settings.Job.Healer = true
-           AetheryteHelper.settings.Job.Slaying = true
-           AetheryteHelper.settings.Job.Aiming = true
-           AetheryteHelper.settings.Job.Striking = true
-           AetheryteHelper.settings.Job.Sorcerer = true
-           AetheryteHelper.settings.Job.Maiming = true
-           AetheryteHelper.settings.Job.ALL = true
-           AetheryteHelper.settings.Job.Scouting = true
+           AHeqjob.Tank = true
+           AHeqjob.Healer = true
+           AHeqjob.Slaying = true
+           AHeqjob.Aiming = true
+           AHeqjob.Striking = true
+           AHeqjob.Sorcerer = true
+           AHeqjob.Maiming = true
+           AHeqjob.ALL = true
+           AHeqjob.Scouting = true
 
            AetheryteHelper.SaveSettings()
            end
         if (GUI:IsMouseClicked(1)) then
-           AetheryteHelper.settings.Job.Tank = not  AetheryteHelper.settings.Job.Tank
-           AetheryteHelper.settings.Job.Healer = not  AetheryteHelper.settings.Job.Healer
-           AetheryteHelper.settings.Job.Slaying = not  AetheryteHelper.settings.Job.Slaying
-           AetheryteHelper.settings.Job.Aiming = not  AetheryteHelper.settings.Job.Aiming
-           AetheryteHelper.settings.Job.Striking = not  AetheryteHelper.settings.Job.Striking
-           AetheryteHelper.settings.Job.Sorcerer = not  AetheryteHelper.settings.Job.Sorcerer
-           AetheryteHelper.settings.Job.Maiming = not  AetheryteHelper.settings.Job.Maiming
-           AetheryteHelper.settings.Job.Scouting = not  AetheryteHelper.settings.Job.Scouting
-           AetheryteHelper.settings.Job.ALL = not  AetheryteHelper.settings.Job.ALL
+           AHeqjob.Tank = not  AHeqjob.Tank
+           AHeqjob.Healer = not  AHeqjob.Healer
+           AHeqjob.Slaying = not  AHeqjob.Slaying
+           AHeqjob.Aiming = not  AHeqjob.Aiming
+           AHeqjob.Striking = not  AHeqjob.Striking
+           AHeqjob.Sorcerer = not  AHeqjob.Sorcerer
+           AHeqjob.Maiming = not  AHeqjob.Maiming
+           AHeqjob.Scouting = not  AHeqjob.Scouting
+           AHeqjob.ALL = not  AHeqjob.ALL
            AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
@@ -2069,11 +2169,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("PLD", AetheryteHelper.settings.Job.PLD)
+      GUI:Checkbox("PLD", AHeqjob.PLD)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.PLD = not  AetheryteHelper.settings.Job.PLD
+            AHeqjob.PLD = not  AHeqjob.PLD
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary / Secondary")              
@@ -2084,11 +2184,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("WHM", AetheryteHelper.settings.Job.WHM)
+      GUI:Checkbox("WHM", AHeqjob.WHM)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.WHM = not  AetheryteHelper.settings.Job.WHM
+            AHeqjob.WHM = not  AHeqjob.WHM
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary / Secondary")              
@@ -2101,11 +2201,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("WAR", AetheryteHelper.settings.Job.WAR)
+      GUI:Checkbox("WAR", AHeqjob.WAR)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.WAR = not  AetheryteHelper.settings.Job.WAR
+            AHeqjob.WAR = not  AHeqjob.WAR
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2116,11 +2216,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("SCH", AetheryteHelper.settings.Job.SCH)
+      GUI:Checkbox("SCH", AHeqjob.SCH)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.SCH = not  AetheryteHelper.settings.Job.SCH
+            AHeqjob.SCH = not  AHeqjob.SCH
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2133,11 +2233,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("DRK", AetheryteHelper.settings.Job.DRK)
+      GUI:Checkbox("DRK", AHeqjob.DRK)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.DRK = not  AetheryteHelper.settings.Job.DRK
+            AHeqjob.DRK = not  AHeqjob.DRK
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2148,11 +2248,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("AST", AetheryteHelper.settings.Job.AST)
+      GUI:Checkbox("AST", AHeqjob.AST)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.AST = not  AetheryteHelper.settings.Job.AST
+            AHeqjob.AST = not  AHeqjob.AST
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2165,11 +2265,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("GNB", AetheryteHelper.settings.Job.GNB)
+      GUI:Checkbox("GNB", AHeqjob.GNB)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.GNB = not  AetheryteHelper.settings.Job.GNB
+            AHeqjob.GNB = not  AHeqjob.GNB
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2180,11 +2280,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("SGE", AetheryteHelper.settings.Job.SGE)
+      GUI:Checkbox("SGE", AHeqjob.SGE)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.SGE = not  AetheryteHelper.settings.Job.SGE
+            AHeqjob.SGE = not  AHeqjob.SGE
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2197,11 +2297,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
    
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("MNK", AetheryteHelper.settings.Job.MNK)
+      GUI:Checkbox("MNK", AHeqjob.MNK)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.MNK = not  AetheryteHelper.settings.Job.MNK
+            AHeqjob.MNK = not  AHeqjob.MNK
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2212,11 +2312,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("BRD", AetheryteHelper.settings.Job.BRD)
+      GUI:Checkbox("BRD", AHeqjob.BRD)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.BRD = not  AetheryteHelper.settings.Job.BRD
+            AHeqjob.BRD = not  AHeqjob.BRD
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2229,11 +2329,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("DRG", AetheryteHelper.settings.Job.DRG)
+      GUI:Checkbox("DRG", AHeqjob.DRG)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.DRG = not  AetheryteHelper.settings.Job.DRG
+            AHeqjob.DRG = not  AHeqjob.DRG
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2244,11 +2344,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("MCN", AetheryteHelper.settings.Job.MCN)
+      GUI:Checkbox("MCN", AHeqjob.MCN)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.MCN = not  AetheryteHelper.settings.Job.MCN
+            AHeqjob.MCN = not  AHeqjob.MCN
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2261,11 +2361,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("NIN", AetheryteHelper.settings.Job.NIN)
+      GUI:Checkbox("NIN", AHeqjob.NIN)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.NIN = not  AetheryteHelper.settings.Job.NIN
+            AHeqjob.NIN = not  AHeqjob.NIN
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2276,11 +2376,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("DNC", AetheryteHelper.settings.Job.DNC)
+      GUI:Checkbox("DNC", AHeqjob.DNC)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.DNC = not  AetheryteHelper.settings.Job.DNC
+            AHeqjob.DNC = not  AHeqjob.DNC
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2293,11 +2393,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
 
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("SAM", AetheryteHelper.settings.Job.SAM)
+      GUI:Checkbox("SAM", AHeqjob.SAM)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.SAM = not  AetheryteHelper.settings.Job.SAM
+            AHeqjob.SAM = not  AHeqjob.SAM
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2308,11 +2408,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("BLM", AetheryteHelper.settings.Job.BLM)
+      GUI:Checkbox("BLM", AHeqjob.BLM)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.BLM = not  AetheryteHelper.settings.Job.BLM
+            AHeqjob.BLM = not  AHeqjob.BLM
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary / Secondary")              
@@ -2325,11 +2425,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("RPR", AetheryteHelper.settings.Job.RPR)
+      GUI:Checkbox("RPR", AHeqjob.RPR)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.RPR = not  AetheryteHelper.settings.Job.RPR
+            AHeqjob.RPR = not  AHeqjob.RPR
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2340,11 +2440,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("SMN", AetheryteHelper.settings.Job.SMN)
+      GUI:Checkbox("SMN", AHeqjob.SMN)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.SMN = not  AetheryteHelper.settings.Job.SMN
+            AHeqjob.SMN = not  AHeqjob.SMN
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2358,11 +2458,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("RDM", AetheryteHelper.settings.Job.RDM)
+      GUI:Checkbox("RDM", AHeqjob.RDM)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.RDM = not  AetheryteHelper.settings.Job.RDM
+            AHeqjob.RDM = not  AHeqjob.RDM
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Primary Weapon")              
@@ -2382,47 +2482,47 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.PLD = true
-            AetheryteHelper.settings.Job.WHM = true
-            AetheryteHelper.settings.Job.WAR = true
-            AetheryteHelper.settings.Job.SCH = true
-            AetheryteHelper.settings.Job.DRK = true
-            AetheryteHelper.settings.Job.AST = true
-            AetheryteHelper.settings.Job.GNB = true
-            AetheryteHelper.settings.Job.SGE = true
-            AetheryteHelper.settings.Job.MNK = true
-            AetheryteHelper.settings.Job.BRD = true
-            AetheryteHelper.settings.Job.DRG = true
-            AetheryteHelper.settings.Job.MCN = true
-            AetheryteHelper.settings.Job.NIN = true
-            AetheryteHelper.settings.Job.DNC = true
-            AetheryteHelper.settings.Job.SAM = true
-            AetheryteHelper.settings.Job.BLM = true
-            AetheryteHelper.settings.Job.RPR = true
-            AetheryteHelper.settings.Job.SMN = true
-            AetheryteHelper.settings.Job.RDM = true
+            AHeqjob.PLD = true
+            AHeqjob.WHM = true
+            AHeqjob.WAR = true
+            AHeqjob.SCH = true
+            AHeqjob.DRK = true
+            AHeqjob.AST = true
+            AHeqjob.GNB = true
+            AHeqjob.SGE = true
+            AHeqjob.MNK = true
+            AHeqjob.BRD = true
+            AHeqjob.DRG = true
+            AHeqjob.MCN = true
+            AHeqjob.NIN = true
+            AHeqjob.DNC = true
+            AHeqjob.SAM = true
+            AHeqjob.BLM = true
+            AHeqjob.RPR = true
+            AHeqjob.SMN = true
+            AHeqjob.RDM = true
             AetheryteHelper.SaveSettings()
            end
         if (GUI:IsMouseClicked(1)) then
-            AetheryteHelper.settings.Job.PLD = not  AetheryteHelper.settings.Job.PLD
-            AetheryteHelper.settings.Job.WHM = not  AetheryteHelper.settings.Job.WHM
-            AetheryteHelper.settings.Job.WAR = not  AetheryteHelper.settings.Job.WAR
-            AetheryteHelper.settings.Job.SCH = not  AetheryteHelper.settings.Job.SCH
-            AetheryteHelper.settings.Job.DRK = not  AetheryteHelper.settings.Job.DRK
-            AetheryteHelper.settings.Job.AST = not  AetheryteHelper.settings.Job.AST
-            AetheryteHelper.settings.Job.GNB = not  AetheryteHelper.settings.Job.GNB
-            AetheryteHelper.settings.Job.SGE = not  AetheryteHelper.settings.Job.SGE
-            AetheryteHelper.settings.Job.MNK = not  AetheryteHelper.settings.Job.MNK
-            AetheryteHelper.settings.Job.BRD = not  AetheryteHelper.settings.Job.BRD
-            AetheryteHelper.settings.Job.DRG = not  AetheryteHelper.settings.Job.DRG
-            AetheryteHelper.settings.Job.MCN = not  AetheryteHelper.settings.Job.MCN
-            AetheryteHelper.settings.Job.NIN = not  AetheryteHelper.settings.Job.NIN
-            AetheryteHelper.settings.Job.DNC = not  AetheryteHelper.settings.Job.DNC
-            AetheryteHelper.settings.Job.SAM = not  AetheryteHelper.settings.Job.SAM
-            AetheryteHelper.settings.Job.BLM = not  AetheryteHelper.settings.Job.BLM
-            AetheryteHelper.settings.Job.RPR = not  AetheryteHelper.settings.Job.RPR
-            AetheryteHelper.settings.Job.SMN = not  AetheryteHelper.settings.Job.SMN
-            AetheryteHelper.settings.Job.RDM = not  AetheryteHelper.settings.Job.RDM
+            AHeqjob.PLD = not  AHeqjob.PLD
+            AHeqjob.WHM = not  AHeqjob.WHM
+            AHeqjob.WAR = not  AHeqjob.WAR
+            AHeqjob.SCH = not  AHeqjob.SCH
+            AHeqjob.DRK = not  AHeqjob.DRK
+            AHeqjob.AST = not  AHeqjob.AST
+            AHeqjob.GNB = not  AHeqjob.GNB
+            AHeqjob.SGE = not  AHeqjob.SGE
+            AHeqjob.MNK = not  AHeqjob.MNK
+            AHeqjob.BRD = not  AHeqjob.BRD
+            AHeqjob.DRG = not  AHeqjob.DRG
+            AHeqjob.MCN = not  AHeqjob.MCN
+            AHeqjob.NIN = not  AHeqjob.NIN
+            AHeqjob.DNC = not  AHeqjob.DNC
+            AHeqjob.SAM = not  AHeqjob.SAM
+            AHeqjob.BLM = not  AHeqjob.BLM
+            AHeqjob.RPR = not  AHeqjob.RPR
+            AHeqjob.SMN = not  AHeqjob.SMN
+            AHeqjob.RDM = not  AHeqjob.RDM
             AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
@@ -2436,11 +2536,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Crafter", AetheryteHelper.settings.Job.Crafter)
+      GUI:Checkbox("Crafter", AHeqjob.Crafter)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Crafter = not  AetheryteHelper.settings.Job.Crafter
+            AHeqjob.Crafter = not  AHeqjob.Crafter
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Tool & Armor & Accessories")              
@@ -2451,11 +2551,11 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
       GUI:SameLine(150)
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("Gatherer", AetheryteHelper.settings.Job.Gatherer)
+      GUI:Checkbox("Gatherer", AHeqjob.Gatherer)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-            AetheryteHelper.settings.Job.Gatherer = not  AetheryteHelper.settings.Job.Gatherer
+            AHeqjob.Gatherer = not  AHeqjob.Gatherer
       AetheryteHelper.SaveSettings()
            end
       GUI:SetTooltip("Tool & Armor & Accessories")              
@@ -2529,7 +2629,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
      GUI:PushItemWidth(120)
-     AetheryteHelper.settings.SET.syojigunpyou = GUI:InputInt("seals",AetheryteHelper.settings.SET.syojigunpyou,100,10000)
+     AHSET.syojigunpyou = GUI:InputInt("seals",AHSET.syojigunpyou,100,10000)
      AetheryteHelper.SaveSettings()
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
@@ -2540,15 +2640,16 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      end
      for k,v in pairs(mushPlayerGCrank) do
      if (k == Player.GrandCompanyRank) then mushmaxseal = v
-     if AetheryteHelper.settings.SET.syojigunpyou < 1 then AetheryteHelper.settings.SET.syojigunpyou = tonumber(mushmaxseal.max) end
-     if AetheryteHelper.settings.SET.syojigunpyou > tonumber(mushmaxseal.max) then AetheryteHelper.settings.SET.syojigunpyou = tonumber(mushmaxseal.max) end
+     if AHSET.syojigunpyou < 1 then AHSET.syojigunpyou = tonumber(mushmaxseal.max) end
+     if AHSET.syojigunpyou > tonumber(mushmaxseal.max) then AHSET.syojigunpyou = tonumber(mushmaxseal.max) end
+     if mushTrustmode == true then AHSET.syojigunpyou = tonumber(mushmaxseal.max)*0.95 end
      end
      end
      GUI:Spacing()
      GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
      GUI:PushItemWidth(80)
-     AetheryteHelper.settings.SET.hosiikazu = GUI:InputInt("Quantity",AetheryteHelper.settings.SET.hosiikazu,1,10000)
+     AHSET.hosiikazu = GUI:InputInt("Quantity",AHSET.hosiikazu,1,10000)
      AetheryteHelper.SaveSettings()
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
@@ -2561,10 +2662,10 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:BeginGroup()
      GUI:PushItemWidth(170)
      if language == 0 then
-     AetheryteHelper.settings.SET.koukanhin = GUI:Combo("",AetheryteHelper.settings.SET.koukanhin,GCexchangeItems.jp,5)
+     AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
      AetheryteHelper.SaveSettings()
      else 
-     AetheryteHelper.settings.SET.koukanhin = GUI:Combo("",AetheryteHelper.settings.SET.koukanhin,GCexchangeItems.En,5)   
+     AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)   
      AetheryteHelper.SaveSettings()
      end
      GUI:EndGroup()
@@ -2575,47 +2676,47 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
        end
      end
      GUI:Spacing()
-     if AetheryteHelper.settings.SET.koukanhin == 1 and Player.GrandCompanyRank < 1 then                           
+     if AHSET.koukanhin == 1 and Player.GrandCompanyRank < 1 then                           
         sealstoitem = false
-     elseif AetheryteHelper.settings.SET.koukanhin == 2 and Player.GrandCompanyRank < 1 then 
+     elseif AHSET.koukanhin == 2 and Player.GrandCompanyRank < 1 then 
         sealstoitem = false
-     elseif AetheryteHelper.settings.SET.koukanhin == 3 and Player.GrandCompanyRank < 9 then 
+     elseif AHSET.koukanhin == 3 and Player.GrandCompanyRank < 9 then 
         sealstoitem = false
-     elseif AetheryteHelper.settings.SET.koukanhin == 4 and Player.GrandCompanyRank < 11 then 
+     elseif AHSET.koukanhin == 4 and Player.GrandCompanyRank < 11 then 
         sealstoitem = false
-     elseif AetheryteHelper.settings.SET.koukanhin == 5 and Player.GrandCompanyRank < 11 then 
+     elseif AHSET.koukanhin == 5 and Player.GrandCompanyRank < 11 then 
         sealstoitem = false
-     elseif AetheryteHelper.settings.SET.koukanhin == 6 and Player.GrandCompanyRank < 10 then 
+     elseif AHSET.koukanhin == 6 and Player.GrandCompanyRank < 10 then 
         sealstoitem = false
      end   
-     if AetheryteHelper.settings.SET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
+     if AHSET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
      elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AetheryteHelper.settings.SET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
+     if AHSET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
      elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AetheryteHelper.settings.SET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
+     if AHSET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
      elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AetheryteHelper.settings.SET.selectGC == 4 then mushGseals  = nil end 
-     local mushcost = GCexchangeItems.cost[AetheryteHelper.settings.SET.koukanhin]
+     if AHSET.selectGC == 4 then mushGseals  = nil end 
+     local mushcost = GCexchangeItems.cost[AHSET.koukanhin]
      if mushGseals ~= nil then
      if (mushadjustoff == false) then
-     if mushGseals.count < 200 then AetheryteHelper.settings.SET.hosiikazu = 0 end
-      while (mushcost * AetheryteHelper.settings.SET.hosiikazu ) <  mushGseals.count do AetheryteHelper.settings.SET.hosiikazu = AetheryteHelper.settings.SET.hosiikazu + 1 end
-      if mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) end
+     if mushGseals.count < 200 then AHSET.hosiikazu = 0 end
+      while (mushcost * AHSET.hosiikazu ) <  mushGseals.count do AHSET.hosiikazu = AHSET.hosiikazu + 1 end
+      if mushcost * AHSET.hosiikazu >  mushGseals.count then AHSET.hosiikazu = (AHSET.hosiikazu - 1) end
      else
-      if mushGseals.count >= 200 and AetheryteHelper.settings.SET.hosiikazu < 0 then AetheryteHelper.settings.SET.hosiikazu = 450
-      elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  AetheryteHelper.settings.SET.syojigunpyou then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) 
+      if mushGseals.count >= 200 and AHSET.hosiikazu < 0 then AHSET.hosiikazu = 450
+      elseif mushcost * AHSET.hosiikazu >  AHSET.syojigunpyou then AHSET.hosiikazu = (AHSET.hosiikazu - 1) 
       end
      end
-     if AetheryteHelper.settings.SET.hosiikazu == 0 then sealstoitem = false mushlooptimer = 1000 end
+     if AHSET.hosiikazu == 0 then sealstoitem = false mushlooptimer = 1000 end
 
      GUI:BeginGroup()
      GUI:TextColored(1,1,0,1,"COST:"..mushcost)
      GUI:EndGroup()
      GUI:SameLine(100)
      GUI:BeginGroup()
-     if mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then
-     GUI:TextColored(1,0,0,1,mushcost * AetheryteHelper.settings.SET.hosiikazu.."/"..mushGseals.count)
-     else GUI:TextColored(0,1,1,1,mushcost * AetheryteHelper.settings.SET.hosiikazu.."/"..mushGseals.count) end
+     if mushcost * AHSET.hosiikazu >  mushGseals.count then
+     GUI:TextColored(1,0,0,1,mushcost * AHSET.hosiikazu.."/"..mushGseals.count)
+     else GUI:TextColored(0,1,1,1,mushcost * AHSET.hosiikazu.."/"..mushGseals.count) end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
        GUI:SetTooltip("Required seals/have seals")
@@ -2623,23 +2724,23 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
        GUI:SetTooltip("交換に必要な軍票/現在の軍票")
        end
      end
-     if AetheryteHelper.settings.SET.syojigunpyou <= mushGseals.count then mushtruninGCitem = true
-     elseif AetheryteHelper.settings.SET.syojigunpyou > mushGseals.count then mushtruninGCitem = false
+     if AHSET.syojigunpyou <= mushGseals.count then mushtruninGCitem = true
+     elseif AHSET.syojigunpyou > mushGseals.count then mushtruninGCitem = false
      end
-     if AetheryteHelper.settings.SET.hosiikazu == 0 then mushtruninGCseals = false
-     elseif AetheryteHelper.settings.SET.hosiikazu > 0 and mushcost * AetheryteHelper.settings.SET.hosiikazu <=  mushGseals.count then mushtruninGCseals = true
-     elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  mushGseals.count then mushtruninGCseals = false 
+     if AHSET.hosiikazu == 0 then mushtruninGCseals = false
+     elseif AHSET.hosiikazu > 0 and mushcost * AHSET.hosiikazu <=  mushGseals.count then mushtruninGCseals = true
+     elseif mushcost * AHSET.hosiikazu >  mushGseals.count then mushtruninGCseals = false 
      end
      elseif mushGseals == nil then
      mushtruninGCitem = false
      mushtruninGCseals = false
      if (mushadjustoff == false) then
-      if AetheryteHelper.settings.SET.hosiikazu < 0 then AetheryteHelper.settings.SET.hosiikazu = 450
-      elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  0 then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) 
+      if AHSET.hosiikazu < 0 then AHSET.hosiikazu = 450
+      elseif mushcost * AHSET.hosiikazu >  0 then AHSET.hosiikazu = (AHSET.hosiikazu - 1) 
       end
      else
-      if AetheryteHelper.settings.SET.hosiikazu < 0 then AetheryteHelper.settings.SET.hosiikazu = 450
-      elseif mushcost * AetheryteHelper.settings.SET.hosiikazu >  AetheryteHelper.settings.SET.syojigunpyou then AetheryteHelper.settings.SET.hosiikazu = (AetheryteHelper.settings.SET.hosiikazu - 1) 
+      if AHSET.hosiikazu < 0 then AHSET.hosiikazu = 450
+      elseif mushcost * AHSET.hosiikazu >  AHSET.syojigunpyou then AHSET.hosiikazu = (AHSET.hosiikazu - 1) 
       end
      end
 
@@ -2649,7 +2750,7 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:EndGroup()
      GUI:SameLine(100)
      GUI:BeginGroup()
-     GUI:TextColored(1,0,0,1,mushcost * AetheryteHelper.settings.SET.hosiikazu.."/"..0)
+     GUI:TextColored(1,0,0,1,mushcost * AHSET.hosiikazu.."/"..0)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
        GUI:SetTooltip("Required seals/have seals")
@@ -2658,8 +2759,8 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
        end
      end
      end
-     mushitemid = GCexchangeItems.id[AetheryteHelper.settings.SET.koukanhin]
-     mushhosiikazu = AetheryteHelper.settings.SET.hosiikazu
+     mushitemid = GCexchangeItems.id[AHSET.koukanhin]
+     mushhosiikazu = AHSET.hosiikazu
 
 
     
@@ -2668,18 +2769,18 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --materia option tree GUI
 
-function AetheryteHelper.extractOption(Event, ticks)
+function AetheryteHelper.extractOption()
   if GUI:TreeNode("Extract Option##AetheryteHelper") then
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("##Potion", AetheryteHelper.settings.SET.isPotionEnabled)
+      GUI:Checkbox("##Potion", AHSET.isPotionEnabled)
       GUI:SameLine()
       GUI:Text("Spiritbond Potion")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           mushlooptimer = 1000
-          AetheryteHelper.settings.SET.isPotionEnabled = not AetheryteHelper.settings.SET.isPotionEnabled
+          AHSET.isPotionEnabled = not AHSET.isPotionEnabled
           AetheryteHelper.SaveSettings()         
         end
        GUI:SetTooltip("auto use potion")
@@ -2692,13 +2793,13 @@ function AetheryteHelper.extractOption(Event, ticks)
       GUI:Text("---")
       GUI:SameLine()
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:Checkbox("##Poption", AetheryteHelper.settings.SET.isBotStatusP)
+      GUI:Checkbox("##Poption", AHSET.isBotStatusP)
       GUI:SameLine()      
       GUI:Text("Link to Bot Status")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isBotStatusP = not AetheryteHelper.settings.SET.isBotStatusP
+          AHSET.isBotStatusP = not AHSET.isBotStatusP
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Automatically uncheck option(Potion)\nwhen Bot status:Not Running") 
@@ -2709,14 +2810,14 @@ function AetheryteHelper.extractOption(Event, ticks)
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("##Manual", AetheryteHelper.settings.SET.isManualEnabled)
+      GUI:Checkbox("##Manual", AHSET.isManualEnabled)
       GUI:SameLine()      
       GUI:Text("Spiritbond Manual")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           mushlooptimer = 1000
-          AetheryteHelper.settings.SET.isManualEnabled = not AetheryteHelper.settings.SET.isManualEnabled
+          AHSET.isManualEnabled = not AHSET.isManualEnabled
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("auto use spiritbond manual") 
@@ -2729,13 +2830,13 @@ function AetheryteHelper.extractOption(Event, ticks)
       GUI:Text("---")
       GUI:SameLine()
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:Checkbox("##Moption", AetheryteHelper.settings.SET.isBotStatusM)
+      GUI:Checkbox("##Moption", AHSET.isBotStatusM)
       GUI:SameLine()      
       GUI:Text("Link to Bot Status")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isBotStatusM = not AetheryteHelper.settings.SET.isBotStatusM
+          AHSET.isBotStatusM = not AHSET.isBotStatusM
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Automatically uncheck option(Manual)\nwhen Bot status:Not Running") 
@@ -2743,16 +2844,16 @@ function AetheryteHelper.extractOption(Event, ticks)
         GUI:SetTooltip("minionに連動してオンオフする\nminionから独立して動くアドオンは不可")
         end
       end
-      if (FFXIV_Common_BotRunning == false) and (AetheryteHelper.settings.SET.isBotStatusP == true) then
-        AetheryteHelper.settings.SET.isPotionEnabled = false
-      elseif (FFXIV_Common_BotRunning == true) and (AetheryteHelper.settings.SET.isBotStatusP == true) then
-        AetheryteHelper.settings.SET.isPotionEnabled = true
+      if (FFXIV_Common_BotRunning == false) and (AHSET.isBotStatusP == true) then
+        AHSET.isPotionEnabled = false
+      elseif (FFXIV_Common_BotRunning == true) and (AHSET.isBotStatusP == true) then
+        AHSET.isPotionEnabled = true
 
       end
-      if (FFXIV_Common_BotRunning == false) and (AetheryteHelper.settings.SET.isBotStatusM == true) then
-        AetheryteHelper.settings.SET.isManualEnabled = false
-      elseif (FFXIV_Common_BotRunning == true) and (AetheryteHelper.settings.SET.isBotStatusM == true) then
-        AetheryteHelper.settings.SET.isManualEnabled = true
+      if (FFXIV_Common_BotRunning == false) and (AHSET.isBotStatusM == true) then
+        AHSET.isManualEnabled = false
+      elseif (FFXIV_Common_BotRunning == true) and (AHSET.isBotStatusM == true) then
+        AHSET.isManualEnabled = true
 
       end
 
@@ -2785,12 +2886,12 @@ function AetheryteHelper.GCseals()
      GUI:BeginGroup()
      GUI:PushItemWidth(100)
      if language == 0 then
-     AetheryteHelper.settings.SET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGCJP,1)
+     AHSET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGCJP,1)
      else
-     AetheryteHelper.settings.SET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGCEN,1)
+     AHSET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGCEN,1)
      end
      if Player.GrandCompany == 0 then 
-     AetheryteHelper.settings.SET.selectGC = GUI:Combo("GCseals:",4,mushGCEN,1) end
+     AHSET.selectGC = GUI:Combo("GCseals:",4,mushGCEN,1) end
      AetheryteHelper.SaveSettings()
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
@@ -2801,13 +2902,13 @@ function AetheryteHelper.GCseals()
      end
      GUI:SameLine()
      GUI:BeginGroup()
-     if AetheryteHelper.settings.SET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
+     if AHSET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
      elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AetheryteHelper.settings.SET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
+     if AHSET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
      elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AetheryteHelper.settings.SET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
+     if AHSET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
      elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AetheryteHelper.settings.SET.selectGC == 4 then mushGseals  = nil end  
+     if AHSET.selectGC == 4 then mushGseals  = nil end  
 
      for k,v in pairs(mushPlayerGCrank) do
      if (k == Player.GrandCompanyRank) then mushmaxseal = v
@@ -2828,7 +2929,7 @@ function AetheryteHelper.GCseals()
 end
 
 
-function AetheryteHelper.DrawSubtool(event, ticks)
+function AetheryteHelper.DrawSubtool()
       AetheryteHelper.Inventoryfree()
       GUI:Spacing()      
       GUI:BeginGroup()
@@ -2847,16 +2948,16 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:BeginGroup()
       local seisen = ActionList:Get(5,14)
       if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
+      elseif (mushPbtotal < 2) then AHSET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Spacing()
-      GUI:Checkbox("##Materia", AetheryteHelper.settings.SET.isMateriaEnabled)
+      GUI:Checkbox("##Materia", AHSET.isMateriaEnabled)
       GUI:SameLine()
       GUI:Text("Materia Extract")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isMateriaEnabled = not AetheryteHelper.settings.SET.isMateriaEnabled
+          AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
           mushlooptimer = 2000
         end
         GUI:SetTooltip("in non combat")
@@ -2874,16 +2975,16 @@ function AetheryteHelper.DrawSubtool(event, ticks)
       GUI:BeginGroup()
       local bunkai = ActionList:Get(5,5)
       if bunkai.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 2) then AetheryteHelper.settings.SET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
+      elseif (mushPbtotal < 2) then AHSET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif bunkai.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Spacing()
-      GUI:Checkbox("##Desynthesis", AetheryteHelper.settings.SET.isSalvageEnabled)
+      GUI:Checkbox("##Desynthesis", AHSET.isSalvageEnabled)
       GUI:SameLine()
       GUI:Text("Desynthesis equipment in Bag")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isSalvageEnabled = not AetheryteHelper.settings.SET.isSalvageEnabled
+          AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
           GCexchange = false
           AetheryteHelper.SaveSettings()
         end
@@ -2892,23 +2993,23 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
         end
       end
-      if AetheryteHelper.settings.SET.CrafterMode == true then
+      if AHSET.CrafterMode == true then
         if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
         Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
-         AetheryteHelper.settings.SET.isSalvageEnabled = false
+         AHSET.isSalvageEnabled = false
         end
       end
       GUI:Spacing()
       GUI:BeginGroup()
       GUI:Text("---")
       GUI:SameLine()
-      GUI:Checkbox("##use option", AetheryteHelper.settings.SET.isReductionOption)
+      GUI:Checkbox("##use option", AHSET.isReductionOption)
       GUI:SameLine()
       GUI:Text("use settings")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isReductionOption = not AetheryteHelper.settings.SET.isReductionOption
+          AHSET.isReductionOption = not AHSET.isReductionOption
           
         end
         GUI:SetTooltip("use settings in Option Tab")
@@ -2939,7 +3040,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
           if Player.GrandCompanyRank < 6 then GCexchange = false end
 
           if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
-          AetheryteHelper.settings.SET.isSalvageEnabled = false
+          AHSET.isSalvageEnabled = false
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("for GC seals ")
@@ -2959,7 +3060,7 @@ function AetheryteHelper.DrawSubtool(event, ticks)
         if (GUI:IsMouseClicked(0)) then
           mushlooptimer = 1000
           AutoMoveGC = not AutoMoveGC
-          AetheryteHelper.settings.SET.isSalvageEnabled = false
+          AHSET.isSalvageEnabled = false
         end
         GUI:SetTooltip("You'd better move yourself")
         AetheryteHelper.SaveSettings()
@@ -2989,13 +3090,13 @@ if GUI:TreeNode("check before exchange") then
       GUI:BeginGroup() 
       GUI:Text("---")
       GUI:SameLine()
-      GUI:Checkbox("##lessmax", AetheryteHelper.settings.SET.GCexlessmax)
+      GUI:Checkbox("##lessmax", AHSET.GCexlessmax)
       GUI:SameLine()
       GUI:Text("less max")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.GCexlessmax = not AetheryteHelper.settings.SET.GCexlessmax
+          AHSET.GCexlessmax = not AHSET.GCexlessmax
         end
         GUI:SetTooltip("not done exchange over max seals")
         if (GUI:IsMouseDown(1)) then
@@ -3034,18 +3135,18 @@ if GUI:TreeNode("check before exchange") then
       GUI:BeginGroup()
       local seisen = ActionList:Get(5,21)
       if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 1) then AetheryteHelper.settings.SET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
+      elseif (mushPbtotal < 1) then AHSET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
       elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
       GUI:Spacing()
-      GUI:Checkbox("##AetherialReduction", AetheryteHelper.settings.SET.isReductionEnabled)
+      GUI:Checkbox("##AetherialReduction", AHSET.isReductionEnabled)
       GUI:SameLine()
       GUI:Text("Aetherial Reduction in Bag")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isReductionEnabled = not AetheryteHelper.settings.SET.isReductionEnabled
+          AHSET.isReductionEnabled = not AHSET.isReductionEnabled
           mushlooptimer = 2000
-          AetheryteHelper.settings.SET.isQuestmode = false
+          AHSET.isQuestmode = false
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Aetherial Reduction\nStop when there is no more space in inventory")
@@ -3056,17 +3157,17 @@ if GUI:TreeNode("check before exchange") then
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:Checkbox("##Qmode", AetheryteHelper.settings.SET.isQuestmode)
+      GUI:Checkbox("##Qmode", AHSET.isQuestmode)
       GUI:SameLine()      
       GUI:Text("Aetherial Reduction:QuestMode")
       GUI:TextColored(1,0,0,1,"   ---features for FFXIVminion")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
-          AetheryteHelper.settings.SET.isQuestmode = not AetheryteHelper.settings.SET.isQuestmode
+          AHSET.isQuestmode = not AHSET.isQuestmode
           mushlooptimer = 1000
-          if (mushPbtotal < 1) then AetheryteHelper.settings.SET.isQuestmode = false end
-          AetheryteHelper.settings.SET.isReductionEnabled = false
+          if (mushPbtotal < 1) then AHSET.isQuestmode = false end
+          AHSET.isReductionEnabled = false
           AetheryteHelper.SaveSettings()
         end
         GUI:SetTooltip("Stop Bot before inventory is low space.\nPerform Aetherial Reduction & Running Bot again.\nneed at least 5 free spaces in inventory") 
@@ -3154,29 +3255,29 @@ end
 -------------------------------------------------------------------------------------------------------------------------------------------
 -----DCset
 function AetheryteHelper.autoDCset()
-     if (AH_AutoDC == "Elemental") then AetheryteHelper.settings.SET.selectDC = 2
-         elseif (AH_AutoDC == "Gaia" ) then AetheryteHelper.settings.SET.selectDC = 3
-         elseif (AH_AutoDC == "Mana" ) then AetheryteHelper.settings.SET.selectDC = 4
-         elseif (AH_AutoDC == "Aether" ) then AetheryteHelper.settings.SET.selectDC = 5
-         elseif (AH_AutoDC == "Primal" ) then AetheryteHelper.settings.SET.selectDC = 6
-         elseif (AH_AutoDC == "Chaos" ) then AetheryteHelper.settings.SET.selectDC = 7
-         elseif (AH_AutoDC == "Light" ) then AetheryteHelper.settings.SET.selectDC = 8
-         elseif (AH_AutoDC == "Crystal" ) then AetheryteHelper.settings.SET.selectDC = 9
-         elseif (AH_AutoDC == "Materia" ) then AetheryteHelper.settings.SET.selectDC = 10
-         else AetheryteHelper.settings.SET.selectDC = 1
+     if (AH_AutoDC == "Elemental") then AHSET.selectDC = 2
+         elseif (AH_AutoDC == "Gaia" ) then AHSET.selectDC = 3
+         elseif (AH_AutoDC == "Mana" ) then AHSET.selectDC = 4
+         elseif (AH_AutoDC == "Aether" ) then AHSET.selectDC = 5
+         elseif (AH_AutoDC == "Primal" ) then AHSET.selectDC = 6
+         elseif (AH_AutoDC == "Chaos" ) then AHSET.selectDC = 7
+         elseif (AH_AutoDC == "Light" ) then AHSET.selectDC = 8
+         elseif (AH_AutoDC == "Crystal" ) then AHSET.selectDC = 9
+         elseif (AH_AutoDC == "Materia" ) then AHSET.selectDC = 10
+         else AHSET.selectDC = 1
       end
 end
 
 -----------------------------------------------------------
 --Player CurrentWorld save
-local mushPcurrnt = AetheryteHelper.settings.SET.Pcurrnt
+local mushPcurrnt = AHSET.Pcurrnt
 if mushPcurrnt ~= nil then AetheryteHelper.SaveSettings() end
 -------------------------------------------------------------------------------------------------------------------------------------------
 -- list GUI
 
 function AetheryteHelper.Origin()
            Origin_list = {} 
-           musholist = FFXIVServerlist[AetheryteHelper.settings.SET.selectDC]
+           musholist = FFXIVServerlist[AHSET.selectDC]
            for k, v in ipairs(musholist) do
            Origin_list[k] = v
 --d(Origin_list)
@@ -3185,7 +3286,6 @@ end
 
 function AetheryteHelper.DCSVselect()
             AetheryteHelper.Origin()
-         if (mushPcerrnt ~= Player.currentworld) then
             AetheryteHelper.SaveSettings()
             MushmoveServerlist = Origin_list
             for k, v in pairs(MushmoveServerlist) do
@@ -3204,16 +3304,14 @@ function AetheryteHelper.DCSVselect()
                     end 
                     end
                     end
-
-                end      
-            end
-          end
+                 end
+             end
      AetheryteHelper.autoDCset()
      GUI:BeginGroup()
      GUI:PushItemWidth(100)
      
      if ( gRegion == 1) then 
-        AetheryteHelper.settings.SET.selectDC = GUI:Combo( "DC", AetheryteHelper.settings.SET.selectDC,FFXIVDClist,1)
+        AHSET.selectDC = GUI:Combo( "DC", AHSET.selectDC,FFXIVDClist,1)
         --AetheryteHelper.SaveSettings()
      end
      GUI:EndGroup()
@@ -3225,18 +3323,18 @@ function AetheryteHelper.DCSVselect()
      end
      GUI:SameLine(150)
      GUI:BeginGroup()
-     GUI:Checkbox("MB",AetheryteHelper.settings.SET.mushmovetoMB)
+     GUI:Checkbox("MB",AHSET.mushmovetoMB)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
        if GUI:IsItemClicked(0) then
-       AetheryteHelper.settings.SET.mushmovetoMB = not AetheryteHelper.settings.SET.mushmovetoMB
+       AHSET.mushmovetoMB = not AHSET.mushmovetoMB
        end 
        GUI:SetTooltip("move to MB")
      if (GUI:IsMouseDown(1)) then
      GUI:SetTooltip("マケボへ移動")
      end
      end
-     if AetheryteHelper.settings.SET.mushmovetoMB == false then
+     if AHSET.mushmovetoMB == false then
       if mushMBlim == true then mushMBlim = false Player:Stop() end
       if mushMBgri == true then mushMBgri = false Player:Stop() end
       if mushMBul == true then mushMBul = false Player:Stop() end
@@ -3244,7 +3342,7 @@ function AetheryteHelper.DCSVselect()
      GUI:Text("select server(World Visit)")
      GUI:BeginGroup()
      GUI:PushItemWidth(180)
-     if (table.valid(FFXIVServerlist[AetheryteHelper.settings.SET.selectDC])) then
+     if (table.valid(FFXIVServerlist[AHSET.selectDC])) then
      selectSVR = GUI:Combo( "server",selectSVR,MushmoveServerlist,height or 20)
      --d("num:"..selectSVR)
      else
@@ -3265,7 +3363,7 @@ end
 --------------------------------------------------------------------------------
 -- header & All Drowcall GUI
 
-function AetheryteHelper.DrawCall(event, ticks)
+function AetheryteHelper.DrawCall()
   local Windows = kinokoProject.Windows.MainWindows
   local Addon = kinokoProject.Addon
   local minikinoko = kinokoProject.Windows.minibutton
@@ -3298,7 +3396,7 @@ function AetheryteHelper.DrawCall(event, ticks)
       AetheryteHelper.GUI.tabs[2].isselected = false
       AetheryteHelper.GUI.tabs[3].isselected = true
       AetheryteHelper.GUI.tabs[4].isselected = false
-      AetheryteHelper.desynthIL(Event, ticks)
+      AetheryteHelper.desynthIL()
 
       elseif (AetheryteHelper.GUI.tabs[1].isselected) then
       AetheryteHelper.Drawinsselect() ----main 
@@ -3336,7 +3434,7 @@ function AetheryteHelper.DrawCall(event, ticks)
 
       elseif (AetheryteHelper.GUI.tabs[3].isselected) then
 
-      AetheryteHelper.desynthIL(Event, ticks)
+      AetheryteHelper.desynthIL()
 
       elseif (AetheryteHelper.GUI.tabs[4].isselected) then
    
@@ -3367,13 +3465,14 @@ function AetheryteHelper.DrawCall(event, ticks)
   AetheryteHelper.jumboWindow()
   AetheryteHelper.TMwindow()
   AetheryteHelper.minimush()
+  AetheryteHelper.insSelecterWindow()
 end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- main function
 
-function AetheryteHelper.insselect(Event, ticks)
+function AetheryteHelper.insselect()
 --d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
   if autheVar == nil then
     autheVar = true
@@ -3387,7 +3486,7 @@ function AetheryteHelper.insselect(Event, ticks)
     Update.Timer = ticks   
   end]]
   if (selectins) then  
-      if autheVar and TimeSince(isTime) > AetheryteHelper.settings.SET.delay then
+      if autheVar and TimeSince(isTime) > AHSET.delay then
               aetheID = 0
               local el = EntityList("nearest,type=5")
               if table.valid(el) then
@@ -3396,7 +3495,7 @@ function AetheryteHelper.insselect(Event, ticks)
                       end
               end
               if autheStep == 0 then
-                  if (AetheryteHelper.settings.SET.nohousing)then autheStep = 5
+                  if (AHSET.nohousing)then autheStep = 5
                   else autheStep = 1
                   end
               end
@@ -3504,6 +3603,7 @@ function AetheryteHelper.insselect(Event, ticks)
            
       if Player:GetTarget() == nil then
          if( autooff ) then
+          isins = 4
           selectins = not selectins
          end
          end
@@ -3515,7 +3615,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --fix function
 
-function AetheryteHelper.mushMaintool(Event, ticks)
+function AetheryteHelper.mushMaintool()
   --if (not Update.Timer or ticks - Update.Timer > Update.Pulse) then
   --  Update.Timer = ticks   
   --end
@@ -3552,11 +3652,11 @@ function AetheryteHelper.mushMaintool(Event, ticks)
 function AetheryteHelper.movetoGCAll()
       if ( AutoMoveGC) then
         mushlooptimer = 1000
-        if (AetheryteHelper.settings.SET.selectGC == 1) then
+        if (AHSET.selectGC == 1) then
           AetheryteHelper.movetoCOMPANYlimsa()
-        elseif (AetheryteHelper.settings.SET.selectGC == 2) then
+        elseif (AHSET.selectGC == 2) then
           AetheryteHelper.movetoCOMPANYgridania()
-        elseif (AetheryteHelper.settings.SET.selectGC == 3) then
+        elseif (AHSET.selectGC == 3) then
           etheryteHelper.movetoCOMPANYuldah()
         end
       end
@@ -3669,13 +3769,13 @@ function AetheryteHelper.moveMBlimsa()
          if mushMBlim == true then
          
             if limMBStep == 0 then
-               if AetheryteHelper.settings.SET.mushmovetoMB == false then
+               if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
                   Player:Teleport(8,0)
                   mushlooptimer = 1000
                   mushMBlim = false
                   end
-               elseif AetheryteHelper.settings.SET.mushmovetoMB == true then
+               elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
                   Player:Teleport(8,0)
                   end           
@@ -3776,13 +3876,13 @@ function AetheryteHelper.moveMBgridania()
          if mushMBgri == true then
          
             if griMBStep == 0 then
-               if AetheryteHelper.settings.SET.mushmovetoMB == false then
+               if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
                   Player:Teleport(2,0)
                   mushlooptimer = 1000
                   mushMBlim = false
                   end
-               elseif AetheryteHelper.settings.SET.mushmovetoMB == true then
+               elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
                   Player:Teleport(2,0)
                   end           
@@ -3895,13 +3995,13 @@ function AetheryteHelper.moveMBuldah()
          if mushMBul == true then
          
             if uldMBStep == 0 then
-               if AetheryteHelper.settings.SET.mushmovetoMB == false then
+               if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
                   Player:Teleport(9,0)
                   mushlooptimer = 1000
                   mushMBlim = false
                   end
-               elseif AetheryteHelper.settings.SET.mushmovetoMB == true then
+               elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
                   Player:Teleport(9,0)
                   end           
@@ -3996,7 +4096,7 @@ function AetheryteHelper.moveMBuldah()
 end
 ---------------------------------------------------------------------------------------------------------------------------
 
-function AetheryteHelper.Exchange(Event, ticks)
+function AetheryteHelper.Exchange()
              if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
              elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
              elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
@@ -4004,7 +4104,7 @@ function AetheryteHelper.Exchange(Event, ticks)
              end
        if (GCexchange)then
               if( mushEXstep == 0) then
-                 d("[AH][Excange]step:"..mushEXstep)
+                 d("[AH][Exchange]step:"..mushEXstep)
                  Player:SetTarget(GCID1)
                  if Player:GetTarget().Distance < 6 then
                  Player:Interact(GCID1)
@@ -4018,94 +4118,105 @@ function AetheryteHelper.Exchange(Event, ticks)
                  end
               end
               if (mushEXstep == 1) then
-                d("[AH][Excange]step:"..mushEXstep)
+                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyList") then
                   GetControl("GrandCompanySupplyList"):PushButton(25,4)
                   --GetControl("GrandCompanySupplyList"):Action("SelectCategory",2)
                   mushEXstep = 2
                   end
-              end  
+              end
               if (mushEXstep == 2) then
-                d("[AH][Excange]step:"..mushEXstep)
+                d("[AH][Exchange]step:"..mushEXstep)
                     if IsControlOpen("GrandCompanySupplyList") then
                     if GetControl("GrandCompanySupplyList"):GetData().category == nil then
-                    mushEXstep = 7
+                    mushEXstep = 10
                     elseif GetControl("GrandCompanySupplyList"):GetData().category ~= 2 then
                     mushEXstep = 1 
                     elseif GetControl("GrandCompanySupplyList"):GetData().category == 2 then
                     GetControl("GrandCompanySupplyList"):Action("SelectFilterIndex",2)
-                    mushEXstep = 99
+                    mushEXstep = 3
                     end
                     end
-              end
+              end            
               if (mushEXstep == 3) then
-                d("[AH][Excange]step:"..mushEXstep)
-                     if IsControlOpen("SelectYesno") then
-                     if  GCexlessmax == true then 
-                     UseControlAction("SelectYesno","No")
-                     mushEXstep = 7
-                     elseif GCexlessmax == false then
-                     UseControlAction("SelectYesno","Yes")
-                     mushEXstep = 7
-                     end
-                     elseif GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
-                     mushEXstep = 7
+                d("[AH][Exchange]step:"..mushEXstep)
+                  if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
+                  mushEXstep = 4
+                  else
+                  mushEXstep = 10
+                  end
+              end
+              if (mushEXstep == 4) then
+                d("[AH][Exchange]step:"..mushEXstep)
+                     if GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
+                     mushEXstep = 10
                      elseif IsControlOpen("GrandCompanySupplyList") then
                      GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
-                     mushEXstep = 4
+                     mushEXstep = 5
                      else
                      mushEXstep = 0
                      end
               end
-              if (mushEXstep == 4) then
-                d("[AH][Excange]step:"..mushEXstep)
+              if (mushEXstep == 5) then
+                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyReward") then
                   GetControl("GrandCompanySupplyReward"):Action("Deliver")
-                  mushEXstep = 2
+                  mushEXstep = 6
                   elseif IsControlOpen("SelectYesno") then 
                   UseControlAction("SelectYesno","Yes")
                   mushEXstep = 5
                   elseif IsControlOpen("Request") then 
                   UseControlAction("Request","Cancel")
-                  mushEXstep = 7
+                  mushEXstep = 10
                   else
                   mushEXstep = 0
                   end
               end
-              if (mushEXstep == 5) then
-                d("[AH][Excange]step:"..mushEXstep)
-                  if IsControlOpen("GrandCompanySupplyReward") then
-                  GetControl("GrandCompanySupplyReward"):Action("Deliver")
-                  mushEXstep = 2
-                  else
-                  mushEXstep = 0
-                  end        
-              end
-              if (mushEXstep == 7) then
-                d("[AH][Excange]step:"..mushEXstep)
+              if (mushEXstep == 6) then
+                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyList") then
-                  UseControlAction("GrandCompanySupplyList","Close")
-                  mushEXstep = 8
-                  else
-                  mushEXstep = 0
+                  mushEXstep = 2
+                  elseif IsControlOpen("SelectYesno") then
+                  mushEXstep = 7
                   end 
               end
+              if (mushEXstep == 7) then
+                d("[AH][Exchange]step:"..mushEXstep)
+                 if AHSET.GCexlessmax == true then
+                    mushEXstep = 8
+                 elseif AHSET.GCexlessmax == false then
+                    mushEXstep = 9
+                 end 
+              end
               if (mushEXstep == 8) then
-                d("[AH][Excange]step:"..mushEXstep)
+                d("[AH][Exchange]step:"..mushEXstep)
+                  if IsControlOpen("SelectYesno") then
+                     UseControlAction("SelectYesno","No")
+                      mushEXstep = 10
+                  end   
+              end
+              if (mushEXstep == 9) then
+                d("[AH][Exchange]step:"..mushEXstep)
+                  if IsControlOpen("SelectYesno") then
+                     UseControlAction("SelectYesno","Yes")
+                      mushEXstep = 10
+                  end   
+              end
+              if (mushEXstep == 10) then
+                d("[AH][Exchange]step:"..mushEXstep)
+                  if IsControlOpen("GrandCompanySupplyList") then
+                  UseControlAction("GrandCompanySupplyList","Close")
+                  mushEXstep = 11
+                  end 
+              end
+              if (mushEXstep == 11 ) then
+                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("SelectString") then
                   UseControlAction("SelectString","Close")
                   Player:ClearTarget()
                   mushEXstep = 0
                   mushlooptimer = 1000
                   GCexchange = false
-                  end
-              end
-              if (mushEXstep == 99) then
-                d("[AH][Excange]step:"..mushEXstep)
-                  if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
-                  mushEXstep = 3
-                  else
-                  mushEXstep = 7
                   end
               end
               if Player:GetTarget() == nil then
@@ -4117,7 +4228,7 @@ function AetheryteHelper.Exchange(Event, ticks)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --seals to items
-function AetheryteHelper.mushSealstoItem(Event, ticks)
+function AetheryteHelper.mushSealstoItem()
    if (sealstoitem == true and mushtruninGCitem == true and mushtruninGCseals == true) then
      if Player.GrandCompany == 1 then
       GCID2 = tonumber(mushCD2.limsa)
@@ -4136,17 +4247,17 @@ function AetheryteHelper.mushSealstoItem(Event, ticks)
                  Player:Interact(GCID2)
                  end
                  if IsControlOpen("GrandCompanyExchange") then
-                 if AetheryteHelper.settings.SET.koukanhin == 1 then                           
+                 if AHSET.koukanhin == 1 then                           
                  mushtoItemstep = 1
-               elseif AetheryteHelper.settings.SET.koukanhin == 2 then 
+               elseif AHSET.koukanhin == 2 then 
                  mushtoItemstep = 10
-               elseif AetheryteHelper.settings.SET.koukanhin == 3 then 
+               elseif AHSET.koukanhin == 3 then 
                  mushtoItemstep = 20
-               elseif AetheryteHelper.settings.SET.koukanhin == 4 then 
+               elseif AHSET.koukanhin == 4 then 
                  mushtoItemstep = 30
-               elseif AetheryteHelper.settings.SET.koukanhin == 5 then 
+               elseif AHSET.koukanhin == 5 then 
                  mushtoItemstep = 40
-               elseif AetheryteHelper.settings.SET.koukanhin == 6 then 
+               elseif AHSET.koukanhin == 6 then 
                  mushtoItemstep = 50
                else
                 sealstoitem = false
@@ -4189,7 +4300,7 @@ function AetheryteHelper.mushSealstoItem(Event, ticks)
               if (mushtoItemstep == 98) then
                 if IsControlOpen("SelectYesno") then
                    UseControlAction("SelectYesno"):PushButton(25,0)
-                   mushtoItemstep = 99 
+                   mushtoItemstep = 99
                 elseif IsControlOpen("GrandCompanyExchange") then
                    mushtoItemstep = 99  
                 end
@@ -4345,35 +4456,37 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --
-function AetheryteHelper.mushEXchangeTrust(Event, ticks)
+
+function AetheryteHelper.mushEXchangeTrust(event)
+  local step = 0
   local nohinsoubi = 0
-  if(mushTrustmode == true and AetheryteHelper.settings.SET.DesynthTrust == true ) then
-         mushlooptimer = 5000
+  if(mushTrustmode == true and AHSET.DesynthTrust == true ) then
+           mushlooptimer = 5000
          if Duty:IsQueued() == true then
-           local equip = {1000}
-           for _, e in pairs(equip) do
-           local equip_item = Inventory:Get(e)
-           if (table.valid(equip_item)) then
-           local equiplist = equip_item:GetList()
-           if (table.valid(equiplist)) then
-           for _, item in pairs(equiplist) do
-               if item.Condition < AetheryteHelper.settings.SET.mushrepairGear then
-                  ActionList:Get(5,6):Cast()
-                d("[AH][Tmode]:Repair")
-                if IsControlOpen("Repair") then
-                   GetControl("Repair"):PushButton(25,0)
-                   if IsControlOpen("SelectYesno") then
-                   UseControlAction("SelectYesno","Yes")
-                   if IsControlOpen("Repair") then
-                   UseControlAction("Repair","Close")  
-                   end
-                   end
-                 end
+               local equip = {1000}
+               for _, e in pairs(equip) do
+               local equip_item = Inventory:Get(e)
+               if (table.valid(equip_item)) then
+               local equiplist = equip_item:GetList()
+               if (table.valid(equiplist)) then
+               for _, item in pairs(equiplist) do
+                      if item.Condition < AHSET.mushrepairGear then
+                         ActionList:Get(5,6):Cast()
+                         d("[AH][Tmode]:Repair")
+                         if IsControlOpen("Repair") then
+                         GetControl("Repair"):PushButton(25,0)
+                         if IsControlOpen("SelectYesno") then
+                         UseControlAction("SelectYesno","Yes")
+                         if IsControlOpen("Repair") then
+                         UseControlAction("Repair","Close")  
+                         end
+                         end
+                         end
+                      end
                end
-           end
-           end
-           end
-           end
+               end
+               end
+               end
          end
 
         local bags = {0,1,2,3}
@@ -4386,424 +4499,407 @@ function AetheryteHelper.mushEXchangeTrust(Event, ticks)
            if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.Rarity > 1) then 
            nohinsoubi = nohinsoubi + 1
            end
-           if Duty:IsQueued() == true then
-              Dawncloser = nil
-              mushtoItemstep = 0
-              mushEXstep = 0
-              if Dawncloser == nil then
-              d("[AH][Tmode]:standby:[itemcount:"..nohinsoubi.."]")
-              sealstoitemT = false
-              GCexchangeT = false
-              mushlooptimer = 5000
-              end
-       elseif nohinsoubi > 0 and Duty:IsQueued() == false then
-              Dawncloser = true
-              if Dawncloser == true then
-                    d("[AH][TMode]:working")
-                    local step = 0
-                    if step == 0 then
-                       if GCexchangeT == false then
-                          if (mushtruninGCitem == true and mushtruninGCseals == true) then
-                             sealstoitemT = true
-                             mushlooptimer = 500
-                             if sealstoitemT == true then
-                                  if Player.GrandCompany == 1 then
-                                     GCID2 = tonumber(mushCD2.limsa)
-                                     GCexchangeItems.id[6] = 26518
-                                     elseif Player.GrandCompany == 2 then
-                                     GCID2 = tonumber(mushCD2.Gridania)
-                                     GCexchangeItems.id[6] = 26519
-                                     elseif Player.GrandCompany  == 3 then
-                                     GCID2 = tonumber(mushCD2.Uldah)
-                                     GCexchangeItems.id[6] = 26520
-                                     else sealstoitemT = false end
+           
 
-                                      if( mushtoItemstep == 0) then
-                                       d("[AH][Tmode][Trunin]Start")            
-                                            Player:SetTarget(GCID2)
-                                            if Player:GetTarget().Distance < 6 then  
-                                            Player:Interact(GCID2)
-                                            end
-                                            if IsControlOpen("GrandCompanyExchange") then
-                                               if AetheryteHelper.settings.SET.koukanhin == 1 then                           
-                                               mushtoItemstep = 1
-                                               elseif AetheryteHelper.settings.SET.koukanhin == 2 then 
-                                               mushtoItemstep = 10
-                                               elseif AetheryteHelper.settings.SET.koukanhin == 3 then 
-                                               mushtoItemstep = 20
-                                               elseif AetheryteHelper.settings.SET.koukanhin == 4 then 
-                                               mushtoItemstep = 30
-                                               elseif AetheryteHelper.settings.SET.koukanhin == 5 then 
-                                               mushtoItemstep = 40
-                                               elseif AetheryteHelper.settings.SET.koukanhin == 6 then 
-                                               mushtoItemstep = 50
-                                               else
-                                               sealstoitemT = false
-                                               end
-                                            elseif IsControlOpen("SelectYesno") then
-                                            UseControlAction("SelectYesno","Yes")
-                                            mushtoItemstep = 98
-                                            end
-                                      end
-
-                                      if (mushtoItemstep == 1) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetRankIndex",0)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 0 then
-                                         mushtoItemstep = 2
-                                         else
-                                         mushtoItemstep = 1
-                                         end
-                                         end                  
-                                      end
-                                      if (mushtoItemstep == 2) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[68].value == 200 then
-                                         mushtoItemstep = 3
-                                         else
-                                         mushtoItemstep = 2
-                                         end
-                                         end                   
-                                      end
-                                      if (mushtoItemstep == 3) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         GetControl("GrandCompanyExchange"):Action("SelectItem",0,mushhosiikazu)
-                                         mushtoItemstep = 4
-                                         end
-                                      end
-                                      if (mushtoItemstep == 4) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("SelectYesno") then
-                                         --GetControl("SelectYesno"):Action("Yes")
-                                         UseControlAction("SelectYesno","Yes")
-                                         mushtoItemstep = 98
-                                         else
-                                         mushtoItemstep = 0
-                                         end
-                                      end
-                                      if (mushtoItemstep == 98) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("SelectYesno") then
-                                         UseControlAction("SelectYesno"):PushButton(25,0)
-                                         mushtoItemstep = 4 
-                                         elseif IsControlOpen("GrandCompanyExchange") then
-                                         mushtoItemstep = 99  
-                                         end
-                                      end
-
-                                      if (mushtoItemstep == 10) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
-                                         mushtoItemstep = 11
-                                         else
-                                         mushtoItemstep = 10
-                                         end
-                                         end                  
-                                      end
-                                      if (mushtoItemstep == 11) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[70].value == 600 then
-                                         mushtoItemstep = 12
-                                         else
-                                         mushtoItemstep = 11
-                                         end
-                                         end
-                                      end
-                                      if (mushtoItemstep == 12) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         GetControl("GrandCompanyExchange"):Action("SelectItem",2,mushhosiikazu)
-                                         mushtoItemstep = 4
-                                         end
-                                      end
-
-                                      if (mushtoItemstep == 20) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
-                                         mushtoItemstep = 21
-                                         else
-                                         mushtoItemstep = 20
-                                         end
-                                         end
-                                      end
-                                      if (mushtoItemstep == 21) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetTabIndex",4)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[69].value == 7000 then
-                                         mushtoItemstep = 22
-                                         else
-                                         mushtoItemstep = 21
-                                         end
-                                         end
-                                      end
-                                      if (mushtoItemstep == 22) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         GetControl("GrandCompanyExchange"):Action("SelectItem",1,mushhosiikazu)
-                                         mushtoItemstep = 4
-                                         end
-                                      end
-
-                                      if (mushtoItemstep == 30) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
-                                         mushtoItemstep = 31
-                                         else
-                                         mushtoItemstep = 30
-                                         end
-                                         end                  
-                                      end
-                                      if (mushtoItemstep == 31) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[103].value == 20000 then
-                                         mushtoItemstep = 32
-                                         else
-                                         mushtoItemstep = 31
-                                         end
-                                         end                   
-                                      end
-                                      if (mushtoItemstep == 32) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         GetControl("GrandCompanyExchange"):Action("SelectItem",35,mushhosiikazu)
-                                         mushtoItemstep = 4
-                                         end
-                                      end
-
-                                      if (mushtoItemstep == 40) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
-                                         mushtoItemstep = 41
-                                         else
-                                         mushtoItemstep = 40
-                                         end
-                                         end
-                                      end
-                                      if (mushtoItemstep == 41) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[104].value == 20000 then
-                                         mushtoItemstep = 42
-                                         else
-                                         mushtoItemstep = 41
-                                         end
-                                         end   
-                                      end
-                                      if (mushtoItemstep == 42) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         GetControl("GrandCompanyExchange"):Action("SelectItem",36,mushhosiikazu)
-                                         mushtoItemstep = 4
-                                         end
-                                      end
-
-                                      if (mushtoItemstep == 50) then
-                                        d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
-                                         mushtoItemstep = 51
-                                         else
-                                         mushtoItemstep = 50
-                                         end
-                                         end
-                                      end
-                                      if (mushtoItemstep == 51) then
-                                         d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
-                                         if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 2000 then
-                                         mushtoItemstep = 52
-                                         else
-                                         mushtoItemstep = 51
-                                         end
-                                         end
-                                      end
-                                      if (mushtoItemstep == 52) then
-                                         d("[AH][Tmode][Trunin]step:"..mushtoItemstep)
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         GetControl("GrandCompanyExchange"):Action("SelectItem",29,mushhosiikazu)
-                                         mushtoItemstep = 4
-                                         end
-                                      end
-
-                                      if (mushtoItemstep == 99) then
-                                        d("[AH][Tmode][Trunin]END")
-                                         if IsControlOpen("GrandCompanyExchange") then
-                                         UseControlAction("GrandCompanyExchange","Close")  
-                                         end
-                                      Player:ClearTarget()
-                                      mushlooptimer = 1000
-                                      sealstoitemT = false
-                                      mushtoItemstep = 0
-                                      end
-                             end
-                          else
-                          step = 1
+                        if step == 0 then
+                           if Duty:IsQueued() == true then
+                              Dawncloser = nil
+                              mushlooptimer = 5000
+                              step = 1
+                           elseif nohinsoubi < 1 and sealstoitemT == false and GCexchangeT == false and Duty:IsQueued() == false then
+                              Dawncloser = false
+                              step = 45
+                           elseif nohinsoubi > 0 and Duty:IsQueued() == false then
+                              Dawncloser = true
+                              step = 2
+                           end
+                        end
+                        if step == 1 then
+                          if Dawncloser == nil then
+                            d("[AH][Tmode]:standby:[itemcount:"..nohinsoubi.."]")
+                            sealstoitemT = false
+                            GCexchangeT = false
+                            step = 0
                           end
-                       else
-                       step = 1
-                       end
-                    end
-                    if step == 1 then
-                             GCexchangeT = true
-                             sealstoitemT = false
-                             mushlooptimer = 1000
-                             if GCexchangeT == true then
-                                  if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
-                                  elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
-                                  elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
-                                  else GCexchangeT = false
+                        end
+                        if step == 2 then
+                          if Dawncloser == true then
+                             d("[AH][TMode]:working")
+                            if nohinsoubi == 0 then
+                               GCexchangeT = false
+                               step = 0
+                            elseif mushtruninGCitem == true and mushtruninGCseals == true then
+                               sealstoitemT = true
+                               mushlooptimer = 500
+                               step = 3
+                            elseif nohinsoubi > 0 then 
+                               GCexchangeT = true
+                               mushlooptimer = 1000
+                               step = 30
+                            elseif nohinsoubi > 0 and AHSET.GCexlessmax == true then
+                               step = 3
+                            end
+                          end
+                        end
+                        if step == 3 then
+                           if (sealstoitemT == true and mushtruninGCitem == true and mushtruninGCseals == true) then
+                             d("[AH][Tmode][Trunin]:GCselect")
+                              if Player.GrandCompany == 1 then
+                                 GCID2 = tonumber(mushCD2.limsa)
+                                 GCexchangeItems.id[6] = 26518
+                                 elseif Player.GrandCompany == 2 then
+                                 GCID2 = tonumber(mushCD2.Gridania)
+                                 GCexchangeItems.id[6] = 26519
+                                 elseif Player.GrandCompany  == 3 then
+                                 GCID2 = tonumber(mushCD2.Uldah)
+                                 GCexchangeItems.id[6] = 26520
+                                 else sealstoitemT = false
+                                 step = 0
+                               end
+                           step = 4
+                           end
+                        end
+    
+                        if step == 4 then
+                            d("[AH][Tmode][Trunin]:itemSelect")            
+                              Player:SetTarget(GCID2)
+                              Player:Interact(GCID2)
+                              if IsControlOpen("SelectYesno") then
+                              UseControlAction("SelectYesno","Yes")
+                              step = 25
+                              elseif IsControlOpen("GrandCompanyExchange") then
+                                  if AHSET.koukanhin == 1 then                           
+                                     step = 5
+                                  elseif AHSET.koukanhin == 2 then 
+                                     step = 8
+                                  elseif AHSET.koukanhin == 3 then 
+                                     step = 11
+                                  elseif AHSET.koukanhin == 4 then 
+                                     step = 14
+                                  elseif AHSET.koukanhin == 5 then 
+                                     step = 17
+                                  elseif AHSET.koukanhin == 6 then 
+                                     step = 20
+                                  else
+                                     sealstoitemT = false
+                                     step = 0
                                   end
+                              end
+                        end
+                        if step == 5 then
+                            d("[AH][Tmode][Trunin]step:"..step)
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetRankIndex",0)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 0 then
+                              step = 6
+                              else
+                              step = 5
+                              end
+                              end                  
+                        end
+                        if step == 6 then
+                            d("[AH][Tmode][Trunin]step:"..step)
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[68].value == 200 then
+                              step = 7
+                              else
+                              step = 6
+                              end
+                              end                   
+                        end
+                        if step == 7 then
+                            d("[AH][Tmode][Trunin]step:"..step)
+                              if IsControlOpen("GrandCompanyExchange") then
+                              GetControl("GrandCompanyExchange"):Action("SelectItem",0,mushhosiikazu)
+                              step = 24
+                              end
+                        end
+                        if step == 8 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                              step = 9
+                              else
+                              step = 8
+                              end
+                              end                  
+                        end
+                        if step == 9 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[70].value == 600 then
+                              step = 10
+                              else
+                              step = 9
+                              end
+                              end
+                        end
+                        if step == 10 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") then
+                              GetControl("GrandCompanyExchange"):Action("SelectItem",2,mushhosiikazu)
+                              step = 24
+                              end
+                        end
+                        if step == 11 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                              step = 12
+                              else
+                              step = 11
+                              end
+                              end
+                        end
+                        if step == 12 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetTabIndex",4)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[69].value == 7000 then
+                              step = 13
+                              else
+                              step = 12
+                              end
+                              end
+                        end
+                        if step == 13 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") then
+                              GetControl("GrandCompanyExchange"):Action("SelectItem",1,mushhosiikazu)
+                              step = 24
+                              end
+                        end
+                        if step == 14 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                              step = 15
+                              else
+                              step = 14
+                              end
+                              end                  
+                        end
+                        if step == 15 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[103].value == 20000 then
+                              step = 16
+                              else
+                              step = 15
+                              end
+                              end                   
+                        end
+                        if step == 16 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") then
+                              GetControl("GrandCompanyExchange"):Action("SelectItem",35,mushhosiikazu)
+                              step = 24
+                              end
+                        end
+                        if step == 17 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                              step = 18
+                              else
+                              step = 17
+                              end
+                              end                  
+                        end
+                        if step == 18 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[104].value == 20000 then
+                              step = 19
+                              else
+                              step = 18
+                              end
+                              end                   
+                        end
+                        if step == 19 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") then
+                              GetControl("GrandCompanyExchange"):Action("SelectItem",36,mushhosiikazu)
+                              step = 24
+                              end
+                        end
+                        if step == 20 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
+                              step = 21
+                              else
+                              step = 20
+                              end
+                              end                  
+                        end
+                        if step == 21 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
+                              if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 2000 then
+                              step = 22
+                              else
+                              step = 21
+                              end
+                              end                   
+                        end
+                        if step == 23 then
+                            d("[AH][Tmode][Trunin]step:"..step)                          
+                              if IsControlOpen("GrandCompanyExchange") then
+                              GetControl("GrandCompanyExchange"):Action("SelectItem",29,mushhosiikazu)
+                              step = 24
+                              end
+                        end
+                        if step == 24 then
+                              if IsControlOpen("SelectYesno") then
+                              UseControlAction("SelectYesno","Yes")
+                              step = 25
+                              end
+                        end
+                        if step == 25 then
+                              if IsControlOpen("SelectYesno") then
+                              UseControlAction("SelectYesno"):PushButton(25,0)
+                              step = 26
+                              elseif IsControlOpen("GrandCompanyExchange") then
+                              step = 26  
+                              end
+                        end
+                        if step == 26 then
+                            d("[AH][Tmode][Trunin]step:"..step)
+                              if IsControlOpen("GrandCompanyExchange") then
+                              UseControlAction("GrandCompanyExchange","Close")
+                              end
+                              Player:ClearTarget()
+                              mushlooptimer = 5000
+                              sealstoitemT = false
+                              step = 0
+                        end
+                        
 
-                                      if( mushEXstep == 0) then
-                                        d("[AH][Tmode][Excange]Start:"..nohinsoubi)
-                                        Player:SetTarget(GCID1)
-                                        Player:Interact(GCID1)
-                                        if IsControlOpen("SelectString") then
-                                        --UseControlAction("SelectString","SelectIndex",0)
-                                        GetControl("SelectString"):Action("SelectIndex",0)
-                                        mushEXstep = 1
-                                        else
-                                        mushEXstep = 0
-                                        end 
-                                      end
-                                      if (mushEXstep == 1) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if IsControlOpen("GrandCompanySupplyList") then
-                                        GetControl("GrandCompanySupplyList"):PushButton(25,4)
-                                        mushEXstep = 2
-                                        end
-                                      end  
-                                      if (mushEXstep == 2) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if IsControlOpen("GrandCompanySupplyList") then
-                                        GetControl("GrandCompanySupplyList"):Action("SelectFilterIndex",2)
-                                        mushEXstep = 99
-                                        elseif GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
-                                        GCexchangeT = false
-                                        else
-                                        mushEXstep = 3
-                                        end
-                                      end
-                                      if (mushEXstep == 3) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if IsControlOpen("SelectYesno") then
-                                           if  GCexlessmax == true then 
-                                               UseControlAction("SelectYesno","No")
-                                               mushEXstep = 7
-                                           elseif GCexlessmax == false then
-                                               UseControlAction("SelectYesno","Yes")
-                                               mushEXstep = 7
-                                           end
-                                        elseif GetControl("GrandCompanySupplyList"):GetRawData() == nil then
-                                        mushEXstep = 7
-                                        elseif IsControlOpen("GrandCompanySupplyList") then
-                                        GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
-                                        mushEXstep = 4
-                                        --else
-                                        --mushEXstep = 0
-                                        end
-                                      end
-                                      if (mushEXstep == 4) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if IsControlOpen("GrandCompanySupplyReward") then
-                                        GetControl("GrandCompanySupplyReward"):Action("Deliver")
-                                        mushEXstep = 2
-                                        elseif IsControlOpen("SelectYesno") then 
-                                        UseControlAction("SelectYesno","Yes")
-                                        mushEXstep = 99
-                                        --elseif IsControlOpen("Request") then 
-                                        --UseControlAction("Request","Cancel")
-                                        --mushEXstep = 7
-                                        --else
-                                        --mushEXstep = 0
-                                        end
-                                      end
-                                      --if (mushEXstep == 5) then
-                                        --d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        --if IsControlOpen("GrandCompanySupplyReward") then
-                                        --GetControl("GrandCompanySupplyReward"):Action("Deliver")
-                                        --mushEXstep = 2
-                                        --else
-                                        --mushEXstep = 0
-                                        --end        
-                                      --end
-                                      if (mushEXstep == 7) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if IsControlOpen("GrandCompanySupplyList") then
-                                        UseControlAction("GrandCompanySupplyList","Close")
-                                        mushEXstep = 8
-                                        --else
-                                        --mushEXstep = 0
-                                        end 
-                                      end
-                                      if (mushEXstep == 8) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if IsControlOpen("SelectString") then
-                                        UseControlAction("SelectString","Close")
-                                        Player:ClearTarget()
-                                        mushlooptimer = 500
-                                        mushEXstep = 0
-                                        GCexchangeT = false
-                                        end
-                                      end
-                                      if (mushEXstep == 99) then
-                                        d("[AH][Tmode][Excange]step:"..mushEXstep)
-                                        if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
-                                        mushEXstep = 3
-                                        else
-                                        mushEXstep = 7
-                                        end
-                                      end
+                        if step == 30 then
+                             d("[AH][Tmode][Exchange]step:"..step)
+                             if (GCexchangeT == true) then
+                                 if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
+                                 elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
+                                 elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
+                                 else GCexchangeT = false
+                                 end
+                                 step = 31
                              end
-                             if Player:GetTarget() == nil then
-                             mushlooptimer = 1000
-                             GCexchangeT = false
-                             end
-                             step = 0
-                    end
-              end
-       elseif sealstoitemT == false and GCexchangeT == false and Duty:IsQueued() == false then
-              Dawncloser = false
-           if Dawncloser == false then
-              if IsControlOpen("GrandCompanySupplyList") then
-              UseControlAction("GrandCompanySupplyList","Close")
-              elseif IsControlOpen("SelectString") then
-              UseControlAction("SelectString","Close")
-              elseif IsControlOpen("GrandCompanyExchange") then
-              UseControlAction("GrandCompanyExchange","Close") 
-              end
-              Player:ClearTarget()
-            d("[AH][TMode]:trust Que waiting")
-              mushlooptimer = 5000
-              end
+                        end
+                        if step == 31 then
+                            d("[AH][Tmode][Exchange]step:"..step)
+                                Player:SetTarget(GCID1)
+                                if Player:GetTarget().Distance < 6 then
+                                Player:Interact(GCID1)
+                                end
+                                if IsControlOpen("SelectString") then                          
+                                GetControl("SelectString"):Action("SelectIndex",0)                
+                                end
+                                step = 32
+                        end
+                        if step == 32 then
+                            d("[AH][Tmode][Exchange]step:"..step)
+                                if IsControlOpen("GrandCompanySupplyList") then
+                                --GetControl("GrandCompanySupplyList"):PushButton(25,4)
+                                GetControl("GrandCompanySupplyList"):Action("SelectCategory",2)
+                                step = 33
+                                end
+                        end
+                        if step == 33 then
+                            d("[AH][Tmode][Exchange]step:"..step)
+                                if IsControlOpen("GrandCompanySupplyList") then
+                                   if GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then 
+                                   GCexchange = false
+                                   step = 0
+                                   elseif GetControl("GrandCompanySupplyList"):GetData().category ~= 2 then
+                                   step = 32 
+                                   elseif GetControl("GrandCompanySupplyList"):GetData().category == 2 then
+                                   GetControl("GrandCompanySupplyList"):Action("SelectFilterIndex",2)
+                                   step = 34
+                                   end
+                                end
+                        end            
+                        if step == 34 then
+                            d("[AH][Tmode][Exchange]step:"..step)
+                                if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
+                                step = 35
+                                else
+                                step = 42
+                                end
+                        end
+                        if step == 35 then
+                            d("[AH][Tmode][Exchange]step:"..step)
+                                if IsControlOpen("GrandCompanySupplyList") then
+                                GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
+                                step = 36
+                                else
+                                step = 33
+                                end
+                        end
+                        if step == 36 then
+                            d("[AH][Tmode][Exchange]step:"..step)
+                                if IsControlOpen("GrandCompanySupplyList") then
+                                step = 42
+                                elseif IsControlOpen("GrandCompanySupplyReward") then
+                                GetControl("GrandCompanySupplyReward"):Action("Deliver")
+                                step = 33
+                                
+                                end
+                        end
+                         if step == 42 then
+                          d("[AH][Tmode][Exchange]step:"..step)
+                               if IsControlOpen("GrandCompanySupplyList") then
+                               UseControlAction("GrandCompanySupplyList","Close")
+                               step = 43
+                               end
+                        end
+                         if step == 43 then
+                          d("[AH][Tmode][Exchange]step:"..step)
+                               if IsControlOpen("SelectString") then
+                               UseControlAction("SelectString","Close")
+                               step = 44
+                               end
+                        end
+                        if step == 44 then
+                          d("[AH][Tmode][Exchange]step:"..step)
+                               Player:ClearTarget()
+                               mushlooptimer = 1000
+                               GCexchange = false
+                               step = 0
+                        end
 
-        end
 
+                       if step == 45 then
+                              if Dawncloser == false then
+                         d("[AH][TMode]:trust Que waiting")
+                                if IsControlOpen("GrandCompanySupplyList") then
+                                UseControlAction("GrandCompanySupplyList","Close")
+                                step = 45
+                                elseif IsControlOpen("SelectString") then
+                                UseControlAction("SelectString","Close")
+                                end
+                              Player:ClearTarget()
+                              GCexchangeT = false
+                              mushlooptimer = 5000
+                              step = 0
+                              end
+                       end
         end
         end
         end
         end        
-   end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4942,18 +5038,18 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --
 function AetheryteHelper.Jumbocactpothelper()
-    local jbc11 = AetheryteHelper.settings.SET.jumbo11
-    local jbc12 = AetheryteHelper.settings.SET.jumbo12
-    local jbc13 = AetheryteHelper.settings.SET.jumbo13
-    local jbc14 = AetheryteHelper.settings.SET.jumbo14
-    local jbc21 = AetheryteHelper.settings.SET.jumbo21
-    local jbc22 = AetheryteHelper.settings.SET.jumbo22
-    local jbc23 = AetheryteHelper.settings.SET.jumbo23
-    local jbc24 = AetheryteHelper.settings.SET.jumbo24
-    local jbc31 = AetheryteHelper.settings.SET.jumbo31
-    local jbc32 = AetheryteHelper.settings.SET.jumbo32
-    local jbc33 = AetheryteHelper.settings.SET.jumbo33
-    local jbc34 = AetheryteHelper.settings.SET.jumbo34
+    local jbc11 = AHSET.jumbo11
+    local jbc12 = AHSET.jumbo12
+    local jbc13 = AHSET.jumbo13
+    local jbc14 = AHSET.jumbo14
+    local jbc21 = AHSET.jumbo21
+    local jbc22 = AHSET.jumbo22
+    local jbc23 = AHSET.jumbo23
+    local jbc24 = AHSET.jumbo24
+    local jbc31 = AHSET.jumbo31
+    local jbc32 = AHSET.jumbo32
+    local jbc33 = AHSET.jumbo33
+    local jbc34 = AHSET.jumbo34
 if (mushJumbocactpothelper) then
      if mushGSjcpstep == 0 then
       Player:SetTarget(4299949120)
@@ -5103,7 +5199,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Desynthesis filter
-function AetheryteHelper.SalvageAll(Event, ticks)
+
+function AetheryteHelper.SalvageAll()
      local bags = {0, 1, 2, 3}
      for _, e in pairs(bags) do
      local bag = Inventory:Get(e)
@@ -5111,7 +5208,7 @@ function AetheryteHelper.SalvageAll(Event, ticks)
      local ilist = bag:GetList()
      if (table.valid(ilist)) then
      for _, item in pairs(ilist) do
-
+     local equipflag = item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AHSET.dminil and item.level < AHSET.dmaxil
       if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0) then
       if(ActionList:IsReady()) then
       item:Salvage()     
@@ -5125,7 +5222,7 @@ function AetheryteHelper.SalvageAll(Event, ticks)
 end
 
 
-function AetheryteHelper.SalvageSlotfilter(Event, ticks)
+function AetheryteHelper.Salvagefilter()
      local bags = {0, 1, 2, 3}
      for _, e in pairs(bags) do
      local bag = Inventory:Get(e)
@@ -5133,89 +5230,159 @@ function AetheryteHelper.SalvageSlotfilter(Event, ticks)
      local ilist = bag:GetList()
      if (table.valid(ilist)) then
      for _, item in pairs(ilist) do
+     local equipflag = item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AHSET.dminil and item.level < AHSET.dmaxil
+      if (eqFilter.Main) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13)) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
 
-      if (AetheryteHelper.settings.Filter.Main) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)) then
+---alljob
+   
+      if (eqFilter.Head) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Sub) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2) then
+      if (eqFilter.Body) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Head) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3) then
+      if (eqFilter.Hand) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4) then
+      if (eqFilter.Legs) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5) then
+      if (eqFilter.Feet) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7) then
+      if (eqFilter.Earrings) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 9 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8) then
+      if (eqFilter.Necklace) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 10 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9) then
+      if (eqFilter.Bracelets) and ( AHeqjob.ALL ) then                     
+      if (equipflag and item.Equipslot == 11 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10) then
+      if (eqFilter.Ring) and ( AHeqjob.ALL )  then                     
+      if (equipflag and item.Equipslot == 12 and item.category == 1) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Bracelets) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11) then
+         
+---tank
+
+      if (eqFilter.Head) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 59) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12) then
+      if (eqFilter.Body) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Hand) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Legs) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Feet) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Earrings) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 9 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Necklace) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 10 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Bracelets) and ( AHeqjob.Tank ) then                     
+      if (equipflag and item.Equipslot == 11 and item.category == 59) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Ring) and ( AHeqjob.Tank )  then                     
+      if (equipflag and item.Equipslot == 12 and item.category == 59) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5224,88 +5391,72 @@ function AetheryteHelper.SalvageSlotfilter(Event, ticks)
       end
          
 
-      end
-      end
-      end
-      end
-end
-
-function AetheryteHelper.SalvageAlljob(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 1) then
+      if (eqFilter.Head) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 1) then
+      if (eqFilter.Body) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 1) then
+      if (eqFilter.Hand) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 1) then
+      if (eqFilter.Legs) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 1) then
+      if (eqFilter.Feet) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 1) then
+      if (eqFilter.Earrings) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 9 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 1) then
+      if (eqFilter.Necklace) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 10 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.ALL ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 1) then
+      if (eqFilter.Bracelets) and ( AHeqjob.Healer ) then                     
+      if (equipflag and item.Equipslot == 11 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.ALL )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 1) then
+      if (eqFilter.Ring) and ( AHeqjob.Healer )  then                     
+      if (equipflag and item.Equipslot == 12 and item.category == 64) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5313,273 +5464,74 @@ function AetheryteHelper.SalvageAlljob(Event, ticks)
       end
       end
          
-
-      end
-      end
-      end
-      end
-end
-
-
-
-
-function AetheryteHelper.SalvageJobTank(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Tank ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Tank )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 59) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-         
-
-      end
-      end
-      end
-      end
-end
-
-
-function AetheryteHelper.SalvageJobHealer(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Healer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Healer )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 64) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-         
-
-      end
-      end
-      end
-      end
-end
-
-function AetheryteHelper.SalvageJobSlaying(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
+---slaying
   
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 84) then
+      if (eqFilter.Head) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 84) then
+      if (eqFilter.Body) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 84) then
+      if (eqFilter.Hand) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 84) then
+      if (eqFilter.Legs) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 84) then
+      if (eqFilter.Feet) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 84) then
+      if (eqFilter.Earrings) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 9 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 84) then
+      if (eqFilter.Necklace) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 10 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Slaying ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 84) then
+      if (eqFilter.Bracelets) and ( AHeqjob.Slaying ) then                     
+      if (equipflag and item.Equipslot == 11 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Slaying )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 84) then
+      if (eqFilter.Ring) and ( AHeqjob.Slaying )  then                     
+      if (equipflag and item.Equipslot == 12 and item.category == 84) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5587,147 +5539,117 @@ function AetheryteHelper.SalvageJobSlaying(Event, ticks)
       end
       end
          
-
-      end
-      end
-      end
-      end
-end
-
-function AetheryteHelper.SalvageJobStriking(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
+---striking
      
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 65) then
+      if (eqFilter.Head) and ( AHeqjob.Striking ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 65) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 65) then
+      if (eqFilter.Body) and ( AHeqjob.Striking ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 65) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 65) then
+      if (eqFilter.Hand) and ( AHeqjob.Striking ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 65) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 65) then
+      if (eqFilter.Legs) and ( AHeqjob.Striking ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 65) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Striking ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 65) then
+      if (eqFilter.Feet) and ( AHeqjob.Striking ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 65) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
+
+---aiming      
        
-
-      end
-      end
-      end
-      end
-end
-
-function AetheryteHelper.SalvageJobAiming(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 66) then
+      if (eqFilter.Head) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 66) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 66) then
+      if (eqFilter.Body) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 66) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 66) then
+      if (eqFilter.Hand) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 66) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 66) then
+      if (eqFilter.Legs) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 66) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 66) then
+      if (eqFilter.Feet) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 66) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 105) then
+      if (eqFilter.Earrings) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 9 and item.category == 105) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 105) then
+      if (eqFilter.Necklace) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 10 and item.category == 105) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Aiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 105) then
+      if (eqFilter.Bracelets) and ( AHeqjob.Aiming ) then                     
+      if (equipflag and item.Equipslot == 11 and item.category == 105) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Aiming )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 105) then
+      if (eqFilter.Ring) and ( AHeqjob.Aiming )  then                     
+      if (equipflag and item.Equipslot == 12 and item.category == 105) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5735,89 +5657,74 @@ function AetheryteHelper.SalvageJobAiming(Event, ticks)
       end
       end
          
+---sorcerer
 
-      end
-      end
-      end
-      end
-end
-
-function AetheryteHelper.SalvageJobSorcerer(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 63) then
+      if (eqFilter.Head) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 63) then
+      if (eqFilter.Body) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 63) then
+      if (eqFilter.Hand) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 63) then
+      if (eqFilter.Legs) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 63) then
+      if (eqFilter.Feet) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9 and item.category == 63) then
+      if (eqFilter.Earrings) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 9 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10 and item.category == 63) then
+      if (eqFilter.Necklace) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 10 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end 
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Sorcerer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11 and item.category == 63) then
+      if (eqFilter.Bracelets) and ( AHeqjob.Sorcerer ) then                     
+      if (equipflag and item.Equipslot == 11 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Sorcerer )  then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12 and item.category == 63) then
+      if (eqFilter.Ring) and ( AHeqjob.Sorcerer )  then                     
+      if (equipflag and item.Equipslot == 12 and item.category == 63) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5825,57 +5732,42 @@ function AetheryteHelper.SalvageJobSorcerer(Event, ticks)
       end
       end
          
+---maiming
 
-      end
-      end
-      end
-      end
-end
-
-function AetheryteHelper.SalvageJobMaiming(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 76) then
+      if (eqFilter.Head) and ( AHeqjob.Maiming ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 76) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 76) then
+      if (eqFilter.Body) and ( AHeqjob.Maiming ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 76) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 76) then
+      if (eqFilter.Hand) and ( AHeqjob.Maiming ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 76) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 76) then
+      if (eqFilter.Legs) and ( AHeqjob.Maiming ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 76) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Maiming ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 76) then
+      if (eqFilter.Feet) and ( AHeqjob.Maiming ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 76) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5883,56 +5775,42 @@ function AetheryteHelper.SalvageJobMaiming(Event, ticks)
       end
       end
 
-      end
-      end
-      end
-      end
-end
+---scouting
 
-function AetheryteHelper.SalvageJobScouting(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3 and item.category == 103) then
+      if (eqFilter.Head) and ( AHeqjob.Scouting ) then                     
+      if (equipflag and item.Equipslot == 3 and item.category == 103) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4 and item.category == 103) then
+      if (eqFilter.Body) and ( AHeqjob.Scouting ) then                     
+      if (equipflag and item.Equipslot == 4 and item.category == 103) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5 and item.category == 103) then
+      if (eqFilter.Hand) and ( AHeqjob.Scouting ) then                     
+      if (equipflag and item.Equipslot == 5 and item.category == 103) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7 and item.category == 103) then
+      if (eqFilter.Legs) and ( AHeqjob.Scouting ) then                     
+      if (equipflag and item.Equipslot == 7 and item.category == 103) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Scouting ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8 and item.category == 103) then
+      if (eqFilter.Feet) and ( AHeqjob.Scouting ) then                     
+      if (equipflag and item.Equipslot == 8 and item.category == 103) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -5940,24 +5818,10 @@ function AetheryteHelper.SalvageJobScouting(Event, ticks)
       end
       end
 
-      end
-      end
-      end
-      end
-end
+---gatherer
 
-
-function AetheryteHelper.SalvageJobGatherer(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)
+      if (eqFilter.Main) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13)
         and (item.category == 17 or item.category == 18 or item.category == 19))then
       if(ActionList:IsReady()) then
       item:Salvage()     
@@ -5965,8 +5829,8 @@ function AetheryteHelper.SalvageJobGatherer(Event, ticks)
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2
+      if (eqFilter.Sub) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 2
         and (item.category == 17 or item.category == 18 or item.category == 19)) then
       if(ActionList:IsReady()) then
       item:Salvage()     
@@ -5974,97 +5838,83 @@ function AetheryteHelper.SalvageJobGatherer(Event, ticks)
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3  and item.category == 32 ) then
+      if (eqFilter.Head) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 3  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4  and item.category == 32 ) then
+      if (eqFilter.Body) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 4  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5  and item.category == 32 ) then
+      if (eqFilter.Hand) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 5  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7  and item.category == 32 ) then
+      if (eqFilter.Legs) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 7  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8  and item.category == 32 ) then
+      if (eqFilter.Feet) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 8  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9  and item.category == 32 ) then
+      if (eqFilter.Earrings) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 9  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10  and item.category == 32 ) then
+      if (eqFilter.Necklace) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 10  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11  and item.category == 32 ) then
+      if (eqFilter.Bracelets) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 11  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Gatherer ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12  and item.category == 32 ) then
+      if (eqFilter.Ring) and ( AHeqjob.Gatherer ) then                     
+      if (equipflag and item.Equipslot == 12  and item.category == 32 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
-      end
-      end
-      end
-         
-      end
       end
       end
       end
 
-end
+---crafter   
 
-function AetheryteHelper.SalvageJobCrafter(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13)
+      if (eqFilter.Main) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13)
         and (item.category == 9 or item.category == 10 or item.category == 11 or item.category == 12 or item.category == 13 or item.category == 14 or item.category == 15 or item.category == 16))then
       if(ActionList:IsReady()) then
       item:Salvage()     
@@ -6072,8 +5922,8 @@ function AetheryteHelper.SalvageJobCrafter(Event, ticks)
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2
+      if (eqFilter.Sub) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 2
         and (item.category == 9 or item.category == 10 or item.category == 11 or item.category == 12 or item.category == 13 or item.category == 14 or item.category == 15 or item.category == 16)) then
       if(ActionList:IsReady()) then
       item:Salvage()     
@@ -6081,243 +5931,72 @@ function AetheryteHelper.SalvageJobCrafter(Event, ticks)
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Head) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 3  and item.category == 33 ) then
+      if (eqFilter.Head) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 3  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Body) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 4  and item.category == 33 ) then
+      if (eqFilter.Body) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 4  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Hand) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 5  and item.category == 33 ) then
+      if (eqFilter.Hand) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 5  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Legs) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 7  and item.category == 33 ) then
+      if (eqFilter.Legs) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 7  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Feet) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 8  and item.category == 33 ) then
+      if (eqFilter.Feet) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 8  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Earrings) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 9  and item.category == 33 ) then
+      if (eqFilter.Earrings) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 9  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Necklace) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 10  and item.category == 33 ) then
+      if (eqFilter.Necklace) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 10  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end 
-      if (AetheryteHelper.settings.Filter.Bracelets) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 11  and item.category == 33 ) then
+      if (eqFilter.Bracelets) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 11  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Ring) and ( AetheryteHelper.settings.Job.Crafter ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 12  and item.category == 33 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-         
-
-      end
-      end
-      end
-      end
-
-end
-
-
-function AetheryteHelper.SalvageJobPrimary(Event, ticks)
-     local bags = {0, 1, 2, 3}
-     for _, e in pairs(bags) do
-     local bag = Inventory:Get(e)
-     if (table.valid(bag)) then
-     local ilist = bag:GetList()
-     if (table.valid(ilist)) then
-     for _, item in pairs(ilist) do
-
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.PLD ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 38) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.WAR ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 44 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.DRK ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 98 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.GNB ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 149 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.WHM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 53 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SCH ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 29 or item.category == 68 )) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.AST ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 99 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SGE ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 181 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.MNK ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 41 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.DRG ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 47 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SAM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 111 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.NIN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 93 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.RPR ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 180 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.BRD ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 50 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.MCN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 96 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.DNC ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 150 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.BLM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 55 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.RDM ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 112 ) then
-      if(ActionList:IsReady()) then
-      item:Salvage()     
-      return
-      end
-      end
-      end
-      if (AetheryteHelper.settings.Filter.Main) and ( AetheryteHelper.settings.Job.SMN ) then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 or item.category == 69 )) then
+      if (eqFilter.Ring) and ( AHeqjob.Crafter ) then                     
+      if (equipflag and item.Equipslot == 12  and item.category == 33 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -6325,16 +6004,171 @@ function AetheryteHelper.SalvageJobPrimary(Event, ticks)
       end
       end
 
-      if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.WHM ) or ( AetheryteHelper.settings.Job.BLM )then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2 and item.category == 56 ) then
+---Weapon   
+
+      if (eqFilter.Main) and ( AHeqjob.PLD ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 38) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
       end
       end
       end
-      if (AetheryteHelper.settings.Filter.Sub) and ( AetheryteHelper.settings.Job.PLD )then                     
-      if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AetheryteHelper.settings.SET.dminil and item.level < AetheryteHelper.settings.SET.dmaxil and item.Equipslot == 2 and item.category == 38 ) then
+      if (eqFilter.Main) and ( AHeqjob.WAR ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 44 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.DRK ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 98 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.GNB ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 149 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.WHM ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 53 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.SCH ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 29 or item.category == 68 )) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.AST ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 99 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.SGE ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 181 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.MNK ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 41 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.DRG ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 47 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.SAM ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 111 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.NIN ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 93 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.RPR ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 180 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.BRD ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 50 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.MCN ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 96 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.DNC ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 150 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.BLM ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 55 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.RDM ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 112 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Main) and ( AHeqjob.SMN ) then                     
+      if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 or item.category == 69 )) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+
+      if (eqFilter.Sub) and ( AHeqjob.WHM ) or ( AHeqjob.BLM )then                     
+      if (equipflag and item.Equipslot == 2 and item.category == 56 ) then
+      if(ActionList:IsReady()) then
+      item:Salvage()     
+      return
+      end
+      end
+      end
+      if (eqFilter.Sub) and ( AHeqjob.PLD )then                     
+      if (equipflag and item.Equipslot == 2 and item.category == 38 ) then
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -6353,60 +6187,61 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- sub function
-function AetheryteHelper.mushMaterialize(Event, ticks)
-   if (AetheryteHelper.settings.SET.DesynthTrust == true ) then
-      if (AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == true ) then 
-        if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
-        UseControlAction("MaterializeDialog","Yes")
-        return
-        end
-        local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
-        for _, e in pairs(bags) do
-        local bag = Inventory:Get(e)
-        if (table.valid(bag)) then
-        local ilist = bag:GetList()
-        if (table.valid(ilist)) then
-        for _, item in pairs(ilist) do
-        if (item.spiritbond == 100 and item:CanCast(5, 14)) then
-        if(ActionList:IsReady()) then
-        item:Convert()
-        return
-        end
-        end
-        end
-        end
-        end
-        end
-   elseif (AetheryteHelper.settings.SET.DesynthTrust == true ) then
-      if(AetheryteHelper.settings.SET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
-        if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
-        UseControlAction("MaterializeDialog","Yes")
-        return
-        end
-        local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
-        for _, e in pairs(bags) do
-        local bag = Inventory:Get(e)
-        if (table.valid(bag)) then
-        local ilist = bag:GetList()
-        if (table.valid(ilist)) then
-        for _, item in pairs(ilist) do
-        if (item.spiritbond == 100 and item:CanCast(5, 14)) then
-        if(ActionList:IsReady()) then
-        item:Convert()
-        return
-        end
-        end
-        end
-        end
-        end
-        end
+function AetheryteHelper.mushMaterialize()
+   if (AHSET.DesynthTrust == true ) then
+         if (AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == true ) then 
+            if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
+            UseControlAction("MaterializeDialog","Yes")
+            return
+            end
+            local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+            for _, e in pairs(bags) do
+            local bag = Inventory:Get(e)
+            if (table.valid(bag)) then
+            local ilist = bag:GetList()
+            if (table.valid(ilist)) then
+            for _, item in pairs(ilist) do
+            if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+               if(ActionList:IsReady()) then
+               item:Convert()
+               return
+               end
+            end
+            end
+            end
+            end
+            end
+         end
+   elseif (AHSET.DesynthTrust == false ) then
+      if(AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+            if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
+            UseControlAction("MaterializeDialog","Yes")
+            return
+            end
+            local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+            for _, e in pairs(bags) do
+            local bag = Inventory:Get(e)
+            if (table.valid(bag)) then
+            local ilist = bag:GetList()
+            if (table.valid(ilist)) then
+            for _, item in pairs(ilist) do
+            if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+               mushlooptimer = 1500
+               if(ActionList:IsReady()) then
+               item:Convert()
+               return
+               end
+            end
+            end
+            end
+            end
+            end
       end
-     end
    end
 end
 
 
-function AetheryteHelper.mushpotionmanual(Event, ticks)
+function AetheryteHelper.mushpotionmanual()
        if (Player.CurrentAction ~= 92) then
        if (IsControlOpen("SalvageResult")) then
            UseControlAction("SalvageResult", "Close")
@@ -6414,7 +6249,7 @@ function AetheryteHelper.mushpotionmanual(Event, ticks)
        if (Player.incombat or Busy()) then
        return
        end
-    if (AetheryteHelper.settings.SET.isMateriaEnabled and AetheryteHelper.settings.SET.isPotionEnabled and MissingBuffs(Player,"49")) then
+    if (AHSET.isMateriaEnabled and AHSET.isPotionEnabled and MissingBuffs(Player,"49")) then
       local potionid = {7059, 19885, 27960}
       --錬精薬　強錬精薬　極錬精薬
       for i = 0, 3 do
@@ -6427,7 +6262,7 @@ function AetheryteHelper.mushpotionmanual(Event, ticks)
         end
       end
     end
-    if (AetheryteHelper.settings.SET.isMateriaEnabled and AetheryteHelper.settings.SET.isManualEnabled and MissingBuffs(Player,"1083")) then
+    if (AHSET.isMateriaEnabled and AHSET.isManualEnabled and MissingBuffs(Player,"1083")) then
       local manualid = {14951}
       --スピリットマニュアル
       for i = 0, 3 do
@@ -6443,7 +6278,7 @@ function AetheryteHelper.mushpotionmanual(Event, ticks)
    end
   end
 
-function AetheryteHelper.mushsRemateria(Event, ticks)
+function AetheryteHelper.mushsRemateria()
     AetheryteHelper.Inventoryfree()
     if (Remateria) then
         if mushPbtotal < 1 then
@@ -6485,14 +6320,14 @@ function AetheryteHelper.mushsRemateria(Event, ticks)
   end
  end
 
-function AetheryteHelper.mushsubAR(Event, ticks)
+function AetheryteHelper.mushsubAR()
     AetheryteHelper.Inventoryfree()
-       if (AetheryteHelper.settings.SET.isQuestmode == true and mushPbtotal < 5 and FFXIV_Common_BotRunning == true ) then
+       if (AHSET.isQuestmode == true and mushPbtotal < 5 and FFXIV_Common_BotRunning == true ) then
            Player:Stop()
            ml_global_information.ToggleRun()
        end       
        local syusyuhin = 0
-       if (AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
+       if (AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
            mushtoItemstep = 2000
            if (IsControlOpen("PurifyResult")) then
            UseControlAction("PurifyResult", "Close")
@@ -6529,14 +6364,14 @@ function AetheryteHelper.mushsubAR(Event, ticks)
                if (IsControlOpen("PurifyResult")) then
                UseControlAction("PurifyResult", "Close")
                end
-               if( AetheryteHelper.settings.SET.isQuestmode == true and FFXIV_Common_BotRunning == false and mushPbtotal > 5 ) then
+               if( AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and mushPbtotal > 5 ) then
                ml_global_information.ToggleRun()
                end
              end
        end
         
     
-    if (AetheryteHelper.settings.SET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+    if (AHSET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
         if (IsControlOpen("PurifyResult")) then
           UseControlAction("PurifyResult", "Close")
         return
@@ -6559,58 +6394,72 @@ function AetheryteHelper.mushsubAR(Event, ticks)
         end
         end
         end
-        if syusyuhin == 0 then AetheryteHelper.settings.SET.isReductionEnabled = false end
+        if syusyuhin == 0 then AHSET.isReductionEnabled = false end
     end
 end
 
 function AetheryteHelper.Desynthseis()
-if (AetheryteHelper.settings.SET.DesynthTrust) then
-       if (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:IsQueued() == true ) then
+if (AHSET.DesynthTrust) then
+       if (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:IsQueued() == true ) then
        if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
        UseControlAction("SalvageDialog","Confirm")
        end
-       if (AetheryteHelper.settings.SET.isReductionOption)then    
-          AetheryteHelper.SalvageJobTank()
-          AetheryteHelper.SalvageJobHealer()
-          AetheryteHelper.SalvageJobSlaying()
-          AetheryteHelper.SalvageJobStriking()
-          AetheryteHelper.SalvageJobAiming()
-          AetheryteHelper.SalvageJobSorcerer()
-          AetheryteHelper.SalvageJobMaiming()
-          AetheryteHelper.SalvageJobScouting()  
-          AetheryteHelper.SalvageJobPrimary()   
-          AetheryteHelper.SalvageJobGatherer() 
-          AetheryteHelper.SalvageJobCrafter()
-          AetheryteHelper.SalvageAlljob()
+       if (AHSET.isReductionOption)then    
+          AetheryteHelper.Salvagefilter()
        else
           AetheryteHelper.SalvageAll()
        end
        end      
-   elseif (AetheryteHelper.settings.SET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then   
+   elseif (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then   
        if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
        UseControlAction("SalvageDialog","Confirm")
        end
-       if (AetheryteHelper.settings.SET.isReductionOption)then    
-          AetheryteHelper.SalvageJobTank()
-          AetheryteHelper.SalvageJobHealer()
-          AetheryteHelper.SalvageJobSlaying()
-          AetheryteHelper.SalvageJobStriking()
-          AetheryteHelper.SalvageJobAiming()
-          AetheryteHelper.SalvageJobSorcerer()
-          AetheryteHelper.SalvageJobMaiming()
-          AetheryteHelper.SalvageJobScouting()  
-          AetheryteHelper.SalvageJobPrimary()   
-          AetheryteHelper.SalvageJobGatherer() 
-          AetheryteHelper.SalvageJobCrafter()
-          AetheryteHelper.SalvageAlljob()
+       if (AHSET.isReductionOption)then
+          AetheryteHelper.Salvagefilter()
        else
           AetheryteHelper.SalvageAll()
        end
      end
 
 end
+
+
+function AetheryteHelper.mushTextCommands()
+    mushlooptimer = 5000
+    local log = GetChatLines()
+    local logmatch = nil
+    for _, command in pairs(log) do
+    if command.line:match("AHmode 114") and command.code == 56 then
+        logmatch = command.line
+        mushlogtime = command.timestamp
+    end
+    end
+    if AetheryteHelper.insSelectGUI.open == true then
+    mushtextreceipt = false
+    logmatch = nil
+    end
+    if logmatch then
+          if mushlogtime > os.time()-60 then
+          mushtextreceipt = true
+          else
+          mushtextreceipt = false
+          end
+    end
+    if mushtextreceipt then
+    AetheryteHelper.insSelectGUI.open = true
+    AHSET.delay = 150
+    SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
+        if language == 0 then
+        SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは30秒ほど閉じることができません")
+        else
+        SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 30 sec to window")
+        end
+    mushlogtime = os.time()
+    end
+    
+end
 ---------------------------------------------------------------   
-function AetheryteHelper.mushsubtool(Event, ticks)
+function AetheryteHelper.mushsubtool()
 
     if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
        lastUpdatePulse = Now()
@@ -6628,9 +6477,12 @@ function AetheryteHelper.mushsubtool(Event, ticks)
             AetheryteHelper.mushsubAR()
             AetheryteHelper.Desynthseis()
             AetheryteHelper.undersizeIDswitch()
-            AetheryteHelper.explorerIDswitch() 
+            AetheryteHelper.explorerIDswitch()
+            AetheryteHelper.mushTextCommands()            
 
-    end          
+    end
+    
+    
        
                 
 AetheryteHelper.Inventoryfree()
