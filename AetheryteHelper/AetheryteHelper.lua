@@ -64,7 +64,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.5.0",   
+      Version =         "1.5.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -102,6 +102,7 @@ local kinokoProject = {
                       "[1.4.9] - remake RetrieveMateria,all function adjust delay",
                       "          change contents in junk tab",
                       "[1.5.0] - i've made some crazy stuff",
+                      "[1.5.1] - Only some design changes",
 
                     },
       
@@ -1310,65 +1311,97 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.insSelecterWindow()
   if (AetheryteHelper.insSelectGUI.open) then
-    local insSelectGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
-    GUI:SetNextWindowSize(220,100)
+    local insSelectGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(180,60)
      AetheryteHelper.insSelectGUI.visible, AetheryteHelper.insSelectGUI.open = GUI:Begin('insselecter', AetheryteHelper.insSelectGUI.open,insSelectGUIflags)
     if (AetheryteHelper.insSelectGUI.visible) then
+      GUI:Spacing(5)
+      GUI:Separator()
+      GUI:Columns(3)
+      GUI:SetColumnOffset(1, 40) GUI:SetColumnOffset(2, 140) GUI:SetColumnOffset(3, 180)
       GUI:Spacing()
       GUI:BeginGroup()
-      GUI:Button("1",60,20)
+      GUI:Dummy(20,20)
+      if selectins == true then
+              GUI:SameLine(-5,-20)
+              GUI:Image(ImageFolder..[[AHon.png]],20,20)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              isins = 4
+              selectins = not selectins
+              Player:ClearTarget()
+              Player:Stop()
+              end
+              GUI:SetTooltip("now ON")
+              end      
+      elseif selectins == false then
+              GUI:SameLine(-5,-20)
+              GUI:Image(ImageFolder..[[AHoff.png]],20,20)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              isins = 4
+              selectins = not selectins
+              end
+              GUI:SetTooltip("now Off")
+              end       
+      end
       GUI:EndGroup()
+      GUI:NextColumn()
+      GUI:SameLine(25)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
       if (GUI:IsItemHovered()) then
+          GUI:SameLine(-7.5,-30)
+          GUI:Image(ImageFolder..[[ins1.png]],25,25)
           if (GUI:IsMouseClicked(0)) then
           isins = 1
           autheStep = 2
           selectins = true
           end
-          GUI:SetTooltip("left Push")
+          GUI:SetTooltip("Push")
+      else
+      GUI:SameLine(-5,-20)
+      GUI:Image(ImageFolder..[[ins1non.png]],20,20)
       end
+      GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Button("2",60,20)
-      GUI:EndGroup()
+      GUI:Dummy(20,20)
       if (GUI:IsItemHovered()) then
+          GUI:SameLine(-7.5,-30)
+          GUI:Image(ImageFolder..[[ins2.png]],25,25)
           if (GUI:IsMouseClicked(0)) then
           isins = 2
           autheStep = 2
           selectins = true
           end
-          GUI:SetTooltip("left Push")
+          GUI:SetTooltip("Push")
+      else
+      GUI:SameLine(-5,-20)
+      GUI:Image(ImageFolder..[[ins2non.png]],20,20)
       end
+      GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Button("3",60,20)
-      GUI:EndGroup()  
+      GUI:Dummy(20,20)
       if (GUI:IsItemHovered()) then
+          GUI:SameLine(-7.5,-30)
+          GUI:Image(ImageFolder..[[ins3.png]],25,25)
           if (GUI:IsMouseClicked(0)) then
           isins = 3
           autheStep = 2
           selectins = true
           end
-          GUI:SetTooltip("left Push")
+          GUI:SetTooltip("Push")
+      else
+      GUI:SameLine(-5,-20)
+      GUI:Image(ImageFolder..[[ins3non.png]],20,20)
       end
-      GUI:Separator()  
-      GUI:BeginGroup()
-      GUI:TextColored(1,0,0,1,"don't move it to wrong ins")
       GUI:EndGroup()
-      GUI:Spacing()
+      GUI:NextColumn()
+      GUI:SameLine(15)
       GUI:BeginGroup()
-      GUI:Checkbox("Enable(auto on)",selectins)
-      GUI:EndGroup()
-       if (GUI:IsItemHovered()) then
-         if (GUI:IsMouseClicked(0)) then
-         isins = 4
-         selectins = not selectins
-         if selectins == false then Player:Stop() end
-         end
-      end 
-      GUI:SameLine(190)
-      GUI:BeginGroup()
-      GUI:Button("X",20,20)
-      GUI:EndGroup()
+      GUI:Image(ImageFolder..[[close.png]],20,20)
       if (GUI:IsItemHovered()) then
         if GUI:IsMouseDown(0) then              
         AetheryteHelper.insSelectGUI.open = false
@@ -1378,8 +1411,11 @@ function AetheryteHelper.insSelecterWindow()
         GUI:SetTooltip("閉じる")
         end 
       end
-
-    end        
+    end
+    GUI:EndGroup()
+    GUI:Columns()
+    GUI:Spacing(10)
+    GUI:Separator()
     GUI:End()
     
   end
@@ -3608,7 +3644,7 @@ function AetheryteHelper.insselect()
          end
          end
       end
-    end
+    end   
 end
 
 
