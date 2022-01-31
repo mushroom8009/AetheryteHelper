@@ -47,6 +47,9 @@ Collection of items becomes easier
 
 however, the code is terrible.
 
+----------------------
+tyty kali
+
 mushroom#8009
 ]]
 -----------------------------------------------------------------------------------------------------------------
@@ -64,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.5.1",   
+      Version =         "1.5.3",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -103,6 +106,9 @@ local kinokoProject = {
                       "          change contents in junk tab",
                       "[1.5.0] - i've made some crazy stuff",
                       "[1.5.1] - Only some design changes",
+                      "[1.5.2] - incorporated the code that kali created",
+                      "[1.5.3] - add new 3 text command",
+                      "          add youtube link & jumbocactpot assist(remake)",
 
                     },
       
@@ -338,7 +344,8 @@ Links = {
       Name = "Minion Discord JP",
        link1 = [[https://discord.com/channels/127540472812929024/335225564803891210]],
        link2 = [[https://github.com/mushroom8009/AetheryteHelper]],
-       link4 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
+       link3 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
+       link4 = [[https://youtube.com/playlist?list=PLS5EIB6BeDoKSRglypQIr_g9-MF6Cvbqh]],     
       tooltip1 = "Please DM me if you have any problems or requests\nalso, please promote it.\n\n不具合とか要望あればDMで教えて下さい\nあと褒められるとモチベーションあがります",
       tooltip2 = "Github link,\nLeft click:home\nRight click:Release\n\n左クリックでgitのAHのホーム\n右クリックでリリースページ",
   
@@ -719,6 +726,11 @@ local eqFilter = AetheryteHelper.settings.Filter
 local AHeqjob = AetheryteHelper.settings.Job
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- ins select GUI
+local insHistory = {
+    isins = 0,
+    selectins = false,
+    autheStep = 0
+}
 function AetheryteHelper.Drawinsselect()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -746,6 +758,13 @@ function AetheryteHelper.Drawinsselect()
         if (GUI:IsMouseClicked(0)) then
           selectins = not selectins
           autheStep = 0
+          if not selectins then
+             insHistory = {
+             isins = 0,
+             selectins = false,
+             autheStep = 0
+                }
+          end
           if selectins == false then
           Player:Stop()
           end
@@ -925,8 +944,11 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           isins = 1
+          insHistory.isins = 1
           if AHSET.delay == 114 then selectins = true
           autheStep = 2
+          insHistory.selectins = true
+          insHistory.autheStep = 2
           end     
        end 
       GUI:SetTooltip("go to instance 1\nrepeate click")
@@ -943,8 +965,11 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
          isins = 2
+         insHistory.isins = 2
            if AHSET.delay == 114 then selectins = true
            autheStep = 2
+           insHistory.selectins = true
+           insHistory.autheStep = 2
            end
          end
         GUI:SetTooltip("go to instance 2\nrepeate click")
@@ -961,8 +986,11 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           isins = 3
+          insHistory.isins = 3
           if AHSET.delay == 114 then selectins = true
           autheStep = 2
+          insHistory.selectins = true
+          insHistory.autheStep = 2
           end
         end
         GUI:SetTooltip("go to instance 3\nrepeate click")
@@ -979,8 +1007,11 @@ function AetheryteHelper.Drawinsselect()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
           isins = 0
+          insHistory.isins = 0
           if AHSET.delay == 114 then selectins = true 
           autheStep = 2
+          insHistory.selectins = true
+          insHistory.autheStep = 2
           end
         end 
         GUI:SetTooltip("auto select")
@@ -1150,20 +1181,21 @@ end
 
 function AetheryteHelper.DrawadWIP()
       GUI:Spacing(10)
-      --[[[GUI:BeginGroup()
-      GUI:Button("Jumbo cactpot assist",160,20)
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[jumbo.png]],30,30)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
              AetheryteHelper.Jumbocactpot.open = not AetheryteHelper.Jumbocactpot.open 
               end
-              GUI:SetTooltip("help with number entry\n\nin middle of making it,\nso I'll buy not select number.")
+              GUI:SetTooltip("Jumbo cactpot assist")
               if (GUI:IsMouseDown(1)) then
-              GUI:SetTooltip("数字入力がめんどうな人向け\n\n作成中なので使い物になりません")
+              GUI:SetTooltip("ジャンボクジテンダー入力アシスト")
               end 
-            end]]
+            end
+      GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Button("Undersize shortcut",140,20)
+      GUI:Image(ImageFolder..[[undersize.png]],30,30)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
@@ -1176,8 +1208,9 @@ function AetheryteHelper.DrawadWIP()
             GUI:SetTooltip("制限解除の切替ボタンです")
             end 
       end
+      GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Button("Explorer shortcut",140,20)
+      GUI:Image(ImageFolder..[[explo.png]],30,30)
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
@@ -1188,6 +1221,19 @@ function AetheryteHelper.DrawadWIP()
             GUI:SetTooltip("switching Explorer for dungeon")
             if (GUI:IsMouseDown(1)) then
             GUI:SetTooltip("自由探索の切替ボタンです")
+            end 
+      end
+      GUI:SameLine(220)
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[tube.png]],30,30)
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            io.popen([[cmd /c start "" "]]..Links.link4..[["]]):close()
+            end
+            GUI:SetTooltip("Introduction to AH")
+            if (GUI:IsMouseDown(1)) then
+            GUI:SetTooltip("機能紹介動画へのリンク")
             end 
       end
       GUI:Spacing()
@@ -1201,7 +1247,7 @@ function AetheryteHelper.DrawadWIP()
         GUI:SetTooltip("機能が増えすぎたのでこれ以上追加はせずバグ修正のみ行い\n今後は別のモジュールを作成します")
         end
       end
-      GUI:SameLine(200,10)
+      GUI:SameLine(220,10)
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
       GUI:EndGroup()
@@ -1223,6 +1269,7 @@ function AetheryteHelper.DrawadWIP()
       GUI:TreePop()
       end
       GUI:Spacing()
+
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.minimush()
@@ -1309,6 +1356,7 @@ function AetheryteHelper.SubWindow()
   
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
+
 function AetheryteHelper.insSelecterWindow()
   if (AetheryteHelper.insSelectGUI.open) then
     local insSelectGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
@@ -1329,6 +1377,13 @@ function AetheryteHelper.insSelecterWindow()
               if (GUI:IsMouseClicked(0)) then
               isins = 4
               selectins = not selectins
+              if not selectins then
+              insHistory = {
+              isins = 0,
+              selectins = false,
+              autheStep = 0
+              }
+              end
               Player:ClearTarget()
               Player:Stop()
               end
@@ -1341,6 +1396,13 @@ function AetheryteHelper.insSelecterWindow()
               if (GUI:IsMouseClicked(0)) then
               isins = 4
               selectins = not selectins
+              if not selectins then
+              insHistory = {
+              isins = 0,
+              selectins = false,
+              autheStep = 0
+              }
+              end
               end
               GUI:SetTooltip("now Off")
               end       
@@ -1355,8 +1417,11 @@ function AetheryteHelper.insSelecterWindow()
           GUI:Image(ImageFolder..[[ins1.png]],25,25)
           if (GUI:IsMouseClicked(0)) then
           isins = 1
+          insHistory.isins = 1
           autheStep = 2
           selectins = true
+          insHistory.selectins = true
+          insHistory.autheStep = 2
           end
           GUI:SetTooltip("Push")
       else
@@ -1372,8 +1437,11 @@ function AetheryteHelper.insSelecterWindow()
           GUI:Image(ImageFolder..[[ins2.png]],25,25)
           if (GUI:IsMouseClicked(0)) then
           isins = 2
+          insHistory.isins = 2
           autheStep = 2
           selectins = true
+          insHistory.selectins = true
+          insHistory.autheStep = 2
           end
           GUI:SetTooltip("Push")
       else
@@ -1389,37 +1457,40 @@ function AetheryteHelper.insSelecterWindow()
           GUI:Image(ImageFolder..[[ins3.png]],25,25)
           if (GUI:IsMouseClicked(0)) then
           isins = 3
+          insHistory.isins = 3
           autheStep = 2
           selectins = true
+          insHistory.selectins = true
+          insHistory.autheStep = 2
           end
           GUI:SetTooltip("Push")
       else
       GUI:SameLine(-5,-20)
       GUI:Image(ImageFolder..[[ins3non.png]],20,20)
       end
+
       GUI:EndGroup()
       GUI:NextColumn()
       GUI:SameLine(15)
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[close.png]],20,20)
       if (GUI:IsItemHovered()) then
-        if GUI:IsMouseDown(0) then              
-        AetheryteHelper.insSelectGUI.open = false
-        end
-      GUI:SetTooltip("close")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("閉じる")
-        end 
+          if GUI:IsMouseDown(0) then              
+          AetheryteHelper.insSelectGUI.open = false
+          end
+          GUI:SetTooltip("close")
+          if (GUI:IsMouseDown(1)) then
+          GUI:SetTooltip("閉じる")
+          end 
       end
-    end
-    GUI:EndGroup()
-    GUI:Columns()
-    GUI:Spacing(10)
-    GUI:Separator()
-    GUI:End()
-    
+      GUI:EndGroup()
+      GUI:Columns()
+      GUI:Spacing(10)
+      GUI:Separator()
+
+      end
+      GUI:End()  
   end
-  
 end
 
 
@@ -3232,7 +3303,7 @@ function AetheryteHelper.Drawafooter()
       if GUI:IsItemClicked(0) then
          io.popen([[cmd /c start "" "]]..Links.link2..[["]]):close()
       elseif GUI:IsItemClicked(1) then
-         io.popen([[cmd /c start "" "]]..Links.link4..[["]]):close()
+         io.popen([[cmd /c start "" "]]..Links.link3..[["]]):close()
       end
       GUI:SetTooltip(Links.tooltip2)
       end
@@ -3681,6 +3752,33 @@ function AetheryteHelper.mushMaintool()
       autooff = true
       AetheryteHelper.insselect()
    end
+ 
+   if IsControlOpen("_TextError") then
+        if not MIsLoading() then
+            local errmsg = {
+                [0] = "移動先のエリアが混雑しています。しばらく時間をおいてからお試しください。", -- JP
+                [1] = "Your destination is currently congested. Please try again later.", -- EN
+                [2] = "Der Zielort ist gerade überfüllt. Bitte versuch es später noch einmal.", -- DE
+                [3] = "Votre destination est actuellement encombrée. Veuillez réessayer d'y accéder ultérieurement.", -- FR
+                [4] = "前方区域繁忙，请稍后再试。", -- CN
+                [6] = "이동할 지역이 혼잡한 상태입니다. 잠시 후 다시 시도하십시오.", -- KR
+            }
+            local str = GetControlStrings("_TextError",2)
+            if str == errmsg[language] then
+                isins = insHistory.isins
+                selectins = insHistory.selectins
+                if autheStep == 0 then
+                    autheStep = insHistory.autheStep
+                end
+            end
+        else
+            insHistory = {
+                isins = 0,
+                selectins = false,
+                autheStep = 0
+            }
+        end
+    end
  end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4544,9 +4642,11 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               step = 1
                            elseif nohinsoubi < 1 and sealstoitemT == false and GCexchangeT == false and Duty:IsQueued() == false then
                               Dawncloser = false
+                              mushlooptimer = 5000
                               step = 45
                            elseif nohinsoubi > 0 and Duty:IsQueued() == false then
                               Dawncloser = true
+                              mushlooptimer = 1000
                               step = 2
                            end
                         end
@@ -4565,12 +4665,12 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                GCexchangeT = false
                                step = 0
                             elseif mushtruninGCitem == true and mushtruninGCseals == true then
-                               sealstoitemT = true
                                mushlooptimer = 500
+                               sealstoitemT = true
                                step = 3
                             elseif nohinsoubi > 0 then 
-                               GCexchangeT = true
                                mushlooptimer = 1000
+                               GCexchangeT = true
                                step = 30
                             elseif nohinsoubi > 0 and AHSET.GCexlessmax == true then
                                step = 3
@@ -5088,12 +5188,12 @@ function AetheryteHelper.Jumbocactpothelper()
     local jbc34 = AHSET.jumbo34
 if (mushJumbocactpothelper) then
      if mushGSjcpstep == 0 then
-      Player:SetTarget(4299949120)
-      if Player:GetTarget().Distance < 6 then
-      Player:Interact(4299949120)
-      end
-      mushGSjcpstep = 1
-d("mushGSjcpstep"..mushGSjcpstep)
+        Player:SetTarget(4299949120)
+        if Player:GetTarget().Distance < 6 then
+        Player:Interact(4299949120)
+        end
+        mushGSjcpstep = 1
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 1 then
@@ -5101,135 +5201,236 @@ d("mushGSjcpstep"..mushGSjcpstep)
           UseControlAction("Talk", "Close")
           mushGSjcpstep = 2
        end
-d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
      if mushGSjcpstep == 2 then
        if IsControlOpen("SelectString") then                           
           UseControlAction("SelectString","SelectIndex",0)
           mushGSjcpstep = 3
        end
-d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 3 then
        if IsControlOpen("LotteryWeeklyInput")then 
           mushGSjcpstep = 4
        elseif IsControlOpen("LotteryWeeklyRewardList") then 
-          mushGSjcpstep = 11
-       end
-d("mushGSjcpstep"..mushGSjcpstep)
+          mushGSjcpstep = 38
+       end 
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 4 then
        if IsControlOpen("LotteryWeeklyInput") then
             if mushJumbocactpotrandom1 == true then
-            GetControl("LotteryWeeklyInput"):PushButton(25,2)
-            GetControl("LotteryWeeklyInput"):PushButton(25,1)
-            mushGSjcpstep = 5
+            mushGSjcpstep = 9
             elseif mushJumbocactpotrandom1 == false then
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc11+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc12+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc13+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc14+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,1)
-            mushGSjcpstep = 5       
+            mushGSjcpstep = 5
             end
-d("mushGSjcpstep"..mushGSjcpstep)
+        --d("mushGSjcpstep"..mushGSjcpstep)
        end
      end
      if mushGSjcpstep == 5 then
-         if IsControlOpen("SelectYesno") then
-         UseControlAction("SelectYesno","Yes")
-         mushGSjcpstep = 5
-         elseif IsControlOpen("LotteryWeeklyInput") then
-         mushGSjcpstep = 6
-         end
-d("mushGSjcpstep"..mushGSjcpstep)
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc11+8)
+            mushGSjcpstep = 6
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
      end
      if mushGSjcpstep == 6 then
        if IsControlOpen("LotteryWeeklyInput") then
-            if mushJumbocactpotrandom1 == true then
-            GetControl("LotteryWeeklyInput"):PushButton(25,2)
-            GetControl("LotteryWeeklyInput"):PushButton(25,1)
-            mushGSjcpstep = 7
-            elseif mushJumbocactpotrandom1 == false then
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc21+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc22+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc23+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc24+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,1)
-            mushGSjcpstep = 7       
-            end
-d("mushGSjcpstep"..mushGSjcpstep)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc12+8)
+            mushGSjcpstep = 7 
+        --d("mushGSjcpstep"..mushGSjcpstep)
        end
      end
-     if mushGSjcpstep == 7 then
-         if IsControlOpen("SelectYesno") then
-         mushGSjcpstep = 8
-         end
-d("mushGSjcpstep"..mushGSjcpstep)
-     end
-     if mushGSjcpstep == 8 then
-         if IsControlOpen("SelectYesno") then
-         UseControlAction("SelectYesno","Yes")
-         mushGSjcpstep = 8
-         elseif IsControlOpen("LotteryWeeklyInput") then 
-          mushGSjcpstep = 9
-         end
-d("mushGSjcpstep"..mushGSjcpstep)
-     end
-     if mushGSjcpstep == 4 then
+    if mushGSjcpstep == 7 then
        if IsControlOpen("LotteryWeeklyInput") then
-            if mushJumbocactpotrandom1 == true then
-            GetControl("LotteryWeeklyInput"):PushButton(25,2)
-            GetControl("LotteryWeeklyInput"):PushButton(25,1)
-            mushGSjcpstep = 5
-            elseif mushJumbocactpotrandom1 == false then
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc31+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc32+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc33+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,jbc34+8)
-            GetControl("LotteryWeeklyInput"):PushButton(25,1)
-            mushGSjcpstep = 5       
-            end
-d("mushGSjcpstep"..mushGSjcpstep)
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc13+8)
+            mushGSjcpstep = 8       
+        --d("mushGSjcpstep"..mushGSjcpstep)
        end
      end
-     if mushGSjcpstep == 10 then
+    if mushGSjcpstep == 8 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc14+8)
+            mushGSjcpstep = 10       
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 9 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,2)
+            mushGSjcpstep = 10
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 10 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 11
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+   if mushGSjcpstep == 11 then
          if IsControlOpen("SelectYesno") then
          UseControlAction("SelectYesno","Yes")
-         mushGSjcpstep = 10
-         elseif IsControlOpen("SelectString") then 
-         mushGSjcpstep = 12
+         mushGSjcpstep = 11
+         elseif IsControlOpen("LotteryWeeklyInput") then
+         mushGSjcpstep = 20
          end
-d("mushGSjcpstep"..mushGSjcpstep)
+        --d("mushGSjcpstep"..mushGSjcpstep)
      end
-     if mushGSjcpstep == 11 then
+    if mushGSjcpstep == 20 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            if mushJumbocactpotrandom2 == true then
+            mushGSjcpstep = 25
+            elseif mushJumbocactpotrandom2 == false then
+            mushGSjcpstep = 21
+            end
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+     if mushGSjcpstep == 21 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc21+8)
+            mushGSjcpstep = 22
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+     if mushGSjcpstep == 22 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc22+8)
+            mushGSjcpstep = 23 
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 23 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc23+8)
+            mushGSjcpstep = 24       
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 24 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc24+8)
+            mushGSjcpstep = 26       
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 25 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,2)
+            mushGSjcpstep = 26
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 26 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 27
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 27 then
+         if IsControlOpen("SelectYesno") then
+         UseControlAction("SelectYesno","Yes")
+         mushGSjcpstep = 27
+         elseif IsControlOpen("LotteryWeeklyInput") then
+         mushGSjcpstep = 30
+         end
+        --d("mushGSjcpstep"..mushGSjcpstep)
+     end
+        if mushGSjcpstep == 30 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            if mushJumbocactpotrandom3 == true then
+            mushGSjcpstep = 35
+            elseif mushJumbocactpotrandom3 == false then
+            mushGSjcpstep = 31
+            end
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+     if mushGSjcpstep == 31 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc31+8)
+            mushGSjcpstep = 32
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+     if mushGSjcpstep == 32 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc32+8)
+            mushGSjcpstep = 33 
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 33 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc33+8)
+            mushGSjcpstep = 34       
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 34 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,jbc34+8)
+            mushGSjcpstep = 36       
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 35 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,2)
+            mushGSjcpstep = 36
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+    if mushGSjcpstep == 36 then
+       if IsControlOpen("LotteryWeeklyInput") then
+            GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushGSjcpstep = 37
+        --d("mushGSjcpstep"..mushGSjcpstep)
+       end
+     end
+     if mushGSjcpstep == 37 then
+         if IsControlOpen("SelectYesno") then
+         UseControlAction("SelectYesno","Yes")
+         mushGSjcpstep = 37
+         elseif IsControlOpen("SelectString") then 
+         mushGSjcpstep = 39
+         end
+        --d("mushGSjcpstep"..mushGSjcpstep)
+     end
+     if mushGSjcpstep == 38 then
        if IsControlOpen("LotteryWeeklyRewardList") then                           
           UseControlAction("LotteryWeeklyRewardList", "Close")
-          mushGSjcpstep = 12
+          mushGSjcpstep = 39
        end
-d("mushGSjcpstep"..mushGSjcpstep)
+       --d("mushGSjcpstep"..mushGSjcpstep)
      end
-     if mushGSjcpstep == 12 then
+     if mushGSjcpstep == 39 then
           if IsControlOpen("SelectString") then                           
              UseControlAction("SelectString", "SelectIndex",4)
-             mushGSjcpstep = 13
+             mushGSjcpstep = 40
 
           end
-d("mushGSjcpstep"..mushGSjcpstep)
+          --d("mushGSjcpstep"..mushGSjcpstep)
      end
-     if mushGSjcpstep == 13 then
-     if IsControlOpen("Talk") then                           
-          UseControlAction("Talk", "Destroy")
-d("mushGSjcpstep"..mushGSjcpstep)
-       mushlooptimer = 1000  
-       mushJumbocactpothelper = false
-     else 
-       mushlooptimer = 1000
-       mushJumbocactpothelper = false
-       end
+     if mushGSjcpstep == 40 then
+          if IsControlOpen("Talk") then                           
+             UseControlAction("Talk", "Destroy")
+             mushGSjcpstep = 40             
+             --d("mushGSjcpstep"..mushGSjcpstep)
+             mushlooptimer = 1000  
+             mushJumbocactpothelper = false
+          else 
+             mushlooptimer = 1000
+             mushJumbocactpothelper = false
+          end
      end
+
    end       
 end
 
@@ -6461,38 +6662,165 @@ end
 
 
 function AetheryteHelper.mushTextCommands()
-    mushlooptimer = 5000
+    mushlooptimer = 500
     local log = GetChatLines()
     local logmatch = nil
-    for _, command in pairs(log) do
-    if command.line:match("AHmode 114") and command.code == 56 then
-        logmatch = command.line
-        mushlogtime = command.timestamp
+    local mushtextstep = 0
+    local logmatchtime = 0
+    for _, command in pairs(log) do  
+      if command.line:match("AHmode 114") and command.code == 56 then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 1
+           logmatchtime = 30
+      end
+      if command.line:match("AHMB limsa") and command.code == 56 then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 10
+           logmatchtime = 30
+      end
+      if command.line:match("AHMB gridania") and command.code == 56 then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 20
+           logmatchtime = 30
+      end
+      if command.line:match("AHMB uldah") and command.code == 56 then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 30
+           logmatchtime = 30
+      end
     end
+    if mushtextstep == 1 then
+       if AetheryteHelper.insSelectGUI.open == true then
+       mushtext114 = false
+       logmatch = nil
+       mushtextstep = 0
+       else
+       mushtextstep = 2
+       end
     end
-    if AetheryteHelper.insSelectGUI.open == true then
-    mushtextreceipt = false
-    logmatch = nil
-    end
-    if logmatch then
-          if mushlogtime > os.time()-60 then
-          mushtextreceipt = true
+    if mushtextstep == 2 then
+       if logmatch then        
+          if mushlogtime > os.time()-logmatchtime then
+          mushtext114 = true
+          mushtextstep = 3
           else
-          mushtextreceipt = false
+          mushtext114 = false
+          mushtextstep = 0
           end
-    end
-    if mushtextreceipt then
-    AetheryteHelper.insSelectGUI.open = true
-    AHSET.delay = 150
-    SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
-        if language == 0 then
-        SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは30秒ほど閉じることができません")
-        else
-        SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 30 sec to window")
+       end
+     end
+     if mushtextstep == 3 then
+        if mushtext114 then
+           AetheryteHelper.insSelectGUI.open = true
+           AHSET.delay = 150
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
+           if language == 0 then
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは5秒ほど閉じることができません")
+           mushtextstep = 99
+           else
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 5 sec to window")
+           mushtextstep = 99
+           end
         end
-    mushlogtime = os.time()
+     end
+     if mushtextstep == 10 then
+       if AHSET.mushmovetoMB == true and mushMBlim == true then
+       mushtextMBlim = false
+       logmatch = nil
+       mushtextstep = 0
+       else
+       mushtextstep = 11
+       end
     end
-    
+    if mushtextstep == 11 then
+       if logmatch then        
+          if mushlogtime > os.time()-logmatchtime then
+          mushtextMBlim = true
+          mushtextstep = 12
+          else
+          mushtextMBlim = false
+          mushtextstep = 0
+          end
+       end
+     end
+     if mushtextstep == 12 then
+        if mushtextMBlim then
+           AHSET.mushmovetoMB = true
+           mushMBlim = true
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Limsa]:ON")
+           mushtextstep = 99
+        end
+     end
+     if mushtextstep == 20 then
+       if AHSET.mushmovetoMB == true and mushMBgri == true then
+       mushtextMBgri = false
+       logmatch = nil
+       mushtextstep = 0
+       else
+       mushtextstep = 21
+       end
+    end
+    if mushtextstep == 21 then
+       if logmatch then        
+          if mushlogtime > os.time()-logmatchtime then
+          mushtextMBgri = true
+          mushtextstep = 22
+          else
+          mushtextMBgri = false
+          mushtextstep = 0
+          end
+       end
+     end
+     if mushtextstep == 22 then
+        if mushtextMBgri then
+           AHSET.mushmovetoMB = true
+           mushMBgri = true
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Gridania]:ON")
+           mushtextstep = 99
+        end
+     end
+     if mushtextstep == 30 then
+       if AHSET.mushmovetoMB == true and mushMBul == true then
+       mushtextMBul = false
+       logmatch = nil
+       mushtextstep = 0
+       else
+       mushtextstep = 31
+       end
+    end
+    if mushtextstep == 31 then
+       if logmatch then        
+          if mushlogtime > os.time()-logmatchtime then
+          mushtextMBul = true
+          mushtextstep = 32
+          else
+          mushtextMBul = false
+          mushtextstep = 0
+          end
+       end
+     end
+     if mushtextstep == 32 then
+        if mushtextMBul then
+           AHSET.mushmovetoMB = true
+           mushMBul = true
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Ul'dah]:ON")
+           mushtextstep = 99
+        end
+     end          
+     if mushtextstep == 99 then
+        mushlogtime = os.time()
+        mushtext114 = false
+        mushtextMBlim = false
+        mushtextMBgri = false
+        mushtextMBul = false
+        logmatch = nil
+      d("[AH][textcommand]:success")
+     end
+
 end
 ---------------------------------------------------------------   
 function AetheryteHelper.mushsubtool()
