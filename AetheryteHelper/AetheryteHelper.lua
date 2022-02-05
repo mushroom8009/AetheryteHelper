@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.5.3",   
+      Version =         "1.6.0",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -79,44 +79,50 @@ local kinokoProject = {
                       "[1.0.25] - bug fix",
                       "[1.1.0] - add desynthesise filter",
                       "[1.1.1] - bug fix",
-                      "[1.1.2] - Changed so that saved data is loaded correctly.",
-                      "[1.1.3] - linked bot status in materia extract options",
+                      "[1.1.2] - Changed so that saved data",
+                      "          is loaded correctly.",
+                      "[1.1.3] - linked bot status",
+                      "          in materia extract options",
                       "[1.1.5] - Add Aetherial Reduction Botmode and more",
                       "[1.2.0] - I done lot of add things.",
                       "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips",
                       "          Mouse over to view English",
                       "          Right button Press to view Japanese.",
                       "[1.2.2] - desynth bug fix & add Trust mode",
-                      "[1.3.0] - add trun in & Organize code(just a little bit)",
+                      "[1.3.0] - add trun in & Organize code",
+                      "          (just a little bit)",
                       "[1.3.1] - add Jumbo cactpot assist",
                       "[1.3.2] - bug fix",
-                      "[1.3.3] - add auto move to Main tool & fewer error message in game.",
+                      "[1.3.3] - add auto move to Main tool",
+                      "          & fewer error message in game.",
                       "[1.3.4] - fine tuning of auto move (Mare Lamentorum)",
                       "[1.3.5] - add Retrieve Materia & Exchange less max",
                       "[1.4.0] - please read Readme.txt in UserSettings folder",
                       "[1.4.1] - AR function was broken, and I fixed it",
-                      "[1.4.2] - add auto Repair in TrustMode(DEMO) & bug fix",
+                      "[1.4.2] - add auto Repair in TrustMode(DEMO)",
+                      "          & bug fix",
                       "[1.4.3] - add mini button",
                       "[1.4.5] - Organize all code",
                       "[1.4.6] - add DC & move to MB on switch",
                       "[1.4.7] - adjusted behavior of trust mode",
                       "[1.4.7.1] - fix MBmode",
                       "[1.4.8] - Organize code for MBmode",
-                      "[1.4.9] - remake RetrieveMateria,all function adjust delay",
+                      "[1.4.9] - remake RetrieveMateria,",
+                      "          all function adjust delay",
                       "          change contents in junk tab",
                       "[1.5.0] - i've made some crazy stuff",
                       "[1.5.1] - Only some design changes",
                       "[1.5.2] - incorporated the code that kali created",
                       "[1.5.3] - add new 3 text command",
-                      "          add youtube link & jumbocactpot assist(remake)",
+                      "          add youtube link",
+                      "          & jumbocactpot assist(remake)",
+                      "[1.6.0] - Renewal UI",
 
                     },
       
   },
 --  ---------------
   HELP   = {
-      entext =       { "・Code optimization\n・language switching\n\nlink:", }, 
-      jptext =       { "・コードの最適化\n・各項目のローカライズ\n\nlink:", },
       linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
       linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
       mykofi = [[https://ko-fi.com/mushroom8009]],
@@ -169,7 +175,6 @@ local kinokoProject = {
       Timer =         0,
   },
 
-
  }
 -------------------------------
 ---tab
@@ -188,7 +193,7 @@ AetheryteHelper.GUI = {
     },
     [3] = {
       isselected = false,
-      name = "[Option]"
+      name = "[ GC ]"
     },
     [4] = {
       isselected = false,
@@ -214,13 +219,25 @@ AetheryteHelper.insSelectGUI = {
   locked = false,
 }
 AetheryteHelper.Jumbocactpot = {
-  name = "jumbocactpot###AetheryteHelper",
+  name = "jumbocactpot assist###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
 }
-AetheryteHelper.trustmode = {
-  name = "trustmode(DEMO)###AetheryteHelper",
+AetheryteHelper.subtoolDesOP = {
+  name = "Desynthesis option###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.VersionList = {
+  name = "VersionList###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.TCList = {
+  name = "TCList###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
@@ -262,9 +279,11 @@ AetheryteHelper.trustmode = {
     jumbo32 = 0,
     jumbo33 = 0,
     jumbo34 = 0,
+    minionclick = 0,
     GCexlessmax = false,
     mushrepairGear = 60,
     mushmovetoMB = false,
+    mushtooltips = true,
     Pcurrnt = Player.currentworld,
     
     },
@@ -340,16 +359,238 @@ AetheryteHelper.trustmode = {
 
 }
 -------------------
-Links = {
+AHLinks = {
       Name = "Minion Discord JP",
        link1 = [[https://discord.com/channels/127540472812929024/335225564803891210]],
        link2 = [[https://github.com/mushroom8009/AetheryteHelper]],
        link3 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
-       link4 = [[https://youtube.com/playlist?list=PLS5EIB6BeDoKSRglypQIr_g9-MF6Cvbqh]],     
-      tooltip1 = "Please DM me if you have any problems or requests\nalso, please promote it.\n\n不具合とか要望あればDMで教えて下さい\nあと褒められるとモチベーションあがります",
-      tooltip2 = "Github link,\nLeft click:home\nRight click:Release\n\n左クリックでgitのAHのホーム\n右クリックでリリースページ",
-  
+       link4 = [[https://youtube.com/playlist?list=PLS5EIB6BeDoKSRglypQIr_g9-MF6Cvbqh]], 
+}
+mushtooltips = {
+  jp = { tip00 = "対象エリア外",
+         tip01 = "AH オン/オフ",
+         tip02 = "アクセス間隔を\n100msから1秒まで選べます",
+         tip03 = "テキストコマンド[ /e <flag> ]を実行します",
+         tip04 = "冒険者居住区未解放の場合オンにしてください",
+         tip05 = "ディレイの値を初期値に戻します",
+         tip06 = "インスタンスの人数が見れます",
+         tip07 = "インスタンス1へ移動",
+         tip08 = "インスタンス2へ移動",
+         tip09 = "インスタンス3へ移動",
+         tip10 = "グリダニアへテレポ",
+         tip11 = "グリダニアのマケボへ移動",
+         tip12 = "リムサへテレポ",
+         tip13 = "リムサのマケボへ移動",
+         tip14 = "ウルダハへテレポ",
+         tip15 = "ウルダハのマケボへ移動",
+         tip16 = "テレポとMBの切り替え",
+         tip17 = "ジャンボクジテンダー入力アシスト",
+         tip18 = "制限解除の切替",
+         tip19 = "自由探索の切替",
+         tip20 = "機能紹介動画へのリンク",
+         tip21 = "ダブルクリックで開きます",
+         tip22 = "閉じる",
+         tip23 = "ランダム番号で購入します",
+         tip24 = "うまく動作しない場合教えて下さい",
+         tip25 = "装備の修理です\n自分で修理するのでクラフター必須",
+         tip26 = "Trustモードのオン/オフ\n\nタブが強制的に[GC]に固定されます",
+         tip27 = "クリックで分解オン/オフ\n右クリックでフィルターのオン/オフ",
+         tip28 = "クラフターで分解をオフにします",
+         tip29 = "分解とマテリア錬成をID内でのみ行ないます",
+         tip30 = "IL1-IL1000\nこの数字より大きいIL装備を分解します",
+         tip31 = "リセット",
+         tip32 = "IL-IL1000\nIL1を除きこれ未満のIL装備を分解します",
+         tip33 = "選択したものを分解します。\n大事な装備はアーマリーチェストへ入れましょう",
+         tip34 = "武器・主道具",
+         tip35 = "盾・副道具",
+         tip36 = "頭装備",
+         tip37 = "耳アクセ",
+         tip38 = "胴装備",
+         tip39 = "首アクセ",
+         tip40 = "手装備",
+         tip41 = "腕輪（アクセ）",
+         tip42 = "脚装備",
+         tip43 = "指輪",
+         tip44 = "足装備",
+         tip45 = "右クリックで全選択\n左クリックで反転",
+         tip46 = "タンク共通装備",
+         tip47 = "ヒーラー共通装備",
+         tip48 = "アタッカーアクセ",
+         tip49 = "レンジ共通装備",
+         tip50 = "ストライカー装備",
+         tip51 = "キャスター共通装備",
+         tip52 = "スレイヤー装備",
+         tip53 = "低レベル用の全ジョブ対応装備",
+         tip54 = "スカウト装備",
+         tip55 = "白杖/盾",
+         tip56 = "斧",
+         tip57 = "学本",
+         tip58 = "大剣",
+         tip59 = "天球儀",
+         tip60 = "ガンブレード",
+         tip61 = "賢具",
+         tip62 = "格闘武器",
+         tip63 = "弓",
+         tip64 = "槍",
+         tip65 = "銃",
+         tip66 = "双剣",
+         tip67 = "投擲武器",
+         tip68 = "刀",
+         tip69 = "黒杖/盾",
+         tip70 = "鎌",
+         tip71 = "召本",
+         tip72 = "レイピア",
+         tip73 = "クラフターの道具・防具・アクセサリー",
+         tip74 = "ギャザラーの道具・防具・アクセサリー",
+         tip75 = "軍票をアイテムに交換",
+         tip76 = "自動調整のオン/オフ",
+         tip77 = "軍票がこれ以上になると交換を開始",
+         tip78 = "0を入力すると最大値になります",
+         tip79 = "交換数(自動で最大値になります)",
+         tip80 = "交換に必要なGCランクに満たないものを選ぶと\nチェックが外れます",
+         tip81 = "交換に必要な軍票/現在の軍票",
+         tip82 = "錬精薬の自動使用\n右クリックでminion連動のオンオフ",
+         tip83 = "スピリットマニュアルの自動使用\n右クリックでminion連動のオンオフ",
+         tip84 = "所属GCが自動で選ばれます",
+         tip85 = "マテリア錬精",
+         tip86 = "インベントリの中の装備を分解\n右クリックでオプション設定のオンオフ",
+         tip87 = "GCの希少品納品",
+         tip88 = "自動でGCに移動して納品します",
+         tip89 = "自動移動を停止",
+         tip90 = "軍票の最大を超えて納品しない",
+         tip91 = "カバンの中の装備のマテリアを外す",
+         tip92 = "精選\nカバンの空きが0になると動作しません\n右クリックでminion連動との切り替え",
+         tip93 = "DCは自動で選択されます",
+         tip94 = "マケボへ移動切り替えスイッチ",
+         tip95 = "移動先のサーバーを選択",
+         tip96 = "良い物を作るためにサポートしてください\n\nうちのねこのご飯が豪華になります",
+         tip97 = "不具合とか要望あればDMで教えて下さい\nあと褒められるとモチベーションあがります",
+         tip98 = "左クリックでgitのAHのホーム\n右クリックでリリースページ",
+         tip99 = "クエストをクリアしてしないのでスキルが使えません",
+         tip100 = "[MEx]=マテリア錬成\n[SbP]=錬成薬\n[SbM]=スピリットマニュアル",
+         tip101 = "[Dsy]=分解\n[Fil]=分解フィルター\n[Cft]=クラフターモード\n[IDm]=IDモード",
+         tip102 = "[AR]=精選\n[Link]=Minionリンクモード",
+         tip103 = "[Ex]=希少品納品\n[M2G]=GCへ移動\n[LM]=軍票の上限を超えて納品しない\n[RM]=カバン内の装備のマテリアを外す",
+         tip104 = "片手剣/盾",
+         tip105 = "時間が足りない",
+         tip106 = "つつかないでｗ",
+         tip107 = "クジを3枚購入",
+         tip108 = "分解オプションを開く",
+         tip109 = "ツールチップの表示/非表示",
 
+  },
+  en = { tip01 = "Outside of use area",
+         tip01 = "AH Enable/Disable",
+         tip02 = "access delay\n100ms-1sec",
+         tip03 = "Send TextCommand in Game>> /e <flag>",
+         tip04 = "didn't complete quest of residential",
+         tip05 = "delay RESET",
+         tip06 = "instance info",
+         tip07 = "go to instance 1",
+         tip08 = "go to instance 2",
+         tip09 = "go to instance 3",
+         tip10 = "Teleport to Gridania",
+         tip11 = "Go to MB in Gridania",
+         tip12 = "Teleport to Limsa",
+         tip13 = "Go to MB in Limsa",
+         tip14 = "Teleport to Uldah",
+         tip15 = "Go to MB in Ul'dah",
+         tip16 = "switching MB/Teleport",
+         tip17 = "Jumbo cactpot assist",
+         tip18 = "switching undersize for dungeon",
+         tip19 = "switching Explorer for dungeon",
+         tip20 = "Introduction to AH",
+         tip21 = "open AH\ndouble click",
+         tip22 = "close",
+         tip23 = "Random num",
+         tip24 = "If it does not work well, please report it",
+         tip25 = "you'll need a crafter to do repairs yourself",
+         tip26 = "Use Trust addon to exchange\nEnable/Disable\n\ntab will change to [GC] by itself",
+         tip27 = "Click to Desynthsie on/off\nRightclick to turn filter on/off",
+         tip28 = "Auto off in Crafter for Desynth",
+         tip29 = "Desynth & Materia Extract  only in ID",
+         tip30 = "IL1-IL1000\nDesynth IL equipment larger than this number",
+         tip31 = "Setting IL Reset",
+         tip32 = "IL5-IL1000\nDesynth any IL equipment\nless than this except IL1",
+         tip33 = "selection will be Desynthesis\nValuable equipment\nis in armoury chest",
+         tip34 = "Primary",
+         tip35 = "Secondary & Shield",
+         tip36 = "Head",
+         tip37 = "Earrings",
+         tip38 = "Body",
+         tip39 = "Necklace",
+         tip40 = "Hand",
+         tip41 = "Bracelets",
+         tip42 = "Legs",
+         tip43 = "Ring",
+         tip44 = "Feet",
+         tip45 = "Left click : all on\nRight click : Reverse",
+         tip46 = "Tank",
+         tip47 = "Healer",
+         tip48 = "Slaying",
+         tip49 = "Aiming",
+         tip50 = "Striking",
+         tip51 = "Sorcerer",
+         tip52 = "Maiming",
+         tip53 = "All class",
+         tip54 = "Scouting",
+         tip55 = "WHM's Arm/Shield",
+         tip56 = "WAR's Arm",
+         tip57 = "SCH's ARM",
+         tip58 = "DRK's Arm",
+         tip59 = "AST's Arm",
+         tip60 = "GNB's Arm",
+         tip61 = "SGE's Arm",
+         tip62 = "MNK's Arm",
+         tip63 = "BRD's Arm",
+         tip64 = "DRF's Arm",
+         tip65 = "MCN's Arm",
+         tip66 = "NIN's Arm",
+         tip67 = "DNC's Arm",
+         tip68 = "SAM's Arm",
+         tip69 = "BLM's Arm/Shield",
+         tip70 = "RPR's Arm",
+         tip71 = "SMN's Arm",
+         tip72 = "RDM's Arm",
+         tip73 = "Tool & Armor & Accessories for Crafter",
+         tip74 = "Tool & Armor & Accessories for Gatherer",
+         tip75 = "Exchange seals for items",
+         tip76 = "Quantity adjustment on/off",
+         tip77 = "amount to start trun in",
+         tip78 = "enter 0 to get the max value",
+         tip79 = "number want(auto adjustment)",
+         tip80 = "Note that if you do not meet GC rank,\nyou cannot trun in",
+         tip81 = "Required seals/have seals",
+         tip82 = "auto use potion\nRight-click to turn on/off minion link",
+         tip83 = "auto use spiritbond manual\nRight-click to turn on/off minion link",
+         tip84 = "Your GC\nautomatically select",
+         tip85 = "Materia Extract",
+         tip86 = "desynthesis all equipment in your inventory\nRight-click to turn on/off options",
+         tip87 = "for GC seals",
+         tip88 = "Auto Move to GC",
+         tip89 = "move to stop",
+         tip90 = "not done exchange over max seals",
+         tip91 = "Remove materia from equipment in inventory",
+         tip92 = "Aetherial Reduction\nStop when there is no more space in inventory\nRight-click to turn on/off minion link",
+         tip93 = "Auto select DC",
+         tip94 = "Switch to move to MB",
+         tip95 = "Select World",
+         tip96 = "please support me to make good\n\nfor my cat....",
+         tip97 = "Please DM me if you have any problems or requests\nalso, please promote it.",
+         tip98 = "Github link,\nLeft click:home\nRight click:Release",
+         tip99 = "Quest complete to Get skill!",
+         tip100 = "[MEx]=MateriaExtract\n[SbP]=Spiritbond Potion\n[SbM]=Spiritbond Manual",
+         tip101 = "[Dsy]=Desynthesis\n[Fil]=Desynthesis Filter\n[Cft]=Crafter mode\n[IDm]=IDmode",
+         tip102 = "[AR]=Aetherial Reduction\n[Link]=Minion Link mode",
+         tip103 = "[Ex]=Exchange\n[M2G]=move to GC\n[LM]=less max\n[RM]=Remove Materia",
+         tip104 = "PLD's Arm/Shield",
+         tip105 = "・・・i need more time",
+         tip106 = "please don't poke me...",
+         tip107 = "3 ticket purchases",
+         tip108 = "Desynthseise Options",
+         tip109 = "tooltips Show/hide",
+
+  },
 }
 
 ----------------------------------------------------
@@ -490,9 +731,13 @@ mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
 mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
 mushGCEN = {"Maelst","Adders","Flames","------"}
 mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
+mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
+mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
 GCexchangeItems = {
-         jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンsテナ(紅蓮)","転送網利用券(GC)"},           
-         En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},
+         jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンテナ(紅蓮)","転送網利用券(GC)"}, ---0          
+         En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},---1
+         De = {"Wertmarken","G8Dunkelmaterie ","Glasfasern","Sonderziehungstruhe(ARR/HW)","Sonderziehungstruhe(SB) ","Teleport-Ticket(GC)"},---2
+         Fr = {"Jetons de tâche","Matière sombre G8","Fibre de verre","Malle-surprise(ARR/HW)","Malle-surprise(SB)","Billet de transport éthéré(GC)"},---3
          cost = {
          [1] = 200,
          [2] = 600,
@@ -517,6 +762,7 @@ GCexchangeItems = {
 
 MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
+mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
 local uuid = GetUUID()
 AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userID'..uuid.. '_setting.lua'
 AetheryteHelper.settingfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'kinoko_setting.lua'
@@ -727,160 +973,420 @@ local AHeqjob = AetheryteHelper.settings.Job
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- ins select GUI
 local insHistory = {
-    isins = 0,
+    isins = 4,
     selectins = false,
     autheStep = 0
 }
 function AetheryteHelper.Drawinsselect()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Text("Tips : use MobHunt & Rare F.A.T.E")      
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        GUI:SetTooltip("--instance select--\nonly use EW area\n・Labyrinthos\n・Thavnair\n・Garlemald\n・Mare Lamentorum\n・Elpis\n・Ultima Thule\n\n--World visit--\n・Gridania\n・Limsa\n・Uldah")
-      if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("--インスタンスセレクト--\nEWエリアのみ対応です\n・ラビリンソス\n・サベネア\n・ガレマルド\n・嘆きの海\n・エルピス\n・ウルティマ・トゥーレ\n\n--サーバーテレポ対応都市--\n・グリダニア\n・リムサ\n・ウルダハ")
-      end
-      end
-
       GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
-      GUI:SameLine()
-      GUI:Checkbox("##select_ins", selectins)
-      GUI:SameLine()
-      GUI:Text("Helper Enable")
-      GUI:EndGroup()      
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          selectins = not selectins
-          autheStep = 0
-          if not selectins then
+      GUI:SameLine(5)
+      GUI:Dummy(40,60)
+      if selectins == true then
+              GUI:SameLine(5,-60)
+              GUI:Image(ImageFolder..[[AHon.png]],40,60)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              isins = 4
+              selectins = not selectins
+              if not selectins then
+              insHistory = {
+              isins = 4,
+              selectins = false,
+              autheStep = 0
+              }
+              end
+              Player:ClearTarget()
+              Player:Stop()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+              end
+              end      
+      elseif selectins == false then
+              GUI:SameLine(5,-60)
+              GUI:Image(ImageFolder..[[AHoff.png]],40,60)
+             if (GUI:IsItemHovered()) then
+             if (GUI:IsMouseClicked(0)) then
+             selectins = not selectins
+             autheStep = 0
+             if not selectins then
              insHistory = {
-             isins = 0,
+             isins = 4,
              selectins = false,
              autheStep = 0
-                }
-          end
-          if selectins == false then
-          Player:Stop()
-          end
-        if ( moveSVR == false ) then  modechg = 3 end 
-          end
-        GUI:SetTooltip("on/auto off\nOnly possible in front of Aetheryte")
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("エーテライトのそばで使用してください。\nオンは手動ですがオフは自動です")
-      end
-      end
-      if GUI:TreeNode("AH-option") then
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Text("----")
-      GUI:SameLine()
-      GUI:Checkbox("##nohousing", AHSET.nohousing)
-      GUI:SameLine()
-      GUI:TextColored(1,0,0,1,"residential no visible")
-      GUI:EndGroup()      
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.nohousing = not AHSET.nohousing
-          end       
-         GUI:SetTooltip("didn't complete quest of residential\nonly Worldvisit mode\nmean [Mist][Lavender Beds][Goblet] thing")
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("サーバーテレポ時のみ、冒険者居住区未解放のエリアでオンにしてください\n具体的にはミストビレッジ・ラベンダーベッド・ゴブレットビュートです")
-      end
-      end
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Text("----")
-      GUI:SameLine()
-      GUI:Checkbox("##AutoOffmode", autooff)
-      GUI:SameLine()
-      GUI:Text("Mode: ins select")
-      for _,v in pairs(ploc) do
-        if (v == Player.localmapid) then
-          GUI:SameLine()
-          GUI:TextColored(0,1,0,1," Ready")
-        end
-      end
-      GUI:EndGroup()      
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          if ( moveSVR == false ) then
-           autooff = not autooff
-           elseif( moveSVR == true ) then
-           moveSVR = not moveSVR
-           autooff = not autooff
-          --moveSVR = not moveSVR
-           modechg = 3  
-          end 
-        end
-        GUI:SetTooltip("Instance Select Mode\nAuto change")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンスセレクトモード\n対象エリアで内部的に自動で切り替わります")
-        end 
-      end
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Text("----")
-      GUI:SameLine()      
-      GUI:Checkbox("##move_svr", moveSVR)
-      GUI:SameLine()
-      GUI:Text( "Mode: World Visit" )
-      for _,v in pairs(MoveServer) do
-        if (v == Player.localmapid) then
-          GUI:SameLine()
-          GUI:TextColored(0,1,0,1," Ready")
-        end
+             }
+             end
+             end
+             if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+             end
+             end    
       end
       GUI:EndGroup()
+end
+
+function AetheryteHelper.Serverselect()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:SameLine(5)
+      GUI:Dummy(40,60)
+      if selectins == true then
+              GUI:SameLine(5,-60)
+              GUI:Image(ImageFolder..[[AHon.png]],40,60)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              isins = 4
+              selectins = not selectins
+              Player:ClearTarget()
+              Player:Stop()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+              end
+              end      
+      elseif selectins == false then
+              GUI:SameLine(5,-60)
+              GUI:Image(ImageFolder..[[AHoff.png]],40,60)
+             if (GUI:IsItemHovered()) then
+             if (GUI:IsMouseClicked(0)) then
+             selectins = not selectins
+             autheStep = 0
+             end
+             if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+             end
+             end    
+      end
+      GUI:EndGroup()
+end
+
+function AetheryteHelper.notuseAH()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:SameLine(5)
+      GUI:Dummy(40,60)
+              GUI:SameLine(5,-60)
+              GUI:Image(ImageFolder..[[AH_non.png]],40,60)
+              if (GUI:IsItemHovered()) then
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip00)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip00)
+              end
+              end
+              end
+      GUI:EndGroup() 
+
+end
+
+
+function AetheryteHelper.maininsButton()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Button("i",20,20)
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open 
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip06)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip06)
+              end
+            end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Spacing()
+      if isins == 1 then
+      GUI:Text("select: 1")
+      elseif isins == 2 then
+      GUI:Text("select: 2")
+      elseif isins == 3 then
+      GUI:Text("select: 3")
+      elseif isins == 4 then
+      GUI:Text("no select")
+      elseif isins == 0 then
+      GUI:Text("select: Random")
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:ImageButton("###flag",ImageFolder..[[0001.png]], 25,25)
       if (GUI:IsItemHovered()) then
           if (GUI:IsMouseClicked(0)) then
-          if ( autooff == false ) then
-           moveSVR = not moveSVR
-           elseif( autooff == true ) then
-           moveSVR = not moveSVR
-           autooff = not autooff
-           end
-          if (moveSVR == true) then
-           modechg = 2
-          else
-           modechg = 3
-           end
-           autheStep = 0            
-          
-        end       
-        GUI:SetTooltip("World Visit Mode\nAuto change")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("サーバーテレポモード\n対象エリアで内部的に自動で切り替わります")
-        end 
+            if selectins == true then
+            isins = 1
+            else
+            isins = 4
+            end
+          insHistory.isins = 1
+          autheStep = 2
+          insHistory.selectins = true
+          insHistory.autheStep = 2
+          end
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip07)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip07)
+              end
+              end
       end
-      GUI:TreePop()
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:ImageButton("###flag",ImageFolder..[[0002.png]], 25,25)
+      if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+          if selectins == true then
+            isins = 2
+            else
+            isins = 4
+            end
+          insHistory.isins = 2
+          autheStep = 2
+          insHistory.selectins = true
+          insHistory.autheStep = 2
+          end
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip08)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip08)
+              end
+              end
       end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:ImageButton("###flag",ImageFolder..[[0003.png]], 25,25)
+      if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+          if selectins == true then
+            isins = 3
+            else
+            isins = 4
+            end
+          insHistory.isins = 3
+          autheStep = 2
+          insHistory.selectins = true
+          insHistory.autheStep = 2
+          end
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip09)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip09)
+              end
+              end
+      end
+      GUI:EndGroup()
+end
+
+function AetheryteHelper.omikuji()
+      GUI:BeginGroup()
+      GUI:Text(AHSET.minionclick)
+      GUI:EndGroup()
+      local mushomikuji = GetCurrentWeather()
+      GUI:SameLine(35)
+      GUI:BeginGroup()
+      if mushomikuji == 13 or mushomikuji == 14  then
+           GUI:Image(ImageFolder..[[love_bon.png]],60,60)
+      elseif mushomikuji == 2 then
+           GUI:Image(ImageFolder..[[love_fc.png]],60,60)
+      elseif mushomikuji == 7 then
+           GUI:Image(ImageFolder..[[love_koro.png]],60,60)
+      elseif mushomikuji == 3 then
+           GUI:Image(ImageFolder..[[love_kupo.png]],60,60)      
+      elseif mushomikuji == 5 then
+           GUI:Image(ImageFolder..[[love_mandra.png]],60,60)
+      elseif mushomikuji == 9 then
+           GUI:Image(ImageFolder..[[love_namazu.png]],60,60)
+      elseif mushomikuji == 1 then
+           GUI:Image(ImageFolder..[[love_pai.png]],60,60)
+      elseif mushomikuji == 8 then
+           GUI:Image(ImageFolder..[[love_shark.png]],60,60)
+      elseif mushomikuji == 15 or mushomikuji == 16 then
+           GUI:Image(ImageFolder..[[love_yuki.png]],60,60)
+      elseif mushomikuji == 11 or mushomikuji == 12 then
+           GUI:Image(ImageFolder..[[love_sabo.png]],60,60)
+      elseif mushomikuji == 27 then
+           GUI:Image(ImageFolder..[[love_biba.png]],60,60)
+      elseif mushomikuji == 10 then
+           GUI:Image(ImageFolder..[[love_hebi.png]],60,60)
+      else
+           GUI:Image(ImageFolder..[[love_kar.png]],60,60)
+      end
+      GUI:EndGroup()
+      if GUI:IsItemHovered() then
+           if GUI:IsMouseClicked(0) then
+           AHSET.minionclick = AHSET.minionclick + 1
+           if AHSET.minionclick == 9999 then
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 Congratulations! <se.6>")
+           end
+           AetheryteHelper.SaveSettings()
+           end
+           if mushomikuji == 13 or mushomikuji == 14  then
+           if language == 0 then
+           GUI:SetTooltip("ギギ・・・ギギギ・・・")
+           else
+           GUI:SetTooltip("Brilliant bombs-\nbreathtaking,\nbeautiful,brilliant!\n- Acolyte Ba Go")
+           end
+           elseif mushomikuji == 2 then
+           if language == 0 then
+           GUI:SetTooltip("ブニャー！")
+           else
+           GUI:SetTooltip("When the master's away,\nthe cat will play.\n- Miqo'te Retainer")
+           end
+           elseif mushomikuji == 7 then
+           if language == 0 then
+           GUI:SetTooltip("コロリン、コロリン・・・・・・")
+           else
+           GUI:SetTooltip("Feels so soft and moist as\nfresh spring shower!\n- Ranu Vali")
+           end
+           elseif mushomikuji == 3 then
+           if language == 0 then
+           GUI:SetTooltip("クポー！働くクポー！")
+           else
+           GUI:SetTooltip("Off with their heads!\n- Good King Moggle Mog XII")
+           end
+           elseif mushomikuji == 5 then
+           if language == 0 then
+           GUI:SetTooltip("・・・・・・・・・")
+           else
+           GUI:SetTooltip("While little is Known about\nthem, what is known\ntends to be disturbing.\n- Eorzean Naturalist")
+           end
+           elseif mushomikuji == 9 then
+           if language == 0 then
+           GUI:SetTooltip("ギョギョギョ！？・・・ッペな")
+           else
+           GUI:SetTooltip("He's not heavy,\nbut gods, the smell...\n- Lyse")
+           end
+           elseif mushomikuji == 1 then
+           if language == 0 then
+           GUI:SetTooltip("・・・・・・！？")
+           else
+           GUI:SetTooltip("Even cowardly paossa\ncannot hide forever!\n- Gundu warrior")
+           end
+           elseif mushomikuji == 8 then
+           if language == 0 then
+           GUI:SetTooltip("シャーーッ！")
+           else
+           GUI:SetTooltip("To think I almost'ad\nye fed to the sharks!\n- Rhoswen")
+           end
+           elseif mushomikuji == 15 or mushomikuji == 16 then
+           if language == 0 then
+           GUI:SetTooltip("しんしんしん・・・")
+           else
+           GUI:SetTooltip("It is the enemy that weighs\non me-snow, rather than fire.\n- Martiallais")
+           end
+           elseif mushomikuji == 11 or mushomikuji == 12 then
+           if language == 0 then
+           GUI:SetTooltip("！？")
+           else
+           GUI:SetTooltip("The interior of its arm\nholds a surprising amount\nof fresh, drinkable water.\n- Common Knowledge")
+           end
+           elseif mushomikuji == 27 then
+           if language == 0 then
+           GUI:SetTooltip("ガウー！ ウウー！")
+           else
+           GUI:SetTooltip("Something tells me\nthat's one more mystery\nbetter left undolved.\n- Ellie")
+           end
+           elseif mushomikuji == 10 then
+           if language == 0 then
+           GUI:SetTooltip("キィっキュィ～！！")
+           else
+           GUI:SetTooltip("Screee!\n- The Great Sperpent of Ronka")
+           end
+           else
+           if language == 0 then
+           GUI:SetTooltip("ムギュー！")
+           else
+           GUI:SetTooltip("I hope to...create a new\nvariety of Carbuncle, perhaps\n- Alphinaud")
+           end
+           end
+      end
+      GUI:SameLine(110)
+      GUI:BeginGroup()
+      if AHSET.minionclick >= 9999 then
+        GUI:ImageButton("###riset",ImageFolder..[[restart.png]],15,15)
+        if GUI:IsItemHovered() then
+          if GUI:IsItemClicked(0) then
+            AHSET.minionclick = 0
+            AetheryteHelper.SaveSettings()
+          end
+          GUI:SetTooltip("Reset num")
+        end  
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      if AHSET.minionclick > 9999 then AHSET.minionclick = 9999 end
+      if AHSET.minionclick < 100 then
+         GUI:TextColored(0,1,0,1,"AH Beginner")
+      elseif AHSET.minionclick >= 9999 then
+         GUI:TextColored(1,1,0,1,"Congratulations!")
+      elseif AHSET.minionclick >= 5000 then
+         GUI:TextColored(1,0,0,1,"You don't have\nto do this")
+      elseif AHSET.minionclick >= 4000 then
+         GUI:TextColored(1,0,0,1,"God of finger")
+      elseif AHSET.minionclick >= 3000 then
+         GUI:TextColored(1,0.5,0,1,"Legend of finger")
+      elseif AHSET.minionclick >= 2000 then
+         GUI:TextColored(1,0.3,0,1,"brain in finger")
+      elseif AHSET.minionclick >= 1000 then
+         GUI:TextColored(1,1,0,1,"mouse breaker")
+      elseif AHSET.minionclick >= 500 then
+         GUI:TextColored(1,0,1,1,"mouse clicker")
+      elseif AHSET.minionclick >= 100 then
+         GUI:TextColored(0,1,1,1,"Mr. Busyworker")
+      end
+
+      GUI:EndGroup()
+
+end
+
+
+function AetheryteHelper.accessdelay()
       GUI:Spacing()           
       GUI:Separator()    
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:PushItemWidth(140)
+      GUI:PushItemWidth(120)
       GUI:BeginGroup()
       local changed
         AHSET.delay, changed = GUI:SliderInt("ms",AHSET.delay,100,1000)
-        
         if (GUI:IsItemHovered()) then
-        GUI:SetTooltip("access delay\n100ms-1000ms")
         AetheryteHelper.SaveSettings()
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("アクセス間隔\n100ミリ秒から1秒まで選べます")
-        end 
+        if AHSET.mushtooltips == true then
+           if language == 0 then
+           GUI:SetTooltip(mushtooltips.jp.tip02)
+           else
+           GUI:SetTooltip(mushtooltips.en.tip02)
+           end
+           end
         end
-
       GUI:EndGroup()
-      --GUI:Spacing() 
-      --GUI:AlignFirstTextHeightToWidgets()
       GUI:SameLine()
       GUI:BeginGroup()
       GUI:Button( "Reset",40, 20)
@@ -890,168 +1396,92 @@ function AetheryteHelper.Drawinsselect()
           AetheryteHelper.SaveSettings()
           autheStep = 0
         end
-        GUI:SetTooltip("delay RESET")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("ディレイの値を初期値に戻します")
-        end 
-        end
-      GUI:EndGroup()
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Button("F",20,20)
-      GUI:EndGroup()
-            if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) then
-              SendTextCommand("/e <flag>")
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip05)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip05)
               end
-              GUI:SetTooltip("Send TextCommand in Game>> /e <flag>")
-              if (GUI:IsMouseDown(1)) then
-              GUI:SetTooltip("ゲーム内マクロと同じですが、「/e <flag>」を実行します")
-             end               
-            end
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Button("i",20,20)
-      GUI:EndGroup()
-      if AHSET.delay == 194 then
-            if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) then
-             AetheryteHelper.trustmode.open = not AetheryteHelper.trustmode.open 
               end
-              GUI:SetTooltip("Exchange TrustMode")
-              if (GUI:IsMouseDown(1)) then
-              GUI:SetTooltip("HMTrustアドオンでExchange使いたい人向け")
-              end 
-            end
-      else
-      if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) then
-             AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open 
-              end
-              GUI:SetTooltip("info")
-              if (GUI:IsMouseDown(1)) then
-              GUI:SetTooltip("別窓でインスタンスの人数が見れます")
-              end 
-            end
-      end
-      GUI:Separator()
-      GUI:Spacing()
-      --GUI:AlignFirstTextHeightToWidgets()
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Button( "ins 1", 55, 20)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          isins = 1
-          insHistory.isins = 1
-          if AHSET.delay == 114 then selectins = true
-          autheStep = 2
-          insHistory.selectins = true
-          insHistory.autheStep = 2
-          end     
-       end 
-      GUI:SetTooltip("go to instance 1\nrepeate click")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンス1へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
         end
-      end
-      
-      --GUI:AlignFirstTextHeightToWidgets()
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Button( "ins 2", 55, 20)
       GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-         isins = 2
-         insHistory.isins = 2
-           if AHSET.delay == 114 then selectins = true
-           autheStep = 2
-           insHistory.selectins = true
-           insHistory.autheStep = 2
-           end
-         end
-        GUI:SetTooltip("go to instance 2\nrepeate click")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンス2へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
-        end 
-      end
-      
-      --GUI:AlignFirstTextHeightToWidgets()
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Button( "ins 3", 55, 20)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          isins = 3
-          insHistory.isins = 3
-          if AHSET.delay == 114 then selectins = true
-          autheStep = 2
-          insHistory.selectins = true
-          insHistory.autheStep = 2
-          end
-        end
-        GUI:SetTooltip("go to instance 3\nrepeate click")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インスタンス3へ移動\n混雑時は連打してください\nインスタンスが350人前後だと入れません")
-        end 
-      end
-      
-      --GUI:AlignFirstTextHeightToWidgets()
-      GUI:SameLine()
-      GUI:BeginGroup()      
-      GUI:Button( "free", 55, 20)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          isins = 0
-          insHistory.isins = 0
-          if AHSET.delay == 114 then selectins = true 
-          autheStep = 2
-          insHistory.selectins = true
-          insHistory.autheStep = 2
-          end
-        end 
-        GUI:SetTooltip("auto select")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("自動選択です")
-        end
-      end
 end
+
 -------------------------------------------------------------------------------------------------------------------------------------
 -- telepo button GUI
 
 function AetheryteHelper.GLUtelepo()
+      GUI:Spacing()
+      GUI:SameLine(10)
       GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.mushmovetoMB == true then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[MB.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.mushmovetoMB = not AHSET.mushmovetoMB
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip16)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip16)
+              end
+              end
+              end      
+      elseif AHSET.mushmovetoMB == false then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[MB_non.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.mushmovetoMB = not AHSET.mushmovetoMB
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip16)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip16)
+              end
+              end
+              end       
+      end
       if AHSET.mushmovetoMB == false then
-      GUI:Text("Go to Gridania, Limsa Lominsa, Ul'dah")
-      else
-      GUI:TextColored(1,1,0,1,"Auto go to MarketBoard button")
-      end  
+      if mushMBlim == true then mushMBlim = false Player:Stop() end
+      if mushMBgri == true then mushMBgri = false Player:Stop() end
+      if mushMBul == true then mushMBul = false Player:Stop() end
+     end
       GUI:EndGroup()
+      GUI:SameLine(80)
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.mushmovetoMB == true then
+            GUI:SameLine(-10,-40)
+            GUI:Image(ImageFolder..[[GCMBgri.png]],40,40)
             if (GUI:IsItemHovered()) then
-            GUI:SetTooltip("available from the central aetheryte")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("三国へのテレポボタン")
-            end 
+            if (GUI:IsMouseClicked(0)) then
+               Player:ClearTarget()
+               mushMBgri = true
+               mushMBlim = false
+               mushMBul = false
+               griMBStep = 0
+               mushlooptimer = 100
             end
-      GUI:BeginGroup()
-      GUI:Checkbox("###MB",mushMBgri)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-         GUI:SetTooltip("When the checkbox [MB] is turned on,\nit will switch automatically")
-         if (GUI:IsMouseDown(1)) then
-         GUI:SetTooltip("自動でオンになります\n\n[MB]チェックでボタンの挙動が変わります")
-         end
-      end
-      GUI:SameLine()
-      GUI:BeginGroup()  
-      GUI:Button("Grida",55,20)
-      GUI:EndGroup()
-         if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == false ) then
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip11)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip11)
+              end
+              end
+            end
+      elseif AHSET.mushmovetoMB == false then
+            GUI:SameLine(-10,-40)
+            GUI:Image(ImageFolder..[[GCtelepogri.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
               Player:ClearTarget()
               mushlooptimer = 0
               griMBStep = 0
@@ -1062,45 +1492,47 @@ function AetheryteHelper.GLUtelepo()
               autooff = false
               modechg = 2
             end
-            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == true ) then
-              Player:ClearTarget()
-              mushMBgri = true
-              mushMBlim = false
-              mushMBul = false
-              griMBStep = 0
-              mushlooptimer = 100
-            end
-            if AHSET.mushmovetoMB == false then
-            GUI:SetTooltip("Teleport to Gridania")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("グリダニア")
-            end
-            else
-            GUI:SetTooltip("Go to Gridania MB")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("グリダニアのマケボへ移動")
-            end 
-            end
-         end
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Checkbox("###MB",mushMBlim)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-         GUI:SetTooltip("When the checkbox [MB] is turned on,\nit will switch automatically")
-         if (GUI:IsMouseDown(1)) then
-         GUI:SetTooltip("自動でオンになります\n\n[MB]チェックでボタンの挙動が変わります")
-         end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip10)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip10)
+              end
+              end
+            end       
       end
+      GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Button("Limsa",55,20)
-      GUI:EndGroup()
-         if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == false ) then
+      GUI:Dummy(40,40)
+      if AHSET.mushmovetoMB == true then
+            GUI:SameLine(-10,-40)
+            GUI:Image(ImageFolder..[[GCMBlim.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+               Player:ClearTarget()
+               mushMBgri = false
+               mushMBlim = true
+               mushMBul = false
+               griMBStep = 0
+               mushlooptimer = 100
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip13)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip13)
+              end
+              end
+            end
+      elseif AHSET.mushmovetoMB == false then
+            GUI:SameLine(-10,-40)
+            GUI:Image(ImageFolder..[[GCtelepolim.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
               Player:ClearTarget()
               mushlooptimer = 0
-              limMBStep = 0
+              griMBStep = 0
               mushMBgri = false
               mushMBlim = true
               mushMBul = false
@@ -1108,45 +1540,47 @@ function AetheryteHelper.GLUtelepo()
               autooff = false
               modechg = 2
             end
-            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == true ) then
-              Player:ClearTarget()
-              mushMBlim = true
-              mushMBul = false
-              mushMBgri = false
-              limMBStep = 0
-              mushlooptimer = 100
-            end
-            if AHSET.mushmovetoMB == false then
-            GUI:SetTooltip("Teleport to Limsa")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("リムサ")
-            end
-            else
-            GUI:SetTooltip("Go to Limsa MB")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("リムサのマケボへ移動")
-            end 
-            end
-         end
+           if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip12)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip12)
+              end
+              end
+            end       
+      end
+      GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Checkbox("###MB",mushMBul)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-         GUI:SetTooltip("When the checkbox [MB] is turned on,\nit will switch automatically")
-         if (GUI:IsMouseDown(1)) then
-         GUI:SetTooltip("自動でオンになります\n\n[MB]チェックでボタンの挙動が変わります")
-         end
-      end      
-      GUI:SameLine()
-      GUI:BeginGroup()
-      GUI:Button("Uldah",55,20)
-      GUI:EndGroup()
-         if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == false ) then
+      GUI:Dummy(40,40)
+      if AHSET.mushmovetoMB == true then
+            GUI:SameLine(-10,-40)
+            GUI:Image(ImageFolder..[[GCMBulu.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+               Player:ClearTarget()
+               mushMBgri = false
+               mushMBlim = false
+               mushMBul = true
+               griMBStep = 0
+               mushlooptimer = 100
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip15)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip15)
+              end
+              end
+            end
+      elseif AHSET.mushmovetoMB == false then
+            GUI:SameLine(-10,-40)
+            GUI:Image(ImageFolder..[[GCtelepoulu.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
               Player:ClearTarget()
               mushlooptimer = 0
-              uldMBStep = 0
+              griMBStep = 0
               mushMBgri = false
               mushMBlim = false
               mushMBul = true
@@ -1154,26 +1588,26 @@ function AetheryteHelper.GLUtelepo()
               autooff = false
               modechg = 2
             end
-            if (GUI:IsMouseClicked(0)) and (AHSET.mushmovetoMB == true ) then
-              Player:ClearTarget()
-              mushMBul = true
-              mushMBlim = false
-              mushMBgri = false
-              uldMBStep = 0
-              mushlooptimer = 100
-            end
-            if AHSET.mushmovetoMB == false then
-            GUI:SetTooltip("Teleport to Uldah")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("ウルダハ")
-            end
-            else
-            GUI:SetTooltip("Go to Uldah MB")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("ウルダハのマケボへ移動")
-            end 
-            end
-         end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip14)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip14)
+              end
+              end
+            end       
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      if AHSET.mushmovetoMB == true and mushMBgri == true then      
+      GUI:Text("move to\nMB\nGridania")
+      elseif AHSET.mushmovetoMB == true and mushMBlim == true then
+      GUI:Text("move to\nMB\nLimsa")
+      elseif AHSET.mushmovetoMB == true and mushMBul == true then
+      GUI:Text("move to\nMB\nUl'dah")    
+      end
+      GUI:EndGroup()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1183,91 +1617,104 @@ function AetheryteHelper.DrawadWIP()
       GUI:Spacing(10)
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[jumbo.png]],30,30)
-      GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
              AetheryteHelper.Jumbocactpot.open = not AetheryteHelper.Jumbocactpot.open 
               end
-              GUI:SetTooltip("Jumbo cactpot assist")
-              if (GUI:IsMouseDown(1)) then
-              GUI:SetTooltip("ジャンボクジテンダー入力アシスト")
-              end 
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip17)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip17)
+              end
+              end
             end
+      GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[undersize.png]],30,30)
-      GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
             mushlooptimer = 100
             IDUSstep = 0
             mushundersize = true
             end
-            GUI:SetTooltip("switching undersize for dungeon")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("制限解除の切替ボタンです")
-            end 
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip18)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip18)
+              end
+              end
       end
+      GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[explo.png]],30,30)
-      GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
             mushlooptimer = 100
             IDexstep = 0
             mushExplorer = true
             end
-            GUI:SetTooltip("switching Explorer for dungeon")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("自由探索の切替ボタンです")
-            end 
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip19)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip19)
+              end
+              end
       end
-      GUI:SameLine(220)
+      GUI:EndGroup()
+      GUI:SameLine()
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[tube.png]],30,30)
-      GUI:EndGroup()
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
-            io.popen([[cmd /c start "" "]]..Links.link4..[["]]):close()
+            io.popen([[cmd /c start "" "]]..AHLinks.link4..[["]]):close()
             end
-            GUI:SetTooltip("Introduction to AH")
-            if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("機能紹介動画へのリンク")
-            end 
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip20)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip20)
+              end
+              end
       end
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:BeginGroup()
-      GUI:TextColored(0,1,1,1,"Notice")
       GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-      GUI:SetTooltip("i have added too many features than we originally planned.\ni will only fix bugs, not add more.\ni'll create another module.")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("機能が増えすぎたのでこれ以上追加はせずバグ修正のみ行い\n今後は別のモジュールを作成します")
-        end
-      end
-      GUI:SameLine(220,10)
+      GUI:SameLine(220,0)
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
-      GUI:EndGroup()
       if (GUI:IsItemHovered()) then
-        if GUI:IsMouseDown(0) then              
-        GUI:SetTooltip("please don't poke me...")
-        else GUI:SetTooltip("・・・i need more time")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("つつかないでｗ")
-        end 
+        if GUI:IsItemClicked(0)then
+          AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
+        end
+        if GUI:IsMouseDown(0) then
+        if language == 0 then
+        GUI:SetTooltip(mushtooltips.jp.tip106)
+        else
+        GUI:SetTooltip(mushtooltips.en.tip106)
+        end              
+        else
+        if language == 0 then
+        GUI:SetTooltip(mushtooltips.jp.tip105)
+        else
+        GUI:SetTooltip(mushtooltips.en.tip105)
+        end       
       end
       end
-      GUI:Spacing(10)
-      GUI:SameLine(20)
-       if GUI:TreeNode("VersionList##AetheryteHelper")then
-      for id, e in pairs(kinokoProject.Addon.VersionList) do
-      GUI:Text(e)
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Button("TextCommand List",120,20)
+      if (GUI:IsItemHovered()) then
+        if GUI:IsItemClicked(0)then
+          AetheryteHelper.TCList.open = not AetheryteHelper.TCList.open
+        end
       end
-      GUI:TreePop()
-      end
+      GUI:EndGroup()
       GUI:Spacing()
 
 end
@@ -1288,11 +1735,76 @@ function AetheryteHelper.minimush()
          Windows.Open = true
          minikinoko.Open = false
          end
-         GUI:SetTooltip("open AH\ndouble click")
+         if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip21)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip21)
+              end
+              end
       end
       end
       GUI:End()
    end
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.TCListwindow()
+  if (AetheryteHelper.TCList.open) then
+    local TCListflags = GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(240,280)
+     AetheryteHelper.TCList.visible, AetheryteHelper.TCList.open = GUI:Begin('AH TextCommand List', AetheryteHelper.TCList.open,TCListflags)
+    if (AetheryteHelper.TCList.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[AHon.png]],30,40)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("mini ins selecter")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###114","/e AHmode 114",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[GCMBlim.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("move to MB in limsa")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###MB1","/e AHMB limsa",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[GCMBgri.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("move to MB in gridania")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###MB2","/e AHMB gridania",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[GCMBulu.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("move to MB in Ul'dah")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###MB3","/e AHMB uldah",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:EndGroup()
+      GUI:Spacing(20)
+      GUI:TextColored(0,1,0,1,"More commands will be added!")
+    end        
+    GUI:End()  
+  end
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.SubWindow()
@@ -1313,10 +1825,13 @@ function AetheryteHelper.SubWindow()
         if GUI:IsMouseDown(0) then              
         AetheryteHelper.miniGUI.open = false
         end
-      GUI:SetTooltip("close info")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インフォメーションウィンドウを閉じる")
-        end 
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip22)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip22)
+              end
+              end
       end
       GUI:Separator()
       GUI:BeginGroup()
@@ -1355,6 +1870,43 @@ function AetheryteHelper.SubWindow()
   end
   
 end
+
+function AetheryteHelper.VlWindow()
+  if (AetheryteHelper.VersionList.open) then
+    local Vlflags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+    GUI:SetNextWindowSize(450,140)
+     AetheryteHelper.VersionList.visible, AetheryteHelper.VersionList.open = GUI:Begin('AH VersionList', AetheryteHelper.VersionList.open,Vlflags)
+    if (AetheryteHelper.VersionList.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,0,1,"AH History")
+      GUI:EndGroup()
+      GUI:Separator()
+      GUI:BeginGroup()
+      for id, e in pairs(kinokoProject.Addon.VersionList) do
+      GUI:Text(e)
+      end
+      GUI:EndGroup()
+      GUI:Separator()
+      GUI:BeginGroup()
+      GUI:Button("Close",60,20)
+      if (GUI:IsItemHovered()) then
+        if GUI:IsMouseDown(0) then              
+        AetheryteHelper.VersionList.open = false
+        end
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip22)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip22)
+              end
+        end
+      end
+      GUI:EndGroup()
+    end
+    GUI:End()
+  end
+end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.insSelecterWindow()
@@ -1379,7 +1931,7 @@ function AetheryteHelper.insSelecterWindow()
               selectins = not selectins
               if not selectins then
               insHistory = {
-              isins = 0,
+              isins = 4,
               selectins = false,
               autheStep = 0
               }
@@ -1387,7 +1939,13 @@ function AetheryteHelper.insSelecterWindow()
               Player:ClearTarget()
               Player:Stop()
               end
-              GUI:SetTooltip("now ON")
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+              end
               end      
       elseif selectins == false then
               GUI:SameLine(-5,-20)
@@ -1398,13 +1956,19 @@ function AetheryteHelper.insSelecterWindow()
               selectins = not selectins
               if not selectins then
               insHistory = {
-              isins = 0,
+              isins = 4,
               selectins = false,
               autheStep = 0
               }
               end
               end
-              GUI:SetTooltip("now Off")
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+              end
               end       
       end
       GUI:EndGroup()
@@ -1419,11 +1983,19 @@ function AetheryteHelper.insSelecterWindow()
           isins = 1
           insHistory.isins = 1
           autheStep = 2
+          if selectins == false then
           selectins = true
+          end
           insHistory.selectins = true
           insHistory.autheStep = 2
           end
-          GUI:SetTooltip("Push")
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip07)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip07)
+              end
+              end
       else
       GUI:SameLine(-5,-20)
       GUI:Image(ImageFolder..[[ins1non.png]],20,20)
@@ -1439,11 +2011,19 @@ function AetheryteHelper.insSelecterWindow()
           isins = 2
           insHistory.isins = 2
           autheStep = 2
+          if selectins == false then
           selectins = true
+          end
           insHistory.selectins = true
           insHistory.autheStep = 2
           end
-          GUI:SetTooltip("Push")
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip08)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip08)
+              end
+              end
       else
       GUI:SameLine(-5,-20)
       GUI:Image(ImageFolder..[[ins2non.png]],20,20)
@@ -1459,11 +2039,19 @@ function AetheryteHelper.insSelecterWindow()
           isins = 3
           insHistory.isins = 3
           autheStep = 2
+          if selectins == false then
           selectins = true
+          end
           insHistory.selectins = true
           insHistory.autheStep = 2
           end
-          GUI:SetTooltip("Push")
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip09)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip09)
+              end
+              end
       else
       GUI:SameLine(-5,-20)
       GUI:Image(ImageFolder..[[ins3non.png]],20,20)
@@ -1478,10 +2066,13 @@ function AetheryteHelper.insSelecterWindow()
           if GUI:IsMouseDown(0) then              
           AetheryteHelper.insSelectGUI.open = false
           end
-          GUI:SetTooltip("close")
-          if (GUI:IsMouseDown(1)) then
-          GUI:SetTooltip("閉じる")
-          end 
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip22)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip22)
+              end
+              end
       end
       GUI:EndGroup()
       GUI:Columns()
@@ -1500,7 +2091,7 @@ function AetheryteHelper.jumboWindow()
   if (AetheryteHelper.Jumbocactpot.open) then
     local Jumboflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
     GUI:SetNextWindowSize(380,320)
-     AetheryteHelper.Jumbocactpot.visible, AetheryteHelper.Jumbocactpot.open = GUI:Begin('jumbocactpot', AetheryteHelper.Jumbocactpot.open,Jumboflags)
+     AetheryteHelper.Jumbocactpot.visible, AetheryteHelper.Jumbocactpot.open = GUI:Begin('jumbo cactpot assist', AetheryteHelper.Jumbocactpot.open,Jumboflags)
     if (AetheryteHelper.Jumbocactpot.visible) then
       GUI:Spacing()
       GUI:BeginGroup()
@@ -1541,9 +2132,13 @@ function AetheryteHelper.jumboWindow()
          mushJumbocactpotrandom1 = not mushJumbocactpotrandom1
          mushGSjcpstep = 0
         end   
-        if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("ランダム番号で購入します")
-        end 
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip23)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip23)
+              end
+              end
      end
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -1583,9 +2178,13 @@ function AetheryteHelper.jumboWindow()
          mushJumbocactpotrandom2 = not mushJumbocactpotrandom2
          mushGSjcpstep = 0
         end   
-        if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("ランダム番号で購入します")
-        end 
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip23)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip23)
+              end
+              end
       end
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -1626,9 +2225,13 @@ function AetheryteHelper.jumboWindow()
          mushJumbocactpotrandom3 = not mushJumbocactpotrandom3
          mushGSjcpstep = 0
         end   
-        if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("ランダム番号で購入します")
-        end 
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip23)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip23)
+              end
+              end
      end
       GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
@@ -1667,19 +2270,26 @@ function AetheryteHelper.jumboWindow()
          mushJumbocactpothelper = not mushJumbocactpothelper
          mushGSjcpstep = 0
         end   
-        if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("ジャンボくじテンダーを3枚買います")
-        end 
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip107)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip107)
+              end
+              end
       end
       GUI:SameLine()
       GUI:BeginGroup()
       GUI:TextColored(1,0,0,1,"[[Warning]]")
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
-          GUI:SetTooltip(" I only get one chance a week,\nand I haven't been able to test much.\nIf it does not work well, please report it.")
-      if (GUI:IsMouseDown(1)) then
-          GUI:SetTooltip("週一しかテストのチャンスがなく\nうまく動作しない可能性は充分あります\nうまく動作しない場合教えて下さい")
-      end 
+         if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip24)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip24)
+              end
+              end
       end
 
 
@@ -1689,365 +2299,166 @@ function AetheryteHelper.jumboWindow()
   end
   
 end
+
+
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
-function AetheryteHelper.TMwindow()
-  if (AetheryteHelper.trustmode.open) then
-    local trustmodeflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
-    GUI:SetNextWindowSize(220,140)
-     AetheryteHelper.trustmode.visible, AetheryteHelper.trustmode.open = GUI:Begin('trustmode', AetheryteHelper.trustmode.open,trustmodeflags)
-    if (AetheryteHelper.trustmode.visible) then
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:TextColored(1,0,0,1,"Trust Mode(DEMO version)")
-      GUI:EndGroup()
-      GUI:Separator()
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:Text("Status:")
-      GUI:SameLine()
-      if Dawncloser == true and GCexchangeT == true and sealstoitemT == false and Duty:IsQueued() == false then
-      GUI:TextColored(0,1,0,1,"Exchange")
-      elseif Dawncloser == true and sealstoitemT == true and GCexchangeT == false and Duty:IsQueued() == false then
-      GUI:TextColored(0,1,0,1,"Trun in")
-      elseif Dawncloser == false then 
-      GUI:Text("Que wait")
-      elseif Dawncloser == nil then 
-      GUI:Text("standby")
-      end
-      GUI:SameLine()
-      GUI:Text("/delay:"..mushlooptimer)
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:EndGroup()
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:PushItemWidth(80)
-      GUI:Text("Repair Gear(self only)")
-      AHSET.mushrepairGear = GUI:InputInt("%",AHSET.mushrepairGear,1,1000)
-      GUI:EndGroup()
-      if AHSET.mushrepairGear < 1 then AHSET.mushrepairGear = 99 end
-      if AHSET.mushrepairGear > 99 then AHSET.mushrepairGear = 1 end
-      if (GUI:IsItemHovered()) then
-        if language == 0 then
-        GUI:SetTooltip("装備の修理です。\nHMDMの初期値は50なので60に設定していますが\nHMDMの設定値より上にして下さい。\n自分で修理するのでクラフター必須です")
-        else
-        GUI:SetTooltip("default HMDM value is 50, so i've set it to 60,\nyou can change,but please it should be higher than HMDM setting.\nyou'll need a crafter to do repairs yourself.")
-        end 
-     end
-      GUI:BeginGroup()
-      GUI:Checkbox("Exchange on Trust",mushTrustmode)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if GUI:IsMouseClicked(0) then
-        mushlooptimer = 5000
-        mushTrustmode = not mushTrustmode
-        AHSET.DesynthTrust = true
-        GCexchange = false
-        sealstoitem = false
-        end  
-        GUI:SetTooltip("Enable\n\ntab will change to [Option] by itself")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("オン\n\nタブが強制的に[Option]に切り替わります")
-        end 
-      end      
-    end        
-    GUI:End()
-    
-  end
-  
-end
 
----------------------------------------------------------------------------------------------------------------------------------------------------
---desyunth ilset tree GUI
-
-function AetheryteHelper.desynthIL()
+function AetheryteHelper.subtoolDesOPwindow()
+  if (AetheryteHelper.subtoolDesOP.open) then
+    local SubTDflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(320,500)
+     AetheryteHelper.subtoolDesOP.visible, AetheryteHelper.subtoolDesOP.open = GUI:Begin('Desynthesis option setting', AetheryteHelper.subtoolDesOP.open,SubTDflags)
+    if (AetheryteHelper.subtoolDesOP.visible) then
      GUI:Spacing()
+     GUI:Columns(2,"header")
+     GUI:SetColumnOffset(1, 140) GUI:SetColumnOffset(2, 400)
      GUI:BeginGroup()
-     GUI:Text("Desynthesis option")
-     GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-           GUI:SetTooltip("turn on Desynthesis option\nto reflect the settings here")
-           if (GUI:IsMouseDown(1)) then
-           GUI:SetTooltip("分解のオプション設定を有効にする")
-           end               
-           end
-     GUI:Spacing()
-     GUI:Separator()
-     GUI:Spacing()
-     GUI:AlignFirstTextHeightToWidgets()
-     GUI:BeginGroup()
-     GUI:Checkbox("Crafter mode",AHSET.CrafterMode)
-     GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-     if (GUI:IsMouseClicked(0)) then
-        AHSET.CrafterMode = not AHSET.CrafterMode
-        AetheryteHelper.SaveSettings()
-        end   
-        GUI:SetTooltip("Auto off in Crafter")
-        if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("クラフターで分解をオフにします")
-        end 
+     GUI:Dummy(40,40)
+     if AHSET.CrafterMode == true then
+          GUI:SameLine(10,-40)
+          GUI:Image(ImageFolder..[[D_Cmode.png]],40,40)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHSET.CrafterMode = not AHSET.CrafterMode
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip28)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip28)
+              end
+              end
+          end
+     elseif AHSET.CrafterMode == false then
+          GUI:SameLine(10,-40)
+          GUI:Image(ImageFolder..[[D_Cmode_non.png]],40,40)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHSET.CrafterMode = not AHSET.CrafterMode
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip28)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip28)
+              end
+              end
+          end
      end
+     GUI:EndGroup()
      GUI:SameLine()
-     GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
-     GUI:Checkbox("Trust mode",AHSET.DesynthTrust)
+     GUI:Dummy(40,40)
+     if AHSET.DesynthTrust == true then
+          GUI:SameLine(10,-40)
+          GUI:Image(ImageFolder..[[D_idmode.png]],40,40)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHSET.DesynthTrust = not AHSET.DesynthTrust
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip29)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip29)
+              end
+              end
+          end
+     elseif AHSET.DesynthTrust == false then
+          GUI:SameLine(10,-40)
+          GUI:Image(ImageFolder..[[D_idmode_non.png]],40,40)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHSET.DesynthTrust = not AHSET.DesynthTrust
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip29)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip29)
+              end
+              end
+          end
+     end
      GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-     if (GUI:IsMouseClicked(0)) then
-        AHSET.DesynthTrust = not AHSET.DesynthTrust
-        AetheryteHelper.SaveSettings()
-        end   
-        GUI:SetTooltip("for use with the Trust addon")
-        if (GUI:IsMouseDown(1)) then
-            GUI:SetTooltip("Trustアドオンを使用するとき以外はオフ推奨")
-        end 
-     end
-     if mushTrustmode == true then
-     AHSET.DesynthTrust = true
-     end
-     GUI:Spacing()
-     GUI:Separator()
-     GUI:Spacing()
-  if GUI:TreeNode("IL Setting##AetheryteHelper") then 
+     --if mushTrustmode == true then
+     --AHSET.DesynthTrust = true
+     --end
+     GUI:NextColumn()
      GUI:BeginGroup()
      GUI:PushItemWidth(80)
      AHSET.dminil = GUI:InputInt("< IL",AHSET.dminil,1,500)
-     GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
-     GUI:SetTooltip("IL1-IL1000\nDesynth IL equipment larger than this number")              
-     if (GUI:IsMouseDown(1)) then
-     GUI:SetTooltip("IL1-IL1000\nこの数字より大きいIL装備を分解します")
-     end 
+     if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip30)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip30)
+              end
+              end
      end
-     GUI:SameLine()
+     GUI:EndGroup()
      GUI:BeginGroup()
      AHSET.dmaxil = GUI:InputInt("> IL",AHSET.dmaxil,1,500)
      if (AHSET.dminil < 1) then AHSET.dminil = 1 end        
      if (AHSET.dmaxil < 5) then AHSET.dmaxil = 5 end
      if (AHSET.dmaxil > 1000) then AHSET.dmaxil = 1000 end
      if (AHSET.dminil > AHSET.dmaxil) then AHSET.dminil = AHSET.dmaxil end
-     GUI:EndGroup()
      if (GUI:IsItemHovered()) then
      AetheryteHelper.SaveSettings()
-     GUI:SetTooltip("IL5-IL1000\nDesynth any IL equipment\nless than this except IL1")              
-     if (GUI:IsMouseDown(1)) then
-     GUI:SetTooltip("IL1-IL1000\nIL1を除きこれ未満のIL装備を分解します")
-     end 
+     if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip32)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip32)
+              end
+              end
      end
+     GUI:EndGroup()
+     GUI:SameLine()
      GUI:BeginGroup()
      GUI:Button("Reset",40,20)
-     GUI:EndGroup()
-            if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) then
-              AHSET.dminil = 5
-              AHSET.dmaxil = 540
-              AetheryteHelper.SaveSettings()
+     if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+            AHSET.dminil = 5
+            AHSET.dmaxil = 540
+            AetheryteHelper.SaveSettings()
+        end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip31)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip31)
               end
-              GUI:SetTooltip("Setting IL Reset")              
-              if (GUI:IsMouseDown(1)) then
-              GUI:SetTooltip("IL設定を初期化")
-              end 
-            end
-      GUI:Spacing()
-      GUI:Text("------------------------------")
-      GUI:TreePop()
-  end
-
-      
-      
-if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
-      GUI:BeginGroup()  
-      GUI:TextColored(1,0,0,1,"selection will be Desynthesis\nValuable equipment\nis in armoury chest" ) 
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("チェックを入れたものを分解します。\n大事な装備はアーマリーチェストへ入れましょう")
-      end 
-      end
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()      
-      GUI:BeginGroup()
-      GUI:PushItemWidth()
-      GUI:Checkbox("Main", eqFilter.Main)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Main = not  eqFilter.Main
-           end
-      AetheryteHelper.SaveSettings()
-      GUI:SetTooltip("Primary")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("武器・主道具")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Sub", eqFilter.Sub)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Sub = not  eqFilter.Sub
-           end
-      AetheryteHelper.SaveSettings()
-      GUI:SetTooltip("Secondary & Shield")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("盾・副道具")
-      end
-      end
-
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Head", eqFilter.Head)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Head = not  eqFilter.Head
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Head")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("頭装備")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Earrings", eqFilter.Earrings)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Earrings = not  eqFilter.Earrings
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Earrings")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("耳アクセ")
-      end
-      end
-
-      GUI:Spacing()
-      
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Body", eqFilter.Body)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Body = not  eqFilter.Body
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Body")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("胴装備")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Necklace", eqFilter.Necklace)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Necklace = not  eqFilter.Necklace
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Necklace")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("首アクセ")
-      end
-      end
-
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Hand", eqFilter.Hand)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Hand = not  eqFilter.Hand
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Hand")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("手装備")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Bracelets", eqFilter.Bracelets)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Bracelets = not  eqFilter.Bracelets
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Bracelets")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("腕輪（アクセ）")
-      end
-      end
-      
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Legs", eqFilter.Legs)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Legs = not  eqFilter.Legs
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Legs")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("脚装備")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Ring", eqFilter.Ring)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Ring = not  eqFilter.Ring
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Ring")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("指輪")
-      end
-      end
-      
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Feet", eqFilter.Feet)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            eqFilter.Feet = not  eqFilter.Feet
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Feet")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("足装備")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Button("Quick Change",100,20)
-      GUI:EndGroup()
+              end
+     end
+     GUI:EndGroup()
+     GUI:Columns(1)
+     GUI:Spacing()
+     GUI:Separator()
+     GUI:Spacing()
+     GUI:TextColored(1,0,0,1,"selection will be Desynthesis" )
+     GUI:Spacing()
+     GUI:Separator()
+     GUI:Spacing()
+     GUI:Columns(3)
+     GUI:SetColumnOffset(1, 80)
+     GUI:SetColumnOffset(2, 230)
+     GUI:SetColumnOffset(3, 400)
+     GUI:BeginGroup()
+     GUI:TextColored(0,1,1,1,"Slot" )
+     GUI:EndGroup()
+     GUI:Spacing()
+     GUI:BeginGroup()
+     GUI:Button("Quick",60,20)
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
             eqFilter.Main = true
@@ -2077,168 +2488,424 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            eqFilter.Ring = not eqFilter.Ring
         AetheryteHelper.SaveSettings()
            end
-      GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
+     if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip45)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip45)
+              end
+              end              
       end
-
+     GUI:EndGroup()
      GUI:Spacing()
-     GUI:TreePop()
-  end
-
-
-  if GUI:TreeNode("Option : Job Setting##AetheryteHelper") then
-      GUI:TextColored(1,0,0,1,"selection will be Desynthesis" ) 
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Main == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_main.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Main = not eqFilter.Main
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip34)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip34)
+              end
+              end
+          end
+     elseif eqFilter.Main == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_main_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Main = not eqFilter.Main
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip34)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip34)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Sub == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_sub.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Sub = not eqFilter.Sub
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip35)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip35)
+              end
+              end
+          end
+     elseif eqFilter.Sub == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_sub_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Sub = not eqFilter.Sub
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip35)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip35)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Head == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_head.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Head = not eqFilter.Head
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip36)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip36)
+              end
+              end
+          end
+     elseif eqFilter.Head == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_head_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Head = not eqFilter.Head
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip36)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip36)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Earrings == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_ear.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Earrings = not eqFilter.Earrings
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip37)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip37)
+              end
+              end
+          end
+     elseif eqFilter.Earrings == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_ear_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Earrings = not eqFilter.Earrings
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip37)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip37)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Body == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_body.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Body = not eqFilter.Body
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip38)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip38)
+              end
+              end
+          end
+     elseif eqFilter.Body == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_body_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Body = not eqFilter.Body
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip38)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip38)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Necklace == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_neck.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Necklace = not eqFilter.Necklace
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip39)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip39)
+              end
+              end
+          end
+     elseif eqFilter.Necklace == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_neck_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Necklace = not eqFilter.Necklace
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip39)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip39)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Hand == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_hand.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Hand = not eqFilter.Hand
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip40)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip40)
+              end
+              end
+          end
+     elseif eqFilter.Hand == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_hand_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Hand = not eqFilter.Hand
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip40)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip40)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Bracelets == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_brace.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Bracelets = not eqFilter.Bracelets
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip41)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip41)
+              end
+              end
+          end
+     elseif eqFilter.Bracelets == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_brace_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Bracelets = not eqFilter.Bracelets
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip41)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip41)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Legs == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_leg.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Legs = not eqFilter.Legs
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip42)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip42)
+              end
+              end
+          end
+     elseif eqFilter.Legs == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_leg_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Legs = not eqFilter.Legs
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip42)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip42)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Ring == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_ring.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Ring = not eqFilter.Ring
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip43)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip43)
+              end
+              end
+          end
+     elseif eqFilter.Ring == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_ring_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Ring = not eqFilter.Ring
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip43)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip43)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if eqFilter.Feet == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_feet.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Feet = not eqFilter.Feet
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip44)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip44)
+              end
+              end
+          end
+     elseif eqFilter.Feet == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_feet_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              eqFilter.Feet = not eqFilter.Feet
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip44)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip44)
+              end
+              end
+          end
+     end
+     GUI:EndGroup()
+      GUI:NextColumn()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,1,1,"Armor & Accessories" ) 
+      GUI:EndGroup()
       GUI:Spacing()
-      GUI:TextColored(0,1,1,1,"・Armor & Accessories" ) 
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()      
       GUI:BeginGroup()
-      GUI:PushItemWidth()
-      GUI:Checkbox("Tank", AHeqjob.Tank)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Tank = not  AHeqjob.Tank
-           end
-      AetheryteHelper.SaveSettings()
-      GUI:SetTooltip("PLD / WAR / DRK / GNB")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("タンク共通装備")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Healer", AHeqjob.Healer)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Healer = not  AHeqjob.Healer
-           end
-      AetheryteHelper.SaveSettings()
-      GUI:SetTooltip("WHM / SCH / AST / SGE")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("ヒーラー共通装備")
-      end
-      end
-
-      GUI:Spacing()
-      
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Slaying", AHeqjob.Slaying)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Slaying = not  AHeqjob.Slaying
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Accessories :\nMNK / DRG / SAM / RPR")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("アタッカーアクセ")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Aiming", AHeqjob.Aiming)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Aiming = not  AHeqjob.Aiming
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("BRD / MCN / DNC")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("レンジ共通装備")
-      end
-      end
-
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Striking", AHeqjob.Striking)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Striking = not  AHeqjob.Striking
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("MNK / SAM")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("ストライカー装備（モンク・侍）")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Sorcerer", AHeqjob.Sorcerer)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Sorcerer = not  AHeqjob.Sorcerer
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("BLM / SMN / RDM")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("キャスター共通装備")
-      end
-      end
-
-      GUI:Spacing()
-     
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Maiming", AHeqjob.Maiming)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Maiming = not  AHeqjob.Maiming
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("DRG / RPR")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("スレイヤー装備（竜・鎌）")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("All Job", AHeqjob.ALL)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.ALL = not  AHeqjob.ALL
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("All Job")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("低レベル用の全ジョブ対応装備")
-      end
-      end
-
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("Scouting", AHeqjob.Scouting)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Scouting = not  AHeqjob.Scouting
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("NIN")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("スカウト装備(忍)")
-      end
-      end
-      
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Button("Quick Change",100,20)
-      GUI:EndGroup()
+      GUI:Button("Quick",130,20)
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
            AHeqjob.Tank = true
@@ -2265,328 +2932,393 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
            AHeqjob.ALL = not  AHeqjob.ALL
            AetheryteHelper.SaveSettings()
            end
-      GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip45)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip45)
+              end
+              end             
       end
-
-      GUI:Spacing()
-      GUI:Text("------------------------------")
-      GUI:Spacing()
-      GUI:TextColored(0,1,1,1,"・Arms" ) 
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("PLD", AHeqjob.PLD)
       GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.PLD = not  AHeqjob.PLD
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary / Secondary")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("剣/盾")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("WHM", AHeqjob.WHM)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.WHM = not  AHeqjob.WHM
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary / Secondary")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("白杖/盾")
-      end
-      end
-
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("WAR", AHeqjob.WAR)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.WAR = not  AHeqjob.WAR
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("斧")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("SCH", AHeqjob.SCH)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.SCH = not  AHeqjob.SCH
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("学本")
-      end
-      end
-      
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("DRK", AHeqjob.DRK)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.DRK = not  AHeqjob.DRK
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("大剣")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("AST", AHeqjob.AST)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.AST = not  AHeqjob.AST
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("天球儀")
-      end
-      end
-      
-      GUI:Spacing()
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("GNB", AHeqjob.GNB)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.GNB = not  AHeqjob.GNB
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("ガンブレード")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("SGE", AHeqjob.SGE)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.SGE = not  AHeqjob.SGE
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("賢具")
-      end
-      end
-      
-      GUI:Spacing()
-   
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("MNK", AHeqjob.MNK)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.MNK = not  AHeqjob.MNK
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("格闘武器")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("BRD", AHeqjob.BRD)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.BRD = not  AHeqjob.BRD
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("弓")
-      end
-      end
-      
-      GUI:Spacing()      
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("DRG", AHeqjob.DRG)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.DRG = not  AHeqjob.DRG
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("槍")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("MCN", AHeqjob.MCN)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.MCN = not  AHeqjob.MCN
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("銃")
-      end
-      end
-      
-      GUI:Spacing()      
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("NIN", AHeqjob.NIN)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.NIN = not  AHeqjob.NIN
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("双剣")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("DNC", AHeqjob.DNC)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.DNC = not  AHeqjob.DNC
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("投擲武器")
-      end
-      end
-      
-      GUI:Spacing()      
-
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("SAM", AHeqjob.SAM)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.SAM = not  AHeqjob.SAM
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("刀")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("BLM", AHeqjob.BLM)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.BLM = not  AHeqjob.BLM
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary / Secondary")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("黒杖/盾")
-      end
-      end
-      
-      GUI:Spacing()      
-      
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("RPR", AHeqjob.RPR)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.RPR = not  AHeqjob.RPR
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("鎌")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("SMN", AHeqjob.SMN)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.SMN = not  AHeqjob.SMN
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("召本")
-      end
-      end
-
-      GUI:Spacing()
-
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("RDM", AHeqjob.RDM)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.RDM = not  AHeqjob.RDM
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Primary Weapon")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("レイピア")
-      end
-      end
-     
       GUI:Spacing()
       GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Tank == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Tank = not AHeqjob.Tank
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip46)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip46)
+              end
+              end
+          end
+      elseif AHeqjob.Tank == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jTNK_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Tank = not AHeqjob.Tank
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip46)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip46)
+              end
+              end
+          end
+      end
       GUI:EndGroup()
-            
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_t01.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_t02.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_t03.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_t04.png]],20,20)
       GUI:BeginGroup()
-      GUI:Button("Quick Change",100,20)
+      GUI:Dummy(20,20)
+      if AHeqjob.Healer == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Healer = not AHeqjob.Healer
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip47)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip47)
+              end
+              end
+          end
+      elseif AHeqjob.Healer == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jHRR_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Healer = not AHeqjob.Healer
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip47)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip47)
+              end
+              end
+          end
+      end
       GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_h01.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_h02.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_h03.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_h04.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Slaying == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Slaying = not AHeqjob.Slaying
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip48)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip48)
+              end
+              end
+          end
+      elseif AHeqjob.Slaying == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Slaying = not AHeqjob.Slaying
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip48)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip48)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d01.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d02.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d08.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d11.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Striking == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Striking = not AHeqjob.Striking
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip50)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip50)
+              end
+              end
+          end
+      elseif AHeqjob.Striking == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Striking = not AHeqjob.Striking
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip50)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip50)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d01.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d08.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Maiming == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Maiming = not AHeqjob.Maiming
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip52)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip52)
+              end
+              end
+          end
+      elseif AHeqjob.Maiming == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Maiming = not AHeqjob.Maiming
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip52)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip52)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d02.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d11.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Scouting == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Scouting = not AHeqjob.Scouting
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip54)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip54)
+              end
+              end
+          end
+      elseif AHeqjob.Scouting == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Scouting = not AHeqjob.Scouting
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip54)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip54)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d06.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Aiming == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jRNG.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Aiming = not AHeqjob.Aiming
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip49)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip49)
+              end
+              end
+          end
+      elseif AHeqjob.Aiming == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jRNG_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Aiming = not AHeqjob.Aiming
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip49)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip49)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d03.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d07.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d10.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Sorcerer == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jMRNG.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Sorcerer = not AHeqjob.Sorcerer
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip51)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip51)
+              end
+              end
+          end
+      elseif AHeqjob.Sorcerer == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jMRNG_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Sorcerer = not AHeqjob.Sorcerer
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip51)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip51)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d04.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d05.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_d09.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.ALL == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jall.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.ALL = not AHeqjob.ALL
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip53)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip53)
+              end
+              end
+          end
+      elseif AHeqjob.ALL == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.ALL = not AHeqjob.ALL
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip53)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip53)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:NextColumn()
+      GUI:BeginGroup()
+      GUI:TextColored(0,1,1,1,"Arms" ) 
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Button("Quick",60,20)
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
             AHeqjob.PLD = true
@@ -2632,118 +3364,1875 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
             AHeqjob.RDM = not  AHeqjob.RDM
             AetheryteHelper.SaveSettings()
            end
-      GUI:SetTooltip("Left click : all on\nRight click : Reverse\n\n右クリックで全選択\n左クリックで反転")              
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip45)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip45)
+              end
+              end              
       end
+      GUI:EndGroup()
       GUI:Spacing()
-      GUI:Text("Desynthesis option")
-      GUI:Spacing()
-      GUI:Spacing()
-      GUI:TextColored(0,1,1,1,"・Tool & Armor & Accessories" ) 
-      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.PLD == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jPLD.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.PLD = not AHeqjob.PLD
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip104)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip104)
+              end
+              end
+          end
+      elseif AHeqjob.PLD == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jPLD_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.PLD = not AHeqjob.PLD
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip104)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip104)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.WHM == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jWHM.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.WHM = not AHeqjob.WHM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip55)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip55)
+              end
+              end
+          end
+      elseif AHeqjob.WHM == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jWHM_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.WHM = not AHeqjob.WHM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip55)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip55)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.WAR == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jWAR.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.WAR = not AHeqjob.WAR
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip56)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip56)
+              end
+              end
+          end
+      elseif AHeqjob.WAR == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jWAR_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.WAR = not AHeqjob.WAR
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip56)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip56)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.SCH == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSCH.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SCH = not AHeqjob.SCH
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip57)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip57)
+              end
+              end
+          end
+      elseif AHeqjob.SCH == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSCH_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SCH = not AHeqjob.SCH
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip57)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip57)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.DRK == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jDRK.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.DRK = not AHeqjob.DRK
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip58)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip58)
+              end
+              end
+          end
+      elseif AHeqjob.DRK == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jDRK_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.DRK = not AHeqjob.DRK
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip58)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip58)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.AST == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jAST.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.AST = not AHeqjob.AST
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip59)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip59)
+              end
+              end
+          end
+      elseif AHeqjob.AST == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jAST_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.AST = not AHeqjob.AST
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip59)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip59)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.GNB == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jGNB.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.GNB = not AHeqjob.GNB
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip60)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip60)
+              end
+              end
+          end
+      elseif AHeqjob.GNB == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jGNB_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.GNB = not AHeqjob.GNB
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip60)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip60)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.SGE == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSGE.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SGE = not AHeqjob.SGE
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip61)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip61)
+              end
+              end
+          end
+      elseif AHeqjob.SGE == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSGE_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SGE = not AHeqjob.SGE
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip61)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip61)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.MNK == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jMNK.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.MNK = not AHeqjob.MNK
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip62)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip62)
+              end
+              end
+          end
+      elseif AHeqjob.MNK == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jMNK_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.MNK = not AHeqjob.MNK
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip62)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip62)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.BRD == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jBRD.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.BRD = not AHeqjob.BRD
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip63)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip63)
+              end
+              end
+          end
+      elseif AHeqjob.BRD == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jBRD_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.BRD = not AHeqjob.BRD
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip63)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip63)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.DRG == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jDRG.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.DRG = not AHeqjob.DRG
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip64)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip64)
+              end
+              end
+          end
+      elseif AHeqjob.DRG == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jDRG_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.DRG = not AHeqjob.DRG
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip64)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip64)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.MCN == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jMCN.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.MCN = not AHeqjob.MCN
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip65)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip65)
+              end
+              end
+          end
+      elseif AHeqjob.MCN == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jMCN_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.MCN = not AHeqjob.MCN
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip65)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip65)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.NIN == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jNIN.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.NIN = not AHeqjob.NIN
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip66)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip66)
+              end
+              end
+          end
+      elseif AHeqjob.NIN == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jNIN_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.NIN = not AHeqjob.NIN
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip66)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip66)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.DNC == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jDNC.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.DNC = not AHeqjob.DNC
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip67)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip67)
+              end
+              end
+          end
+      elseif AHeqjob.DNC == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jDNC_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.DNC = not AHeqjob.DNC
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip67)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip67)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.SAM == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSAM.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SAM = not AHeqjob.SAM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip68)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip68)
+              end
+              end
+          end
+      elseif AHeqjob.SAM == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSAM_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SAM = not AHeqjob.SAM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip68)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip68)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.BLM == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jBLM.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.BLM = not AHeqjob.BLM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip69)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip69)
+              end
+              end
+          end
+      elseif AHeqjob.BLM == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jBLM_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.BLM = not AHeqjob.BLM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip69)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip69)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.RPR == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jRPR.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.RPR = not AHeqjob.RPR
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip70)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip70)
+              end
+              end
+          end
+      elseif AHeqjob.RPR == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jRPR_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.RPR = not AHeqjob.RPR
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip70)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip70)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.SMN == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSMN.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SMN = not AHeqjob.SMN
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip71)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip71)
+              end
+              end
+          end
+      elseif AHeqjob.SMN == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_jSMN_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.SMN = not AHeqjob.SMN
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip71)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip71)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.RDM == true then
+          GUI:SameLine(10,-20)
+          GUI:Image(ImageFolder..[[fil_jRDM.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.RDM = not AHeqjob.RDM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip72)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip72)
+              end
+              end
+          end
+      elseif AHeqjob.RDM == false then
+          GUI:SameLine(10,-20)
+          GUI:Image(ImageFolder..[[fil_jRDM_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.RDM = not AHeqjob.RDM
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip72)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip72)
+              end
+              end
+          end
+      end
+      GUI:EndGroup()
       
-      GUI:AlignFirstTextHeightToWidgets()
+      GUI:Columns()
+      GUI:Spacing()
+      GUI:Separator()
       GUI:BeginGroup()
-      GUI:Checkbox("Crafter", AHeqjob.Crafter)
+      GUI:TextColored(0,1,1,1,"・Tool & Armor & Accessories" ) 
       GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Crafter = not  AHeqjob.Crafter
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Tool & Armor & Accessories")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("クラフターの道具・防具・アクセサリー")
-      end
-      end
-      GUI:SameLine(150)
-      GUI:AlignFirstTextHeightToWidgets()
+      GUI:Spacing()
       GUI:BeginGroup()
-      GUI:Checkbox("Gatherer", AHeqjob.Gatherer)
+      GUI:Dummy(20,20)
+      if AHeqjob.Crafter == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_craft.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Crafter = not AHeqjob.Crafter
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip73)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip73)
+              end
+              end
+          end
+      elseif AHeqjob.Crafter == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_craft_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Crafter = not AHeqjob.Crafter
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip73)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip73)
+              end
+              end
+          end
+      end
       GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-            AHeqjob.Gatherer = not  AHeqjob.Gatherer
-      AetheryteHelper.SaveSettings()
-           end
-      GUI:SetTooltip("Tool & Armor & Accessories")              
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("ギャザラーの道具・防具・アクセサリー")
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c01.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c02.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c03.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c04.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c05.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c06.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c07.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_c08.png]],20,20)
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if AHeqjob.Gatherer == true then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_gathe.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Gatherer = not AHeqjob.Gatherer
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip74)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip74)
+              end
+              end
+          end
+      elseif AHeqjob.Gatherer == false then
+          GUI:SameLine(5,-20)
+          GUI:Image(ImageFolder..[[fil_gathe_non.png]],20,20)
+          if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AHeqjob.Gatherer = not AHeqjob.Gatherer
+              AetheryteHelper.SaveSettings()
+          end   
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip74)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip74)
+              end
+              end
+          end
       end
-      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_g01.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_g02.png]],20,20)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[icon_g03.png]],20,20)
 
-     GUI:Spacing()
-     GUI:TreePop()
+    end
+    GUI:End()
   end
-     GUI:Spacing()
-     GUI:Separator()
-     GUI:Spacing()
-     GUI:BeginGroup()
-     GUI:Text("GCexchange option")
-     GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-           GUI:SetTooltip("Exchange seals for items")             
-           if (GUI:IsMouseDown(1)) then
-           GUI:SetTooltip("軍票をアイテムに交換")
-           end
-     end
-     GUI:Spacing()
-     GUI:Separator()
-     GUI:Spacing()
- 
-     GUI:AlignFirstTextHeightToWidgets()
-     GUI:BeginGroup()
-     GUI:Checkbox("Trun in", sealstoitem )
-     GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-           mushlooptimer = 500
-           sealstoitem = not sealstoitem
-           GCexchange = false
-           mushtoItemstep = 0
+end
 
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--materia UI(tab2) GUI
+function AetheryteHelper.Inventoryfree()
+      local bags1 = {0} for _, e in pairs(bags1) do local bag1 = Inventory:Get(e)
+      Pbfree1 = tonumber(bag1.free) end
+      local bags2 = {1} for _, e in pairs(bags2) do local bag2 = Inventory:Get(e)
+      Pbfree2 = tonumber(bag2.free) end
+      local bags3 = {2} for _, e in pairs(bags3) do local bag3 = Inventory:Get(e)
+      Pbfree3 = tonumber(bag3.free) end
+      local bags4 = {3} for _, e in pairs(bags4) do local bag4 = Inventory:Get(e)
+      Pbfree4 = tonumber(bag4.free) end
+      mushPbtotal = (Pbfree1 + Pbfree2 + Pbfree3 + Pbfree4) 
+end
+
+
+function AetheryteHelper.subtoolmateria()
+      AetheryteHelper.Inventoryfree()
+      GUI:Spacing()      
+      GUI:SameLine(10)
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      local seisen = ActionList:Get(5,14)
+      if seisen.usable == true then
+         if AHSET.isMateriaEnabled == true then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[materia.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
+              AetheryteHelper.SaveSettings()
+              mushlooptimer = 2000
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip85)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip85)
+              end
+              end
+              end     
+         elseif AHSET.isMateriaEnabled == false then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[materia_non.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip85)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip85)
+              end
+              end
+              end       
+         end
+      else
+         GUI:Dummy(40,40)
+         GUI:SameLine(10,-40)
+         GUI:Image(ImageFolder..[[materia_lock.png]],40,40)
+         if (GUI:IsItemHovered()) then
+         if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip99)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip99)
+              end
+              end
+         end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.isBotStatusP == false then
+         if AHSET.isPotionEnabled == true then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_potion.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.isPotionEnabled = not AHSET.isPotionEnabled
+              AetheryteHelper.SaveSettings()
+              mushlooptimer = 1000
+              end
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusP = not AHSET.isBotStatusP
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip82)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip82)
+              end
+              end
+              end     
+         elseif AHSET.isPotionEnabled == false then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_potion_non.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.isPotionEnabled = not AHSET.isPotionEnabled
+              AetheryteHelper.SaveSettings()
+              end
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusP = not AHSET.isBotStatusP
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip82)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip82)
+              end
+              end
+              end
+          end
+      else
+        if AHSET.isPotionEnabled == true then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_potion_minion.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusP = not AHSET.isBotStatusP
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip82)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip82)
+              end
+              end
+              end     
+         elseif AHSET.isPotionEnabled == false then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_potion_minion_non.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusP = not AHSET.isBotStatusP
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip82)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip82)
+              end
+              end
+              end
+         end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.isBotStatusM == false then
+         if AHSET.isManualEnabled == true then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_manual.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.isManualEnabled = not AHSET.isManualEnabled
+              AetheryteHelper.SaveSettings()
+              mushlooptimer = 1000
+              end
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusM = not AHSET.isBotStatusM
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip83)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip83)
+              end
+              end
+              end     
+         elseif AHSET.isManualEnabled == false then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_manual_non.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.isManualEnabled = not AHSET.isManualEnabled
+              AetheryteHelper.SaveSettings()
+              end
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusM = not AHSET.isBotStatusM
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip83)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip83)
+              end
+              end
+              end
+          end
+      else
+        if AHSET.isManualEnabled == true then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_manual_minion.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusM = not AHSET.isBotStatusM
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip83)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip83)
+              end
+              end
+              end     
+         elseif AHSET.isManualEnabled == false then
+              GUI:SameLine(10,-40)
+              GUI:Image(ImageFolder..[[SP_manual_minion_non.png]],40,40)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(1)) then
+              AHSET.isBotStatusM = not AHSET.isBotStatusM
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip83)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip83)
+              end
+              end
+              end
+         end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      if AHSET.isMateriaEnabled == true then
+      GUI:Text("[MEx]:ON")
+      else
+      GUI:Text("[MEx]:OFF")
+      end
+      if AHSET.isBotStatusP == true then
+         GUI:Text("[SbP:Link]")
+      else   
+         if AHSET.isPotionEnabled == true then
+         GUI:Text("[SbP]:ON")
+         else
+         GUI:Text("[SbP]:OFF")
+         end
+      end
+      if AHSET.isBotStatusM == true then
+         GUI:Text("[SbM:Link]")
+      else
+        if AHSET.isManualEnabled == true then
+        GUI:Text("[SbM]:ON")
+        else
+        GUI:Text("[SbM]:OFF")
         end
-       GUI:SetTooltip("Trun in")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("軍票をアイテムに交換")
-       end
+      end
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip100)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip100)
+              end
+      end
+      end
+      
+
+      if (FFXIV_Common_BotRunning == false) and (AHSET.isBotStatusP == true) then
+         AHSET.isPotionEnabled = false
+      elseif (FFXIV_Common_BotRunning == true) and (AHSET.isBotStatusP == true) then
+        AHSET.isPotionEnabled = true
+      end
+      if (FFXIV_Common_BotRunning == false) and (AHSET.isBotStatusM == true) then
+        AHSET.isManualEnabled = false
+      elseif (FFXIV_Common_BotRunning == true) and (AHSET.isBotStatusM == true) then
+        AHSET.isManualEnabled = true
+      end    
+      GUI:BeginGroup()
+      GUI:Spacing()
+      if (mushPbtotal < 2) then AHSET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!") end
+      GUI:EndGroup()
+end
+
+
+
+function AetheryteHelper.subtoolDesynth()
+      AetheryteHelper.Inventoryfree()
+      GUI:Spacing()      
+      GUI:SameLine(10)
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      local bunkai = ActionList:Get(5,5)
+      if bunkai.usable == true then
+          if AHSET.isReductionOption == false then
+             if AHSET.isSalvageEnabled == true then
+                GUI:SameLine(10,-40)
+                GUI:Image(ImageFolder..[[desynth.png]],40,40)
+                if (GUI:IsItemHovered()) then
+                if (GUI:IsMouseClicked(0)) then
+                AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
+                GCexchange = false
+                AetheryteHelper.SaveSettings()
+                end
+                if (GUI:IsMouseClicked(1)) then
+                AHSET.isReductionOption = not AHSET.isReductionOption
+                AetheryteHelper.SaveSettings()
+                end
+                if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip27)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip27)
+              end
+              end
+                end     
+              elseif AHSET.isSalvageEnabled == false then
+                GUI:SameLine(10,-40)
+                GUI:Image(ImageFolder..[[desynth_non.png]],40,40)
+                if (GUI:IsItemHovered()) then
+                if (GUI:IsMouseClicked(0)) then
+                AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
+                GCexchange = false
+                AetheryteHelper.SaveSettings()
+                end
+                if (GUI:IsMouseClicked(1)) then
+                AHSET.isReductionOption = not AHSET.isReductionOption
+                AetheryteHelper.SaveSettings()
+                end
+                if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip27)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip27)
+              end
+              end
+                end       
+             end
+          elseif AHSET.isReductionOption == true then
+            if AHSET.isSalvageEnabled == true then
+                GUI:SameLine(10,-40)
+                GUI:Image(ImageFolder..[[desynth_op.png]],40,40)
+                if (GUI:IsItemHovered()) then
+                if (GUI:IsMouseClicked(0)) then
+                AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
+                GCexchange = false
+                AetheryteHelper.SaveSettings()
+                end
+                if (GUI:IsMouseClicked(1)) then
+                AHSET.isReductionOption = not AHSET.isReductionOption
+                AetheryteHelper.SaveSettings()
+                end
+                if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip27)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip27)
+              end
+              end
+                end     
+              elseif AHSET.isSalvageEnabled == false then
+                GUI:SameLine(10,-40)
+                GUI:Image(ImageFolder..[[desynth_op_non.png]],40,40)
+                if (GUI:IsItemHovered()) then
+                if (GUI:IsMouseClicked(0)) then
+                AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
+                GCexchange = false
+                AetheryteHelper.SaveSettings()
+                end
+                if (GUI:IsMouseClicked(1)) then
+                AHSET.isReductionOption = not AHSET.isReductionOption
+                AetheryteHelper.SaveSettings()
+                end
+                if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip27)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip27)
+              end
+              end
+                end       
+             end
+          end
+      else
+      GUI:Dummy(40,40)
+      GUI:SameLine(10,-40)
+      GUI:Image(ImageFolder..[[desynth_lock.png]],40,40)
+         if (GUI:IsItemHovered()) then
+         if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip99)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip99)
+              end
+              end
+         end
+      end
+      GUI:EndGroup()
+
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      GUI:SameLine(5,-20)
+      GUI:Image(ImageFolder..[[config.png]],20,20)
+      if (GUI:IsItemHovered()) then
+          if (GUI:IsMouseClicked(0)) then
+              AetheryteHelper.subtoolDesOP.open = not AetheryteHelper.subtoolDesOP.open
+          end
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip108)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip108)
+              end
+              end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      if AHSET.isSalvageEnabled == true then  GUI:Text("[Dsy]ON") else GUI:Text("[Dsy]OFF") end
+      if AHSET.isReductionOption == true then  GUI:Text("[Fil]ON") else GUI:Text("[Fil]OFF") end
+      if AHSET.isReductionOption == true then
+        GUI:SameLine()
+        GUI:Text(":IL"..AHSET.dminil.."-IL"..AHSET.dmaxil)
+      end
+      if AHSET.CrafterMode == true then  GUI:Text("[Cft]ON") else GUI:Text("[Cft]OFF") end
+      GUI:SameLine()
+      if AHSET.DesynthTrust == true then  GUI:Text("[IDm]ON") else GUI:Text("[IDm]OFF") end
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip101)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip101)
+              end
+      end
+      end      
+      
+
+      if AHSET.CrafterMode == true then
+        if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
+        Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
+         AHSET.isSalvageEnabled = false
+        end
+      end
+      GUI:BeginGroup()
+      GUI:Spacing()
+      if (mushPbtotal < 2) then AHSET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!") end
+      GUI:EndGroup()
+end
+
+function AetheryteHelper.subtoolAR()
+      AetheryteHelper.Inventoryfree()
+      GUI:Spacing()      
+      GUI:SameLine(10)
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      local seisen = ActionList:Get(5,21)
+      if seisen.usable == true then
+             if AHSET.isQuestmode == false then
+                    if AHSET.isReductionEnabled == true then
+                          GUI:SameLine(10,-40)
+                          GUI:Image(ImageFolder..[[AR.png]],40,40)
+                          if (GUI:IsItemHovered()) then
+                              if (GUI:IsMouseClicked(0)) then
+                                  AHSET.isReductionEnabled = not AHSET.isReductionEnabled
+                                  GCexchange = false
+                                  AetheryteHelper.SaveSettings()
+                              end
+                              if (GUI:IsMouseClicked(1)) then
+                              AHSET.isQuestmode = not AHSET.isQuestmode
+                              AetheryteHelper.SaveSettings()
+                              end
+                              if AHSET.mushtooltips == true then
+                                  if language == 0 then
+                                  GUI:SetTooltip(mushtooltips.jp.tip92)
+                                  else
+                                  GUI:SetTooltip(mushtooltips.en.tip92)
+                                  end
+                              end
+                          end     
+                    elseif AHSET.isReductionEnabled == false then
+                          GUI:SameLine(10,-40)
+                          GUI:Image(ImageFolder..[[AR_non.png]],40,40)
+                          if (GUI:IsItemHovered()) then
+                              if (GUI:IsMouseClicked(0)) then
+                                  AHSET.isReductionEnabled = not AHSET.isReductionEnabled
+                                  GCexchange = false
+                                  AetheryteHelper.SaveSettings()
+                              end
+                              if (GUI:IsMouseClicked(1)) then
+                              AHSET.isQuestmode = not AHSET.isQuestmode
+                              AetheryteHelper.SaveSettings()
+                              end
+                              if AHSET.mushtooltips == true then
+                                  if language == 0 then
+                                  GUI:SetTooltip(mushtooltips.jp.tip92)
+                                  else
+                                  GUI:SetTooltip(mushtooltips.en.tip92)
+                                  end
+                              end
+                          end
+
+                    end
+             elseif AHSET.isQuestmode == true then
+                        if AHSET.isReductionEnabled == true then
+                            GUI:SameLine(10,-40)
+                            GUI:Image(ImageFolder..[[AR_minion.png]],40,40)
+                            if (GUI:IsItemHovered()) then
+                                if (GUI:IsMouseClicked(0)) then
+                                    AHSET.isReductionEnabled = not AHSET.isReductionEnabled
+                                    GCexchange = false
+                                    AetheryteHelper.SaveSettings()
+                                end
+                                if (GUI:IsMouseClicked(1)) then
+                                    AHSET.isQuestmode = not AHSET.isQuestmode
+                                    AetheryteHelper.SaveSettings()
+                                end
+                                if AHSET.mushtooltips == true then
+                                    if language == 0 then
+                                    GUI:SetTooltip(mushtooltips.jp.tip92)
+                                    else
+                                    GUI:SetTooltip(mushtooltips.en.tip92)
+                                    end
+                                end
+                            end
+
+                        elseif AHSET.isReductionEnabled == false then
+                            GUI:SameLine(10,-40)
+                            GUI:Image(ImageFolder..[[AR_non.png]],40,40)
+                            if (GUI:IsItemHovered()) then
+                                if (GUI:IsMouseClicked(0)) then
+                                AHSET.isReductionEnabled = not AHSET.isReductionEnabled
+                                GCexchange = false
+                                AetheryteHelper.SaveSettings()
+                                end
+                                if (GUI:IsMouseClicked(1)) then
+                                AHSET.isQuestmode = not AHSET.isQuestmode
+                                AetheryteHelper.SaveSettings()
+                                end
+                                if AHSET.mushtooltips == true then
+                                    if language == 0 then
+                                    GUI:SetTooltip(mushtooltips.jp.tip92)
+                                    else
+                                    GUI:SetTooltip(mushtooltips.en.tip92)
+                                    end
+                               end
+                            end       
+                        end
+             end
+      else
+      GUI:Dummy(40,40)
+      GUI:SameLine(10,-40)
+      GUI:Image(ImageFolder..[[AR_lock.png]],40,40)
+      if (GUI:IsItemHovered()) then
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip99)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip99)
+              end
+              end
+      end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      if AHSET.isReductionEnabled == true then  GUI:Text("[AR]ON") else GUI:Text("[AR]OFF") end
+      if AHSET.isQuestmode == true then  GUI:Text("[Link]ON") else GUI:Text("[Link]OFF") end
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip102)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip102)
+              end
+      end
+      end
+      GUI:BeginGroup()
+      GUI:Spacing()
+      if (mushPbtotal < 1) then AHSET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!") end
+      GUI:EndGroup()
+
+end
+
+
+-----------------------------------------------------------------------------------------------
+
+function AetheryteHelper.subtoolGC()
+     GUI:BeginGroup()  
+     if Player.GrandCompanyRank < 6 then GUI:TextColored(1,0,0,1,"need GC rank 6 over")end
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(100)
+     if language == 0 then
+     AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCJP,1)
+     elseif language == 1 then
+     AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
+     elseif language == 2 then
+     AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCDE,1)
+     elseif language == 3 then
+     AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCFR,1)
+     else
+     AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
+     end
+     if Player.GrandCompany == 0 then 
+     AHSET.selectGC = GUI:Combo("###",4,mushGCEN,1) end
+     AetheryteHelper.SaveSettings()
+     if (GUI:IsItemHovered()) then
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip84)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip84)
+              end
+              end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     if AHSET.selectGC == 1 then
+     GUI:Image(ImageFolder..[[sealslim.png]],20,20)
+     mushGseals = Inventory:Get(2000):GetList()[2]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AHSET.selectGC == 2 then
+     GUI:Image(ImageFolder..[[sealsgri.png]],20,20)
+     mushGseals = Inventory:Get(2000):GetList()[3]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AHSET.selectGC == 3 then
+     GUI:Image(ImageFolder..[[sealsulu.png]],20,20)
+     mushGseals = Inventory:Get(2000):GetList()[4]
+     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
+     if AHSET.selectGC == 4 then
+     GUI:Image(ImageFolder..[[seals_non.png]],20,20)
+     mushGseals  = nil end  
+
+     for k,v in pairs(mushPlayerGCrank) do
+     if (k == Player.GrandCompanyRank) then mushmaxseal = v
+     if mushGseals == nil then
+     GUI:SameLine()
+     GUI:TextColored(1,1,1,.8,"0/"..mushmaxseal.max)
+     elseif mushGseals.count == mushmaxseal.max then
+     GUI:SameLine()
+     GUI:TextColored(1,0,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+     elseif mushGseals.count < mushmaxseal.max/2 then
+     GUI:SameLine()
+     GUI:TextColored(0,1,1,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+     elseif mushGseals.count ~= mushmaxseal.max then
+     GUI:SameLine()
+     GUI:TextColored(1,1,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+     elseif Player.GrandCompany == 0 then GUI:Text("GCseals:---/---")
+     end
+     end
+     end
+     GUI:EndGroup()
+     GUI:Spacing()
+     GUI:BeginGroup()
+     GUI:Dummy(40,40)
+     if GCexchange == true then
+              GUI:SameLine(10,-40)
+              if AHSET.selectGC == 1 then
+              GUI:Image(ImageFolder..[[exchange_lim.png]],40,40)
+              elseif AHSET.selectGC == 2 then
+              GUI:Image(ImageFolder..[[exchange_gri.png]],40,40)
+              elseif AHSET.selectGC == 3 then
+              GUI:Image(ImageFolder..[[exchange_ulu.png]],40,40)
+              elseif AHSET.selectGC == 4 then
+              GUI:Image(ImageFolder..[[GClock.png]],40,40)
+              end
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              mushlooptimer = 1000
+              mushEXstep = 0
+              GCexchange = not GCexchange
+              sealstoitem = false
+              if mushTrustmode == true then GCexchange = false end
+              if Player.GrandCompanyRank < 6 then GCexchange = false end
+              if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
+              AHSET.isSalvageEnabled = false
+              AetheryteHelper.SaveSettings()
+              end
+             if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip87)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip87)
+              end
+              end
+              end
+     elseif GCexchange == false then
+              GUI:SameLine(10,-40)
+              if AHSET.selectGC == 1 then
+              GUI:Image(ImageFolder..[[exchange_lim_non.png]],40,40)
+              elseif AHSET.selectGC == 2 then
+              GUI:Image(ImageFolder..[[exchange_gri_non.png]],40,40)
+              elseif AHSET.selectGC == 3 then
+              GUI:Image(ImageFolder..[[exchange_ulu_non.png]],40,40)
+              elseif AHSET.selectGC == 4 then
+              GUI:Image(ImageFolder..[[GClock.png]],40,40)
+              end
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              mushlooptimer = 1000
+              mushEXstep = 0
+              GCexchange = not GCexchange
+              sealstoitem = false
+              if mushTrustmode == true then GCexchange = false end
+              if Player.GrandCompanyRank < 6 then GCexchange = false end
+              if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
+              AHSET.isSalvageEnabled = false
+              AetheryteHelper.SaveSettings()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip87)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip87)
+              end
+              end
+              end
+     end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AutoMoveGC == true then
+           GUI:SameLine(10,-40)
+           GUI:Image(ImageFolder..[[moveGC.png]],40,40)
+           if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AutoMoveGC = not AutoMoveGC
+              Player:Stop()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip88)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip88)
+              end
+              end
+           end
+      elseif AutoMoveGC == false then
+           GUI:SameLine(10,-40)
+           GUI:Image(ImageFolder..[[moveGC_non.png]],40,40)
+           if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              mushlooptimer = 1000
+              AutoMoveGC = not AutoMoveGC
+              AHSET.isSalvageEnabled = false
+              end
+              AetheryteHelper.SaveSettings()
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip88)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip88)
+              end
+              end
+           end
+      end
+      GUI:EndGroup()  
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[close.png]],20,20)
+      if (GUI:IsItemHovered()) then
+        if (GUI:IsMouseClicked(0)) then
+           Player:Stop()
+           mushlooptimer = 1000
+           AutoMoveGC = false
+           GCexchange = false
+        end
+        AetheryteHelper.SaveSettings()
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip89)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip89)
+              end
+              end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.GCexlessmax == true then
+           GUI:SameLine(10,-40)
+           GUI:Image(ImageFolder..[[lessmax.png]],40,40)
+           if (GUI:IsItemHovered()) then
+           if (GUI:IsMouseClicked(0)) then
+           AHSET.GCexlessmax = not AHSET.GCexlessmax
+           end
+           if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip90)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip90)
+              end
+              end
+           end
+      elseif AHSET.GCexlessmax == false then
+           GUI:SameLine(10,-40)
+           GUI:Image(ImageFolder..[[lessmax_non.png]],40,40)
+           if (GUI:IsItemHovered()) then
+           if (GUI:IsMouseClicked(0)) then
+           AHSET.GCexlessmax = not AHSET.GCexlessmax
+           end
+           if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip90)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip90)
+              end
+              end
+           end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if Remateria == true then
+           GUI:SameLine(10,-40)
+           GUI:Image(ImageFolder..[[remate.png]],40,40)
+           if (GUI:IsItemHovered()) then
+           if (GUI:IsMouseClicked(0)) then
+           Remateria = not Remateria
+           end
+           if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip91)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip91)
+              end
+              end
+           end
+      elseif Remateria == false then
+           GUI:SameLine(10,-40)
+           GUI:Image(ImageFolder..[[remate_non.png]],40,40)
+           if (GUI:IsItemHovered()) then
+           if (GUI:IsMouseClicked(0)) then
+           Remateria = not Remateria
+           mushlooptimer = 2000
+           end
+           if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip91)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip91)
+              end
+              end
+           end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:BeginGroup()
+      if GCexchange == true then GUI:Text("[Ex]:ON") else GUI:Text("[Ex]:OFF") end
+      GUI:SameLine()
+      if AutoMoveGC == true then GUI:Text("[M2G]:ON") else GUI:Text("[M2G]:OFF") end
+      GUI:SameLine()
+      if AHSET.GCexlessmax == true then GUI:Text("[LM]:ON") else GUI:Text("[LM]:OFF") end
+      GUI:SameLine()
+      if Remateria == true then GUI:Text("[RM]:ON") else GUI:Text("[RM]:OFF") end
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip103)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip103)
+              end
+      end
+      end
+      GUI:Separator()
+
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.GCtrunin()
+      if mushTrustmode == true then 
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[repair.png]],20,20)
+      GUI:SameLine()
+      GUI:PushItemWidth(80)
+      AHSET.mushrepairGear = GUI:InputInt("%",AHSET.mushrepairGear,1,1000)
+      if AHSET.mushrepairGear < 1 then AHSET.mushrepairGear = 99 end
+      if AHSET.mushrepairGear > 99 then AHSET.mushrepairGear = 1 end
+      if (GUI:IsItemHovered()) then
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip25)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip25)
+              end
+              end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:Text("Status:")
+     GUI:SameLine()
+     if Dawncloser == false then 
+     GUI:Text("Que wait")
+     elseif Dawncloser == true and GCexchangeT == true and Duty:IsQueued() == false then
+     GUI:TextColored(0,1,0,1,"Exchange")
+     elseif Dawncloser == true and sealstoitemT == true and Duty:IsQueued() == false then
+     GUI:TextColored(0,1,0,1,"Trun in")
+     elseif Dawncloser == nil then 
+     GUI:Text("standby")
+     else 
+     GUI:Text("standby")
+     end
+     GUI:EndGroup()
+     GUI:Spacing()
+     end
+     GUI:Separator()
+     GUI:Columns(2)
+     GUI:SetColumnOffset(1,80)
+     GUI:BeginGroup()
+     GUI:Dummy(40,40)
+     if sealstoitem == true then
+         GUI:SameLine(10,-40)
+         if AHSET.selectGC == 1 then
+         GUI:Image(ImageFolder..[[TIsealslim.png]],40,40)
+         elseif AHSET.selectGC == 2 then
+         GUI:Image(ImageFolder..[[TIsealsgri.png]],40,40)
+         elseif AHSET.selectGC == 3 then
+         GUI:Image(ImageFolder..[[TIsealsul.png]],40,40)
+         elseif AHSET.selectGC == 4 then
+         GUI:Image(ImageFolder..[[TIseal_non.png]],40,40)
+         end
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            mushlooptimer = 500
+            sealstoitem = not sealstoitem
+            GCexchange = false
+            mushtoItemstep = 0
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip75)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip75)
+              end
+              end
+         end
+     elseif sealstoitem == false then
+         GUI:SameLine(10,-40)
+         GUI:Image(ImageFolder..[[TIseals_non.png]],40,40)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            mushlooptimer = 500
+            sealstoitem = not sealstoitem
+            GCexchange = false
+            mushtoItemstep = 0
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip75)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip75)
+              end
+              end
+         end
      end
      if mushTrustmode == true then sealstoitem = false end
-     GUI:SameLine(130)
-     GUI:AlignFirstTextHeightToWidgets()
-     GUI:BeginGroup()
-     GUI:Checkbox("adjust off", mushadjustoff )
      GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          mushadjustoff = not mushadjustoff
-        end
-       GUI:SetTooltip("Quantity adjustment off")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("現在の軍票所持量で交換数量の上限を決めず\n交換開始軍票を数量の上限にします")
-       end
+     GUI:BeginGroup()
+     GUI:Dummy(40,40)
+     if mushTrustmode == true then
+         GUI:SameLine(10,-40)
+         GUI:Image(ImageFolder..[[GCtrust.png]],40,40)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            mushTrustmode = not mushTrustmode
+            mushlooptimer = 5000
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip26)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip26)
+              end
+              end
+         end
+     elseif mushTrustmode == false then
+         GUI:SameLine(10,-40)
+         GUI:Image(ImageFolder..[[GCtrust_non.png]],40,40)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            mushTrustmode = not mushTrustmode
+            mushlooptimer = 5000
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip26)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip26)
+              end
+              end
+         end
      end
+     GUI:EndGroup()
+     GUI:NextColumn()
      GUI:Spacing()
      GUI:BeginGroup()
      GUI:Text("Start amount")
-     GUI:EndGroup()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("amount to start trun in")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("軍票がこれ以上になると交換を開始")
-       end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip77)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip77)
+              end
+              end
      end
-     
-     GUI:AlignFirstTextHeightToWidgets()
-     GUI:BeginGroup()
-     GUI:PushItemWidth(120)
-     AHSET.syojigunpyou = GUI:InputInt("seals",AHSET.syojigunpyou,100,10000)
-     AetheryteHelper.SaveSettings()
      GUI:EndGroup()
+     GUI:Dummy(1,20)
+     GUI:SameLine()
+     GUI:BeginGroup()
+     if AHSET.selectGC == 1 then
+     GUI:Image(ImageFolder..[[sealslim.png]],20,20)
+     elseif AHSET.selectGC == 2 then
+     GUI:Image(ImageFolder..[[sealsgri.png]],20,20)
+     elseif AHSET.selectGC == 3 then
+     GUI:Image(ImageFolder..[[sealsulu.png]],20,20)
+     elseif AHSET.selectGC == 4 then
+     GUI:Image(ImageFolder..[[seals_non.png]],20,20)
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(100)
+     AHSET.syojigunpyou = GUI:InputInt("###seals",AHSET.syojigunpyou,100,10000)
+     AetheryteHelper.SaveSettings()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("enter 0 to get the max value")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("0を入力すると最大値になります")
-       end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip78)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip78)
+              end
+              end
      end
      for k,v in pairs(mushPlayerGCrank) do
      if (k == Player.GrandCompanyRank) then mushmaxseal = v
@@ -2752,35 +5241,90 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      if mushTrustmode == true then AHSET.syojigunpyou = tonumber(mushmaxseal.max)*0.95 end
      end
      end
+     GUI:EndGroup()
      GUI:Spacing()
+     GUI:BeginGroup()
+     GUI:Dummy(20,20)
+     if mushadjustoff == true then
+      GUI:SameLine(5,-20)
+      GUI:Image(ImageFolder..[[LB.png]],20,20)
+            if (GUI:IsItemHovered()) then
+               if (GUI:IsMouseClicked(0)) then
+               mushadjustoff = not mushadjustoff
+               end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip76)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip76)
+              end
+              end
+            end
+     elseif mushadjustoff == false then
+      GUI:SameLine(5,-20)
+      GUI:Image(ImageFolder..[[LB_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+               if (GUI:IsMouseClicked(0)) then
+               mushadjustoff = not mushadjustoff
+               end
+               if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip76)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip76)
+              end
+              end
+            end
+     end
+     GUI:EndGroup()
+     GUI:SameLine()
      GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
-     GUI:PushItemWidth(80)
-     AHSET.hosiikazu = GUI:InputInt("Quantity",AHSET.hosiikazu,1,10000)
-     AetheryteHelper.SaveSettings()
+     GUI:Image(ImageFolder..[[quantity.png]],20,20)
      GUI:EndGroup()
+     GUI:SameLine()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(80)
+     AHSET.hosiikazu = GUI:InputInt("###Quantity",AHSET.hosiikazu,1,10000)
+     AetheryteHelper.SaveSettings()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("number want(auto adjustment)")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("交換数(自動で最大値になります)")
-       end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip79)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip79)
+              end
+              end
      end
+     GUI:EndGroup()
      GUI:AlignFirstTextHeightToWidgets()
      GUI:BeginGroup()
      GUI:PushItemWidth(170)
      if language == 0 then
      AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
      AetheryteHelper.SaveSettings()
-     else 
+     elseif language == 1 then
      AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)   
      AetheryteHelper.SaveSettings()
+     elseif language == 2 then
+     AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
+     AetheryteHelper.SaveSettings()
+     elseif language == 3 then
+     AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)   
+     AetheryteHelper.SaveSettings()
+     else
+     AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
+     AetheryteHelper.SaveSettings()   
      end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("Note that if you do not meet GC rank,\nyou cannot trun in")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("交換に必要なGCランクに満たないものを選ぶと\nチェックが外れます")
-       end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip80)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip80)
+              end
+              end
      end
      GUI:Spacing()
      if AHSET.koukanhin == 1 and Player.GrandCompanyRank < 1 then                           
@@ -2826,10 +5370,13 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      else GUI:TextColored(0,1,1,1,mushcost * AHSET.hosiikazu.."/"..mushGseals.count) end
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("Required seals/have seals")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("交換に必要な軍票/現在の軍票")
-       end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip81)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip81)
+              end
+              end
      end
      if AHSET.syojigunpyou <= mushGseals.count then mushtruninGCitem = true
      elseif AHSET.syojigunpyou > mushGseals.count then mushtruninGCitem = false
@@ -2860,431 +5407,23 @@ if GUI:TreeNode("Required : Slot Setting##AetheryteHelper") then
      GUI:TextColored(1,0,0,1,mushcost * AHSET.hosiikazu.."/"..0)
      GUI:EndGroup()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("Required seals/have seals")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("交換に必要な軍票/現在の軍票")
-       end
+       if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip81)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip81)
+              end
+              end
      end
      end
      mushitemid = GCexchangeItems.id[AHSET.koukanhin]
      mushhosiikazu = AHSET.hosiikazu
-
-
+     GUI:Columns(1)
     
 end
 
----------------------------------------------------------------------------------------------------------------------------------------------------
---materia option tree GUI
-
-function AetheryteHelper.extractOption()
-  if GUI:TreeNode("Extract Option##AetheryteHelper") then
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("##Potion", AHSET.isPotionEnabled)
-      GUI:SameLine()
-      GUI:Text("Spiritbond Potion")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          mushlooptimer = 1000
-          AHSET.isPotionEnabled = not AHSET.isPotionEnabled
-          AetheryteHelper.SaveSettings()         
-        end
-       GUI:SetTooltip("auto use potion")
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("錬精薬の自動使用")
-       end
-      end
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:Checkbox("##Poption", AHSET.isBotStatusP)
-      GUI:SameLine()      
-      GUI:Text("Link to Bot Status")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isBotStatusP = not AHSET.isBotStatusP
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("Automatically uncheck option(Potion)\nwhen Bot status:Not Running") 
-       if (GUI:IsMouseDown(1)) then
-       GUI:SetTooltip("minionに連動してオンオフする\nminionから独立して動くアドオンは不可")
-       end
-      end    
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("##Manual", AHSET.isManualEnabled)
-      GUI:SameLine()      
-      GUI:Text("Spiritbond Manual")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          mushlooptimer = 1000
-          AHSET.isManualEnabled = not AHSET.isManualEnabled
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("auto use spiritbond manual") 
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("スピリットマニュアルの自動使用")
-        end
-      end
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:Checkbox("##Moption", AHSET.isBotStatusM)
-      GUI:SameLine()      
-      GUI:Text("Link to Bot Status")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isBotStatusM = not AHSET.isBotStatusM
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("Automatically uncheck option(Manual)\nwhen Bot status:Not Running") 
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("minionに連動してオンオフする\nminionから独立して動くアドオンは不可")
-        end
-      end
-      if (FFXIV_Common_BotRunning == false) and (AHSET.isBotStatusP == true) then
-        AHSET.isPotionEnabled = false
-      elseif (FFXIV_Common_BotRunning == true) and (AHSET.isBotStatusP == true) then
-        AHSET.isPotionEnabled = true
-
-      end
-      if (FFXIV_Common_BotRunning == false) and (AHSET.isBotStatusM == true) then
-        AHSET.isManualEnabled = false
-      elseif (FFXIV_Common_BotRunning == true) and (AHSET.isBotStatusM == true) then
-        AHSET.isManualEnabled = true
-
-      end
 
 
-      GUI:TreePop()
-
-     
-  end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------------------
---materia UI(tab2) GUI
-function AetheryteHelper.Inventoryfree()
-      local bags1 = {0} for _, e in pairs(bags1) do local bag1 = Inventory:Get(e)
-      Pbfree1 = tonumber(bag1.free) end
-      local bags2 = {1} for _, e in pairs(bags2) do local bag2 = Inventory:Get(e)
-      Pbfree2 = tonumber(bag2.free) end
-      local bags3 = {2} for _, e in pairs(bags3) do local bag3 = Inventory:Get(e)
-      Pbfree3 = tonumber(bag3.free) end
-      local bags4 = {3} for _, e in pairs(bags4) do local bag4 = Inventory:Get(e)
-      Pbfree4 = tonumber(bag4.free) end
-      mushPbtotal = (Pbfree1 + Pbfree2 + Pbfree3 + Pbfree4) 
-end
-
-function AetheryteHelper.GCseals()
-     GUI:BeginGroup()
-     GUI:Text("GC")
-     GUI:EndGroup()
-     GUI:AlignFirstTextHeightToWidgets()
-     GUI:BeginGroup()
-     GUI:PushItemWidth(100)
-     if language == 0 then
-     AHSET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGCJP,1)
-     else
-     AHSET.selectGC = GUI:Combo("GCseals:",Player.GrandCompany,mushGCEN,1)
-     end
-     if Player.GrandCompany == 0 then 
-     AHSET.selectGC = GUI:Combo("GCseals:",4,mushGCEN,1) end
-     AetheryteHelper.SaveSettings()
-     GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-        GUI:SetTooltip("Your GC\nautomatically select\n\nMaelst(Limsa)/Adders(Gridania)/Flames(Uldah)") 
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("所属GCが自動で選ばれます\n\n黒渦団(リムサ)/双蛇党(グリダニア)/不滅隊(ウルダハ)")
-        end
-     end
-     GUI:SameLine()
-     GUI:BeginGroup()
-     if AHSET.selectGC == 1 then mushGseals = Inventory:Get(2000):GetList()[2] 
-     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AHSET.selectGC == 2 then mushGseals = Inventory:Get(2000):GetList()[3]
-     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AHSET.selectGC == 3 then mushGseals = Inventory:Get(2000):GetList()[4]
-     elseif Inventory:Get(2000):GetList()[2] == nil then mushGseals = nil end
-     if AHSET.selectGC == 4 then mushGseals  = nil end  
-
-     for k,v in pairs(mushPlayerGCrank) do
-     if (k == Player.GrandCompanyRank) then mushmaxseal = v
-     if mushGseals == nil then
-     GUI:TextColored(1,1,1,.8,"0/"..mushmaxseal.max)
-     elseif mushGseals.count == mushmaxseal.max then
-     GUI:TextColored(1,0,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
-     elseif mushGseals.count < mushmaxseal.max/2 then
-     GUI:TextColored(0,1,1,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
-     elseif mushGseals.count ~= mushmaxseal.max then
-     GUI:TextColored(1,1,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
-     elseif Player.GrandCompany == 0 then GUI:Text("GCseals:---/---")
-     end
-     end
-     end
-     GUI:EndGroup()
-
-end
-
-
-function AetheryteHelper.DrawSubtool()
-      AetheryteHelper.Inventoryfree()
-      GUI:Spacing()      
-      GUI:BeginGroup()
-      GUI:Text("Useful tools for items")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        GUI:SetTooltip("Materia Extract / Desynthesis / Exchange for GC seals / Aetherial Reduction")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("マテリア錬成/装備分解/GCへの希少品納品/精選")
-        end
-      end
-
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      local seisen = ActionList:Get(5,14)
-      if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 2) then AHSET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
-      elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
-      GUI:Spacing()
-      GUI:Checkbox("##Materia", AHSET.isMateriaEnabled)
-      GUI:SameLine()
-      GUI:Text("Materia Extract")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
-          mushlooptimer = 2000
-        end
-        GUI:SetTooltip("in non combat")
-        AetheryteHelper.SaveSettings()
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("非戦闘状態で装備品からマテリアを錬精します")
-        end
-      end
-      AetheryteHelper.extractOption() 
-    
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      local bunkai = ActionList:Get(5,5)
-      if bunkai.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 2) then AHSET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
-      elseif bunkai.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
-      GUI:Spacing()
-      GUI:Checkbox("##Desynthesis", AHSET.isSalvageEnabled)
-      GUI:SameLine()
-      GUI:Text("Desynthesis equipment in Bag")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
-          GCexchange = false
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("desynthesis all equipment in your inventory\nWarning: Turning on this option will desynthesis\nall equipment in your inventory\nHowever, IL1 equipment will not be desynthesis")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("インベントリの中の装備を分解\n警告:オンにするとインベントリ内の装備を全て分解します\nただし、IL1の装備は分解しません")
-        end
-      end
-      if AHSET.CrafterMode == true then
-        if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
-        Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
-         AHSET.isSalvageEnabled = false
-        end
-      end
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:Checkbox("##use option", AHSET.isReductionOption)
-      GUI:SameLine()
-      GUI:Text("use settings")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isReductionOption = not AHSET.isReductionOption
-          
-        end
-        GUI:SetTooltip("use settings in Option Tab")
-        AetheryteHelper.SaveSettings()
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("オプションタブの設定を有効にする")
-        end
-      end
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()    
-      if Player.GrandCompanyRank < 6 then GUI:TextColored(1,0,0,1,"need GC rank 6 over")
-      else GUI:TextColored(0,1,0,1,"available") end
-      GUI:Spacing()
-      GUI:Checkbox("##Exchange", GCexchange)
-      GUI:SameLine()
-      GUI:Text("Exchange gear in Bag")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          mushlooptimer = 1000
-          mushEXstep = 0
-          GCexchange = not GCexchange
-          sealstoitem = false
-          if mushTrustmode == true then GCexchange = false end
-          if Player.GrandCompanyRank < 6 then GCexchange = false end
-
-          if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
-          AHSET.isSalvageEnabled = false
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("for GC seals ")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("GCの希少品納品")
-        end
-      end
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:Checkbox("##AutoMoveGC", AutoMoveGC)
-      GUI:SameLine()
-      GUI:Text("Auto Move to GC")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          mushlooptimer = 1000
-          AutoMoveGC = not AutoMoveGC
-          AHSET.isSalvageEnabled = false
-        end
-        GUI:SetTooltip("You'd better move yourself")
-        AetheryteHelper.SaveSettings()
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("自動でGCに移動して納品します\n自分で移動したほうがいいときもある")
-        end
-      end
-      GUI:SameLine(200)
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Button("X",20,20)
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-           Player:Stop()
-           mushlooptimer = 1000
-           AutoMoveGC = false
-        end
-        GUI:SetTooltip("move to stop")
-        AetheryteHelper.SaveSettings()
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("自動移動を停止")
-        end
-      end
-      GUI:EndGroup()
-
-if GUI:TreeNode("check before exchange") then
-      GUI:BeginGroup() 
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:Checkbox("##lessmax", AHSET.GCexlessmax)
-      GUI:SameLine()
-      GUI:Text("less max")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.GCexlessmax = not AHSET.GCexlessmax
-        end
-        GUI:SetTooltip("not done exchange over max seals")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("軍票の最大を超えて納品しない")
-        end
-      end
-      GUI:Spacing()
-      GUI:BeginGroup() 
-      GUI:Text("---")
-      GUI:SameLine()
-      GUI:Checkbox("##Remateria", Remateria)
-      GUI:SameLine()
-      GUI:TextColored(1,0,0,1,"Retrieve Materia")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          Remateria = not Remateria
-          mushlooptimer = 2000
-        end
-        GUI:SetTooltip("Remove materia from equipment in inventory")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("カバンの中の装備のマテリアを外す")
-        end
-      end
-      GUI:TreePop()
-      end
-
-
-
-      GUI:Spacing()           
-      AetheryteHelper.GCseals()
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      local seisen = ActionList:Get(5,21)
-      if seisen.usable == false then GUI:TextColored(1,0,0,1,"Complete Quests get Skill!")
-      elseif (mushPbtotal < 1) then AHSET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!")
-      elseif seisen.usable == true then GUI:TextColored(0,1,0,1,"usable skill") end
-      GUI:Spacing()
-      GUI:Checkbox("##AetherialReduction", AHSET.isReductionEnabled)
-      GUI:SameLine()
-      GUI:Text("Aetherial Reduction in Bag")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isReductionEnabled = not AHSET.isReductionEnabled
-          mushlooptimer = 2000
-          AHSET.isQuestmode = false
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("Aetherial Reduction\nStop when there is no more space in inventory")
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("精選\nカバンの空きが0になると動作しません")
-        end
-      end
-      GUI:Spacing()
-      GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Checkbox("##Qmode", AHSET.isQuestmode)
-      GUI:SameLine()      
-      GUI:Text("Aetherial Reduction:QuestMode")
-      GUI:TextColored(1,0,0,1,"   ---features for FFXIVminion")
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if (GUI:IsMouseClicked(0)) then
-          AHSET.isQuestmode = not AHSET.isQuestmode
-          mushlooptimer = 1000
-          if (mushPbtotal < 1) then AHSET.isQuestmode = false end
-          AHSET.isReductionEnabled = false
-          AetheryteHelper.SaveSettings()
-        end
-        GUI:SetTooltip("Stop Bot before inventory is low space.\nPerform Aetherial Reduction & Running Bot again.\nneed at least 5 free spaces in inventory") 
-        if (GUI:IsMouseDown(1)) then
-        GUI:SetTooltip("minion連動\nカバンの空きが4以下になるとボットを停止し、精選を始めます。\n全て精選が終わると再びminionをオンにします")
-        end
-      end
-      GUI:Spacing()
-
- end
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 ----footer GUI
@@ -3301,11 +5440,17 @@ function AetheryteHelper.Drawafooter()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
       if GUI:IsItemClicked(0) then
-         io.popen([[cmd /c start "" "]]..Links.link2..[["]]):close()
+         io.popen([[cmd /c start "" "]]..AHLinks.link2..[["]]):close()
       elseif GUI:IsItemClicked(1) then
-         io.popen([[cmd /c start "" "]]..Links.link3..[["]]):close()
+         io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()
       end
-      GUI:SetTooltip(Links.tooltip2)
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip98)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip98)
+              end
+              end
       end
 
       GUI:SameLine()
@@ -3324,9 +5469,15 @@ function AetheryteHelper.Drawafooter()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
       if GUI:IsItemClicked(0) then
-            io.popen([[cmd /c start "" "]]..Links.link1..[["]]):close()
+            io.popen([[cmd /c start "" "]]..AHLinks.link1..[["]]):close()
       end
-      GUI:SetTooltip(Links.tooltip1)
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip97)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip97)
+              end
+              end
       end
       
       GUI:SameLine()
@@ -3415,58 +5566,170 @@ function AetheryteHelper.DCSVselect()
              end
      AetheryteHelper.autoDCset()
      GUI:BeginGroup()
-     GUI:PushItemWidth(100)
+     GUI:PushItemWidth(80)
      
-     if ( gRegion == 1) then 
-        AHSET.selectDC = GUI:Combo( "DC", AHSET.selectDC,FFXIVDClist,1)
-        --AetheryteHelper.SaveSettings()
+     if ( gRegion == 1) then
+        AHSET.selectDC = GUI:Combo( "###DC", AHSET.selectDC,FFXIVDClist,1)
+     end
+     if (GUI:IsItemHovered()) then
+     if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip93)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip93)
+              end
+              end
      end
      GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-     GUI:SetTooltip("Auto select DC")
-     if (GUI:IsMouseDown(1)) then
-     GUI:SetTooltip("DCは自動で選択されます")
-     end
-     end
-     GUI:SameLine(150)
+     GUI:SameLine()
      GUI:BeginGroup()
-     GUI:Checkbox("MB",AHSET.mushmovetoMB)
+     GUI:Dummy(25,25)
+     if AHSET.nohousing == true then
+              GUI:SameLine(2.5,-25)
+              GUI:Image(ImageFolder..[[harea_lock.png]],25,25)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.nohousing = not AHSET.nohousing
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip04)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip04)
+              end
+              end
+              end      
+      elseif AHSET.nohousing == false then
+              GUI:SameLine(2.5,-25)
+              GUI:Image(ImageFolder..[[harea_lock_non.png]],25,25)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.nohousing = not AHSET.nohousing
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip04)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip04)
+              end
+              end
+              end
+     end
      GUI:EndGroup()
-     if (GUI:IsItemHovered()) then
-       if GUI:IsItemClicked(0) then
-       AHSET.mushmovetoMB = not AHSET.mushmovetoMB
-       end 
-       GUI:SetTooltip("move to MB")
-     if (GUI:IsMouseDown(1)) then
-     GUI:SetTooltip("マケボへ移動")
-     end
-     end
-     if AHSET.mushmovetoMB == false then
-      if mushMBlim == true then mushMBlim = false Player:Stop() end
-      if mushMBgri == true then mushMBgri = false Player:Stop() end
-      if mushMBul == true then mushMBul = false Player:Stop() end
-     end
-     GUI:Text("select server(World Visit)")
      GUI:BeginGroup()
-     GUI:PushItemWidth(180)
+     GUI:Text("World")
+     GUI:EndGroup()
+     GUI:BeginGroup()
+     GUI:PushItemWidth(120)
      if (table.valid(FFXIVServerlist[AHSET.selectDC])) then
-     selectSVR = GUI:Combo( "server",selectSVR,MushmoveServerlist,height or 20)
-     --d("num:"..selectSVR)
+     selectSVR = GUI:Combo( "###server",selectSVR,MushmoveServerlist,height or 20)
      else
      GUI:Combo( "DC",1,noDClist,1)
      GUI:Combo( "server",1,FFXIVServerlist[11],1)
      end
-     GUI:EndGroup()
      if (GUI:IsItemHovered()) then
-       GUI:SetTooltip("Select Server")
-     if (GUI:IsMouseDown(1)) then
-     GUI:SetTooltip("移動先のサーバーを選択")
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip95)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip95)
+              end
+              end
      end
-     end
+     GUI:EndGroup()
      isServer = selectSVR
 
 end
 
+function AetheryteHelper.minitools()
+      GUI:BeginGroup()
+      GUI:Dummy(25,25)
+      if AHSET.mushtooltips == true then
+              GUI:SameLine(2.5,-25)
+              GUI:Image(ImageFolder..[[tips.png]],25,25)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.mushtooltips = not AHSET.mushtooltips
+              AetheryteHelper.SaveSettings()
+              end
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip109)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip109)
+              end
+              end      
+      elseif AHSET.mushtooltips == false then
+              GUI:SameLine(2.5,-25)
+              GUI:Image(ImageFolder..[[tips_non.png]],25,25)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AHSET.mushtooltips = not AHSET.mushtooltips
+              AetheryteHelper.SaveSettings()
+              end
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip109)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip109)
+              end
+              end       
+      end
+      GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:ImageButton("###flag",ImageFolder..[[flag.png]], 20,20)
+            if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              SendTextCommand("/e <flag>")
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip03)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip03)
+              end
+              end           
+            end
+      GUI:EndGroup()
+
+end
+
+
+function AetheryteHelper.statuscheck()
+      GUI:BeginGroup()
+      GUI:Text("Main:")
+      if selectins == true then
+      GUI:SameLine()
+      GUI:Text("[AH]")
+      end 
+      if AHSET.mushmovetoMB == true then
+      GUI:SameLine()
+      GUI:Text("[MB]")
+      end
+      if AHSET.mushtooltips == true then
+      GUI:SameLine()
+      GUI:Text("[Tips]")
+      end
+      GUI:Text("AHPulse:"..mushlooptimer)  
+      GUI:EndGroup()
+
+end
+
+function AetheryteHelper.footerkofi()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[kofi.png]],90,25)
+      if (GUI:IsItemHovered()) then
+      if GUI:IsItemClicked(0) then
+            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
+      end
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip96)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip96)
+              end
+              end
+      end
+      GUI:EndGroup()
+end
 --------------------------------------------------------------------------------
 -- header & All Drowcall GUI
 
@@ -3483,6 +5746,7 @@ function AetheryteHelper.DrawCall()
       GUI:Text("[")
       GUI:SameLine()
       if Player.localmapid == 0 then GUI:TextColored(0,0.8,0,1,"Loading...")
+      elseif Player.localmapid == nil then GUI:TextColored(0.8,0,0,1,"wait for login")
       else GUI:TextColored(0.7,0.8,0.1,1,GetMapName(Player.localmapid)) end
       GUI:SameLine()
       GUI:Text("]:MAPID:"..tostring(Player.localmapid))
@@ -3498,64 +5762,110 @@ function AetheryteHelper.DrawCall()
       GUI:Separator()
       GUI:Spacing()
 
-      if mushTrustmode == true then
-      AetheryteHelper.GUI.tabs[1].isselected = false
-      AetheryteHelper.GUI.tabs[2].isselected = false
-      AetheryteHelper.GUI.tabs[3].isselected = true
-      AetheryteHelper.GUI.tabs[4].isselected = false
-      AetheryteHelper.desynthIL()
 
-      elseif (AetheryteHelper.GUI.tabs[1].isselected) then
-      AetheryteHelper.Drawinsselect() ----main 
-      GUI:Spacing()
-      GUI:Separator()
-      GUI:Spacing()
-      
+      if (AetheryteHelper.GUI.tabs[1].isselected) and mushTrustmode == false then
+      if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or
+      Player.localmapid == 959 or Player.localmapid == 960 or Player.localmapid == 961 then 
+      GUI:Columns(3)
+      GUI:SetColumnOffset(1, 70) GUI:SetColumnOffset(2, 200)
+      AetheryteHelper.Drawinsselect()
+      GUI:NextColumn()
+      AetheryteHelper.maininsButton()
+      GUI:NextColumn()
+      AetheryteHelper.minitools()
+      GUI:Columns()
+      AetheryteHelper.homeDCinfo()
+      AetheryteHelper.accessdelay()
+    elseif Player.localmapid == 132 or Player.localmapid == 129 or Player.localmapid == 130 then
+      GUI:Columns(3)
+      GUI:SetColumnOffset(1, 70) GUI:SetColumnOffset(2, 200)
+      AetheryteHelper.Serverselect()
+      GUI:NextColumn()
       AetheryteHelper.DCSVselect()
+      GUI:NextColumn()
+      AetheryteHelper.minitools()
+      GUI:Columns()
+      AetheryteHelper.homeDCinfo()
+      AetheryteHelper.accessdelay() 
+    else
+      GUI:Columns(3)
+      GUI:SetColumnOffset(1, 70) GUI:SetColumnOffset(2, 200)
+      AetheryteHelper.notuseAH()
+      GUI:NextColumn()
+      AetheryteHelper.omikuji()
+      GUI:NextColumn()
+      AetheryteHelper.minitools()
+      GUI:Columns()
+      AetheryteHelper.homeDCinfo()
+      AetheryteHelper.accessdelay()
+    end
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
-      AetheryteHelper.GLUtelepo() ----telepo
-      AetheryteHelper.homeDCinfo()---info
-      GUI:SameLine(180,0)
-      --GUI:AlignFirstTextHeightToWidgets()
-      GUI:BeginGroup()
-      GUI:Image(ImageFolder..[[kofi.png]],90,25)
-      GUI:EndGroup()
-      if (GUI:IsItemHovered()) then
-        if GUI:IsItemClicked(0) then
-            io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
+      AetheryteHelper.GLUtelepo() ----telepo    
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
+      
+      elseif (AetheryteHelper.GUI.tabs[2].isselected) and mushTrustmode == false then
+      AetheryteHelper.subtoolmateria()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.subtoolDesynth()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.subtoolAR()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
+
+      elseif (AetheryteHelper.GUI.tabs[3].isselected) or mushTrustmode == true then  
+      AetheryteHelper.subtoolGC()
+      --GUI:Spacing()
+      --GUI:Separator()
+      --GUI:Spacing()
+      AetheryteHelper.GCtrunin()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
+      if mushTrustmode == true then
+        AetheryteHelper.GUI.tabs[1].isselected = false
+        AetheryteHelper.GUI.tabs[2].isselected = false
+        AetheryteHelper.GUI.tabs[3].isselected = true
+        AetheryteHelper.GUI.tabs[4].isselected = false
       end
-      GUI:SetTooltip("please support me to make good\n\nfor my cat....")
-      if (GUI:IsMouseDown(1)) then
-      GUI:SetTooltip("良い物を作るためにサポートしてください\n\nうちのねこのご飯が豪華になります")
-      end
-      end
 
-
-
-      --AetheryteHelper.DrawInside()  ---tree    
-
-      elseif (AetheryteHelper.GUI.tabs[2].isselected) then
-      AetheryteHelper.DrawSubtool()
-
-      elseif (AetheryteHelper.GUI.tabs[3].isselected) then
-
-      AetheryteHelper.desynthIL()
-
-      elseif (AetheryteHelper.GUI.tabs[4].isselected) then
-   
+      elseif (AetheryteHelper.GUI.tabs[4].isselected) and mushTrustmode == false then 
       AetheryteHelper.DrawadWIP() ------button
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
 
       end
 --------------------------------------------------------------------
---close Button
-      --GUI:AlignFirstTextHeightToWidgets()
+--mini Button
       GUI:Separator()
       GUI:Spacing(5)
       if GUI:Button("Mini##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
          Windows.Open = false
          minikinoko.Open = true
+         if Windows.Open == true then
+            minikinoko.Open = false
+         end
       AetheryteHelper.SaveSettings()
       end
       GUI:SameLine(60)
@@ -3570,17 +5880,22 @@ function AetheryteHelper.DrawCall()
   end
   AetheryteHelper.SubWindow()
   AetheryteHelper.jumboWindow()
-  AetheryteHelper.TMwindow()
   AetheryteHelper.minimush()
   AetheryteHelper.insSelecterWindow()
+  AetheryteHelper.subtoolDesOPwindow()
+  AetheryteHelper.VlWindow()
+  AetheryteHelper.TCListwindow()
 end
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--GUIend
+--begin function
+---------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- main function
 
 function AetheryteHelper.insselect()
---d("[AetheryteHelper]---".."autheStep---"..autheStep.."---modechg---"..modechg.."---".."---isServer:"..isServer) ----debug
   if autheVar == nil then
     autheVar = true
     autheStep = 0
@@ -3589,9 +5904,6 @@ function AetheryteHelper.insselect()
     autheVar = not autheVar
   end
 
-  --[[if (not Update.Timer or ticks - Update.Timer > Update.Pulse) then
-    Update.Timer = ticks   
-  end]]
   if (selectins) then  
       if autheVar and TimeSince(isTime) > AHSET.delay then
               aetheID = 0
@@ -3672,16 +5984,27 @@ function AetheryteHelper.insselect()
                       end
               end
               if autheStep == 5 then
+                      Player:SetTarget(aetheID)
+                      local pos = Player:GetTarget().pos
+                      if Player:GetTarget().Distance < 6.5 and Player.IsMounted == true then 
+                      autheStep = 99
+                      elseif Player:GetTarget().Distance < 6.5 and Player.IsMounted == false then
+                      autheStep = 6
+                      elseif Player:GetTarget().Distance > 6.5 and Player.IsMounted == false then 
+                      Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+                      end
+              end
+              if autheStep == 6 then
                       Player:Stop()
                       Player:SetTarget(aetheID)
                       Player:Interact(aetheID)
                       UseControlAction("Aetheryte") 
                       if IsControlOpen("SelectString") then
                          GetControl("SelectString"):Action("SelectIndex",1)
-                         autheStep = 6
+                         autheStep = 7
                       end
               end
-              if autheStep == 6 then
+              if autheStep == 7 then
                         GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
                         UseControlAction("SelectYesno")
                      if IsControlOpen("SelectYesno") then
@@ -3689,7 +6012,7 @@ function AetheryteHelper.insselect()
                            moveSVR = not moveSVR
                            selectins = not selectins
                            autooff = not autooff
-                           autheStep = 4
+                           autheStep = 5
                      elseif Player:GetTarget() == nil then
                            isTime = Now()
                            Player:SetTarget(aetheID)
@@ -3704,7 +6027,7 @@ function AetheryteHelper.insselect()
                   return
                   end
                   if Player.IsMounted == false then
-                  autheStep = 1
+                  autheStep = 0
                   end                  
               end
            
@@ -3723,30 +6046,23 @@ end
 --fix function
 
 function AetheryteHelper.mushMaintool()
-  --if (not Update.Timer or ticks - Update.Timer > Update.Pulse) then
-  --  Update.Timer = ticks   
-  --end
 
-  if(selectins == true) and (Player.localmapid == 130) then
-      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
+  if(selectins == true) and (Player.localmapid == 130 ) then
       moveSVR = true
       modechg = 2
       autooff = false
       AetheryteHelper.insselect()
   elseif (selectins == true) and (Player.localmapid == 129) then
-      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
       moveSVR = true
       modechg = 2
       autooff = false
       AetheryteHelper.insselect()
   elseif (selectins == true) and (Player.localmapid == 132) then
-      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitOK")
       moveSVR = true
       modechg = 2
       autooff = false
       AetheryteHelper.insselect()
   elseif (selectins == true) then
-      --d("[AetheryteHelper]--".."["..Player.localmapid.."]".."WorldvisitNG")
       moveSVR = false
       modechg = 3
       autooff = true
@@ -3773,7 +6089,7 @@ function AetheryteHelper.mushMaintool()
             end
         else
             insHistory = {
-                isins = 0,
+                isins = 4,
                 selectins = false,
                 autheStep = 0
             }
@@ -3784,14 +6100,16 @@ function AetheryteHelper.mushMaintool()
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --move to GC
 function AetheryteHelper.movetoGCAll()
-      if ( AutoMoveGC) then
+      if ( AutoMoveGC ) then
         mushlooptimer = 1000
         if (AHSET.selectGC == 1) then
           AetheryteHelper.movetoCOMPANYlimsa()
         elseif (AHSET.selectGC == 2) then
           AetheryteHelper.movetoCOMPANYgridania()
         elseif (AHSET.selectGC == 3) then
-          etheryteHelper.movetoCOMPANYuldah()
+          AetheryteHelper.movetoCOMPANYuldah()
+        else
+          AutoMoveGC = false
         end
       end
 end
@@ -4238,7 +6556,7 @@ function AetheryteHelper.Exchange()
              end
        if (GCexchange)then
               if( mushEXstep == 0) then
-                 d("[AH][Exchange]step:"..mushEXstep)
+                 d("[AH][Exchange]step:SetTarget")
                  Player:SetTarget(GCID1)
                  if Player:GetTarget().Distance < 6 then
                  Player:Interact(GCID1)
@@ -4252,7 +6570,7 @@ function AetheryteHelper.Exchange()
                  end
               end
               if (mushEXstep == 1) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:SelectCategory")
                   if IsControlOpen("GrandCompanySupplyList") then
                   GetControl("GrandCompanySupplyList"):PushButton(25,4)
                   --GetControl("GrandCompanySupplyList"):Action("SelectCategory",2)
@@ -4260,7 +6578,7 @@ function AetheryteHelper.Exchange()
                   end
               end
               if (mushEXstep == 2) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:SelectFilter")
                     if IsControlOpen("GrandCompanySupplyList") then
                     if GetControl("GrandCompanySupplyList"):GetData().category == nil then
                     mushEXstep = 10
@@ -4273,7 +6591,7 @@ function AetheryteHelper.Exchange()
                     end
               end            
               if (mushEXstep == 3) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:FilterCheck")
                   if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
                   mushEXstep = 4
                   else
@@ -4281,7 +6599,7 @@ function AetheryteHelper.Exchange()
                   end
               end
               if (mushEXstep == 4) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:itemDelivery")
                      if GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
                      mushEXstep = 10
                      elseif IsControlOpen("GrandCompanySupplyList") then
@@ -4292,7 +6610,7 @@ function AetheryteHelper.Exchange()
                      end
               end
               if (mushEXstep == 5) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:Deliver to Yes")
                   if IsControlOpen("GrandCompanySupplyReward") then
                   GetControl("GrandCompanySupplyReward"):Action("Deliver")
                   mushEXstep = 6
@@ -4307,44 +6625,43 @@ function AetheryteHelper.Exchange()
                   end
               end
               if (mushEXstep == 6) then
-                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("GrandCompanySupplyList") then
+                  d("[AH][Exchange]step:Repeattask")
                   mushEXstep = 2
                   elseif IsControlOpen("SelectYesno") then
                   mushEXstep = 7
                   end 
               end
               if (mushEXstep == 7) then
-                d("[AH][Exchange]step:"..mushEXstep)
                  if AHSET.GCexlessmax == true then
+                    d("[AH][Exchange]step:sealsMAX Yes")
                     mushEXstep = 8
                  elseif AHSET.GCexlessmax == false then
+                    d("[AH][Exchange]step:sealsMAX No")
                     mushEXstep = 9
                  end 
               end
               if (mushEXstep == 8) then
-                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("SelectYesno") then
                      UseControlAction("SelectYesno","No")
                       mushEXstep = 10
                   end   
               end
               if (mushEXstep == 9) then
-                d("[AH][Exchange]step:"..mushEXstep)
                   if IsControlOpen("SelectYesno") then
                      UseControlAction("SelectYesno","Yes")
                       mushEXstep = 10
                   end   
               end
               if (mushEXstep == 10) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:ListClose")
                   if IsControlOpen("GrandCompanySupplyList") then
                   UseControlAction("GrandCompanySupplyList","Close")
                   mushEXstep = 11
                   end 
               end
               if (mushEXstep == 11 ) then
-                d("[AH][Exchange]step:"..mushEXstep)
+                d("[AH][Exchange]step:END")
                   if IsControlOpen("SelectString") then
                   UseControlAction("SelectString","Close")
                   Player:ClearTarget()
@@ -4594,7 +6911,7 @@ end
 function AetheryteHelper.mushEXchangeTrust(event)
   local step = 0
   local nohinsoubi = 0
-  if(mushTrustmode == true and AHSET.DesynthTrust == true ) then
+  if(mushTrustmode == true ) then
            mushlooptimer = 5000
          if Duty:IsQueued() == true then
                local equip = {1000}
@@ -4605,6 +6922,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                if (table.valid(equiplist)) then
                for _, item in pairs(equiplist) do
                       if item.Condition < AHSET.mushrepairGear then
+                         Player:Stop()
                          ActionList:Get(5,6):Cast()
                          d("[AH][Tmode]:Repair")
                          if IsControlOpen("Repair") then
@@ -4643,7 +6961,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                            elseif nohinsoubi < 1 and sealstoitemT == false and GCexchangeT == false and Duty:IsQueued() == false then
                               Dawncloser = false
                               mushlooptimer = 5000
-                              step = 45
+                              step = 42
                            elseif nohinsoubi > 0 and Duty:IsQueued() == false then
                               Dawncloser = true
                               mushlooptimer = 1000
@@ -4653,6 +6971,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                         if step == 1 then
                           if Dawncloser == nil then
                             d("[AH][Tmode]:standby:[itemcount:"..nohinsoubi.."]")
+                            mushlooptimer = 5000
                             sealstoitemT = false
                             GCexchangeT = false
                             step = 0
@@ -4665,20 +6984,17 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                GCexchangeT = false
                                step = 0
                             elseif mushtruninGCitem == true and mushtruninGCseals == true then
-                               mushlooptimer = 500
                                sealstoitemT = true
                                step = 3
-                            elseif nohinsoubi > 0 then 
-                               mushlooptimer = 1000
+                            elseif nohinsoubi > 0 then
                                GCexchangeT = true
                                step = 30
-                            elseif nohinsoubi > 0 and AHSET.GCexlessmax == true then
-                               step = 3
                             end
                           end
                         end
                         if step == 3 then
                            if (sealstoitemT == true and mushtruninGCitem == true and mushtruninGCseals == true) then
+                                mushlooptimer = 500
                              d("[AH][Tmode][Trunin]:GCselect")
                               if Player.GrandCompany == 1 then
                                  GCID2 = tonumber(mushCD2.limsa)
@@ -4924,14 +7240,15 @@ function AetheryteHelper.mushEXchangeTrust(event)
 
                         if step == 30 then
                              d("[AH][Tmode][Exchange]step:"..step)
-                             if (GCexchangeT == true) then
+                             --if (GCexchangeT == true) then
+                                 mushlooptimer = 1000
                                  if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
                                  elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
                                  elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
                                  else GCexchangeT = false
                                  end
                                  step = 31
-                             end
+                             --end
                         end
                         if step == 31 then
                             d("[AH][Tmode][Exchange]step:"..step)
@@ -4956,7 +7273,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                             d("[AH][Tmode][Exchange]step:"..step)
                                 if IsControlOpen("GrandCompanySupplyList") then
                                    if GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then 
-                                   GCexchange = false
+                                   GCexchangeT = false
                                    step = 0
                                    elseif GetControl("GrandCompanySupplyList"):GetData().category ~= 2 then
                                    step = 32 
@@ -4968,10 +7285,11 @@ function AetheryteHelper.mushEXchangeTrust(event)
                         end            
                         if step == 34 then
                             d("[AH][Tmode][Exchange]step:"..step)
-                                if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
+                                if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 0 or 
+                                   GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 1 or
+                                   GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or
+                                   GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 3 then
                                 step = 35
-                                else
-                                step = 42
                                 end
                         end
                         if step == 35 then
@@ -4980,7 +7298,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
                                 step = 36
                                 else
-                                step = 33
+                                step = 32
                                 end
                         end
                         if step == 36 then
@@ -4989,7 +7307,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 step = 42
                                 elseif IsControlOpen("GrandCompanySupplyReward") then
                                 GetControl("GrandCompanySupplyReward"):Action("Deliver")
-                                step = 33
+                                step = 32
                                 
                                 end
                         end
@@ -4997,6 +7315,8 @@ function AetheryteHelper.mushEXchangeTrust(event)
                           d("[AH][Tmode][Exchange]step:"..step)
                                if IsControlOpen("GrandCompanySupplyList") then
                                UseControlAction("GrandCompanySupplyList","Close")
+                               step = 42
+                               else
                                step = 43
                                end
                         end
@@ -5004,6 +7324,8 @@ function AetheryteHelper.mushEXchangeTrust(event)
                           d("[AH][Tmode][Exchange]step:"..step)
                                if IsControlOpen("SelectString") then
                                UseControlAction("SelectString","Close")
+                               step = 43
+                               else
                                step = 44
                                end
                         end
@@ -5011,7 +7333,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                           d("[AH][Tmode][Exchange]step:"..step)
                                Player:ClearTarget()
                                mushlooptimer = 1000
-                               GCexchange = false
+                               GCexchangeT = false
                                step = 0
                         end
 
@@ -5024,6 +7346,9 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 step = 45
                                 elseif IsControlOpen("SelectString") then
                                 UseControlAction("SelectString","Close")
+                                step = 45
+                                else
+                                step = 0
                                 end
                               Player:ClearTarget()
                               GCexchangeT = false
@@ -6425,7 +8750,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- sub function
 function AetheryteHelper.mushMaterialize()
-   if (AHSET.DesynthTrust == true ) then
+   if (AHSET.DesynthTrust == true ) or ( mushTrustmode == true ) then
          if (AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == true ) then 
             if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
             UseControlAction("MaterializeDialog","Yes")
@@ -6449,8 +8774,9 @@ function AetheryteHelper.mushMaterialize()
             end
             end
          end
-   elseif (AHSET.DesynthTrust == false ) then
+   elseif (AHSET.DesynthTrust == false ) and ( mushTrustmode == false ) then
       if(AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+            mushlooptimer = 1500
             if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
             UseControlAction("MaterializeDialog","Yes")
             return
@@ -6463,7 +8789,6 @@ function AetheryteHelper.mushMaterialize()
             if (table.valid(ilist)) then
             for _, item in pairs(ilist) do
             if (item.spiritbond == 100 and item:CanCast(5, 14)) then
-               mushlooptimer = 1500
                if(ActionList:IsReady()) then
                item:Convert()
                return
@@ -6548,6 +8873,7 @@ function AetheryteHelper.mushsRemateria()
           end
         elseif table.size(item.materias) == 0 and item.equipslot > 0 and item.requiredlevel > 1 then
           Remateria = false
+
         end
         end
         end
@@ -6662,42 +8988,47 @@ end
 
 
 function AetheryteHelper.mushTextCommands()
-    mushlooptimer = 500
     local log = GetChatLines()
     local logmatch = nil
     local mushtextstep = 0
     local logmatchtime = 0
+    local mushtext114 = false
+    local mushtextMBlim = false
+    local mushtextMBgri = false
+    local mushtextMBul = false
+
+    if Duty:IsQueued() == false then
     for _, command in pairs(log) do  
       if command.line:match("AHmode 114") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 1
-           logmatchtime = 30
+           logmatchtime = 1
       end
       if command.line:match("AHMB limsa") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 10
-           logmatchtime = 30
+           logmatchtime = 1
       end
       if command.line:match("AHMB gridania") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 20
-           logmatchtime = 30
+           logmatchtime = 1
       end
       if command.line:match("AHMB uldah") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 30
-           logmatchtime = 30
+           logmatchtime = 1
       end
+    end
     end
     if mushtextstep == 1 then
        if AetheryteHelper.insSelectGUI.open == true then
        mushtext114 = false
        logmatch = nil
-       mushtextstep = 0
        else
        mushtextstep = 2
        end
@@ -6709,7 +9040,7 @@ function AetheryteHelper.mushTextCommands()
           mushtextstep = 3
           else
           mushtext114 = false
-          mushtextstep = 0
+          mushtextstep = 99
           end
        end
      end
@@ -6719,10 +9050,10 @@ function AetheryteHelper.mushTextCommands()
            AHSET.delay = 150
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
            if language == 0 then
-           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは5秒ほど閉じることができません")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは30秒ほど閉じることができません")
            mushtextstep = 99
            else
-           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 5 sec to window")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 30 sec to window")
            mushtextstep = 99
            end
         end
@@ -6731,7 +9062,6 @@ function AetheryteHelper.mushTextCommands()
        if AHSET.mushmovetoMB == true and mushMBlim == true then
        mushtextMBlim = false
        logmatch = nil
-       mushtextstep = 0
        else
        mushtextstep = 11
        end
@@ -6743,7 +9073,7 @@ function AetheryteHelper.mushTextCommands()
           mushtextstep = 12
           else
           mushtextMBlim = false
-          mushtextstep = 0
+          mushtextstep = 99
           end
        end
      end
@@ -6759,7 +9089,6 @@ function AetheryteHelper.mushTextCommands()
        if AHSET.mushmovetoMB == true and mushMBgri == true then
        mushtextMBgri = false
        logmatch = nil
-       mushtextstep = 0
        else
        mushtextstep = 21
        end
@@ -6771,7 +9100,7 @@ function AetheryteHelper.mushTextCommands()
           mushtextstep = 22
           else
           mushtextMBgri = false
-          mushtextstep = 0
+          mushtextstep = 99
           end
        end
      end
@@ -6787,7 +9116,6 @@ function AetheryteHelper.mushTextCommands()
        if AHSET.mushmovetoMB == true and mushMBul == true then
        mushtextMBul = false
        logmatch = nil
-       mushtextstep = 0
        else
        mushtextstep = 31
        end
@@ -6799,7 +9127,7 @@ function AetheryteHelper.mushTextCommands()
           mushtextstep = 32
           else
           mushtextMBul = false
-          mushtextstep = 0
+          mushtextstep = 99
           end
        end
      end
@@ -6812,7 +9140,7 @@ function AetheryteHelper.mushTextCommands()
         end
      end          
      if mushtextstep == 99 then
-        mushlogtime = os.time()
+        mushlogtime = 0
         mushtext114 = false
         mushtextMBlim = false
         mushtextMBgri = false
