@@ -2,8 +2,11 @@
 this is a module in MMOminion(FFXIV Minion64)
 
 # sample
-![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/sample.png)
- 
+![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/sample.png)<br>
+
+# Renewal(v1.6.0)
+![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/newsample.png)<br>
+
 # Features
 There are many excellent paid add-ons.<br>
 However, this is a feature that add-ons do not have.<br>
