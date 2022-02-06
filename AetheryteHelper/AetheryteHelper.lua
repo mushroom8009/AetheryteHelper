@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.0",   
+      Version =         "1.6.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -117,6 +117,9 @@ local kinokoProject = {
                       "          add youtube link",
                       "          & jumbocactpot assist(remake)",
                       "[1.6.0] - Renewal UI",
+                      "[1.6.1] - Stabilize text commands.",
+                      "          Speed adjustment of some functions",
+                      "          UI adjustment at the beginning of new game",
 
                     },
       
@@ -477,6 +480,8 @@ mushtooltips = {
          tip107 = "クジを3枚購入",
          tip108 = "分解オプションを開く",
          tip109 = "ツールチップの表示/非表示",
+         tip110 = "右クリックでコピーできます",
+         tip111 = "安定を重視したため、コマンドの受付までに5秒程度かかります\n受理されるとカラーメッセージ(エコー)でお知らせします\nしばらく待っても反応がない場合\n公式テキストコマンドの[ /clearlog ]を試して下さい\nそれでもダメな場合\nminionのリロード・ゲームの再起動などを実施してください",
 
   },
   en = { tip01 = "Outside of use area",
@@ -589,6 +594,8 @@ mushtooltips = {
          tip107 = "3 ticket purchases",
          tip108 = "Desynthseise Options",
          tip109 = "tooltips Show/hide",
+         tip110 = "Right click to copy",
+         tip111 = "Due to the importance of stability,\nit may take a about 5 sec for the command to be accepted.\nit will be notified with a color message when it is accepted.\nif there is no response after waiting for a while\nplease try the official text command [ /clearlog ] first.\nif it still doesn't work\nplease reload minion or reboot game.",
 
   },
 }
@@ -1467,7 +1474,6 @@ function AetheryteHelper.GLUtelepo()
                mushMBlim = false
                mushMBul = false
                griMBStep = 0
-               mushlooptimer = 100
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
@@ -1515,7 +1521,6 @@ function AetheryteHelper.GLUtelepo()
                mushMBlim = true
                mushMBul = false
                griMBStep = 0
-               mushlooptimer = 100
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
@@ -1563,7 +1568,6 @@ function AetheryteHelper.GLUtelepo()
                mushMBlim = false
                mushMBul = true
                griMBStep = 0
-               mushlooptimer = 100
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
@@ -1635,7 +1639,6 @@ function AetheryteHelper.DrawadWIP()
       GUI:Image(ImageFolder..[[undersize.png]],30,30)
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
-            mushlooptimer = 100
             IDUSstep = 0
             mushundersize = true
             end
@@ -1653,7 +1656,6 @@ function AetheryteHelper.DrawadWIP()
       GUI:Image(ImageFolder..[[explo.png]],30,30)
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
-            mushlooptimer = 100
             IDexstep = 0
             mushExplorer = true
             end
@@ -1750,10 +1752,26 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.TCListwindow()
   if (AetheryteHelper.TCList.open) then
-    local TCListflags = GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
-    GUI:SetNextWindowSize(240,280)
+    local TCListflags = GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize --+ GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(240,260)
      AetheryteHelper.TCList.visible, AetheryteHelper.TCList.open = GUI:Begin('AH TextCommand List', AetheryteHelper.TCList.open,TCListflags)
     if (AetheryteHelper.TCList.visible) then
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[howto.png]],20,20)
+      if GUI:IsItemHovered() then
+        if language == 0 then
+          GUI:SetTooltip(mushtooltips.jp.tip111)
+        else
+          GUI:SetTooltip(mushtooltips.en.tip111)
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:TextColored(0,1,0,1,"More commands will be added!")
+      GUI:Spacing()
+      GUI:Separator()
       GUI:Spacing()
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[AHon.png]],30,40)
@@ -1763,6 +1781,23 @@ function AetheryteHelper.TCListwindow()
       GUI:Text("mini ins selecter")
       GUI:PushItemWidth(120)
       GUI:InputText("###114","/e AHmode 114",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHmode 114")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+         end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
       GUI:EndGroup()
       GUI:Spacing()
       GUI:Separator()
@@ -1775,6 +1810,23 @@ function AetheryteHelper.TCListwindow()
       GUI:Text("move to MB in limsa")
       GUI:PushItemWidth(120)
       GUI:InputText("###MB1","/e AHMB limsa",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHMB limsa")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
       GUI:EndGroup()
       GUI:Spacing()
       GUI:Separator()
@@ -1787,6 +1839,23 @@ function AetheryteHelper.TCListwindow()
       GUI:Text("move to MB in gridania")
       GUI:PushItemWidth(120)
       GUI:InputText("###MB2","/e AHMB gridania",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHMB gridania")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+        end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
       GUI:EndGroup()
       GUI:Spacing()
       GUI:Separator()
@@ -1799,13 +1868,87 @@ function AetheryteHelper.TCListwindow()
       GUI:Text("move to MB in Ul'dah")
       GUI:PushItemWidth(120)
       GUI:InputText("###MB3","/e AHMB uldah",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHMB uldah")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
       GUI:EndGroup()
-      GUI:Spacing(20)
-      GUI:TextColored(0,1,0,1,"More commands will be added!")
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[moveGC.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("move to GC")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###MB3","/e AHGC move",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHGC move")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[bjem.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("bicolor gemstone amount")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###MB3","/e AHBJ num",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHBJ num")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
+      GUI:EndGroup()
     end        
     GUI:End()  
   end
 end
+
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.SubWindow()
   if (AetheryteHelper.miniGUI.open) then
@@ -2266,7 +2409,6 @@ function AetheryteHelper.jumboWindow()
       GUI:EndGroup()
       if (GUI:IsItemHovered()) then
          if (GUI:IsMouseClicked(0)) then
-         mushlooptimer = 3000
          mushJumbocactpothelper = not mushJumbocactpothelper
          mushGSjcpstep = 0
         end   
@@ -4213,7 +4355,6 @@ function AetheryteHelper.subtoolmateria()
               if (GUI:IsMouseClicked(0)) then
               AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
               AetheryteHelper.SaveSettings()
-              mushlooptimer = 2000
               end
               if AHSET.mushtooltips == true then
               if language == 0 then
@@ -4241,7 +4382,6 @@ function AetheryteHelper.subtoolmateria()
               end       
          end
       else
-         GUI:Dummy(40,40)
          GUI:SameLine(10,-40)
          GUI:Image(ImageFolder..[[materia_lock.png]],40,40)
          if (GUI:IsItemHovered()) then
@@ -4266,7 +4406,6 @@ function AetheryteHelper.subtoolmateria()
               if (GUI:IsMouseClicked(0)) then
               AHSET.isPotionEnabled = not AHSET.isPotionEnabled
               AetheryteHelper.SaveSettings()
-              mushlooptimer = 1000
               end
               if (GUI:IsMouseClicked(1)) then
               AHSET.isBotStatusP = not AHSET.isBotStatusP
@@ -4348,7 +4487,6 @@ function AetheryteHelper.subtoolmateria()
               if (GUI:IsMouseClicked(0)) then
               AHSET.isManualEnabled = not AHSET.isManualEnabled
               AetheryteHelper.SaveSettings()
-              mushlooptimer = 1000
               end
               if (GUI:IsMouseClicked(1)) then
               AHSET.isBotStatusM = not AHSET.isBotStatusM
@@ -4572,7 +4710,6 @@ function AetheryteHelper.subtoolDesynth()
              end
           end
       else
-      GUI:Dummy(40,40)
       GUI:SameLine(10,-40)
       GUI:Image(ImageFolder..[[desynth_lock.png]],40,40)
          if (GUI:IsItemHovered()) then
@@ -4740,7 +4877,6 @@ function AetheryteHelper.subtoolAR()
                         end
              end
       else
-      GUI:Dummy(40,40)
       GUI:SameLine(10,-40)
       GUI:Image(ImageFolder..[[AR_lock.png]],40,40)
       if (GUI:IsItemHovered()) then
@@ -4784,15 +4920,15 @@ function AetheryteHelper.subtoolGC()
      GUI:EndGroup()
      GUI:BeginGroup()
      GUI:PushItemWidth(100)
-     if language == 0 then
+     if language == 0 and Player.GrandCompany ~= 0 then
      AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCJP,1)
-     elseif language == 1 then
+     elseif language == 1 and Player.GrandCompany ~= 0 then
      AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
-     elseif language == 2 then
+     elseif language == 2 and Player.GrandCompany ~= 0 then
      AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCDE,1)
-     elseif language == 3 then
+     elseif language == 3 and Player.GrandCompany ~= 0 then
      AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCFR,1)
-     else
+     elseif Player.GrandCompany ~= 0 then
      AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
      end
      if Player.GrandCompany == 0 then 
@@ -4861,10 +4997,9 @@ function AetheryteHelper.subtoolGC()
               end
               if (GUI:IsItemHovered()) then
               if (GUI:IsMouseClicked(0)) then
-              mushlooptimer = 1000
               mushEXstep = 0
               GCexchange = not GCexchange
-              sealstoitem = false
+              sealstoitem = false 
               if mushTrustmode == true then GCexchange = false end
               if Player.GrandCompanyRank < 6 then GCexchange = false end
               if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
@@ -4892,7 +5027,6 @@ function AetheryteHelper.subtoolGC()
               end
               if (GUI:IsItemHovered()) then
               if (GUI:IsMouseClicked(0)) then
-              mushlooptimer = 1000
               mushEXstep = 0
               GCexchange = not GCexchange
               sealstoitem = false
@@ -4936,7 +5070,6 @@ function AetheryteHelper.subtoolGC()
            GUI:Image(ImageFolder..[[moveGC_non.png]],40,40)
            if (GUI:IsItemHovered()) then
               if (GUI:IsMouseClicked(0)) then
-              mushlooptimer = 1000
               AutoMoveGC = not AutoMoveGC
               AHSET.isSalvageEnabled = false
               end
@@ -4957,7 +5090,6 @@ function AetheryteHelper.subtoolGC()
       if (GUI:IsItemHovered()) then
         if (GUI:IsMouseClicked(0)) then
            Player:Stop()
-           mushlooptimer = 1000
            AutoMoveGC = false
            GCexchange = false
         end
@@ -5030,7 +5162,6 @@ function AetheryteHelper.subtoolGC()
            if (GUI:IsItemHovered()) then
            if (GUI:IsMouseClicked(0)) then
            Remateria = not Remateria
-           mushlooptimer = 2000
            end
            if AHSET.mushtooltips == true then
               if language == 0 then
@@ -5123,7 +5254,6 @@ function AetheryteHelper.GCtrunin()
          end
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
-            mushlooptimer = 500
             sealstoitem = not sealstoitem
             GCexchange = false
             mushtoItemstep = 0
@@ -5141,7 +5271,6 @@ function AetheryteHelper.GCtrunin()
          GUI:Image(ImageFolder..[[TIseals_non.png]],40,40)
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
-            mushlooptimer = 500
             sealstoitem = not sealstoitem
             GCexchange = false
             mushtoItemstep = 0
@@ -5165,7 +5294,6 @@ function AetheryteHelper.GCtrunin()
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
             mushTrustmode = not mushTrustmode
-            mushlooptimer = 5000
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
@@ -5181,7 +5309,6 @@ function AetheryteHelper.GCtrunin()
          if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
             mushTrustmode = not mushTrustmode
-            mushlooptimer = 5000
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
@@ -6224,7 +6351,7 @@ function AetheryteHelper.moveMBlimsa()
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
                   Player:Teleport(8,0)
-                  mushlooptimer = 1000
+                  --mushlooptimer = 1000
                   mushMBlim = false
                   end
                elseif AHSET.mushmovetoMB == true then
@@ -6331,7 +6458,7 @@ function AetheryteHelper.moveMBgridania()
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
                   Player:Teleport(2,0)
-                  mushlooptimer = 1000
+                  --mushlooptimer = 1000
                   mushMBlim = false
                   end
                elseif AHSET.mushmovetoMB == true then
@@ -6450,7 +6577,7 @@ function AetheryteHelper.moveMBuldah()
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
                   Player:Teleport(9,0)
-                  mushlooptimer = 1000
+                  --mushlooptimer = 1000
                   mushMBlim = false
                   end
                elseif AHSET.mushmovetoMB == true then
@@ -6549,10 +6676,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.Exchange()
-             if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
+             mushlooptimer = 1000
+             if Player.GrandCompanyRank < 6 then GCexchange = false
+             elseif Player.GrandCompany  == 0 then GCexchange = false
+             elseif Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
              elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
-             elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah) 
-             else GCexchange = false
+             elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah)
              end
        if (GCexchange)then
               if( mushEXstep == 0) then
@@ -6692,7 +6821,8 @@ function AetheryteHelper.mushSealstoItem()
         GCexchangeItems.id[6] = 26520
        else sealstoitem = false end
     
-              if( mushtoItemstep == 0) then            
+              if( mushtoItemstep == 0) then
+                 mushlooptimer = 500            
                  Player:SetTarget(GCID2)
                  if Player:GetTarget().Distance < 6 then  
                  Player:Interact(GCID2)
@@ -6909,6 +7039,7 @@ end
 --
 
 function AetheryteHelper.mushEXchangeTrust(event)
+  if Player.GrandCompany == 0 or Player.GrandCompanyRank < 6 then mushTrustmode = false end
   local step = 0
   local nohinsoubi = 0
   if(mushTrustmode == true ) then
@@ -6922,6 +7053,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                if (table.valid(equiplist)) then
                for _, item in pairs(equiplist) do
                       if item.Condition < AHSET.mushrepairGear then
+                         mushlooptimer = 500
                          Player:Stop()
                          ActionList:Get(5,6):Cast()
                          d("[AH][Tmode]:Repair")
@@ -7366,7 +7498,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --
 function AetheryteHelper.undersizeIDswitch()
-   if mushundersize == true then    
+   if mushundersize == true then
+         mushlooptimer = 100    
       if IDUSstep == 0 then
          if ActionList:IsReady() and Duty:IsQueued() == false then
          if IsControlOpen("ContentsFinder") then
@@ -7434,7 +7567,8 @@ end
             
 
 function AetheryteHelper.explorerIDswitch()
-   if mushExplorer == true then    
+   if mushExplorer == true then
+      mushlooptimer = 100    
       if IDexstep == 0 then
          if ActionList:IsReady() and Duty:IsQueued() == false then
          if IsControlOpen("ContentsFinder") then
@@ -7513,6 +7647,7 @@ function AetheryteHelper.Jumbocactpothelper()
     local jbc34 = AHSET.jumbo34
 if (mushJumbocactpothelper) then
      if mushGSjcpstep == 0 then
+        mushlooptimer = 100
         Player:SetTarget(4299949120)
         if Player:GetTarget().Distance < 6 then
         Player:Interact(4299949120)
@@ -7531,15 +7666,18 @@ if (mushJumbocactpothelper) then
      if mushGSjcpstep == 2 then
        if IsControlOpen("SelectString") then                           
           UseControlAction("SelectString","SelectIndex",0)
+          mushlooptimer = 100
           mushGSjcpstep = 3
        end
        --d("mushGSjcpstep"..mushGSjcpstep)
      end
 
      if mushGSjcpstep == 3 then
-       if IsControlOpen("LotteryWeeklyInput")then 
+       if IsControlOpen("LotteryWeeklyInput")then
+          mushlooptimer = 3000
           mushGSjcpstep = 4
-       elseif IsControlOpen("LotteryWeeklyRewardList") then 
+       elseif IsControlOpen("LotteryWeeklyRewardList") then
+          mushlooptimer = 100 
           mushGSjcpstep = 38
        end 
        --d("mushGSjcpstep"..mushGSjcpstep)
@@ -7715,6 +7853,7 @@ if (mushJumbocactpothelper) then
     if mushGSjcpstep == 36 then
        if IsControlOpen("LotteryWeeklyInput") then
             GetControl("LotteryWeeklyInput"):PushButton(25,1)
+            mushlooptimer = 100
             mushGSjcpstep = 37
         --d("mushGSjcpstep"..mushGSjcpstep)
        end
@@ -7723,7 +7862,8 @@ if (mushJumbocactpothelper) then
          if IsControlOpen("SelectYesno") then
          UseControlAction("SelectYesno","Yes")
          mushGSjcpstep = 37
-         elseif IsControlOpen("SelectString") then 
+         elseif IsControlOpen("SelectString") then
+         mushlooptimer = 100 
          mushGSjcpstep = 39
          end
         --d("mushGSjcpstep"..mushGSjcpstep)
@@ -7745,11 +7885,8 @@ if (mushJumbocactpothelper) then
      end
      if mushGSjcpstep == 40 then
           if IsControlOpen("Talk") then                           
-             UseControlAction("Talk", "Destroy")
+             UseControlAction("Talk", "Click")
              mushGSjcpstep = 40             
-             --d("mushGSjcpstep"..mushGSjcpstep)
-             mushlooptimer = 1000  
-             mushJumbocactpothelper = false
           else 
              mushlooptimer = 1000
              mushJumbocactpothelper = false
@@ -7772,6 +7909,7 @@ function AetheryteHelper.SalvageAll()
      for _, item in pairs(ilist) do
      local equipflag = item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AHSET.dminil and item.level < AHSET.dmaxil
       if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0) then
+      mushlooptimer = 1000
       if(ActionList:IsReady()) then
       item:Salvage()     
       return
@@ -8764,6 +8902,7 @@ function AetheryteHelper.mushMaterialize()
             if (table.valid(ilist)) then
             for _, item in pairs(ilist) do
             if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+               mushlooptimer = 1500
                if(ActionList:IsReady()) then
                item:Convert()
                return
@@ -8776,7 +8915,6 @@ function AetheryteHelper.mushMaterialize()
          end
    elseif (AHSET.DesynthTrust == false ) and ( mushTrustmode == false ) then
       if(AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
-            mushlooptimer = 1500
             if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
             UseControlAction("MaterializeDialog","Yes")
             return
@@ -8789,6 +8927,7 @@ function AetheryteHelper.mushMaterialize()
             if (table.valid(ilist)) then
             for _, item in pairs(ilist) do
             if (item.spiritbond == 100 and item:CanCast(5, 14)) then
+               mushlooptimer = 1500
                if(ActionList:IsReady()) then
                item:Convert()
                return
@@ -8812,6 +8951,7 @@ function AetheryteHelper.mushpotionmanual()
        return
        end
     if (AHSET.isMateriaEnabled and AHSET.isPotionEnabled and MissingBuffs(Player,"49")) then
+      mushlooptimer = 100
       local potionid = {7059, 19885, 27960}
       --錬精薬　強錬精薬　極錬精薬
       for i = 0, 3 do
@@ -8825,6 +8965,7 @@ function AetheryteHelper.mushpotionmanual()
       end
     end
     if (AHSET.isMateriaEnabled and AHSET.isManualEnabled and MissingBuffs(Player,"1083")) then
+      mushlooptimer = 100
       local manualid = {14951}
       --スピリットマニュアル
       for i = 0, 3 do
@@ -8842,6 +8983,8 @@ function AetheryteHelper.mushpotionmanual()
 
 function AetheryteHelper.mushsRemateria()
     AetheryteHelper.Inventoryfree()
+    local seisen = ActionList:Get(5,14)
+    if seisen.usable == false then Remateria = false end
     if (Remateria) then
         if mushPbtotal < 1 then
         Remateria = false
@@ -8866,6 +9009,7 @@ function AetheryteHelper.mushsRemateria()
         --end
         for _, item in pairs(ilist) do
         if table.size(item.materias) > 0 and item.equipslot > 0 and item.requiredlevel > 1 then
+          mushlooptimer = 1000
           if ActionList:IsReady() then
           d("[AH][RetrieveMateria]:Count["..materia.."]")
           item:RetrieveMateria()
@@ -8891,7 +9035,6 @@ function AetheryteHelper.mushsubAR()
        end       
        local syusyuhin = 0
        if (AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
-           mushtoItemstep = 2000
            if (IsControlOpen("PurifyResult")) then
            UseControlAction("PurifyResult", "Close")
            return
@@ -8912,6 +9055,7 @@ function AetheryteHelper.mushsubAR()
              if (table.valid(Rlist)) then
              for _, item in pairs(Rlist) do
              if( item.IsCollectable == true and item.IsBinding == true ) then
+              mushtoItemstep = 1000
               syusyuhin = syusyuhin + 1
               if(ActionList:IsReady()) then
               item:Purify()
@@ -8948,6 +9092,7 @@ function AetheryteHelper.mushsubAR()
         for _, item in pairs(Rlist) do        
         if( item.IsCollectable == true and item.IsBinding == true) then
           syusyuhin = syusyuhin + 1
+          mushlooptimer = 1000
            if(ActionList:IsReady()) then
            item:Purify()         
            return
@@ -8964,6 +9109,7 @@ end
 function AetheryteHelper.Desynthseis()
 if (AHSET.DesynthTrust) then
        if (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:IsQueued() == true ) then
+       mushlooptimer = 1000
        if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
        UseControlAction("SalvageDialog","Confirm")
        end
@@ -8974,6 +9120,7 @@ if (AHSET.DesynthTrust) then
        end
        end      
    elseif (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then   
+       mushlooptimer = 1000
        if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
        UseControlAction("SalvageDialog","Confirm")
        end
@@ -8990,12 +9137,15 @@ end
 function AetheryteHelper.mushTextCommands()
     local log = GetChatLines()
     local logmatch = nil
-    local mushtextstep = 0
+    local mushtextstep = nil
     local logmatchtime = 0
     local mushtext114 = false
     local mushtextMBlim = false
     local mushtextMBgri = false
     local mushtextMBul = false
+    local mushtextGC = false
+    local mushtextjem = false
+
 
     if Duty:IsQueued() == false then
     for _, command in pairs(log) do  
@@ -9003,25 +9153,37 @@ function AetheryteHelper.mushTextCommands()
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 1
-           logmatchtime = 1
+           logmatchtime = 0
       end
       if command.line:match("AHMB limsa") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 10
-           logmatchtime = 1
+           logmatchtime = 0
       end
       if command.line:match("AHMB gridania") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 20
-           logmatchtime = 1
+           logmatchtime = 0
       end
       if command.line:match("AHMB uldah") and command.code == 56 then
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 30
-           logmatchtime = 1
+           logmatchtime = 0
+      end
+      if command.line:match("AHGC move") and command.code == 56 then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 40
+           logmatchtime = 0
+      end
+      if command.line:match("AHBJ num") and command.code == 56 then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 50
+           logmatchtime = 0
       end
     end
     end
@@ -9035,7 +9197,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 2 then
        if logmatch then        
-          if mushlogtime > os.time()-logmatchtime then
+          if mushlogtime == os.time()+logmatchtime then
           mushtext114 = true
           mushtextstep = 3
           else
@@ -9048,14 +9210,15 @@ function AetheryteHelper.mushTextCommands()
         if mushtext114 then
            AetheryteHelper.insSelectGUI.open = true
            AHSET.delay = 150
+           d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
-           if language == 0 then
-           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは30秒ほど閉じることができません")
+           --if language == 0 then
+           --SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは30秒ほど閉じることができません")
+           --mushtextstep = 99
+           --else
+           --SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 30 sec to window")
            mushtextstep = 99
-           else
-           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 30 sec to window")
-           mushtextstep = 99
-           end
+           --end
         end
      end
      if mushtextstep == 10 then
@@ -9068,7 +9231,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 11 then
        if logmatch then        
-          if mushlogtime > os.time()-logmatchtime then
+          if mushlogtime == os.time()-logmatchtime then
           mushtextMBlim = true
           mushtextstep = 12
           else
@@ -9081,6 +9244,8 @@ function AetheryteHelper.mushTextCommands()
         if mushtextMBlim then
            AHSET.mushmovetoMB = true
            mushMBlim = true
+           d("[AH][textcommand]:success")
+
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Limsa]:ON")
            mushtextstep = 99
         end
@@ -9095,7 +9260,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 21 then
        if logmatch then        
-          if mushlogtime > os.time()-logmatchtime then
+          if mushlogtime == os.time()-logmatchtime then
           mushtextMBgri = true
           mushtextstep = 22
           else
@@ -9108,6 +9273,7 @@ function AetheryteHelper.mushTextCommands()
         if mushtextMBgri then
            AHSET.mushmovetoMB = true
            mushMBgri = true
+           d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Gridania]:ON")
            mushtextstep = 99
         end
@@ -9122,7 +9288,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 31 then
        if logmatch then        
-          if mushlogtime > os.time()-logmatchtime then
+          if mushlogtime == os.time()-logmatchtime then
           mushtextMBul = true
           mushtextstep = 32
           else
@@ -9135,18 +9301,78 @@ function AetheryteHelper.mushTextCommands()
         if mushtextMBul then
            AHSET.mushmovetoMB = true
            mushMBul = true
+           d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Ul'dah]:ON")
            mushtextstep = 99
         end
-     end          
+     end
+     if mushtextstep == 40 then
+       if AutoMoveGC == true then
+       mushtextGC = false
+       logmatch = nil
+       else
+       mushtextstep = 41
+       end
+    end
+    if mushtextstep == 41 then
+       if logmatch then        
+          if mushlogtime == os.time()-logmatchtime then
+          mushtextGC = true
+          mushtextstep = 42
+          else
+          mushtextMBul = false
+          mushtextstep = 99
+          end
+       end
+     end
+     if mushtextstep == 42 then
+        if mushtextGC then
+           AutoMoveGC = true
+           d("[AH][textcommand]:success")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][GC]:ON")
+           mushtextstep = 99
+        end
+     end
+     if mushtextstep == 50 then
+       if mushtextjem == true then
+       logmatch = nil
+       else
+       mushtextstep = 51
+       end
+    end
+    if mushtextstep == 51 then
+       if logmatch then        
+          if mushlogtime == os.time()-logmatchtime then
+          mushlooptimer = 1000
+          mushtextjem = true
+          mushtextstep = 52
+          else
+          mushtextjem = false
+          mushtextstep = 99
+          end
+       end
+     end
+     if mushtextstep == 52 then
+        if mushtextjem then
+          local jemcount = Inventory:GetCurrencyCountByID(26807)
+          d("[AH][textcommand]:success")
+          if language == 0 then
+           SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 バイカラージェム："..jemcount.."個"))
+           else
+           SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 bicolor gemstone："..jemcount))
+           mushtextstep = 99
+          end
+        end
+     end                    
      if mushtextstep == 99 then
-        mushlogtime = 0
         mushtext114 = false
         mushtextMBlim = false
         mushtextMBgri = false
         mushtextMBul = false
+        mushtextGC = false
+        mushtextjem = false
         logmatch = nil
-      d("[AH][textcommand]:success")
+        mushlooptimer = 1000
      end
 
 end
@@ -9155,6 +9381,7 @@ function AetheryteHelper.mushsubtool()
 
     if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
        lastUpdatePulse = Now()
+            
             AetheryteHelper.Exchange()
             AetheryteHelper.mushSealstoItem()
             AetheryteHelper.movetoGCAll()
@@ -9170,9 +9397,9 @@ function AetheryteHelper.mushsubtool()
             AetheryteHelper.Desynthseis()
             AetheryteHelper.undersizeIDswitch()
             AetheryteHelper.explorerIDswitch()
-            AetheryteHelper.mushTextCommands()            
-
-    end
+            AetheryteHelper.mushTextCommands()
+     end
+            
     
     
        
