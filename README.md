@@ -1,3 +1,5 @@
+[![Downloads](https://img.shields.io/github/downloads/mushroom8009/AetheryteHelper/total.svg)](https://github.com/mushroom8009/AetheryteHelper/releases)
+
 # Aetheryte Helper
 this is a module in MMOminion(FFXIV Minion64)
 
