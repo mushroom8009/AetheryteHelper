@@ -8,6 +8,9 @@ this is a module in MMOminion(FFXIV Minion64)
 
 # Renewal(v1.6.0)
 ![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/newsample.png)<br>
+you think "i need to compact size",<br>
+you can it.<br>
+![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/mini.png)<br>
 
 # Features
 There are many excellent paid add-ons.<br>
