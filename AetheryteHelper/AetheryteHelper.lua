@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.1",   
+      Version =         "1.6.3",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -120,6 +120,11 @@ local kinokoProject = {
                       "[1.6.1] - Stabilize text commands.",
                       "          Speed adjustment of some functions",
                       "          UI adjustment at the beginning of new game",
+                      "[1.6.2] - add text commands.",
+                      "          add mini World Visit window",
+                      "          adjustment of TrustMode",
+                      "[1.6.2.1] - adjust text commands.",
+                      "[1.6.3] - Changed the mechanics of text commands.",
 
                     },
       
@@ -217,6 +222,12 @@ AetheryteHelper.miniGUI = {
 }
 AetheryteHelper.insSelectGUI = {
   name = "insselecter###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.miniWV = {
+  name = "miniWV###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
@@ -1803,6 +1814,35 @@ function AetheryteHelper.TCListwindow()
       GUI:Separator()
       GUI:Spacing()
       GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[AHon.png]],30,40)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("mini World selecter")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###WVmini","/e AHWV mini",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AHWV mini")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+         end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
       GUI:Image(ImageFolder..[[GCMBlim.png]],30,30)
       GUI:EndGroup()
       GUI:SameLine()
@@ -1929,6 +1969,35 @@ function AetheryteHelper.TCListwindow()
       if GUI:IsItemHovered() then
         if GUI:IsItemClicked(1) then
           GUI:SetClipboardText("/e AHBJ num")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[WeeEa.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("minion WeeEa count")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###MB3","/e AH WeeEa ",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AH WeeEa")
           if language == 0 then
           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
           else
@@ -2226,7 +2295,6 @@ function AetheryteHelper.insSelecterWindow()
       GUI:End()  
   end
 end
-
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -5669,6 +5737,136 @@ function AetheryteHelper.Origin()
            end
 end
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+function AetheryteHelper.SVRSelectermini()
+  if (AetheryteHelper.miniWV.open) then
+    local miniWVflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(220,60)
+     AetheryteHelper.miniWV.visible, AetheryteHelper.miniWV.open = GUI:Begin('miniWV', AetheryteHelper.miniWV.open,miniWVflags)
+    if (AetheryteHelper.miniWV.visible) then
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Columns(3)
+      GUI:SetColumnOffset(1, 40) GUI:SetColumnOffset(2, 180)
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Dummy(20,20)
+      if selectins == true then
+              GUI:SameLine(-5,-20)
+              GUI:Image(ImageFolder..[[AHon.png]],20,20)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              isins = 4
+
+              selectins = not selectins
+              if not selectins then
+              end
+              Player:ClearTarget()
+              Player:Stop()
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+              end
+              end      
+      elseif selectins == false then
+              GUI:SameLine(-5,-30)
+              GUI:Image(ImageFolder..[[AHoff.png]],20,20)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              isins = 4
+              selectins = not selectins
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip01)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip01)
+              end
+              end
+              end       
+      end
+      GUI:EndGroup()
+      GUI:NextColumn()
+      --GUI:Text("World select")
+      AetheryteHelper.Origin()
+            AetheryteHelper.SaveSettings()
+            MushmoveServerlist = Origin_list
+            for k, v in pairs(MushmoveServerlist) do
+                local templist = MushmoveServerlist
+--d(templist)
+                for k,v in pairs(WorldID) do
+                    if (k == Player.currentworld) then local tempWorld = v 
+                    tempname = tostring(tempWorld.Name)
+--d(tempname)
+                    for k,v in pairs(templist) do
+                    local tempindex = table.find(templist, tempname)
+--d(tempindex)     
+                    if (tempindex ~= nil) then 
+                    table.remove(templist,tempindex)
+                    else tempindex = 0
+                    end 
+                    end
+                    end
+                 end
+             end
+     AetheryteHelper.autoDCset()
+     GUI:Dummy(120,1)
+     GUI:BeginGroup()
+     GUI:PushItemWidth(120)
+     if (table.valid(FFXIVServerlist[AHSET.selectDC])) then
+     selectSVR = GUI:Combo( "###server",selectSVR,MushmoveServerlist,height or 20)
+     else
+     GUI:Combo( "DC",1,noDClist,1)
+     GUI:Combo( "server",1,FFXIVServerlist[11],1)
+     end
+     if (GUI:IsItemHovered()) then
+      if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip95)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip95)
+              end
+              end
+     end
+     GUI:EndGroup()
+     isServer = selectSVR
+      GUI:NextColumn()
+      GUI:SameLine(10)
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[close.png]],20,20)
+      if (GUI:IsItemHovered()) then
+          if GUI:IsMouseDown(0) then              
+          AetheryteHelper.miniWV.open = false
+          end
+          if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip22)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip22)
+              end
+              end
+      end
+      GUI:EndGroup()
+      GUI:Columns()
+      GUI:Spacing()
+      GUI:Separator()
+
+      end
+      GUI:End()  
+  end
+end
+
+-------------------------------------------------------------------------------------------------------------
+
+
+
+
 function AetheryteHelper.DCSVselect()
             AetheryteHelper.Origin()
             AetheryteHelper.SaveSettings()
@@ -6012,6 +6210,7 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.subtoolDesOPwindow()
   AetheryteHelper.VlWindow()
   AetheryteHelper.TCListwindow()
+  AetheryteHelper.SVRSelectermini()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -7083,6 +7282,11 @@ function AetheryteHelper.mushEXchangeTrust(event)
            if (item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.Rarity > 1) then 
            nohinsoubi = nohinsoubi + 1
            end
+        end
+        end
+        end
+        end
+        if nohinsoubi == 0 then GCexchangeT = false end
            
 
                         if step == 0 then
@@ -7092,7 +7296,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               step = 1
                            elseif nohinsoubi < 1 and sealstoitemT == false and GCexchangeT == false and Duty:IsQueued() == false then
                               Dawncloser = false
-                              mushlooptimer = 5000
+                              mushlooptimer = 1000
                               step = 42
                            elseif nohinsoubi > 0 and Duty:IsQueued() == false then
                               Dawncloser = true
@@ -7116,9 +7320,11 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                GCexchangeT = false
                                step = 0
                             elseif mushtruninGCitem == true and mushtruninGCseals == true then
+                               d("[AH][TMode]:Trun in")
                                sealstoitemT = true
                                step = 3
                             elseif nohinsoubi > 0 then
+                              d("[AH][TMode]:Exchange")
                                GCexchangeT = true
                                step = 30
                             end
@@ -7127,7 +7333,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                         if step == 3 then
                            if (sealstoitemT == true and mushtruninGCitem == true and mushtruninGCseals == true) then
                                 mushlooptimer = 500
-                             d("[AH][Tmode][Trunin]:GCselect")
+                             --d("[AH][Tmode][Trunin]:GCselect")
                               if Player.GrandCompany == 1 then
                                  GCID2 = tonumber(mushCD2.limsa)
                                  GCexchangeItems.id[6] = 26518
@@ -7145,7 +7351,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                         end
     
                         if step == 4 then
-                            d("[AH][Tmode][Trunin]:itemSelect")            
+                            --d("[AH][Tmode][Trunin]:itemSelect")            
                               Player:SetTarget(GCID2)
                               Player:Interact(GCID2)
                               if IsControlOpen("SelectYesno") then
@@ -7171,7 +7377,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end
                         end
                         if step == 5 then
-                            d("[AH][Tmode][Trunin]step:"..step)
+                            --d("[AH][Tmode][Trunin]step:"..step)
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetRankIndex",0)
                               if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 0 then
@@ -7182,7 +7388,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                  
                         end
                         if step == 6 then
-                            d("[AH][Tmode][Trunin]step:"..step)
+                            --d("[AH][Tmode][Trunin]step:"..step)
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
                               if GetControl("GrandCompanyExchange"):GetRawData()[68].value == 200 then
@@ -7193,14 +7399,14 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                   
                         end
                         if step == 7 then
-                            d("[AH][Tmode][Trunin]step:"..step)
+                            --d("[AH][Tmode][Trunin]step:"..step)
                               if IsControlOpen("GrandCompanyExchange") then
                               GetControl("GrandCompanyExchange"):Action("SelectItem",0,mushhosiikazu)
                               step = 24
                               end
                         end
                         if step == 8 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
                               if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
@@ -7211,7 +7417,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                  
                         end
                         if step == 9 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
                               if GetControl("GrandCompanyExchange"):GetRawData()[70].value == 600 then
@@ -7222,14 +7428,14 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end
                         end
                         if step == 10 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") then
                               GetControl("GrandCompanyExchange"):Action("SelectItem",2,mushhosiikazu)
                               step = 24
                               end
                         end
                         if step == 11 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
                               if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
@@ -7240,7 +7446,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end
                         end
                         if step == 12 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetTabIndex",4)
                               if GetControl("GrandCompanyExchange"):GetRawData()[69].value == 7000 then
@@ -7251,14 +7457,14 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end
                         end
                         if step == 13 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") then
                               GetControl("GrandCompanyExchange"):Action("SelectItem",1,mushhosiikazu)
                               step = 24
                               end
                         end
                         if step == 14 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
                               if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
@@ -7269,7 +7475,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                  
                         end
                         if step == 15 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
                               if GetControl("GrandCompanyExchange"):GetRawData()[103].value == 20000 then
@@ -7280,14 +7486,14 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                   
                         end
                         if step == 16 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") then
                               GetControl("GrandCompanyExchange"):Action("SelectItem",35,mushhosiikazu)
                               step = 24
                               end
                         end
                         if step == 17 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
                               if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
@@ -7298,7 +7504,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                  
                         end
                         if step == 18 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
                               if GetControl("GrandCompanyExchange"):GetRawData()[104].value == 20000 then
@@ -7309,14 +7515,14 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                   
                         end
                         if step == 19 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") then
                               GetControl("GrandCompanyExchange"):Action("SelectItem",36,mushhosiikazu)
                               step = 24
                               end
                         end
                         if step == 20 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetRankIndex",2)
                               if GetControl("GrandCompanyExchange"):GetRawData()[3].value == 2 then
@@ -7327,7 +7533,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                  
                         end
                         if step == 21 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
                               if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 2000 then
@@ -7338,7 +7544,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end                   
                         end
                         if step == 23 then
-                            d("[AH][Tmode][Trunin]step:"..step)                          
+                            --d("[AH][Tmode][Trunin]step:"..step)                          
                               if IsControlOpen("GrandCompanyExchange") then
                               GetControl("GrandCompanyExchange"):Action("SelectItem",29,mushhosiikazu)
                               step = 24
@@ -7359,7 +7565,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                               end
                         end
                         if step == 26 then
-                            d("[AH][Tmode][Trunin]step:"..step)
+                            --d("[AH][Tmode][Trunin]step:"..step)
                               if IsControlOpen("GrandCompanyExchange") then
                               UseControlAction("GrandCompanyExchange","Close")
                               end
@@ -7371,7 +7577,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                         
 
                         if step == 30 then
-                             d("[AH][Tmode][Exchange]step:"..step)
+                             --d("[AH][Tmode][Exchange]step:"..step)
                              --if (GCexchangeT == true) then
                                  mushlooptimer = 1000
                                  if Player.GrandCompany == 1 then GCID1 = tonumber(mushCD1.limsa)   
@@ -7383,7 +7589,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                              --end
                         end
                         if step == 31 then
-                            d("[AH][Tmode][Exchange]step:"..step)
+                            --d("[AH][Tmode][Exchange]step:"..step)
                                 Player:SetTarget(GCID1)
                                 if Player:GetTarget().Distance < 6 then
                                 Player:Interact(GCID1)
@@ -7394,7 +7600,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 step = 32
                         end
                         if step == 32 then
-                            d("[AH][Tmode][Exchange]step:"..step)
+                            --d("[AH][Tmode][Exchange]step:"..step)
                                 if IsControlOpen("GrandCompanySupplyList") then
                                 --GetControl("GrandCompanySupplyList"):PushButton(25,4)
                                 GetControl("GrandCompanySupplyList"):Action("SelectCategory",2)
@@ -7402,12 +7608,9 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 end
                         end
                         if step == 33 then
-                            d("[AH][Tmode][Exchange]step:"..step)
+                            --d("[AH][Tmode][Exchange]step:"..step)
                                 if IsControlOpen("GrandCompanySupplyList") then
-                                   if GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then 
-                                   GCexchangeT = false
-                                   step = 0
-                                   elseif GetControl("GrandCompanySupplyList"):GetData().category ~= 2 then
+                                   if GetControl("GrandCompanySupplyList"):GetData().category ~= 2 then
                                    step = 32 
                                    elseif GetControl("GrandCompanySupplyList"):GetData().category == 2 then
                                    GetControl("GrandCompanySupplyList"):Action("SelectFilterIndex",2)
@@ -7416,7 +7619,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 end
                         end            
                         if step == 34 then
-                            d("[AH][Tmode][Exchange]step:"..step)
+                            --d("[AH][Tmode][Exchange]step:"..step)
                                 if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 0 or 
                                    GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 1 or
                                    GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or
@@ -7425,7 +7628,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 end
                         end
                         if step == 35 then
-                            d("[AH][Tmode][Exchange]step:"..step)
+                            --d("[AH][Tmode][Exchange]step:"..step)
                                 if IsControlOpen("GrandCompanySupplyList") then
                                 GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
                                 step = 36
@@ -7434,7 +7637,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 end
                         end
                         if step == 36 then
-                            d("[AH][Tmode][Exchange]step:"..step)
+                            --d("[AH][Tmode][Exchange]step:"..step)
                                 if IsControlOpen("GrandCompanySupplyList") then
                                 step = 42
                                 elseif IsControlOpen("GrandCompanySupplyReward") then
@@ -7444,7 +7647,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                 end
                         end
                          if step == 42 then
-                          d("[AH][Tmode][Exchange]step:"..step)
+                          --d("[AH][Tmode][Exchange]step:"..step)
                                if IsControlOpen("GrandCompanySupplyList") then
                                UseControlAction("GrandCompanySupplyList","Close")
                                step = 42
@@ -7453,7 +7656,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                end
                         end
                          if step == 43 then
-                          d("[AH][Tmode][Exchange]step:"..step)
+                          --d("[AH][Tmode][Exchange]step:"..step)
                                if IsControlOpen("SelectString") then
                                UseControlAction("SelectString","Close")
                                step = 43
@@ -7462,36 +7665,15 @@ function AetheryteHelper.mushEXchangeTrust(event)
                                end
                         end
                         if step == 44 then
-                          d("[AH][Tmode][Exchange]step:"..step)
+                          --d("[AH][Tmode][Exchange]step:"..step)
                                Player:ClearTarget()
                                mushlooptimer = 1000
-                               GCexchangeT = false
-                               step = 0
+                               step = 45
                         end
-
-
-                       if step == 45 then
-                              if Dawncloser == false then
+                        if step == 45 then
                          d("[AH][TMode]:trust Que waiting")
-                                if IsControlOpen("GrandCompanySupplyList") then
-                                UseControlAction("GrandCompanySupplyList","Close")
-                                step = 45
-                                elseif IsControlOpen("SelectString") then
-                                UseControlAction("SelectString","Close")
-                                step = 45
-                                else
-                                step = 0
-                                end
-                              Player:ClearTarget()
-                              GCexchangeT = false
-                              mushlooptimer = 5000
                               step = 0
-                              end
-                       end
-        end
-        end
-        end
-        end        
+                        end       
   end
 end
 
@@ -8963,6 +9145,8 @@ function AetheryteHelper.mushpotionmanual()
         end
         end
       end
+    else
+      mushlooptimer = 1000
     end
     if (AHSET.isMateriaEnabled and AHSET.isManualEnabled and MissingBuffs(Player,"1083")) then
       mushlooptimer = 100
@@ -8977,6 +9161,8 @@ function AetheryteHelper.mushpotionmanual()
         end
         end
       end
+      else
+      mushlooptimer = 1000
     end
    end
   end
@@ -9137,187 +9323,183 @@ end
 function AetheryteHelper.mushTextCommands()
     local log = GetChatLines()
     local logmatch = nil
-    local mushtextstep = nil
+    local mushtextstep = 99
     local logmatchtime = 0
-    local mushtext114 = false
-    local mushtextMBlim = false
-    local mushtextMBgri = false
-    local mushtextMBul = false
-    local mushtextGC = false
-    local mushtextjem = false
+    local mushlogtime = os.time()
+
 
 
     if Duty:IsQueued() == false then
-    for _, command in pairs(log) do  
-      if command.line:match("AHmode 114") and command.code == 56 then
+    for _, command in pairs(log) do
+    if command.timestamp > os.time()-10 and command.code == 56 then
+      if command.line:match("AHmode 114") then
+           mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 1
-           logmatchtime = 0
+           logmatchtime = 5
       end
-      if command.line:match("AHMB limsa") and command.code == 56 then
+      if command.line:match("AHMB limsa") then
+           mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 10
-           logmatchtime = 0
+           logmatchtime = 5
       end
-      if command.line:match("AHMB gridania") and command.code == 56 then
+      if command.line:match("AHMB gridania") then
+           mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 20
-           logmatchtime = 0
+           logmatchtime = 5
       end
-      if command.line:match("AHMB uldah") and command.code == 56 then
+      if command.line:match("AHMB uldah") then
+           mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 30
-           logmatchtime = 0
+           logmatchtime = 5
       end
-      if command.line:match("AHGC move") and command.code == 56 then
+      if command.line:match("AHGC move") then
+           mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 40
-           logmatchtime = 0
+           logmatchtime = 5
       end
-      if command.line:match("AHBJ num") and command.code == 56 then
+      if command.line:match("AHBJ num") then
+           mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 50
-           logmatchtime = 0
+           logmatchtime = 5
       end
+      if command.line:match("AH WeeEa") then
+           mushlooptimer = 100
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 60
+           logmatchtime = 5
+      end
+      if command.line:match("AHWV mini") then
+           mushlooptimer = 100
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 70
+           logmatchtime = 5
+      end
+    end  
     end
     end
+    --d("[AH][text]os :"..os.time()) 
+    --d("[AH][text]log:"..mushlogtime+logmatchtime)
     if mushtextstep == 1 then
        if AetheryteHelper.insSelectGUI.open == true then
-       mushtext114 = false
        logmatch = nil
+       mushtextstep = 99
        else
        mushtextstep = 2
        end
     end
     if mushtextstep == 2 then
-       if logmatch then        
-          if mushlogtime == os.time()+logmatchtime then
-          mushtext114 = true
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 3
           else
-          mushtext114 = false
           mushtextstep = 99
           end
        end
      end
      if mushtextstep == 3 then
-        if mushtext114 then
            AetheryteHelper.insSelectGUI.open = true
            AHSET.delay = 150
            d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
-           --if language == 0 then
-           --SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 注意! \xee\x81\xaf ウィンドウは30秒ほど閉じることができません")
-           --mushtextstep = 99
-           --else
-           --SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\x11\x11 Caution! \xee\x81\xaf can't close it for about 30 sec to window")
            mushtextstep = 99
-           --end
-        end
      end
      if mushtextstep == 10 then
        if AHSET.mushmovetoMB == true and mushMBlim == true then
-       mushtextMBlim = false
        logmatch = nil
+       mushtextstep = 99
        else
        mushtextstep = 11
        end
     end
     if mushtextstep == 11 then
-       if logmatch then        
-          if mushlogtime == os.time()-logmatchtime then
-          mushtextMBlim = true
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 12
           else
-          mushtextMBlim = false
           mushtextstep = 99
           end
        end
      end
      if mushtextstep == 12 then
-        if mushtextMBlim then
            AHSET.mushmovetoMB = true
            mushMBlim = true
            d("[AH][textcommand]:success")
-
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Limsa]:ON")
            mushtextstep = 99
-        end
      end
      if mushtextstep == 20 then
        if AHSET.mushmovetoMB == true and mushMBgri == true then
-       mushtextMBgri = false
        logmatch = nil
+       mushtextstep = 99
        else
        mushtextstep = 21
        end
     end
     if mushtextstep == 21 then
-       if logmatch then        
-          if mushlogtime == os.time()-logmatchtime then
-          mushtextMBgri = true
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 22
           else
-          mushtextMBgri = false
           mushtextstep = 99
           end
        end
      end
      if mushtextstep == 22 then
-        if mushtextMBgri then
            AHSET.mushmovetoMB = true
            mushMBgri = true
            d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Gridania]:ON")
            mushtextstep = 99
-        end
      end
      if mushtextstep == 30 then
        if AHSET.mushmovetoMB == true and mushMBul == true then
-       mushtextMBul = false
        logmatch = nil
+       mushtextstep = 99
        else
        mushtextstep = 31
        end
     end
     if mushtextstep == 31 then
-       if logmatch then        
-          if mushlogtime == os.time()-logmatchtime then
-          mushtextMBul = true
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 32
           else
-          mushtextMBul = false
           mushtextstep = 99
           end
        end
      end
      if mushtextstep == 32 then
-        if mushtextMBul then
            AHSET.mushmovetoMB = true
            mushMBul = true
            d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Ul'dah]:ON")
            mushtextstep = 99
-        end
      end
      if mushtextstep == 40 then
        if AutoMoveGC == true then
-       mushtextGC = false
        logmatch = nil
+       mushtextstep = 99
        else
        mushtextstep = 41
        end
     end
     if mushtextstep == 41 then
-       if logmatch then        
-          if mushlogtime == os.time()-logmatchtime then
-          mushtextGC = true
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 42
           else
           mushtextMBul = false
@@ -9326,55 +9508,85 @@ function AetheryteHelper.mushTextCommands()
        end
      end
      if mushtextstep == 42 then
-        if mushtextGC then
            AutoMoveGC = true
            d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][GC]:ON")
            mushtextstep = 99
-        end
      end
-     if mushtextstep == 50 then
-       if mushtextjem == true then
-       logmatch = nil
-       else
-       mushtextstep = 51
-       end
-    end
-    if mushtextstep == 51 then
-       if logmatch then        
-          if mushlogtime == os.time()-logmatchtime then
-          mushlooptimer = 1000
-          mushtextjem = true
-          mushtextstep = 52
+    if mushtextstep == 50 then
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
+          mushtextstep = 51
           else
-          mushtextjem = false
           mushtextstep = 99
-          end
+          end          
        end
      end
-     if mushtextstep == 52 then
-        if mushtextjem then
+     if mushtextstep == 51 then
           local jemcount = Inventory:GetCurrencyCountByID(26807)
           d("[AH][textcommand]:success")
           if language == 0 then
            SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 バイカラージェム："..jemcount.."個"))
+           mushtextstep = 99
            else
            SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 bicolor gemstone："..jemcount))
            mushtextstep = 99
           end
+     end
+    if mushtextstep == 60 then
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
+          mushtextWeeEa = true
+          mushtextstep = 61
+          else
+          mushtextWeeEa = false
+          mushtextstep = 99
+          end         
+       end
+     end
+     if mushtextstep == 61 then
+        if mushtextWeeEa then 
+          local WeeEa = 0
+          local el = EntityList("type=9")
+          for i,entity in pairs(el) do
+              if entity.ContentID == 423 then
+                WeeEa = WeeEa + 1
+              end
+          end
+          d("[AH][textcommand]:success")
+           SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH]WeeEa："..WeeEa))
+           mushtextstep = 99
         end
-     end                    
+     end
+     if mushtextstep == 70 then
+       if AetheryteHelper.miniWV.open == true then
+       logmatch = nil
+       mushtextstep = 99
+       else
+       mushtextstep = 71
+       end
+    end
+    if mushtextstep == 71 then
+       if logmatch then
+          if mushlogtime+logmatchtime == os.time() then
+          mushtextstep = 72
+          else
+          mushtextstep = 99
+          end        
+       end
+     end
+     if mushtextstep == 72 then
+           AetheryteHelper.miniWV.open = true
+           AHSET.delay = 150
+           d("[AH][textcommand]:success")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV Mini]:open")
+           mushtextstep = 99
+     end                 
      if mushtextstep == 99 then
-        mushtext114 = false
-        mushtextMBlim = false
-        mushtextMBgri = false
-        mushtextMBul = false
-        mushtextGC = false
-        mushtextjem = false
+        mushlogtime = os.time()
         logmatch = nil
         mushlooptimer = 1000
      end
-
 end
 ---------------------------------------------------------------   
 function AetheryteHelper.mushsubtool()
