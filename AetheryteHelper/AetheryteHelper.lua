@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.3",   
+      Version =         "1.6.3.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -125,6 +125,7 @@ local kinokoProject = {
                       "          adjustment of TrustMode",
                       "[1.6.2.1] - adjust text commands.",
                       "[1.6.3] - Changed the mechanics of text commands.",
+                      "[1.6.3.1] - adjust text commands.",
 
                     },
       
@@ -9324,7 +9325,7 @@ function AetheryteHelper.mushTextCommands()
     local log = GetChatLines()
     local logmatch = nil
     local mushtextstep = 99
-    local logmatchtime = 0
+    local logmatchtime = 10
     local mushlogtime = os.time()
 
 
@@ -9337,62 +9338,60 @@ function AetheryteHelper.mushTextCommands()
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 1
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AHMB limsa") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 10
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AHMB gridania") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 20
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AHMB uldah") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 30
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AHGC move") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 40
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AHBJ num") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 50
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AH WeeEa") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 60
-           logmatchtime = 5
+           logmatchtime = 8
       end
       if command.line:match("AHWV mini") then
            mushlooptimer = 100
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 70
-           logmatchtime = 5
+           logmatchtime = 8
       end
     end  
     end
     end
-    --d("[AH][text]os :"..os.time()) 
-    --d("[AH][text]log:"..mushlogtime+logmatchtime)
     if mushtextstep == 1 then
        if AetheryteHelper.insSelectGUI.open == true then
        logmatch = nil
@@ -9403,6 +9402,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 2 then
        if logmatch then
+        d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 3
           else
@@ -9427,6 +9427,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 11 then
        if logmatch then
+        d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 12
           else
@@ -9451,6 +9452,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 21 then
        if logmatch then
+       d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 22
           else
@@ -9475,6 +9477,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 31 then
        if logmatch then
+       d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 32
           else
@@ -9499,6 +9502,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 41 then
        if logmatch then
+        d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 42
           else
@@ -9515,6 +9519,7 @@ function AetheryteHelper.mushTextCommands()
      end
     if mushtextstep == 50 then
        if logmatch then
+        d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 51
           else
@@ -9535,6 +9540,7 @@ function AetheryteHelper.mushTextCommands()
      end
     if mushtextstep == 60 then
        if logmatch then
+        d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextWeeEa = true
           mushtextstep = 61
@@ -9568,6 +9574,7 @@ function AetheryteHelper.mushTextCommands()
     end
     if mushtextstep == 71 then
        if logmatch then
+        d("[AH][text][Progress]"..((mushlogtime%60)+logmatchtime)-(os.time()%60))
           if mushlogtime+logmatchtime == os.time() then
           mushtextstep = 72
           else
