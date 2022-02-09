@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.3.1",   
+      Version =         "1.6.3.2",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -126,6 +126,7 @@ local kinokoProject = {
                       "[1.6.2.1] - adjust text commands.",
                       "[1.6.3] - Changed the mechanics of text commands.",
                       "[1.6.3.1] - adjust text commands.",
+                      "[1.6.3.2] - Remove AFK status.",
 
                     },
       
@@ -9066,7 +9067,17 @@ function AetheryteHelper.Salvagefilter()
 
 end
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.nonAFK()
+  if Player.OnlineStatus == 17 then
+     mushlooptimer = 100
+    if Player:IsMoving() or Player.LastAction == 33 or Player.LastAction == 85 or IsControlOpen("MaterializeDialog") or
+       Player.LastAction == 87 or Player.LastAction == 3191 or FFXIV_Common_BotRunning == true then
+       SendTextCommand("/afk")
+       mushlooptimer = 1000
+    end
+  end
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- sub function
@@ -9617,7 +9628,9 @@ function AetheryteHelper.mushsubtool()
             AetheryteHelper.undersizeIDswitch()
             AetheryteHelper.explorerIDswitch()
             AetheryteHelper.mushTextCommands()
+            AetheryteHelper.nonAFK()
      end
+
             
     
     
