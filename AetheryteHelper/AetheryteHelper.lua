@@ -9862,14 +9862,14 @@ function AetheryteHelper.PartyCall()
          if PScallstep == 0 then
             if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and
                Player.Targetable == true and Duty:GetActiveDutyInfo() ~= nil then
-              if Duty:GetActiveDutyInfo().timer == 10800 then PScallstep = 10 end 
+              if Duty:GetActiveDutyInfo().timer == 7200 then PScallstep = 10 end 
               if Duty:GetActiveDutyInfo().timer == 5400 then  PScallstep = 20 end 
               if Duty:GetActiveDutyInfo().timer == 3600 then  PScallstep = 30 end 
               if Duty:GetActiveDutyInfo().timer == 1800 then  PScallstep = 40 end
             end
          end
          if PScallstep == 10 then
-              if Duty:GetActiveDutyInfo().timer == 10797 then
+              if Duty:GetActiveDutyInfo().timer == 7197 then
               SendTextCommand("/p "..tostring(Scall.word01)) 
               SendTextCommand(tostring(Scall.word02))
               PScallstep = 99
@@ -9914,7 +9914,7 @@ function AetheryteHelper.PartyCall()
          if PEcallstep == 0 then
             if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and
                Player.Targetable == true and Duty:GetActiveDutyInfo() ~= nil then
-              if Duty:GetActiveDutyInfo().timer == 10800 then PEcallstep = 10 end 
+              if Duty:GetActiveDutyInfo().timer == 7200 then PEcallstep = 10 end 
               if Duty:GetActiveDutyInfo().timer == 5400 then  PEcallstep = 20 end 
               if Duty:GetActiveDutyInfo().timer == 3600 then  PEcallstep = 30 end 
               if Duty:GetActiveDutyInfo().timer == 1800 then  PEcallstep = 40 end
