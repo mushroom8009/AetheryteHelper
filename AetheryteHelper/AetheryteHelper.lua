@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.3.3",   
+      Version =         "1.6.4",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -130,6 +130,8 @@ local kinokoProject = {
                       "[1.6.3.3] - Changed from OS time to",
                       "            Server time references for text command.",
                       "            Changed to show bookmarks in MB mode.",
+                      "[1.6.4] - add Auto Player Commendation.",
+                      "          add Auto Start and End Call in Duty.",
 
                     },
       
@@ -261,6 +263,18 @@ AetheryteHelper.TCList = {
   visible = true,
   locked = false,
 }
+AetheryteHelper.mip = {
+  name = "MIP###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.yoro_otu = {
+  name = "yoro_otu###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
  AetheryteHelper.settings = {
   SET = {
 
@@ -377,6 +391,25 @@ AetheryteHelper.TCList = {
   },
 
 }
+
+AetheryteHelper.DutyPlay = {
+  MIP = {
+    Enable = false,
+    select = 0,
+  },
+  yoro = {
+    Enable = false,
+    word01 = "",
+    word02 = "/bow",    
+  },
+  otu = {
+    Enable = false,
+    word01 = "",
+    word02 = "/goodbye",
+  },  
+
+}
+
 -------------------
 AHLinks = {
       Name = "Minion Discord JP",
@@ -498,6 +531,13 @@ mushtooltips = {
          tip109 = "ツールチップの表示/非表示",
          tip110 = "右クリックでコピーできます",
          tip111 = "安定を重視したため、コマンドの受付までに最大5秒程度かかります\n受理されるとカラーメッセージ(エコー)でお知らせします\n進捗はコンソールで確認できます。",
+         tip112 = "MIPアシスト",
+         tip113 = "自分を除くパーティリストの順番です\nアイコンはソロでCFを使った場合の参考程度です",
+         tip114 = "オン/オフ",
+         tip115 = "パーティチャットに発言します",
+         tip116 = "ゲーム内のテキストコマンドが使えます",
+         tip117 = "[/e <pos>]を実行\nインスタンスの確認にどうぞ",
+
 
   },
   en = { tip01 = "Outside of use area",
@@ -612,6 +652,12 @@ mushtooltips = {
          tip109 = "tooltips Show/hide",
          tip110 = "Right click to copy",
          tip111 = "Due to the importance of stability,\nit may take a about 5 sec for the command to be accepted.\nit will be notified with a color message when it is accepted.\nProgress can be checked in the console.",
+         tip112 = "Auto Commendation",
+         tip113 = "index of party member in exclud you.\nthe side icon are just for reference when used DF for solo.",
+         tip114 = "Enable/Disable",
+         tip115 = "Send only in Party Chat.",
+         tip116 = "Can use ingame text commands",
+         tip117 = "[/e <pos>]:Check your instance.",
 
   },
 }
@@ -789,6 +835,7 @@ mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
 local uuid = GetUUID()
 AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userID'..uuid.. '_setting.lua'
 AetheryteHelper.settingfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'kinoko_setting.lua'
+AetheryteHelper.Dutyfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userDuty.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -855,6 +902,7 @@ local sealstoitemT = false
 local mushMBinterat = false
 local IDUSstep = 0
 local IDexstep = 0
+local MIPstep = 0
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -978,8 +1026,14 @@ function AetheryteHelper.LoadSettings()
       table.merge(kinokoProject.Windows,settings)      
     end
   end
-
+  if FileExists(AetheryteHelper.Dutyfile) then
+    local dutys = persistence.load(AetheryteHelper.Dutyfile)
+    if (ValidTable(dutys)) then
+      table.merge(AetheryteHelper.DutyPlay,dutys)      
+    end
+  end
 end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
@@ -987,7 +1041,7 @@ AetheryteHelper.LoadSettings()
 function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
   persistence.store(AetheryteHelper.settingfile, kinokoProject.Windows)
-  
+  persistence.store(AetheryteHelper.Dutyfile, AetheryteHelper.DutyPlay)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local AHSET = AetheryteHelper.settings.SET
@@ -1722,6 +1776,38 @@ function AetheryteHelper.DrawadWIP()
       end
       end
       GUI:EndGroup()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[yoro.png]],30,30)
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            AetheryteHelper.yoro_otu.open = not AetheryteHelper.yoro_otu.open
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip20)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip20)
+              end
+              end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[mip.png]],30,30)
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            AetheryteHelper.mip.open = not AetheryteHelper.mip.open
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip112)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip112)
+              end
+              end
+      end
+      GUI:EndGroup()
+
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
@@ -2542,8 +2628,365 @@ function AetheryteHelper.jumboWindow()
   
 end
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+local MIP = AetheryteHelper.DutyPlay.MIP
+function AetheryteHelper.MIPselect()
+  if (AetheryteHelper.mip.open) then
+    local mipflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize
+    GUI:SetNextWindowSize(260,150)
+     AetheryteHelper.mip.visible, AetheryteHelper.mip.open = GUI:Begin('Auto Commendation', AetheryteHelper.mip.open,mipflags)
+    if (AetheryteHelper.mip.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      --GUI:PushItemWidth(150)
+          if Player.Job == 19 or Player.Job == 1 then
+            GUI:Image(ImageFolder..[[icon_t01.png]],20,20)
+          elseif Player.Job == 21 or Player.Job == 3 then
+            GUI:Image(ImageFolder..[[icon_t02.png]],20,20)
+          elseif Player.Job == 32 then
+            GUI:Image(ImageFolder..[[icon_t03.png]],20,20)
+          elseif Player.Job == 37 then
+            GUI:Image(ImageFolder..[[icon_t04.png]],20,20)
+          elseif Player.Job == 24 or Player.Job == 6 then
+            GUI:Image(ImageFolder..[[icon_h01.png]],20,20)
+          elseif Player.Job == 28 then
+            GUI:Image(ImageFolder..[[icon_h02.png]],20,20)
+          elseif Player.Job == 33 then
+            GUI:Image(ImageFolder..[[icon_h03.png]],20,20)
+          elseif Player.Job == 40 then
+            GUI:Image(ImageFolder..[[icon_h04.png]],20,20)
+          elseif Player.Job == 20 or Player.Job == 2 then
+            GUI:Image(ImageFolder..[[icon_d01.png]],20,20)
+          elseif Player.Job == 22 or Player.Job == 4 then
+            GUI:Image(ImageFolder..[[icon_d02.png]],20,20)
+          elseif Player.Job == 23 or Player.Job == 5 then
+            GUI:Image(ImageFolder..[[icon_d03.png]],20,20)
+          elseif Player.Job == 25 or Player.Job == 7 then
+            GUI:Image(ImageFolder..[[icon_d04.png]],20,20)
+          elseif Player.Job == 27 or Player.Job == 26 then
+            GUI:Image(ImageFolder..[[icon_d05.png]],20,20)
+          elseif Player.Job == 30 or Player.Job == 29 then
+            GUI:Image(ImageFolder..[[icon_d06.png]],20,20)
+          elseif Player.Job == 31 then
+            GUI:Image(ImageFolder..[[icon_d07.png]],20,20)
+          elseif Player.Job == 34 then
+            GUI:Image(ImageFolder..[[icon_d08.png]],20,20)
+          elseif Player.Job == 35 then
+            GUI:Image(ImageFolder..[[icon_d09.png]],20,20)
+          elseif Player.Job == 38 then
+            GUI:Image(ImageFolder..[[icon_d10.png]],20,20)
+          elseif Player.Job == 39 then
+            GUI:Image(ImageFolder..[[icon_d11.png]],20,20)
+          else
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+          end
+      GUI:EndGroup()
+      GUI:SameLine()
+      --GUI:InputText("##name",Player.name,GUI.InputTextFlags_ReadOnly)
+      GUI:Text("Player Job")
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Text("Party info:")
+      GUI:SameLine()
+          local plist = EntityList.myparty
+          if (table.valid(plist)) then
+             if (#plist) == 8 then
+             GUI:TextColored(0,1,0,1,"Full Party")
+             elseif (#plist) < 8 then
+             GUI:TextColored(0,1,1,1,"Light Party")
+             end
+          else
+             GUI:TextColored(1,1,0,1,"Solo")
+          end
+       GUI:EndGroup()
+       GUI:BeginGroup()
+       GUI:Dummy(1,1)
+          if (table.valid(plist)) then
+            for id,e in pairs(plist) do
+              GUI:SameLine()
+              if e.job == 19 or e.job == 1 then
+              GUI:Image(ImageFolder..[[icon_t01.png]],20,20)
+              elseif e.job == 21 or e.job == 3 then
+              GUI:Image(ImageFolder..[[icon_t02.png]],20,20)
+              elseif e.job == 32 then
+              GUI:Image(ImageFolder..[[icon_t03.png]],20,20)
+              elseif e.job == 37 then
+              GUI:Image(ImageFolder..[[icon_t04.png]],20,20)
+              elseif e.job == 24 or e.job == 6 then
+              GUI:Image(ImageFolder..[[icon_h01.png]],20,20)
+              elseif e.job == 28 then
+              GUI:Image(ImageFolder..[[icon_h02.png]],20,20)
+              elseif e.job == 33 then
+              GUI:Image(ImageFolder..[[icon_h03.png]],20,20)
+              elseif e.job == 40 then
+              GUI:Image(ImageFolder..[[icon_h04.png]],20,20)
+              elseif e.job == 20 or e.job == 2 then
+              GUI:Image(ImageFolder..[[icon_d01.png]],20,20)
+              elseif e.job == 22 or e.job == 4 then
+              GUI:Image(ImageFolder..[[icon_d02.png]],20,20)
+              elseif e.job == 23 or e.job == 5 then
+              GUI:Image(ImageFolder..[[icon_d03.png]],20,20)
+              elseif e.job == 25 or e.job == 7 then
+              GUI:Image(ImageFolder..[[icon_d04.png]],20,20)
+              elseif e.job == 27 or e.job == 26 then
+              GUI:Image(ImageFolder..[[icon_d05.png]],20,20)
+              elseif e.job == 30 or e.job == 29 then
+              GUI:Image(ImageFolder..[[icon_d06.png]],20,20)
+              elseif e.job == 31 then
+              GUI:Image(ImageFolder..[[icon_d07.png]],20,20)
+              elseif e.job == 34 then
+              GUI:Image(ImageFolder..[[icon_d08.png]],20,20)
+              elseif e.job == 35 then
+              GUI:Image(ImageFolder..[[icon_d09.png]],20,20)
+              elseif e.job == 38 then
+              GUI:Image(ImageFolder..[[icon_d10.png]],20,20)
+              elseif e.job == 39 then
+              GUI:Image(ImageFolder..[[icon_d11.png]],20,20)
+              else
+              GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+              end
+            end
+            else
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+            GUI:SameLine()  
+            GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
+          end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:BeginGroup()
+      GUI:Checkbox("Enable",MIP.Enable)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(0) then
+          MIP.Enable = not MIP.Enable
+          AetheryteHelper.SaveSettings()
+        end
+         if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip114)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip114)
+              end
+         end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:PushItemWidth(60)
+      MIP.select = GUI:InputInt("###index",MIP.select,1,1)
+      AetheryteHelper.SaveSettings()
+      if (#plist) > 4 then
+        if MIP.select > 7 then MIP.select = 7 end
+        if MIP.select < 1  then MIP.select = 1 end
+      elseif (#plist) <= 4 then
+        if MIP.select > 3 then MIP.select = 3 end
+        if MIP.select < 1  then MIP.select = 1 end
+      end
+      GUI:EndGroup()
+       if GUI:IsItemHovered() then
+         if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip113)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip113)
+              end
+         end
+      end
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[mip.png]],20,20)
+      GUI:SameLine(25)
+      GUI:Text(">>")
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      if Duty:IsQueued() == false and (#plist) > 1 then
+         GUI:Image(ImageFolder..[[fil_jall.png]],20,20)
+      elseif (#plist) > 4 then
+         if MIP.select == 1 or MIP.select == 2 and Player.role == 2 or
+            MIP.select == 2 and Player.role == 3 or 
+            MIP.select == 3 and Player.role == 1 then
+            GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)
+         elseif MIP.select == 2 and Player.role == 1 or
+                MIP.select == 3 and Player.role == 2 or
+                MIP.select == 3 and Player.role == 3 or
+                MIP.select == 3 and Player.role == 4 then
+            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
+         elseif MIP.select == 3 and Player.role == 1 or
+                MIP.select == 4 and Player.role == 2 or
+                MIP.select == 4 and Player.role == 3 then
+            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
+         elseif MIP.select == 4 and Player.role == 4 or 
+                MIP.select == 5 or MIP.select == 6 or MIP.select == 7 then
+            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
+         end
+      elseif (#plist) <= 4 then
+         if MIP.select == 1 and Player.role == 1 then
+            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
+         elseif MIP.select == 1 and Player.role == 2 or
+                MIP.select == 1 and Player.role == 3 or 
+                MIP.select == 1 and Player.role == 4 then
+            GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)   
+         elseif MIP.select == 2 and Player.role == 1 then
+            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
+         elseif MIP.select == 2 and Player.role == 2 or
+                MIP.select == 2 and Player.role == 3 then
+            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
+         elseif MIP.select == 2 and Player.role == 4 then
+            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
+         elseif MIP.select == 3 then
+            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
+         end
+      end
+      GUI:EndGroup()
+      mushmipselect = MIP.select-1
+  
+    end        
+    GUI:End()
+  end
+end
 
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+local Scall = AetheryteHelper.DutyPlay.yoro
+local Ecall = AetheryteHelper.DutyPlay.otu
+function AetheryteHelper.YoroOtu()
+  if (AetheryteHelper.yoro_otu.open) then
+    local yoroflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+    GUI:SetNextWindowSize(280,240)
+     AetheryteHelper.yoro_otu.visible, AetheryteHelper.yoro_otu.open = GUI:Begin('Duty Chat Support', AetheryteHelper.yoro_otu.open,yoroflags)
+    if (AetheryteHelper.yoro_otu.visible) then
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Checkbox("##on",Scall.Enable)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(0) then
+          Scall.Enable = not Scall.Enable
+          AetheryteHelper.SaveSettings()
+        end
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip114)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip114)
+              end
+         end
+      end
+      GUI:SameLine()
+      GUI:TextColored(0,1,0,1,"Start Call")
+      GUI:EndGroup()
+      
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[Pchat.png]],20,20)
+      GUI:SameLine()
+      Scall.word01 = GUI:InputText("##Sword01",Scall.word01)
+      AetheryteHelper.SaveSettings()
+      if GUI:IsItemHovered() then
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip115)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip115)
+              end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[free_chat.png]],20,20)
+      GUI:SameLine()
+      Scall.word02 = GUI:InputText("##Sword02",Scall.word02)
+      AetheryteHelper.SaveSettings()
+      if GUI:IsItemHovered() then
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip116)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip116)
+              end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Checkbox("##on",Ecall.Enable)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(0) then
+          Ecall.Enable = not Ecall.Enable
+          AetheryteHelper.SaveSettings()
+        end
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip114)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip114)
+              end
+         end
+      end
+      GUI:SameLine()
+      GUI:TextColored(0,1,0,1,"End Call")
+      GUI:EndGroup()
+      
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[Pchat.png]],20,20)
+      GUI:SameLine()
+      Ecall.word01 = GUI:InputText("##Eword01",Ecall.word01)
+      AetheryteHelper.SaveSettings()
+      if GUI:IsItemHovered() then
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip115)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip115)
+              end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[free_chat.png]],20,20)
+      GUI:SameLine()
+      Ecall.word02 = GUI:InputText("##Eword02",Ecall.word02)
+      AetheryteHelper.SaveSettings()
+      if GUI:IsItemHovered() then
+        if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip116)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip116)
+              end
+        end
+      end
+      GUI:EndGroup()
+  
+
+    end        
+    GUI:End()
+  end
+end
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -6046,6 +6489,22 @@ function AetheryteHelper.minitools()
               end           
             end
       GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:ImageButton("###pos",ImageFolder..[[P_pos.png]], 20,20)
+            if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              SendTextCommand("/e [AH]Now Instance: \x02\x13\x06\xfe\xff\xff\xff\x11 <pos>")
+              end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip117)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip117)
+              end
+              end           
+            end
+      GUI:EndGroup()
 
 end
 
@@ -6243,6 +6702,8 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.VlWindow()
   AetheryteHelper.TCListwindow()
   AetheryteHelper.SVRSelectermini()
+  AetheryteHelper.MIPselect()
+  AetheryteHelper.YoroOtu()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -7881,7 +8342,7 @@ if (mushJumbocactpothelper) then
      if mushGSjcpstep == 2 then
        if IsControlOpen("SelectString") then                           
           UseControlAction("SelectString","SelectIndex",0)
-          mushlooptimer = 100
+          mushlooptimer = 3000
           mushGSjcpstep = 3
        end
        --d("mushGSjcpstep"..mushGSjcpstep)
@@ -7889,7 +8350,6 @@ if (mushJumbocactpothelper) then
 
      if mushGSjcpstep == 3 then
        if IsControlOpen("LotteryWeeklyInput")then
-          mushlooptimer = 3000
           mushGSjcpstep = 4
        elseif IsControlOpen("LotteryWeeklyRewardList") then
           mushlooptimer = 100 
@@ -9355,8 +9815,140 @@ if (AHSET.DesynthTrust) then
           AetheryteHelper.SalvageAll()
        end
      end
-
 end
+
+
+
+function AetheryteHelper.voteMVP()
+   if (MIP.Enable) then
+     if Player.Targetable == true then
+     if MIPstep == 0 then
+        if IsControlOpen("_NotificationIcMvp") then
+        mushlooptimer = 200
+        UseControlAction("_NotificationIcMvp","OpenVoteMvp")
+        MIPstep = 1
+        end
+      end
+      if MIPstep == 1 then
+        if IsControlOpen("VoteMvp") then
+        UseControlAction("VoteMvp","SelectIndex",mushmipselect)
+        d("[AH][MIP][[SelectIndex]:"..mushmipselect)
+        MIPstep = 2
+        end
+      end
+      if MIPstep == 2 then
+        if IsControlOpen("VoteMvp") then
+        UseControlAction("VoteMvp","PressOK")
+        MIPstep = 1
+        else
+        mushlooptimer = 1000
+        end
+      end
+      end
+   end
+end
+
+local PScallstep = 0
+local PEcallstep = 0
+function AetheryteHelper.PartyCall()
+   if (Scall.Enable) then
+         if PScallstep == 0 then
+            if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and
+               Player.Targetable == true and Duty:GetActiveDutyInfo() ~= nil then
+              if Duty:GetActiveDutyInfo().timer == 10800 then PScallstep = 10 end 
+              if Duty:GetActiveDutyInfo().timer == 5400 then  PScallstep = 20 end 
+              if Duty:GetActiveDutyInfo().timer == 3600 then  PScallstep = 30 end 
+              if Duty:GetActiveDutyInfo().timer == 1800 then  PScallstep = 40 end
+            end
+         end
+         if PScallstep == 10 then
+              if Duty:GetActiveDutyInfo().timer == 10797 then
+              SendTextCommand("/p "..tostring(Scall.word01)) 
+              SendTextCommand(tostring(Scall.word02))
+              PScallstep = 99
+              end
+         end
+         if PScallstep == 20 then
+              if Duty:GetActiveDutyInfo().timer == 5397 then
+              SendTextCommand("/p "..tostring(Scall.word01)) 
+              SendTextCommand(tostring(Scall.word02))
+              PScallstep = 99
+              end
+         end
+         if PScallstep == 30 then
+              if Duty:GetActiveDutyInfo().timer == 3597 then
+              SendTextCommand("/p "..tostring(Scall.word01)) 
+              SendTextCommand(tostring(Scall.word02))
+              PScallstep = 99
+              end
+         end
+         if PScallstep == 40 then
+              if Duty:GetActiveDutyInfo().timer == 1797 then
+              SendTextCommand("/p "..tostring(Scall.word01)) 
+              SendTextCommand(tostring(Scall.word02))
+              PScallstep = 99
+              end
+         end
+         if PScallstep == 99 then
+            if Duty:GetActiveDutyObjectives() == nil and Duty:IsQueued() == false then
+            PScallstep = 0
+            end
+         end
+   end
+   local Dtask = Duty:GetActiveDutyObjectives()
+   local Entity = 0
+   local el = EntityList("type=2")
+              if table.valid(el) then
+                      for k,v in pairs(el) do
+                            Entity = Entity + 1  
+                      end
+              end
+   if (Ecall.Enable) then
+         if PEcallstep == 0 then
+            if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and
+               Player.Targetable == true and Duty:GetActiveDutyInfo() ~= nil then
+              if Duty:GetActiveDutyInfo().timer == 10800 then PEcallstep = 10 end 
+              if Duty:GetActiveDutyInfo().timer == 5400 then  PEcallstep = 20 end 
+              if Duty:GetActiveDutyInfo().timer == 3600 then  PEcallstep = 30 end 
+              if Duty:GetActiveDutyInfo().timer == 1800 then  PEcallstep = 40 end
+            end
+         end
+         if PEcallstep == 10 then
+              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
+              SendTextCommand("/p "..tostring(Ecall.word01)) 
+              SendTextCommand(tostring(Ecall.word02))
+              PEcallstep = 99
+              end
+         end
+         if PEcallstep == 20 then
+              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
+              SendTextCommand("/p "..tostring(Ecall.word01)) 
+              SendTextCommand(tostring(Ecall.word02))
+              PEcallstep = 99
+              end
+         end
+         if PEcallstep == 30 then
+              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
+              SendTextCommand("/p "..tostring(Ecall.word01)) 
+              SendTextCommand(tostring(Ecall.word02))
+              PEcallstep = 99
+              end
+         end
+         if PEcallstep == 40 then
+              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
+              SendTextCommand("/p "..tostring(Ecall.word01)) 
+              SendTextCommand(tostring(Ecall.word02))
+              PEcallstep = 99
+              end
+         end
+         if PEcallstep == 99 then
+            if Duty:IsQueued() == false then
+            PEcallstep = 0
+            end
+         end
+   end
+end
+
 
 
 function AetheryteHelper.mushTextCommands()
@@ -9370,7 +9962,7 @@ function AetheryteHelper.mushTextCommands()
 
 
 
-    if Duty:IsQueued() == false then
+    if Duty:GetQueueStatus() <= 2 then
     for _, command in pairs(log) do
     if command.timestamp > ezt-5 and command.code == 56 then
       if command.line:match("AHmode 114") then
@@ -9645,6 +10237,8 @@ function AetheryteHelper.mushsubtool()
             AetheryteHelper.explorerIDswitch()
             AetheryteHelper.mushTextCommands()
             AetheryteHelper.nonAFK()
+            AetheryteHelper.voteMVP()
+            AetheryteHelper.PartyCall()
      end
 
             
