@@ -3,7 +3,7 @@
 # Aetheryte Helper
 this is a module in MMOminion(FFXIV Minion64)
 
-# sample
+# ~v1.5.3
 ![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/sample.png)<br>
 
 # Renewal(v1.6.0)
