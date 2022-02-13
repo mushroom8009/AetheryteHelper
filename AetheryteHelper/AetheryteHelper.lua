@@ -2694,9 +2694,10 @@ function AetheryteHelper.MIPselect()
       GUI:SameLine()
           local plist = EntityList.myparty
           if (table.valid(plist)) then
-             if (#plist) == 8 then
+             if (#plist) >= 7 then
              GUI:TextColored(0,1,0,1,"Full Party")
-             elseif (#plist) < 8 then
+             end
+             if (#plist) < 7 then
              GUI:TextColored(0,1,1,1,"Light Party")
              end
           else
@@ -9828,7 +9829,11 @@ function AetheryteHelper.voteMVP()
         if IsControlOpen("_NotificationIcMvp") then
         mushlooptimer = 200
         UseControlAction("_NotificationIcMvp","OpenVoteMvp")
+        if IsControlOpen("VoteMvp") then
         MIPstep = 1
+        else
+        MIPstep = 0
+        end
         end
       end
       if MIPstep == 1 then
