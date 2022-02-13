@@ -537,6 +537,7 @@ mushtooltips = {
          tip115 = "パーティチャットに発言します",
          tip116 = "ゲーム内のテキストコマンドが使えます",
          tip117 = "[/e <pos>]を実行\nインスタンスの確認にどうぞ",
+         tip118 = "自動よろおつ",
 
 
   },
@@ -658,6 +659,7 @@ mushtooltips = {
          tip115 = "Send only in Party Chat.",
          tip116 = "Can use ingame text commands",
          tip117 = "[/e <pos>]:Check your instance.",
+         tip118 = "Auto Start and End Call in Duty",
 
   },
 }
@@ -1784,9 +1786,9 @@ function AetheryteHelper.DrawadWIP()
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
-              GUI:SetTooltip(mushtooltips.jp.tip20)
+              GUI:SetTooltip(mushtooltips.jp.tip118)
               else
-              GUI:SetTooltip(mushtooltips.en.tip20)
+              GUI:SetTooltip(mushtooltips.en.tip118)
               end
               end
       end
