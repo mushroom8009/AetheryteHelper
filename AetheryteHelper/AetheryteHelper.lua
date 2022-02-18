@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.4",   
+      Version =         "1.6.5",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -132,6 +132,7 @@ local kinokoProject = {
                       "            Changed to show bookmarks in MB mode.",
                       "[1.6.4] - add Auto Player Commendation.",
                       "          add Auto Start and End Call in Duty.",
+                      "[1.6.5] - add tool to organize inventory.",
 
                     },
       
@@ -538,6 +539,8 @@ mushtooltips = {
          tip116 = "ゲーム内のテキストコマンドが使えます",
          tip117 = "[/e <pos>]を実行\nインスタンスの確認にどうぞ",
          tip118 = "自動よろおつ",
+         tip119 = "カバン整理\nスタックできるものをまとめます",
+         tip120 = "整理中",
 
 
   },
@@ -660,6 +663,8 @@ mushtooltips = {
          tip116 = "Can use ingame text commands",
          tip117 = "[/e <pos>]:Check your instance.",
          tip118 = "Auto Start and End Call in Duty",
+         tip119 = "organize inventory\nput together stackable items.",
+         tip120 = "Now working...",
 
   },
 }
@@ -905,6 +910,7 @@ local mushMBinterat = false
 local IDUSstep = 0
 local IDexstep = 0
 local MIPstep = 0
+local AHitemsort = false
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1805,6 +1811,30 @@ function AetheryteHelper.DrawadWIP()
               GUI:SetTooltip(mushtooltips.jp.tip112)
               else
               GUI:SetTooltip(mushtooltips.en.tip112)
+              end
+              end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[quantity.png]],30,30)
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            AHitemsort = not AHitemsort 
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+                if AHitemsort == false then
+                GUI:SetTooltip(mushtooltips.jp.tip119)
+                else
+                GUI:SetTooltip(mushtooltips.jp.tip120)
+                end
+              else
+                if AHitemsort == false then
+                GUI:SetTooltip(mushtooltips.en.tip119)
+                else
+                GUI:SetTooltip(mushtooltips.en.tip120)
+                end
               end
               end
       end
@@ -2818,19 +2848,26 @@ function AetheryteHelper.MIPselect()
       GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
+      local ABCduty = { 174,372,151,508,556,627,734,776,826,882,917,966 }  --5.x
+      local allaiance = false
+      for _,v in pairs(ABCduty) do
+        if Player.localmapid == v then
+           allaiance = true
+        end  
+      end
       if Duty:IsQueued() == false and (#plist) > 1 then
          GUI:Image(ImageFolder..[[fil_jall.png]],20,20)
-      elseif (#plist) > 4 then
-         if MIP.select == 1 or MIP.select == 2 and Player.role == 2 or
-            MIP.select == 2 and Player.role == 3 or 
-            MIP.select == 3 and Player.role == 1 then
+      elseif (#plist) > 4 and allaiance == false then
+         if MIP.select == 1 or 
+            MIP.select == 2 and Player.role == 2 or
+            MIP.select == 2 and Player.role == 3 or
+            MIP.select == 2 and Player.role == 4 then
             GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)
          elseif MIP.select == 2 and Player.role == 1 or
+                MIP.select == 3 and Player.role == 1 or
                 MIP.select == 3 and Player.role == 2 or
                 MIP.select == 3 and Player.role == 3 or
-                MIP.select == 3 and Player.role == 4 then
-            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
-         elseif MIP.select == 3 and Player.role == 1 or
+                MIP.select == 3 and Player.role == 4 or
                 MIP.select == 4 and Player.role == 2 or
                 MIP.select == 4 and Player.role == 3 then
             GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
@@ -2838,21 +2875,39 @@ function AetheryteHelper.MIPselect()
                 MIP.select == 5 or MIP.select == 6 or MIP.select == 7 then
             GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
          end
+      elseif (#plist) > 4 and allaiance == true then
+         if MIP.select == 1 and Player.role == 2 or 
+            MIP.select == 1 and Player.role == 3 or
+            MIP.select == 1 and Player.role == 4 then
+            GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)
+         elseif MIP.select == 1 and Player.role == 1 or
+                MIP.select == 2 and Player.role == 1 or
+                MIP.select == 2 and Player.role == 2 or
+                MIP.select == 2 and Player.role == 3 or
+                MIP.select == 2 and Player.role == 4 or
+                MIP.select == 3 and Player.role == 2 or
+                MIP.select == 3 and Player.role == 3 then
+            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
+         elseif MIP.select == 3 and Player.role == 1 or
+                MIP.select == 3 and Player.role == 4 or
+                MIP.select == 4 and Player.role == 2 or
+                MIP.select == 4 and Player.role == 3 or
+                MIP.select == 4 and Player.role == 4 or 
+                MIP.select == 5 or MIP.select == 6 or MIP.select == 7 then
+            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
+         end
       elseif (#plist) <= 4 then
-         if MIP.select == 1 and Player.role == 1 then
+         if MIP.select == 1 and Player.role == 1 or
+            MIP.select == 2 and Player.role == 2 or
+            MIP.select == 2 and Player.role == 3 then
             GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
          elseif MIP.select == 1 and Player.role == 2 or
                 MIP.select == 1 and Player.role == 3 or 
                 MIP.select == 1 and Player.role == 4 then
             GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)   
-         elseif MIP.select == 2 and Player.role == 1 then
-            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
-         elseif MIP.select == 2 and Player.role == 2 or
-                MIP.select == 2 and Player.role == 3 then
-            GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
-         elseif MIP.select == 2 and Player.role == 4 then
-            GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
-         elseif MIP.select == 3 then
+         elseif MIP.select == 2 and Player.role == 1 or
+                MIP.select == 2 and Player.role == 4 or
+                MIP.select == 3 then
             GUI:Image(ImageFolder..[[fil_jDPS.png]],20,20)
          end
       end
@@ -7736,7 +7791,7 @@ end
 --
 
 function AetheryteHelper.mushEXchangeTrust(event)
-  if Player.GrandCompany == 0 or Player.GrandCompanyRank < 6 then mushTrustmode = false end
+  if Player.GrandCompany == 0 or Player.GrandCompanyRank < 6 then mushTrustmode = false and IsControlOpen("NowLoading") == false end
   local step = 0
   local nohinsoubi = 0
   if(mushTrustmode == true ) then
@@ -9822,9 +9877,52 @@ end
 
 
 
+function AetheryteHelper.itemsort()
+        local nonmaxitem = {}
+        local jufuku = 0
+        local bags = {0, 1, 2, 3}
+        for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+          if item.count ~= item.max then
+            table.insert(nonmaxitem,item)
+          end
+        end
+        end
+        end
+        end
+        if AHitemsort then
+          mushlooptimer = 100
+          for i = 1,tonumber(#nonmaxitem),1 do
+             for k,v in pairs(nonmaxitem) do
+              if k == i then
+                 for key,val in pairs(nonmaxitem) do
+                    if v.hqid == val.hqid and k ~= key then
+                       jufuku = jufuku + 1
+                       v:Move(0,0)
+                    end
+                 end
+              end
+             end
+          end
+          d("[AH][ItemSort]num of items to separated:"..jufuku)
+          if jufuku == 0 then
+          Inventory:SortInventory()
+          mushlooptimer = 1000
+          AHitemsort = false
+          end
+        end
+end
+
+
+
+
 function AetheryteHelper.voteMVP()
    if (MIP.Enable) then
-     if Player.Targetable == true then
+     if Player.Targetable == true and IsControlOpen("NowLoading") == false then
      if MIPstep == 0 then
         if IsControlOpen("_NotificationIcMvp") then
         mushlooptimer = 200
@@ -9848,7 +9946,8 @@ function AetheryteHelper.voteMVP()
         UseControlAction("VoteMvp","PressOK")
         MIPstep = 1
         else
-        mushlooptimer = 1000
+        MIPstep = 0
+--        mushlooptimer = 1000
         end
       end
       end
@@ -10134,7 +10233,6 @@ function AetheryteHelper.mushTextCommands()
           mushlooptimer = 1000
           mushtextstep = 42
           else
-          mushtextMBul = false
           mushtextstep = 99
           end
        end
@@ -10215,7 +10313,8 @@ function AetheryteHelper.mushTextCommands()
            d("[AH][textcommand]:success")
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV Mini]:open")
            mushtextstep = 99
-     end                 
+     end
+         
      if mushtextstep == 99 then
         mushlogtime = ezt
         logmatch = nil
@@ -10246,6 +10345,7 @@ function AetheryteHelper.mushsubtool()
             AetheryteHelper.nonAFK()
             AetheryteHelper.voteMVP()
             AetheryteHelper.PartyCall()
+            AetheryteHelper.itemsort()
      end
 
             
