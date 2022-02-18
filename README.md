@@ -22,6 +22,8 @@ However, this is a feature that add-ons do not have.<br>
 ・Auto Vote MVP<br>
 ・Auto Start ＆ End call in Duty
 
+[WiKi](https://github.com/mushroom8009/AetheryteHelper/wiki)<br>
+<br>
 [How to use (youtube)](https://youtu.be/mEjWnAR3Ht0)<br>
 [new features to main tool (youtube)](https://youtu.be/Q5BXGo9t4jc)<br>
 [sub tool (youtube)](https://youtu.be/0DerL9EFZxw)<br>
