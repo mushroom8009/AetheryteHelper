@@ -22,7 +22,7 @@ However, this is a feature that add-ons do not have.<br>
 ・Auto Vote MVP<br>
 ・Auto Start ＆ End call in Duty<br>
 ・item Sort（stack to stackable items）<br>
-![itemsort](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/itemStack_AdobeCreativeCloudExpress.gif)<br>
+![itemsort](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/itemStack.gif)<br>
 
 [WiKi](https://github.com/mushroom8009/AetheryteHelper/wiki)<br>
 <br>
