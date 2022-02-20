@@ -28,6 +28,8 @@ However, this is a feature that add-ons do not have.<br>
 [new features to main tool (youtube)](https://youtu.be/Q5BXGo9t4jc)<br>
 [sub tool (youtube)](https://youtu.be/0DerL9EFZxw)<br>
 
+[itemsort](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/itemStack.mp4)
+
  
 # Requirement
 [MMOminion(FFXIV Minion64)](https://www.mmominion.com/misc.php?page=ffxivbot)
