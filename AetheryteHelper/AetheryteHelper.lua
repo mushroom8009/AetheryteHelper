@@ -9881,6 +9881,8 @@ function AetheryteHelper.itemsort()
         local nonmaxitem = {}
         local jufuku = 0
         local bags = {0, 1, 2, 3}
+     if AHitemsort then
+        mushlooptimer = 100
         for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
         if (table.valid(bag)) then
@@ -9894,8 +9896,6 @@ function AetheryteHelper.itemsort()
         end
         end
         end
-        if AHitemsort then
-          mushlooptimer = 100
           for i = 1,tonumber(#nonmaxitem),1 do
              for k,v in pairs(nonmaxitem) do
               if k == i then
@@ -9914,7 +9914,7 @@ function AetheryteHelper.itemsort()
           mushlooptimer = 1000
           AHitemsort = false
           end
-        end
+      end
 end
 
 
