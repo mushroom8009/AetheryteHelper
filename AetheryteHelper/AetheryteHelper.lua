@@ -67,7 +67,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.5",   
+      Version =         "1.6.6",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -133,6 +133,7 @@ local kinokoProject = {
                       "[1.6.4] - add Auto Player Commendation.",
                       "          add Auto Start and End Call in Duty.",
                       "[1.6.5] - add tool to organize inventory.",
+                      "[1.6.6] - Adjusted AR for some items.",
 
                     },
       
@@ -5432,7 +5433,6 @@ function AetheryteHelper.subtoolAR()
 
                     end
              elseif AHSET.isQuestmode == true then
-                        if AHSET.isReductionEnabled == true then
                             GUI:SameLine(10,-40)
                             GUI:Image(ImageFolder..[[AR_minion.png]],40,40)
                             if (GUI:IsItemHovered()) then
@@ -5453,29 +5453,6 @@ function AetheryteHelper.subtoolAR()
                                     end
                                 end
                             end
-
-                        elseif AHSET.isReductionEnabled == false then
-                            GUI:SameLine(10,-40)
-                            GUI:Image(ImageFolder..[[AR_non.png]],40,40)
-                            if (GUI:IsItemHovered()) then
-                                if (GUI:IsMouseClicked(0)) then
-                                AHSET.isReductionEnabled = not AHSET.isReductionEnabled
-                                GCexchange = false
-                                AetheryteHelper.SaveSettings()
-                                end
-                                if (GUI:IsMouseClicked(1)) then
-                                AHSET.isQuestmode = not AHSET.isQuestmode
-                                AetheryteHelper.SaveSettings()
-                                end
-                                if AHSET.mushtooltips == true then
-                                    if language == 0 then
-                                    GUI:SetTooltip(mushtooltips.jp.tip92)
-                                    else
-                                    GUI:SetTooltip(mushtooltips.en.tip92)
-                                    end
-                               end
-                            end       
-                        end
              end
       else
       GUI:SameLine(10,-40)
@@ -9797,7 +9774,7 @@ function AetheryteHelper.mushsubAR()
              local Rlist = bag:GetList()
              if (table.valid(Rlist)) then
              for _, item in pairs(Rlist) do
-             if( item.IsCollectable == true and item.IsBinding == true ) then
+             if( item.IsCollectable == true and item.IsBinding == true and item.max == 1) then
               mushtoItemstep = 1000
               syusyuhin = syusyuhin + 1
               if(ActionList:IsReady()) then
@@ -9833,7 +9810,7 @@ function AetheryteHelper.mushsubAR()
         local Rlist = bag:GetList()
         if (table.valid(Rlist)) then
         for _, item in pairs(Rlist) do        
-        if( item.IsCollectable == true and item.IsBinding == true) then
+        if( item.IsCollectable == true and item.IsBinding == true and item.max == 1 ) then
           syusyuhin = syusyuhin + 1
           mushlooptimer = 1000
            if(ActionList:IsReady()) then
