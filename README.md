@@ -20,7 +20,9 @@ However, this is a feature that add-ons do not have.<br>
 ・Detailed specification of equipment desynthesis<br>
 ・Can be controlled by in-game text commands<br>
 ・Auto Vote MVP<br>
-・Auto Start ＆ End call in Duty
+・Auto Start ＆ End call in Duty<br>
+・item Sort<br>
+![itemsort](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/itemStack_AdobeCreativeCloudExpress.gif)<br>
 
 [WiKi](https://github.com/mushroom8009/AetheryteHelper/wiki)<br>
 <br>
@@ -28,7 +30,7 @@ However, this is a feature that add-ons do not have.<br>
 [new features to main tool (youtube)](https://youtu.be/Q5BXGo9t4jc)<br>
 [sub tool (youtube)](https://youtu.be/0DerL9EFZxw)<br>
 
-[itemsort](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/itemStack_AdobeCreativeCloudExpress.gif)
+
 
  
 # Requirement
