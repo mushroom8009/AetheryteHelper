@@ -58,7 +58,6 @@ mushroom#8009
 -----------------------------------------------------------------------------------------------------------------
 
 
-
 -----------------------------------------------------------------------------------------------------------------
 AetheryteHelper = {}
 -----------------------------------------------------------------------------------------------------------------
@@ -67,7 +66,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.6.6",   
+      Version =         "1.7.0",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -134,6 +133,7 @@ local kinokoProject = {
                       "          add Auto Start and End Call in Duty.",
                       "[1.6.5] - add tool to organize inventory.",
                       "[1.6.6] - Adjusted AR for some items.",
+                      "[1.7.0] - add automatic Item collection..",
 
                     },
       
@@ -210,13 +210,26 @@ AetheryteHelper.GUI = {
     },
     [3] = {
       isselected = false,
-      name = "[ GC ]"
+      name = "[Toys]"
     },
     [4] = {
       isselected = false,
       name = "[Jank]"
     },
+    [5] = {
+      isselected = false,
+      name = "[ GC ]"
+    },
+    [6] = {
+      isselected = false,
+      name = "[ Bag ]"
+    },
+    [7] = {
+      isselected = false,
+      name = "[TCmd]"
+    },
   },
+
   tabstyle = {
         selected = {r =.1, g = 1 , b =.1 , a = 1},
         hovered = {r =.4, g = .7, b = .1, a = 1 },
@@ -319,6 +332,15 @@ AetheryteHelper.yoro_otu = {
     mushrepairGear = 60,
     mushmovetoMB = false,
     mushtooltips = true,
+    mushitemSearch = false,
+    syokuzai = false,
+    sekizai = false,
+    kinzoku = false,
+    mokuzai = false,
+    nuno = false,
+    kawa = false,
+    hone = false,
+    renkin = false,
     Pcurrnt = Player.currentworld,
     
     },
@@ -532,7 +554,7 @@ mushtooltips = {
          tip108 = "分解オプションを開く",
          tip109 = "ツールチップの表示/非表示",
          tip110 = "右クリックでコピーできます",
-         tip111 = "安定を重視したため、コマンドの受付までに最大5秒程度かかります\n受理されるとカラーメッセージ(エコー)でお知らせします\n進捗はコンソールで確認できます。",
+         tip111 = "安定を重視したため、コマンドの受付までに最大3秒程度かかります\n受理されるとカラーメッセージ(エコー)でお知らせします\n進捗はコンソールで確認できます。",
          tip112 = "MIPアシスト",
          tip113 = "自分を除くパーティリストの順番です\nアイコンはソロでCFを使った場合の参考程度です",
          tip114 = "オン/オフ",
@@ -542,6 +564,27 @@ mushtooltips = {
          tip118 = "自動よろおつ",
          tip119 = "カバン整理\nスタックできるものをまとめます",
          tip120 = "整理中",
+         tip121 = "XIVQuickLauncherアドオン、QoLBar用のシェアボタンです\nクリックでコピーされるのでQoLBarでインポートしてください",
+         tip122 = "アイテムサーチ\nオン/オフ\n\n[所持品を検索]\n[レシピ検索]をすると自動で探します",
+         tip123 = "リテイナー",
+         tip124 = "チョコボカバン",
+         tip125 = "カンパニーチェスト",
+         tip126 = "HQをNQにする（所持品のみ対応）\nカバン整理を行うと同時に実行されます",
+         tip127 = "食材",
+         tip128 = "石材",
+         tip129 = "金属",
+         tip130 = "木材",
+         tip131 = "布材",
+         tip132 = "皮革",
+         tip133 = "骨材",
+         tip134 = "錬金素材",
+         tip135 = "リテイナーから受け取り",
+         tip136 = "リテイナーへ受け渡し",
+         tip137 = "リテイナーバッグの整理\nスタックできるものをまとめます",
+         tip138 = "チョコボカバンから受け取り",
+         tip139 = "チョコボカバンへ受け渡し",
+         tip140 = "チョコボカバンの整理\nスタックできるものをまとめます",
+
 
 
   },
@@ -656,7 +699,7 @@ mushtooltips = {
          tip108 = "Desynthseise Options",
          tip109 = "tooltips Show/hide",
          tip110 = "Right click to copy",
-         tip111 = "Due to the importance of stability,\nit may take a about 5 sec for the command to be accepted.\nit will be notified with a color message when it is accepted.\nProgress can be checked in the console.",
+         tip111 = "Due to the importance of stability,\nit may take a about 3 sec for the command to be accepted.\nit will be notified with a color message when it is accepted.\nProgress can be checked in the console.",
          tip112 = "Auto Commendation",
          tip113 = "index of party member in exclud you.\nthe side icon are just for reference when used DF for solo.",
          tip114 = "Enable/Disable",
@@ -666,6 +709,26 @@ mushtooltips = {
          tip118 = "Auto Start and End Call in Duty",
          tip119 = "organize inventory\nput together stackable items.",
          tip120 = "Now working...",
+         tip121 = "This is share button for XIVQuickLauncher addon, QoLBar\nClick to copy and import it in QoLBar",
+         tip122 = "ItemSearch\nON/OFF\n\nAuto retrieval\n[Search for Item]\n[Search Recipes]",
+         tip123 = "Retainer",
+         tip124 = "Saddlebag",
+         tip125 = "FC Chest",
+         tip126 = "HQ to NQ (only inventory)\nIt will be executed as soon as you organize inventory.",
+         tip127 = "Ingredients",
+         tip128 = "Stone",
+         tip129 = "Metal",
+         tip130 = "Lumber",
+         tip131 = "Cloth",
+         tip132 = "Leather",
+         tip133 = "Bone",
+         tip134 = "Reagents",
+         tip135 = "from Retainer",
+         tip136 = "to Retainer",
+         tip137 = "Organizing the Retainer bag\nput together stackable items.",
+         tip138 = "from Saddlebag",
+         tip139 = "to Saddlebag",
+         tip140 = "Organizing the Saddlebag\nput together stackable items.",
 
   },
 }
@@ -912,6 +975,24 @@ local IDUSstep = 0
 local IDexstep = 0
 local MIPstep = 0
 local AHitemsort = false
+local AHitemsortR = false
+local AHitemsortB = false
+local itemID = 0
+local itemhqID = 0
+local nhitemID = 0
+local nhitemhqID = 0
+local ISstep = 0
+local ritebel = 0
+local ritekazu = 0
+local mybagslot = 0
+local mybagtype = 0
+local itemcount = 0
+local itemmax = 0
+local itemunique = nil
+local mushiS_rite = true
+local mushiS_tori = false
+local mushiS_FC = false
+local mushaccelerator = true
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -986,10 +1067,16 @@ function AetheryteHelper.DrawTabs()
         GUI:PushStyleColor(GUI.Col_ButtonHovered,0,0,0,0)
         GUI:PushStyleColor(GUI.Col_ButtonActive,0,0,0,0)
         for i, tab in spairs(tabs) do
-          if (i ~= 1) then
+          if (i == 2) then
               GUI:SameLine()
-          else
-            GUI:SameLine()
+          elseif (i == 3) then
+              GUI:SameLine()
+          elseif (i == 4) then
+              GUI:SameLine()
+          elseif (i == 5) then
+              GUI:Spacing(10)
+          elseif (i == 6) then
+              GUI:SameLine()
           end
             tab.order = i
            if tab.isselected then
@@ -1749,43 +1836,6 @@ function AetheryteHelper.DrawadWIP()
       GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
-      GUI:Image(ImageFolder..[[tube.png]],30,30)
-      if (GUI:IsItemHovered()) then
-            if (GUI:IsMouseClicked(0)) then
-            io.popen([[cmd /c start "" "]]..AHLinks.link4..[["]]):close()
-            end
-            if AHSET.mushtooltips == true then
-              if language == 0 then
-              GUI:SetTooltip(mushtooltips.jp.tip20)
-              else
-              GUI:SetTooltip(mushtooltips.en.tip20)
-              end
-              end
-      end
-      GUI:EndGroup()
-      GUI:SameLine(220,0)
-      GUI:BeginGroup()
-      GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
-      if (GUI:IsItemHovered()) then
-        if GUI:IsItemClicked(0)then
-          AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
-        end
-        if GUI:IsMouseDown(0) then
-        if language == 0 then
-        GUI:SetTooltip(mushtooltips.jp.tip106)
-        else
-        GUI:SetTooltip(mushtooltips.en.tip106)
-        end              
-        else
-        if language == 0 then
-        GUI:SetTooltip(mushtooltips.jp.tip105)
-        else
-        GUI:SetTooltip(mushtooltips.en.tip105)
-        end       
-      end
-      end
-      GUI:EndGroup()
-      GUI:BeginGroup()
       GUI:Image(ImageFolder..[[yoro.png]],30,30)
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
@@ -1816,12 +1866,427 @@ function AetheryteHelper.DrawadWIP()
               end
       end
       GUI:EndGroup()
+      GUI:Spacing()
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- jank
+
+function AetheryteHelper.Drawadjank()
+      GUI:Spacing(10)
+      GUI:Dummy(90,30)
       GUI:SameLine()
       GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[tube.png]],30,30)
+      if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+            io.popen([[cmd /c start "" "]]..AHLinks.link4..[["]]):close()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip20)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip20)
+              end
+              end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
+      if (GUI:IsItemHovered()) then
+        if GUI:IsItemClicked(0)then
+          AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
+        end
+        if GUI:IsMouseDown(0) then
+        if language == 0 then
+        GUI:SetTooltip(mushtooltips.jp.tip106)
+        else
+        GUI:SetTooltip(mushtooltips.en.tip106)
+        end              
+        else
+        if language == 0 then
+        GUI:SetTooltip(mushtooltips.jp.tip105)
+        else
+        GUI:SetTooltip(mushtooltips.en.tip105)
+        end       
+      end
+      end
+      GUI:EndGroup()  
+
+      GUI:Spacing()
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- items
+
+function AetheryteHelper.DrawadItems()
+      GUI:Spacing(10)
+      GUI:Columns(2)
+      GUI:SetColumnOffset(1, 80) GUI:SetColumnOffset(2, 300) 
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.mushitemSearch == true then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_inv.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+               AHSET.mushitemSearch = not AHSET.mushitemSearch
+               AetheryteHelper.SaveSettings()
+               itemID = 0
+               itemhqID = 0
+               nhitemID = 0
+               nhitemhqID = 0
+               ISstep = 0
+               ritebel = 0
+               ritekazu = 0
+               mybagslot = 0
+               mybagtype = 0
+               itemcount = 0
+               itemmax = 0
+               itemunique = nil
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip122)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip122)
+              end
+              end
+            end
+      elseif AHSET.mushitemSearch == false then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_inv_non.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.mushitemSearch = not AHSET.mushitemSearch
+              AetheryteHelper.SaveSettings()
+               itemID = 0
+               itemhqID = 0
+               nhitemID = 0
+               nhitemhqID = 0
+               ISstep = 0
+               ritebel = 0
+               ritekazu = 0
+               mybagslot = 0
+               mybagtype = 0
+               itemcount = 0
+               itemmax = 0
+               itemunique = nil
+               end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip122)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip122)
+              end
+              end
+            end       
+      end
+      GUI:EndGroup()
+      GUI:NextColumn()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.mushitemSearch == true and mushiS_rite == true then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_r.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then           
+              mushiS_rite = true
+              mushiS_tori = false
+              mushiS_FC = false
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip123)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip123)
+              end
+              end
+            end
+      elseif AHSET.mushitemSearch == false or mushiS_rite == false then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_r_non.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushiS_rite = true
+              mushiS_tori = false
+              mushiS_FC = false
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip123)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip123)
+              end
+              end
+            end       
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.mushitemSearch == true and mushiS_tori == true then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_tori.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushiS_tori = true
+              mushiS_rite = false
+              mushiS_FC = false
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip124)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip124)
+              end
+              end
+            end
+      elseif AHSET.mushitemSearch == false or mushiS_tori == false then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_tori_non.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushiS_tori = true
+              mushiS_rite = false
+              mushiS_FC = false
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip124)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip124)
+              end
+              end
+            end       
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Dummy(40,40)
+      if AHSET.mushitemSearch == true and mushiS_FC == true then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_c.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushiS_FC = true
+              mushiS_tori = false
+              mushiS_rite = false
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip125)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip125)
+              end
+              end
+            end
+      elseif AHSET.mushitemSearch == false or mushiS_FC == false then
+            GUI:SameLine(10,-40)
+            GUI:Image(ImageFolder..[[is_c_non.png]],40,40)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushiS_FC = true
+              mushiS_tori = false
+              mushiS_rite = false
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip125)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip125)
+              end
+              end
+            end       
+      end
+      GUI:EndGroup()
+      GUI:Columns()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      if AHSET.mushitemSearch == true and mushiS_rite == true then
+         GUI:Dummy(30,30)
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[is_p.png]],30,30)
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(30,30)
+         if mushaccelerator == true then
+         GUI:SameLine(5,-30)
+         GUI:Image(ImageFolder..[[is_RL.png]],30,30)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushaccelerator = not mushaccelerator
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip135)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip135)
+              end
+              end
+            end
+         elseif mushaccelerator == false then
+            GUI:SameLine(5,-30)
+            GUI:Image(ImageFolder..[[is_LR.png]],30,30)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             mushaccelerator = not mushaccelerator
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip136)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip136)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[is_r.png]],30,30)
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[quantity.png]],30,30)
+        if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+               AHitemsortR = not AHitemsortR
+               if IsControlOpen("InventoryRetainer") == false then
+                if language == 0 then
+                SendTextCommand("/e [AH][notice]: \x02\x13\x06\xfe\xff\xff\x11\x11 ソートしたいリテイナーのカバンを開いて下さい")
+                AHitemsortR = false
+                else
+                SendTextCommand("/e [AH][notice]: \x02\x13\x06\xfe\xff\xff\x11\x11 Please open a retainer bag that need sort.")
+                AHitemsortR = false
+                end
+               end             
+               if IsControlOpen("InventoryRetainer") == true and AHitemsortR == true then
+               SendTextCommand("/e [AH][Itemsort]:R-Inventory")
+               end
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+                if AHitemsortR == false then
+                GUI:SetTooltip(mushtooltips.jp.tip137)
+                else
+                GUI:SetTooltip(mushtooltips.jp.tip120)
+                end
+              else
+                if AHitemsortR == false then
+                GUI:SetTooltip(mushtooltips.en.tip137)
+                else
+                GUI:SetTooltip(mushtooltips.en.tip120)
+                end
+              end
+              end
+        end
+        GUI:EndGroup()
+      elseif AHSET.mushitemSearch == true and mushiS_tori == true then
+         GUI:Dummy(30,30)
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[is_p.png]],30,30)
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(30,30)
+         if mushaccelerator == true then
+         GUI:SameLine(5,-30)
+         GUI:Image(ImageFolder..[[is_RL.png]],30,30)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushaccelerator = not mushaccelerator
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip138)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip138)
+              end
+              end
+            end
+         elseif mushaccelerator == false then
+            GUI:SameLine(5,-30)
+            GUI:Image(ImageFolder..[[is_LR.png]],30,30)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             mushaccelerator = not mushaccelerator
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip139)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip139)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[is_tori.png]],30,30)
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[quantity.png]],30,30)
+        if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+               AHitemsortB = not AHitemsortB
+               if AHitemsortB == true then
+               SendTextCommand("/e [AH][Itemsort]:B-Inventory")
+               end
+               if ActionList:Get(10,77):IsReady() == true then
+               ActionList:Get(10,77):Cast()
+               end
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+                if AHitemsortR == false then
+                GUI:SetTooltip(mushtooltips.jp.tip140)
+                else
+                GUI:SetTooltip(mushtooltips.jp.tip120)
+                end
+              else
+                if AHitemsortR == false then
+                GUI:SetTooltip(mushtooltips.en.tip140)
+                else
+                GUI:SetTooltip(mushtooltips.en.tip120)
+                end
+              end
+              end
+        end
+        GUI:EndGroup()
+      elseif AHSET.mushitemSearch == true and mushiS_FC == true then
+      GUI:BeginGroup()
+      GUI:Dummy(90,30)
+      GUI:SameLine()
+      GUI:Image(ImageFolder..[[love_biba.png]],60,60)
+      GUI:Dummy(60,30)
+      GUI:SameLine()
+      GUI:Text("work in progress")
+      GUI:EndGroup()
+
+
+      else
+      GUI:Dummy(90,30)
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[is_p.png]],30,30)
+      GUI:SameLine()
       GUI:Image(ImageFolder..[[quantity.png]],30,30)
       if (GUI:IsItemHovered()) then
             if (GUI:IsMouseClicked(0)) then
             AHitemsort = not AHitemsort 
+               if AHitemsort == true then
+               SendTextCommand("/e [AH][Itemsort]:Inventory")
+               end
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
@@ -1840,19 +2305,327 @@ function AetheryteHelper.DrawadWIP()
               end
       end
       GUI:EndGroup()
+      GUI:Spacing()
+        GUI:Separator()
+        GUI:Spacing()
+        GUI:Dummy(90,15)
+        GUI:SameLine()
+        GUI:BeginGroup()
+        GUI:Image(ImageFolder..[[is_hq.png]],15,15)
+        GUI:SameLine()
+        GUI:Text(">>")
+        GUI:SameLine()
+        GUI:Image(ImageFolder..[[is_nq.png]],15,15)
+        GUI:EndGroup()
+        if (GUI:IsItemHovered()) then
+            if AHSET.mushtooltips == true then
+                if language == 0 then
+                GUI:SetTooltip(mushtooltips.jp.tip126)
+                else
+                GUI:SetTooltip(mushtooltips.jp.tip126)
+                end
+            end
+        end
+        GUI:Spacing()
+        GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.syokuzai == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_syokuzai.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.syokuzai = not AHSET.syokuzai
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip127)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip127)
+              end
+              end
+            end
+         elseif AHSET.syokuzai == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_syokuzai_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.syokuzai = not AHSET.syokuzai
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip127)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip127)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+        GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.sekizai == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_sekizai.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.sekizai = not AHSET.sekizai
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip128)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip128)
+              end
+              end
+            end
+         elseif AHSET.sekizai == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_sekizai_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.sekizai = not AHSET.sekizai
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip128)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip128)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.kinzoku == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_kinzoku.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.kinzoku = not AHSET.kinzoku
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip129)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip129)
+              end
+              end
+            end
+         elseif AHSET.kinzoku == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_kinzoku_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.kinzoku = not AHSET.kinzoku
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip129)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip129)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.mokuzai == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_mokuzai.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.mokuzai = not AHSET.mokuzai
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip130)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip130)
+              end
+              end
+            end
+         elseif AHSET.mokuzai == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_mokuzai_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.mokuzai = not AHSET.mokuzai
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip130)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip130)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.nuno == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_nunozai.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.nuno = not AHSET.nuno
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip131)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip131)
+              end
+              end
+            end
+         elseif AHSET.nuno == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_nunozai_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.nuno = not AHSET.nuno
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip131)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip131)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.kawa == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_kawa.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.kawa = not AHSET.kawa
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip132)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip132)
+              end
+              end
+            end
+         elseif AHSET.kawa == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_kawa_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.kawa = not AHSET.kawa
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip132)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip132)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.hone == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_hone.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.hone = not AHSET.hone
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip133)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip133)
+              end
+              end
+            end
+         elseif AHSET.hone == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_hone_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.hone = not AHSET.hone
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip133)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip133)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(20,20)
+         if AHSET.renkin == true then
+         GUI:SameLine(5,-20)
+         GUI:Image(ImageFolder..[[is_renkin.png]],20,20)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              AHSET.renkin = not AHSET.renkin
+              AetheryteHelper.SaveSettings()
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip134)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip134)
+              end
+              end
+            end
+         elseif AHSET.renkin == false then
+            GUI:SameLine(5,-20)
+            GUI:Image(ImageFolder..[[is_renkin_non.png]],20,20)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             AHSET.renkin = not AHSET.renkin
+             AetheryteHelper.SaveSettings()
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip134)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip134)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+      end
 
       GUI:Spacing()
       GUI:Separator()
-      GUI:Spacing()
-      GUI:BeginGroup()
-      GUI:Button("TextCommand List",120,20)
-      if (GUI:IsItemHovered()) then
-        if GUI:IsItemClicked(0)then
-          AetheryteHelper.TCList.open = not AetheryteHelper.TCList.open
-        end
-      end
-      GUI:EndGroup()
-      GUI:Spacing()
 
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1885,12 +2658,18 @@ function AetheryteHelper.minimush()
    end
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
-function AetheryteHelper.TCListwindow()
-  if (AetheryteHelper.TCList.open) then
-    local TCListflags = GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize --+ GUI.WindowFlags_NoScrollbar
-    GUI:SetNextWindowSize(240,260)
-     AetheryteHelper.TCList.visible, AetheryteHelper.TCList.open = GUI:Begin('AH TextCommand List', AetheryteHelper.TCList.open,TCListflags)
-    if (AetheryteHelper.TCList.visible) then
+function AetheryteHelper.TCListHeader()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[howto.png]],20,20)
+      if GUI:IsItemHovered() then
+        if language == 0 then
+          GUI:SetTooltip(mushtooltips.jp.tip111)
+        else
+          GUI:SetTooltip(mushtooltips.en.tip111)
+        end
+      end
+      GUI:EndGroup()
+      GUI:SameLine()
       GUI:BeginGroup()
       local servertime = GetEorzeaTime().servertime
       local day = 0
@@ -1918,14 +2697,28 @@ function AetheryteHelper.TCListwindow()
       servertime = servertime - temp
       end
       GUI:Text("ServerTime:"..string.format("%02d",hour)..":"..string.format("%02d",min)..":"..string.format("%02d",sec))
+      GUI:EndGroup()
       GUI:SameLine()
-      GUI:Image(ImageFolder..[[howto.png]],20,20)
+      GUI:Dummy(20,20)
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Button("QoLBar",60,20)
       if GUI:IsItemHovered() then
-        if language == 0 then
-          GUI:SetTooltip(mushtooltips.jp.tip111)
-        else
-          GUI:SetTooltip(mushtooltips.en.tip111)
+        if GUI:IsMouseClicked(0) then
+          GUI:SetClipboardText("H4sIAAAAAAAACqWTUWvCMBCA/0q4+Fi6JLba5c2WochksIF9GD4UG2bApGKrMMT/vgtskkInY3kIyX25fHcPlwuMus+DAgkKImgFyMuNYBSBxYOUnAtKZwuMO5AcE59Bvg9mTliSjinVtkW0RfSgyGxhmloRzhNk+gWfsphFuDYYvoJ0EWzfDniRRcnmGt0zl2tfXK6J0VaHedPJlNJV7ntXOdlr01ah4mxA/HHUdWV1sPtxwH3a19UuSJwyllA6L3zxvCCmOatA75RTmi99b74k9mRCtEkm3Ewo9VT5YvJDQqaN48zrThnSNseuZ3f0G/67AP4GxrB3N76N7elv6A9yh3/LKkGO3V6ATPsdwRmLiVjEPBZw/QLnalihBQQAAA==")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board")
+          end
         end
+              if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip121)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip121)
+              end
+              end
       end
       GUI:EndGroup()
       GUI:Spacing()
@@ -1935,6 +2728,12 @@ function AetheryteHelper.TCListwindow()
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
+end
+
+
+
+
+function AetheryteHelper.TCListwindow()
       GUI:BeginGroup()
       GUI:Image(ImageFolder..[[AHon.png]],30,40)
       GUI:EndGroup()
@@ -2087,7 +2886,7 @@ function AetheryteHelper.TCListwindow()
       GUI:BeginGroup()
       GUI:Text("move to GC")
       GUI:PushItemWidth(120)
-      GUI:InputText("###MB3","/e AHGC move",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:InputText("###GC","/e AHGC move",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
       if GUI:IsItemHovered() then
         if GUI:IsItemClicked(1) then
           GUI:SetClipboardText("/e AHGC move")
@@ -2116,7 +2915,7 @@ function AetheryteHelper.TCListwindow()
       GUI:BeginGroup()
       GUI:Text("bicolor gemstone amount")
       GUI:PushItemWidth(120)
-      GUI:InputText("###MB3","/e AHBJ num",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:InputText("###BJ","/e AHBJ num",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
       if GUI:IsItemHovered() then
         if GUI:IsItemClicked(1) then
           GUI:SetClipboardText("/e AHBJ num")
@@ -2145,7 +2944,7 @@ function AetheryteHelper.TCListwindow()
       GUI:BeginGroup()
       GUI:Text("minion WeeEa count")
       GUI:PushItemWidth(120)
-      GUI:InputText("###MB3","/e AH WeeEa ",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      GUI:InputText("###WeeEa","/e AH WeeEa ",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
       if GUI:IsItemHovered() then
         if GUI:IsItemClicked(1) then
           GUI:SetClipboardText("/e AH WeeEa")
@@ -2164,9 +2963,64 @@ function AetheryteHelper.TCListwindow()
         end
       end
       GUI:EndGroup()
-    end        
-    GUI:End()  
-  end
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(ImageFolder..[[quantity.png]],30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("Inventory Sort")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###itemsort","/e AH itemsort",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AH itemsort")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
+      GUI:EndGroup()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      GUI:BeginGroup()
+      GUI:Image(GetStartupPath().."\\GUI\\UI_Textures\\minion.png",30,30)
+      GUI:EndGroup()
+      GUI:SameLine()
+      GUI:BeginGroup()
+      GUI:Text("Minion on/off")
+      GUI:PushItemWidth(120)
+      GUI:InputText("###minion","/e AH minion",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+      if GUI:IsItemHovered() then
+        if GUI:IsItemClicked(1) then
+          GUI:SetClipboardText("/e AH minion")
+          if language == 0 then
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+          else
+          SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+          end
+          end
+        if AHSET.mushtooltips == true then
+            if language == 0 then
+            GUI:SetTooltip(mushtooltips.jp.tip110)
+            else
+            GUI:SetTooltip(mushtooltips.en.tip110)
+            end
+        end
+      end
+      GUI:EndGroup()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2949,7 +3803,6 @@ function AetheryteHelper.YoroOtu()
       GUI:SameLine()
       GUI:TextColored(0,1,0,1,"Start Call")
       GUI:EndGroup()
-      
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
@@ -3005,7 +3858,6 @@ function AetheryteHelper.YoroOtu()
       GUI:SameLine()
       GUI:TextColored(0,1,0,1,"End Call")
       GUI:EndGroup()
-      
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
@@ -6614,7 +7466,8 @@ function AetheryteHelper.DrawCall()
       GUI:Spacing()
 
 
-      if (AetheryteHelper.GUI.tabs[1].isselected) and mushTrustmode == false then
+      if (AetheryteHelper.GUI.tabs[1].isselected) and mushTrustmode == false then--main
+
       if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or
       Player.localmapid == 959 or Player.localmapid == 960 or Player.localmapid == 961 then 
       GUI:Columns(3)
@@ -6661,7 +7514,7 @@ function AetheryteHelper.DrawCall()
       GUI:SameLine()
       AetheryteHelper.statuscheck()
       
-      elseif (AetheryteHelper.GUI.tabs[2].isselected) and mushTrustmode == false then
+      elseif (AetheryteHelper.GUI.tabs[2].isselected) and mushTrustmode == false then--tool
       AetheryteHelper.subtoolmateria()
       GUI:Spacing()
       GUI:Separator()
@@ -6678,11 +7531,27 @@ function AetheryteHelper.DrawCall()
       GUI:SameLine()
       AetheryteHelper.statuscheck()
 
-      elseif (AetheryteHelper.GUI.tabs[3].isselected) or mushTrustmode == true then  
+      elseif (AetheryteHelper.GUI.tabs[3].isselected) and mushTrustmode == false then--toys
+      AetheryteHelper.DrawadWIP() ------button
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
+
+
+      elseif (AetheryteHelper.GUI.tabs[4].isselected) and mushTrustmode == false then--jank
+      AetheryteHelper.Drawadjank() ------button
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
+
+      elseif (AetheryteHelper.GUI.tabs[5].isselected) or mushTrustmode == true then--GC
       AetheryteHelper.subtoolGC()
-      --GUI:Spacing()
-      --GUI:Separator()
-      --GUI:Spacing()
       AetheryteHelper.GCtrunin()
       GUI:Spacing()
       GUI:Separator()
@@ -6693,19 +7562,31 @@ function AetheryteHelper.DrawCall()
       if mushTrustmode == true then
         AetheryteHelper.GUI.tabs[1].isselected = false
         AetheryteHelper.GUI.tabs[2].isselected = false
-        AetheryteHelper.GUI.tabs[3].isselected = true
+        AetheryteHelper.GUI.tabs[3].isselected = false
         AetheryteHelper.GUI.tabs[4].isselected = false
+        AetheryteHelper.GUI.tabs[5].isselected = true
+        AetheryteHelper.GUI.tabs[6].isselected = false
+        AetheryteHelper.GUI.tabs[7].isselected = false
       end
-
-      elseif (AetheryteHelper.GUI.tabs[4].isselected) and mushTrustmode == false then 
-      AetheryteHelper.DrawadWIP() ------button
+      elseif (AetheryteHelper.GUI.tabs[6].isselected) and mushTrustmode == false then--item
+      AetheryteHelper.DrawadItems()------button
       GUI:Spacing()
       GUI:Separator()
       GUI:Spacing()
       AetheryteHelper.footerkofi()
       GUI:SameLine()
       AetheryteHelper.statuscheck()
-
+      elseif (AetheryteHelper.GUI.tabs[7].isselected) and mushTrustmode == false then--tcmd
+      AetheryteHelper.TCListHeader()
+      GUI:BeginChild("##AHtcmd", 0, GUI_GetFrameHeight(4), true)
+      AetheryteHelper.TCListwindow()
+      GUI:EndChild()
+      GUI:Spacing()
+      GUI:Separator()
+      GUI:Spacing()
+      AetheryteHelper.footerkofi()
+      GUI:SameLine()
+      AetheryteHelper.statuscheck()
       end
 --------------------------------------------------------------------
 --mini Button
@@ -6735,7 +7616,6 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.insSelecterWindow()
   AetheryteHelper.subtoolDesOPwindow()
   AetheryteHelper.VlWindow()
-  AetheryteHelper.TCListwindow()
   AetheryteHelper.SVRSelectermini()
   AetheryteHelper.MIPselect()
   AetheryteHelper.YoroOtu()
@@ -6980,14 +7860,16 @@ function AetheryteHelper.movetoCOMPANYlimsa()
          end      
 
              if (GCStep == 0) then
+                   if Player.localmapid == 129 then
                       Player:SetTarget(4298661156)
                       limsaAethe = Player:GetTarget()
                       local pos = limsaAethe.pos
                       local dis = limsaAethe.Distance
                       Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
-                      if dis <= 5 then
+                      if dis <= 6 then
                       GCStep = 1
                       end
+                   end
               end
               if (GCStep == 1) then
                      Player:Interact(4298661156)                      
@@ -7413,6 +8295,10 @@ function AetheryteHelper.Exchange()
              elseif Player.GrandCompany == 2 then GCID1 = tonumber(mushCD1.Gridania) 
              elseif Player.GrandCompany  == 3 then GCID1 = tonumber(mushCD1.Uldah)
              end
+             if Player.GrandCompany == 1 and Player.localmapid ~= 128 then GCexchange = false end
+             if Player.GrandCompany == 2 and Player.localmapid ~= 132 then GCexchange = false end
+             if Player.GrandCompany == 3 and Player.localmapid ~= 130 then GCexchange = false end 
+
        if (GCexchange)then
               mushlooptimer = 750
               if( mushEXstep == 0) then
@@ -7530,6 +8416,7 @@ function AetheryteHelper.Exchange()
                   end
               end
               if Player:GetTarget() == nil then
+                 mushlooptimer = 1000
                  GCexchange = false
               end
   end
@@ -7538,6 +8425,9 @@ function AetheryteHelper.Exchange()
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --seals to items
 function AetheryteHelper.mushSealstoItem()
+       if Player.GrandCompany == 1 and Player.localmapid ~= 128 then sealstoitem = false end
+       if Player.GrandCompany == 2 and Player.localmapid ~= 132 then sealstoitem = false end
+       if Player.GrandCompany == 3 and Player.localmapid ~= 130 then sealstoitem = false end
    if (sealstoitem == true and mushtruninGCitem == true and mushtruninGCseals == true) then
      if Player.GrandCompany == 1 then
       GCID2 = tonumber(mushCD2.limsa)
@@ -9852,7 +10742,7 @@ if (AHSET.DesynthTrust) then
      end
 end
 
-
+---------------------------------------------------------------------------------------------
 
 function AetheryteHelper.itemsort()
         local nonmaxitem = {}
@@ -9866,6 +10756,46 @@ function AetheryteHelper.itemsort()
         local ilist = bag:GetList()
         if (table.valid(ilist)) then
         for _, item in pairs(ilist) do
+          if AHSET.syokuzai then 
+            if item.ishq == 1 and item.searchcategory == 44 then
+               item:LowerQuality()
+            end
+          end
+          if AHSET.sekizai then 
+            if item.ishq == 1 and item.searchcategory == 47 then
+                item:LowerQuality()
+            end
+          end
+          if AHSET.kinzoku then 
+            if item.ishq == 1 and item.searchcategory == 48 then
+               item:LowerQuality()
+            end
+          end
+          if AHSET.mokuzai then 
+            if item.ishq == 1 and item.searchcategory == 49 then
+               item:LowerQuality()
+            end
+          end
+          if AHSET.nuno then 
+            if item.ishq == 1 and item.searchcategory == 50 then
+               item:LowerQuality()
+            end
+          end
+          if AHSET.kawa then 
+            if item.ishq == 1 and item.searchcategory == 51 then
+               item:LowerQuality()
+            end
+          end
+          if AHSET.hone then 
+            if item.ishq == 1 and item.searchcategory == 52 then
+               item:LowerQuality()
+            end
+          end
+          if AHSET.renkin then 
+            if item.ishq == 1 and item.searchcategory == 53 then
+               item:LowerQuality()
+            end
+          end
           if item.count ~= item.max then
             table.insert(nonmaxitem,item)
           end
@@ -9879,22 +10809,2046 @@ function AetheryteHelper.itemsort()
                  for key,val in pairs(nonmaxitem) do
                     if v.hqid == val.hqid and k ~= key then
                        jufuku = jufuku + 1
-                       v:Move(0,0)
+                        if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 10 and jufuku == jufuku and jufuku > 1 then
+                        v:Move(3,34)
+                        elseif GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 20 and jufuku == jufuku and jufuku > 1 then
+                        v:Move(3,33)
+                        else
+                        v:Move(0,0)
+                        end
                     end
                  end
               end
              end
           end
           d("[AH][ItemSort]num of items to separated:"..jufuku)
+          if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 30 and jufuku == jufuku and jufuku > 1 then
+           if language == 0 then
+           ffxiv_dialog_manager.IssueNotice("AH ItemSort", "例外が発生したのでソートを停止します")
+           AHitemsort = false
+           else
+           ffxiv_dialog_manager.IssueNotice("AH ItemSort", "There was an irregularity.")
+           AHitemsort = false
+           end
+          end
           if jufuku == 0 then
-          Inventory:SortInventory()
           mushlooptimer = 1000
+          Inventory:SortInventory()
           AHitemsort = false
           end
       end
 end
+---------------------------------------------------------------------------------------------
 
+function AetheryteHelper.itemsortB()
+        local nonmaxitemB = {}
+        local jufukuB = 0
+        local Bbags = {4000, 4001, 4100, 4101}
+     if AHitemsortB then
+        mushlooptimer = 100
+        for _, e in pairs(Bbags) do
+        local Bbag = Inventory:Get(e)
+        if (table.valid(Bbag)) then
+        local Bilist = Bbag:GetList()
+        if (table.valid(Bilist)) then
+        for _, Bitem in pairs(Bilist) do
+          if Bitem.count ~= Bitem.max then
+            table.insert(nonmaxitemB,Bitem)
+          end
+        end
+        end
+        end
+        end
+          for i = 1,tonumber(#nonmaxitemB),1 do
+             for k,v in pairs(nonmaxitemB) do
+              if k == i then
+                 for key,val in pairs(nonmaxitemB) do
+                    if v.hqid == val.hqid and k ~= key then
+                       jufukuB = jufukuB + 1
+                        if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 10 and jufukuB == jufukuB and jufukuB > 1 then
+                        v:Move(4000,1)
+                        elseif GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 20 and jufukuB == jufukuB and jufukuB > 1 then
+                        v:Move(4001,2)
+                        else
+                        v:Move(4000,3)
+                        end
+                    end
+                 end
+              end
+             end
+          end
+          d("[AH][ItemSort]num of items to separated:"..jufukuB)
+          if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 30 and jufukuB == jufukuB and jufukuB > 1 then
+           if language == 0 then
+           ffxiv_dialog_manager.IssueNotice("AH ItemSort", "例外が発生したのでソートを停止します")
+           AHitemsortB = false
+           else
+           ffxiv_dialog_manager.IssueNotice("AH ItemSort", "There was an irregularity.")
+           AHitemsortB = false
+           end
+          end
+          if jufukuB == 0 then
+          mushlooptimer = 1000
+          Inventory:SortInventory()
+          AHitemsortB = false
+          end
+      end
+end
 
+-----------------------------------------------------------------------------------------------------
+function AetheryteHelper.itemsortRite()
+        local nonmaxitemR = {}
+        local jufukuR = 0
+        local Rtype = nil
+        local Rslot = nil
+        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+     if AHitemsortR and IsControlOpen("InventoryRetainer") then
+        mushlooptimer = 100
+        for _, e in pairs(Rbags) do
+        local Rbag = Inventory:Get(e)
+        if (table.valid(Rbag)) then
+        local Rilist = Rbag:GetList()
+        if (table.valid(Rilist)) then
+        for _, Ritem in pairs(Rilist) do
+          if Ritem.count ~= Ritem.max then
+            table.insert(nonmaxitemR,Ritem)
+          end
+        end
+        end
+        end
+        end
+          for i = 1,tonumber(#nonmaxitemR),1 do
+             for k,v in pairs(nonmaxitemR) do
+              if k == i then
+                 for key,val in pairs(nonmaxitemR) do
+                    if v.hqid == val.hqid and k ~= key then
+                       jufukuR = jufukuR + 1
+                        if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 20 and jufukuR == jufukuR and jufukuR > 1 then
+                        v:Move(10006,24)
+                        elseif GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 30 and jufukuR == jufukuR and jufukuR > 1 then
+                        v:Move(10006,23)
+                        else
+                        v:Move(10000,0)
+                        end
+                    end
+                 end
+              end
+             end
+          end
+          d("[AH][ItemSort]num of items to separated:"..jufukuR)
+          if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 40 and jufukuR == jufukuR and jufukuR > 1 then
+           if language == 0 then
+           ffxiv_dialog_manager.IssueNotice("AH ItemSort", "例外が発生したのでソートを停止します")
+           AHitemsortR = false
+           else
+           ffxiv_dialog_manager.IssueNotice("AH ItemSort", "There was an irregularity.")
+           AHitemsortR = false
+           end
+          end
+          if jufukuR == 0 then
+          mushlooptimer = 1000
+          Inventory:SortInventory()
+          AHitemsortR = false
+          end
+      end
+end
+
+-----------------------------------------------------------------------------------------------------
+
+function AetheryteHelper.itemSearch()
+   local sagashimono = {}
+   local bags = {0, 1, 2, 3}
+   if AHSET.mushitemSearch and mushiS_rite == true or AHSET.mushitemSearch and mushiS_tori == true then
+   if ISstep == 0 then
+        for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+          table.insert(sagashimono,item)
+        end
+        end
+        end
+        end
+        if IsControlOpen("ItemFinder") then
+        local mono = GetControl("ItemFinder"):GetRawData()[1].value
+              for i = 1,tonumber(#sagashimono),1 do
+              for k,v in pairs(sagashimono) do
+                if k == i then
+                  if mono:match(v.name) then
+                  itemID = v.id
+                  itemhqID = v.hqid
+                  itemcount = v.count
+                  itemmax = v.max
+                  mybagslot = v.slot
+                  mybagtype = v.type
+                  itemunique = v.isunique
+                  end
+                end
+              end
+            end
+          end
+        if IsControlOpen("RecipeProductList") then
+          nhitemID = GetControl("RecipeProductList"):GetRawData()[2].value
+          nhitemhqID = tonumber("10"..nhitemID)
+          for i = 1,tonumber(#sagashimono),1 do
+              for k,v in pairs(sagashimono) do
+                if k == i then
+                  if nhitemID == v.id then
+                  itemID = v.id
+                  itemhqID = v.hqid
+                  itemcount = v.count
+                  itemmax = v.max
+                  mybagslot = v.slot
+                  mybagtype = v.type
+                  itemunique = v.isunique
+                  end
+                end
+              end
+            end
+        end
+        if itemID > 0 and itemhqID > 0 or nhitemID > 0 and nhitemhqID > 0 then
+          d("[AH][itemSearch]:in bag item:"..itemID.."/ not have item:"..nhitemID)
+        ISstep = 1
+        end
+   end
+
+   if ISstep == 1 then
+          if IsControlOpen("ItemFinder") then
+          UseControlAction("ItemFinder","Close")
+          elseif IsControlOpen("RecipeProductList") then
+          UseControlAction("RecipeProductList","Close")
+          elseif IsControlOpen("Inventory") then
+          UseControlAction("Inventory","Close")
+          ISstep = 1
+          elseif itemunique == true then
+           d("[AH][itemSearch]:UnidueItem Noticet")
+           if language  == 0 then
+           ffxiv_dialog_manager.IssueNotice("AH ItemSearch", "このアイテムはひとつしか持てません")
+           else
+           ffxiv_dialog_manager.IssueNotice("AH ItemSearch", "You can only have 1 of these item.")
+           end
+           ISstep = 99     
+          elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_rite == true then
+          ISstep = 2
+          elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_tori == true then
+          ISstep = 100
+          end
+   end
+        
+   if ISstep == 2 then
+        local el = EntityList("nearest,contentID=196630,contentID=2000401,contentID=2010284,contentID=2000441")
+        if table.valid(el) then
+        for k,v in pairs(el) do
+        ritebel = v.id
+        end
+        end
+        if ritebel == 0 then
+        d("[AH][itemSearch]:bell is not near")
+        ISstep = 99
+        else
+        Player:SetTarget(ritebel)
+        ISstep = 3
+        end
+   end
+   if ISstep == 3 then
+        Player:SetTarget(ritebel)
+        local pos = Player:GetTarget().pos
+        if Player:GetTarget().Distance > 6 then
+        d("[AH][itemSearch]:move to bell:"..ritebel)   
+           Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+        ISstep = 4   
+        elseif Player:GetTarget().Distance < 6 then
+        ISstep = 5
+        end
+   end
+   if ISstep == 4 then
+        Player:SetTarget(ritebel)
+        if Player:GetTarget().Distance <= 3 then
+        Player:Stop()
+        ISstep = 5
+        end
+   end
+   if ISstep == 5 then
+        Player:SetTarget(ritebel)
+        Player:Interact(ritebel)
+        ISstep = 6
+   end
+   if ISstep == 6 then
+        if IsControlOpen("RetainerList") then
+        mushlooptimer = 1500
+        ISstep = 7
+        else
+        ISstep = 5
+        end
+   end
+   if ISstep == 7 then
+        if IsControlOpen("RetainerList") then
+        ritekazu = GetControl("RetainerList"):GetRawData()[3].value
+        end
+      ISstep = 8
+   end
+
+-----1
+   if ISstep == 8 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",0)--rite  
+        ISstep = 9
+        end
+   end
+   if ISstep == 9 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 10  
+        else
+        ISstep = 9
+        end
+   end
+   if ISstep == 10 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 11
+      else
+      ISstep = 10
+      end  
+   end
+
+   if ISstep == 11 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:1:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 12
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 12
+          else
+          ISstep = 12
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 12 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 12
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 13
+      end
+   end
+   if ISstep == 13 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 13
+       else
+       ISstep = 14
+       end
+   end
+   if ISstep == 14 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 14
+        elseif IsControlOpen("RetainerList") and ritekazu > 1 then
+        ISstep = 15
+        elseif ritekazu == 1 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 15 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 16
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----2
+   if ISstep == 16 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",1)--rite
+        ISstep = 17
+        end
+   end
+   if ISstep == 17 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 18  
+        else
+        ISstep = 17
+        end
+   end
+   if ISstep == 18 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 19
+      else
+      ISstep = 18
+      end  
+   end
+
+   if ISstep == 19 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:2:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 20
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 20
+          else
+          ISstep = 20
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 20 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 20
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 21
+      end
+   end
+   if ISstep == 21 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 21
+       else
+       ISstep = 22
+       end
+   end
+   if ISstep == 22 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 22
+        elseif IsControlOpen("RetainerList") and ritekazu > 2 then
+        ISstep = 23
+        elseif ritekazu == 2 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 23 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 24
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+-----3
+   if ISstep == 24 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",2)--rite
+        ISstep = 25
+        end
+   end
+   if ISstep == 25 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 26  
+        else
+        ISstep = 25
+        end
+   end
+   if ISstep == 26 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 27
+      else
+      ISstep = 26
+      end  
+   end
+
+   if ISstep == 27 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:3:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 28
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 28
+          else
+          ISstep = 28
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 28 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 28
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 29
+      end
+   end
+   if ISstep == 29 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 29
+       else
+       ISstep = 30
+       end
+   end
+   if ISstep == 30 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 30
+        elseif IsControlOpen("RetainerList") and ritekazu > 3 then
+        ISstep = 31
+        elseif ritekazu == 3 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 31 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 32
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+-----4
+   if ISstep == 32 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",3)--rite
+        ISstep = 33
+        end
+   end
+   if ISstep == 33 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 34  
+        else
+        ISstep = 33
+        end
+   end
+   if ISstep == 34 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 35
+      else
+      ISstep = 34
+      end  
+   end
+
+   if ISstep == 35 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:4:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 36
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 36
+          else
+          ISstep = 36
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 36 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 36
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 37
+      end
+   end
+   if ISstep == 37 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 37
+       else
+       ISstep = 38
+       end
+   end
+   if ISstep == 38 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 38
+        elseif IsControlOpen("RetainerList") and ritekazu > 4 then
+        ISstep = 39
+        elseif ritekazu == 4 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 39 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 40
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----5
+   if ISstep == 40 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",4)--rite
+        ISstep = 41
+        end
+   end
+   if ISstep == 41 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 42  
+        else
+        ISstep = 41
+        end
+   end
+   if ISstep == 42 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 43
+      else
+      ISstep = 42
+      end  
+   end
+
+   if ISstep == 43 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:5:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 44
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 44
+          else
+          ISstep = 44
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 44 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 44
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 45
+      end
+   end
+   if ISstep == 45 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 45
+       else
+       ISstep = 46
+       end
+   end
+   if ISstep == 46 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 46
+        elseif IsControlOpen("RetainerList") and ritekazu > 5 then
+        ISstep = 47
+        elseif ritekazu == 5 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 47 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 48
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----6
+   if ISstep == 48 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",5)--rite
+        ISstep = 49
+        end
+   end
+   if ISstep == 49 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 50  
+        else
+        ISstep = 49
+        end
+   end
+   if ISstep == 50 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 51
+      else
+      ISstep = 50
+      end  
+   end
+
+   if ISstep == 51 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:6:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 52
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 52
+          else
+          ISstep = 52
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 52 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 52
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 53
+      end
+   end
+   if ISstep == 53 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 53
+       else
+       ISstep = 54
+       end
+   end
+   if ISstep == 54 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 54
+        elseif IsControlOpen("RetainerList") and ritekazu > 6 then
+        ISstep = 55
+        elseif ritekazu == 6 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 55 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 56
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----7
+   if ISstep == 56 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",6)--rite
+        ISstep = 57
+        end
+   end
+   if ISstep == 57 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 58  
+        else
+        ISstep = 57
+        end
+   end
+   if ISstep == 58 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 59
+      else
+      ISstep = 58
+      end  
+   end
+
+   if ISstep == 59 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:7:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 60
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 60
+          else
+          ISstep = 60
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 60 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 60
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 61
+      end
+   end
+   if ISstep == 61 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 61
+       else
+       ISstep = 62
+       end
+   end
+   if ISstep == 62 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 62
+        elseif IsControlOpen("RetainerList") and ritekazu > 7 then
+        ISstep = 63
+        elseif ritekazu == 7 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 63 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 64
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----8
+   if ISstep == 64 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",7)--rite
+        ISstep = 65
+        end
+   end
+   if ISstep == 65 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 66  
+        else
+        ISstep = 65
+        end
+   end
+   if ISstep == 66 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 67
+      else
+      ISstep = 66
+      end  
+   end
+
+   if ISstep == 67 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:8:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 68
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 68
+          else
+          ISstep = 68
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 68 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 68
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 69
+      end
+   end
+   if ISstep == 69 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 69
+       else
+       ISstep = 70
+       end
+   end
+   if ISstep == 70 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 70
+        elseif IsControlOpen("RetainerList") and ritekazu > 8 then
+        ISstep = 71
+        elseif ritekazu == 8 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 71 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 72
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----9
+   if ISstep == 72 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",8)--rite
+        ISstep = 73
+        end
+   end
+   if ISstep == 73 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 74  
+        else
+        ISstep = 73
+        end
+   end
+   if ISstep == 74 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 75
+      else
+      ISstep = 74
+      end  
+   end
+
+   if ISstep == 75 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:9:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 76
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 76
+          else
+          ISstep = 76
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 76 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 76
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 77
+      end
+   end
+   if ISstep == 77 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 77
+       else
+       ISstep = 78
+       end
+   end
+   if ISstep == 78 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 78
+        elseif IsControlOpen("RetainerList") and ritekazu > 9 then
+        ISstep = 79
+        elseif ritekazu == 9 then
+        ISstep = 98
+        end
+   end
+   if ISstep == 79 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 80
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----10
+   if ISstep == 80 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",9)--rite
+        ISstep = 81
+        end
+   end
+   if ISstep == 81 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 82  
+        else
+        ISstep = 81
+        end
+   end
+   if ISstep == 82 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 83
+      else
+      ISstep = 82
+      end  
+   end
+
+   if ISstep == 83 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:10:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 84
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 84
+          else
+          ISstep = 84
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+
+   if ISstep == 84 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 84
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 85
+      end
+   end
+   if ISstep == 85 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 85
+       else
+       ISstep = 86
+       end
+   end
+   if ISstep == 86 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 86
+        elseif IsControlOpen("RetainerList") then
+        ISstep = 87
+        end
+   end
+   if ISstep == 87 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 98
+            else
+            ISstep = 98
+            end
+         end
+      end
+      end
+      end
+      end
+   end
+
+   if ISstep == 98 then
+        if IsControlOpen("RetainerList") then
+        UseControlAction("RetainerList","Close")
+        ISstep = 98
+        Player:ClearTarget()
+        elseif Player:GetTarget() == nil then
+        ISstep = 99
+        end
+   end
+   
+   if ISstep == 99 then
+    d("[AH][itemSearch]:END")
+        itemID = 0
+        itemhqID = 0
+        nhitemID = 0
+        nhitemhqID = 0
+        ISstep = 0
+        ritebel = 0
+        ritekazu = 0
+        mybagslot = 0
+        mybagtype = 0
+        itemcount = 0
+        itemmax = 0
+        itemunique = nil
+        mushlooptimer = 1000
+   end
+
+   if ISstep == 100 then
+      if ActionList:Get(10,77):IsReady() == true then
+        ActionList:Get(10,77):Cast()
+      end
+      if IsControlOpen("InventoryBuddy") then
+      ISstep = 101
+      end
+   end
+   if ISstep == 101 then
+      if IsControlOpen("InventoryBuddy") then
+      d("[AH][itemSearch]:Buddy:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Bbags = {4000,4001,4100,4101}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Bbags) do
+       local Bbag = Inventory:Get(e)
+       if (table.valid(Bbag)) then
+       local Bilist = Bbag:GetList()
+       if (table.valid(Bilist)) then
+       for _, Bitem in pairs(Bilist) do
+          if itemID == Bitem.id then
+             if mushaccelerator == true then
+             Bitem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Bitem.id and itemID == item.id then
+                 item:Move(Bitem.type,Bitem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 102
+          elseif nhitemID == Bitem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Bitem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 102
+          else
+          ISstep = 102
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+   if ISstep == 102 then
+     if IsControlOpen("InventoryBuddy") then
+     UseControlAction("InventoryBuddy","Close")
+     ISstep = 102
+     else
+     ISstep = 99
+     end
+   end
+
+  end
+
+end
 
 
 function AetheryteHelper.voteMVP()
@@ -9945,28 +12899,28 @@ function AetheryteHelper.PartyCall()
             end
          end
          if PScallstep == 10 then
-              if Duty:GetActiveDutyInfo().timer == 7197 then
+              if Duty:GetActiveDutyInfo().timer == 7198 then
               SendTextCommand("/p "..tostring(Scall.word01)) 
               SendTextCommand(tostring(Scall.word02))
               PScallstep = 99
               end
          end
          if PScallstep == 20 then
-              if Duty:GetActiveDutyInfo().timer == 5397 then
+              if Duty:GetActiveDutyInfo().timer == 5398 then
               SendTextCommand("/p "..tostring(Scall.word01)) 
               SendTextCommand(tostring(Scall.word02))
               PScallstep = 99
               end
          end
          if PScallstep == 30 then
-              if Duty:GetActiveDutyInfo().timer == 3597 then
+              if Duty:GetActiveDutyInfo().timer == 3598 then
               SendTextCommand("/p "..tostring(Scall.word01)) 
               SendTextCommand(tostring(Scall.word02))
               PScallstep = 99
               end
          end
          if PScallstep == 40 then
-              if Duty:GetActiveDutyInfo().timer == 1797 then
+              if Duty:GetActiveDutyInfo().timer == 1798 then
               SendTextCommand("/p "..tostring(Scall.word01)) 
               SendTextCommand(tostring(Scall.word02))
               PScallstep = 99
@@ -9978,7 +12932,6 @@ function AetheryteHelper.PartyCall()
             end
          end
    end
-   local Dtask = Duty:GetActiveDutyObjectives()
    local Entity = 0
    local el = EntityList("type=2")
               if table.valid(el) then
@@ -9990,36 +12943,22 @@ function AetheryteHelper.PartyCall()
          if PEcallstep == 0 then
             if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and
                Player.Targetable == true and Duty:GetActiveDutyInfo() ~= nil then
-              if Duty:GetActiveDutyInfo().timer == 7200 then PEcallstep = 10 end 
-              if Duty:GetActiveDutyInfo().timer == 5400 then  PEcallstep = 20 end 
-              if Duty:GetActiveDutyInfo().timer == 3600 then  PEcallstep = 30 end 
-              if Duty:GetActiveDutyInfo().timer == 1800 then  PEcallstep = 40 end
+              if (#EntityList.myparty) ~= 0 then PEcallstep = 10 end 
+              if Player.OnlineStatus == 43 or (#EntityList.myparty) == 0 then PEcallstep = 20 end
             end
          end
          if PEcallstep == 10 then
-              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
+              if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and IsControlOpen("_NotificationIcMvp") or 
+                 Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and Duty:GetActiveDutyInfo() == nil and Entity == 0 then
+              -- Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and IsControlOpen("NowLoading") and Entity == 0 then
               SendTextCommand("/p "..tostring(Ecall.word01)) 
               SendTextCommand(tostring(Ecall.word02))
               PEcallstep = 99
               end
          end
          if PEcallstep == 20 then
-              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
-              SendTextCommand("/p "..tostring(Ecall.word01)) 
-              SendTextCommand(tostring(Ecall.word02))
-              PEcallstep = 99
-              end
-         end
-         if PEcallstep == 30 then
-              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
-              SendTextCommand("/p "..tostring(Ecall.word01)) 
-              SendTextCommand(tostring(Ecall.word02))
-              PEcallstep = 99
-              end
-         end
-         if PEcallstep == 40 then
-              if (#Dtask) == 0 and Entity == 0 or IsControlOpen("_NotificationIcMvp") then
-              SendTextCommand("/p "..tostring(Ecall.word01)) 
+              if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and 
+                 IsControlOpen("NowLoading") and Entity == 0 then
               SendTextCommand(tostring(Ecall.word02))
               PEcallstep = 99
               end
@@ -10038,7 +12977,7 @@ function AetheryteHelper.mushTextCommands()
     local log = GetChatLines()
     local logmatch = nil
     local mushtextstep = 99
-    local logmatchtime = 3
+    local logmatchtime = 2
     local ezt = GetEorzeaTime().servertime
     local mushlogtime = ezt
     
@@ -10087,6 +13026,16 @@ function AetheryteHelper.mushTextCommands()
            logmatch = command.line
            mushlogtime = command.timestamp
            mushtextstep = 70
+      end
+      if command.line:match("AH itemsort") then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 80
+      end
+      if command.line:match("AH minion") then
+           logmatch = command.line
+           mushlogtime = command.timestamp
+           mushtextstep = 90
       end
     end  
     end
@@ -10291,7 +13240,72 @@ function AetheryteHelper.mushTextCommands()
            SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV Mini]:open")
            mushtextstep = 99
      end
-         
+     if mushtextstep == 80 then
+       if AHitemsort == true then
+       logmatch = nil
+       mushtextstep = 99
+       else
+       mushtextstep = 81
+       end
+    end
+    if mushtextstep == 81 then
+       if logmatch then
+        d("[AH][text][Progress]"..(mushlogtime+logmatchtime)-ezt)
+          if mushlogtime+logmatchtime == ezt then
+          mushlooptimer = 1000
+          mushtextstep = 82
+          else
+          mushtextstep = 99
+          end
+       end
+     end
+      if mushtextstep == 82 then
+           AHitemsort = true
+           d("[AH][textcommand]:success")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][Itemsort]:sort")
+           mushtextstep = 99
+     end
+     if mushtextstep == 90 then
+       if FFXIV_Common_BotRunning == true then
+       mushtextstep = 91
+       elseif FFXIV_Common_BotRunning == false then
+       mushtextstep = 93
+       end
+    end
+    if mushtextstep == 91 then
+       if logmatch then
+        d("[AH][text][Progress]"..(mushlogtime+logmatchtime)-ezt)
+          if mushlogtime+logmatchtime == ezt then
+          mushlooptimer = 1000
+          mushtextstep = 92
+          else
+          mushtextstep = 99
+          end
+       end
+     end
+     if mushtextstep == 92 then
+           d("[AH][textcommand]:success")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][minion]:OFF")
+           ml_global_information.ToggleRun()
+           mushtextstep = 99
+     end
+     if mushtextstep == 93 then
+       if logmatch then
+        d("[AH][text][Progress]"..(mushlogtime+logmatchtime)-ezt)
+          if mushlogtime+logmatchtime == ezt then
+          mushlooptimer = 1000
+          mushtextstep = 94
+          else
+          mushtextstep = 99
+          end
+       end
+     end
+     if mushtextstep == 94 then
+           d("[AH][textcommand]:success")
+           SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][minion]:ON")
+           ml_global_information.ToggleRun()
+           mushtextstep = 99
+     end     
      if mushtextstep == 99 then
         mushlogtime = ezt
         logmatch = nil
@@ -10323,6 +13337,9 @@ function AetheryteHelper.mushsubtool()
             AetheryteHelper.voteMVP()
             AetheryteHelper.PartyCall()
             AetheryteHelper.itemsort()
+            AetheryteHelper.itemSearch()
+            AetheryteHelper.itemsortRite()
+            AetheryteHelper.itemsortB()
      end
 
             
