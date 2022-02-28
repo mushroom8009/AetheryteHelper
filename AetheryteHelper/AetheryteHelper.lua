@@ -66,7 +66,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.7.1",   
+      Version =         "1.7.2",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -135,6 +135,7 @@ local kinokoProject = {
                       "[1.6.6] - Adjusted AR for some items.",
                       "[1.7.0] - add automatic Item collection.",
                       "[1.7.1] - adjustment automatic Item collection.",
+                      "[1.7.2] - Support for moving items from FCchest.",
 
                     },
       
@@ -984,6 +985,7 @@ local nhitemID = 0
 local nhitemhqID = 0
 local ISstep = 0
 local ritebel = 0
+local FCchest = 0
 local ritekazu = 0
 local mybagslot = 0
 local mybagtype = 0
@@ -1944,6 +1946,7 @@ function AetheryteHelper.DrawadItems()
                nhitemhqID = 0
                ISstep = 0
                ritebel = 0
+               FCchest = 0
                ritekazu = 0
                mybagslot = 0
                mybagtype = 0
@@ -1995,6 +1998,7 @@ function AetheryteHelper.DrawadItems()
                nhitemhqID = 0
                ISstep = 0
                ritebel = 0
+               FCchest = 0
                ritekazu = 0
                mybagslot = 0
                mybagtype = 0
@@ -2498,14 +2502,50 @@ function AetheryteHelper.DrawadItems()
         end
         GUI:EndGroup()
       elseif AHSET.mushitemSearch == true and mushiS_FC == true then
-      GUI:BeginGroup()
-      GUI:Dummy(90,30)
-      GUI:SameLine()
-      GUI:Image(ImageFolder..[[love_biba.png]],60,60)
-      GUI:Dummy(60,30)
-      GUI:SameLine()
-      GUI:Text("work in progress")
-      GUI:EndGroup()
+         GUI:Dummy(60,30)
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[is_p.png]],30,30)
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Dummy(30,30)
+         if mushaccelerator == true then
+         GUI:SameLine(5,-30)
+         GUI:Image(ImageFolder..[[is_RL.png]],30,30)
+         if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+              mushaccelerator = not mushaccelerator
+            end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip138)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip138)
+              end
+              end
+            end
+         elseif mushaccelerator == false then
+            GUI:SameLine(5,-30)
+            GUI:Image(ImageFolder..[[is_LR.png]],30,30)
+            if (GUI:IsItemHovered()) then
+            if (GUI:IsMouseClicked(0)) then
+             mushaccelerator = not mushaccelerator
+              end
+            if AHSET.mushtooltips == true then
+              if language == 0 then
+              GUI:SetTooltip(mushtooltips.jp.tip139)
+              else
+              GUI:SetTooltip(mushtooltips.en.tip139)
+              end
+              end
+            end
+         end
+         GUI:EndGroup()
+         GUI:SameLine()
+         GUI:BeginGroup()
+         GUI:Image(ImageFolder..[[is_c.png]],30,30)
+         GUI:EndGroup()
 
 
       else
@@ -11194,13 +11234,15 @@ end
 function AetheryteHelper.itemSearch()
    local sagashimono = {}
    local bags = {0, 1, 2, 3}
-   if AHSET.mushitemSearch and mushiS_rite == true or AHSET.mushitemSearch and mushiS_tori == true then
+   if AHSET.mushitemSearch and mushiS_rite == true or AHSET.mushitemSearch and mushiS_tori == true or AHSET.mushitemSearch and mushiS_FC == true then
    if IsControlOpen("Talk") then
        UseControlAction("Talk","Click")
    return
    end
    if IsControlOpen("InventoryRetainer") then
    mushlooptimer = 2000
+   elseif IsControlOpen("FreeCompanyChest") then
+   mushlooptimer = 3000
    else
    mushlooptimer = 1300
    end
@@ -11282,6 +11324,8 @@ function AetheryteHelper.itemSearch()
           ISstep = 2
           elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_tori == true then
           ISstep = 120
+          elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_FC == true then
+          ISstep = 130
           end
    end
         
@@ -11294,7 +11338,7 @@ function AetheryteHelper.itemSearch()
         end
         if ritebel == 0 then
         d("[AH][itemSearch]:bell is not near")
-        ISstep = 99
+        ISstep = 200
         else
         Player:SetTarget(ritebel)
         ISstep = 3
@@ -13489,7 +13533,7 @@ function AetheryteHelper.itemSearch()
                       table.remove(Fslot,Fitem.slot)
                    end 
                    for k,v in pairs(Fslot) do
-                      Ritem:Move(3,v)
+                      Bitem:Move(3,v)
                       d("[AH][itemSearch]:item move")
                    end
                    end
@@ -13582,6 +13626,284 @@ function AetheryteHelper.itemSearch()
      end
    end
 
+--FC
+   if ISstep == 130 then
+        local el = EntityList("nearest,contentID=2000470,contentID=196627")
+        if table.valid(el) then
+        for k,v in pairs(el) do
+        FCchest = v.id
+        end
+        end
+        if FCchest == 0 then
+        d("[AH][itemSearch]:FCchest is not near")
+        ISstep = 200
+        else
+        Player:SetTarget(FCchest)
+        ISstep = 131
+        end
+   end
+
+   if ISstep == 131 then
+        Player:SetTarget(FCchest)
+        local pos = Player:GetTarget().pos
+        if Player:GetTarget().Distance > 6 then
+        d("[AH][itemSearch]:move to bell:"..FCchest)   
+           Player:MoveTo(pos.x,pos.y,pos.z,10,true,true)
+        ISstep = 132   
+        elseif Player:GetTarget().Distance < 6 then
+        ISstep = 133
+        end
+   end
+   if ISstep == 132 then
+        Player:SetTarget(FCchest)
+        if Player:GetTarget().Distance <= 3 then
+        Player:Stop()
+        ISstep = 133
+        end
+   end
+   if ISstep == 133 then
+        Player:SetTarget(FCchest)
+        Player:Interact(FCchest)
+        ISstep = 134
+   end
+   if ISstep == 134 then
+        if IsControlOpen("FreeCompanyChest") then
+        ISstep = 135
+        else
+        ISstep = 133
+        end
+   end
+
+   if ISstep == 135 then
+      if IsControlOpen("FreeCompanyChest") then
+      GetControl("FreeCompanyChest"):PushButton(25,1)
+      SendTextCommand("/e [AH][notice]FCchest1 load")
+      ISstep = 136
+      end
+   end
+      if ISstep == 136 then
+      if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 3 then
+      mushFCchestload = GetControl("FreeCompanyChest"):GetRawData()[11].value
+      if tonumber(mushFCchestload) == 1 then
+      ISstep = 135
+      elseif tonumber(mushFCchestload) == 0 then
+      ISstep = 137
+      end
+      end
+   end
+   if ISstep == 137 then
+      if IsControlOpen("FreeCompanyChest") then
+      GetControl("FreeCompanyChest"):PushButton(25,2)
+      SendTextCommand("/e [AH][notice]FCchest2 load")
+      ISstep = 138
+      end
+   end
+      if ISstep == 138 then
+      if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 3 then
+      mushFCchestload = GetControl("FreeCompanyChest"):GetRawData()[11].value
+      if tonumber(mushFCchestload) == 1 then
+      ISstep = 137
+      elseif tonumber(mushFCchestload) == 0 then
+      ISstep = 139
+      end
+      end
+   end
+   if ISstep == 139 then
+      if IsControlOpen("FreeCompanyChest") then
+      GetControl("FreeCompanyChest"):PushButton(25,3)
+      SendTextCommand("/e [AH][notice]FCchest3 load")
+      ISstep = 140
+      end
+   end
+      if ISstep == 140 then
+      if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 3 then
+      mushFCchestload = GetControl("FreeCompanyChest"):GetRawData()[11].value
+      if tonumber(mushFCchestload) == 1 then
+      ISstep = 139
+      elseif tonumber(mushFCchestload) == 0 then
+      ISstep = 141
+      end
+      end
+   end
+   if ISstep == 141 then
+      if IsControlOpen("FreeCompanyChest") then
+      GetControl("FreeCompanyChest"):PushButton(25,4)
+      SendTextCommand("/e [AH][notice]FCchest4 load")
+      ISstep = 142
+      end
+   end
+      if ISstep == 142 then
+      if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 3 then
+      mushFCchestload = GetControl("FreeCompanyChest"):GetRawData()[11].value
+      if tonumber(mushFCchestload) == 1 then
+      ISstep = 141
+      elseif tonumber(mushFCchestload) == 0 then
+      ISstep = 143
+      end
+      end
+   end
+   if ISstep == 143 then
+      if IsControlOpen("FreeCompanyChest") then
+      GetControl("FreeCompanyChest"):PushButton(25,5)
+      SendTextCommand("/e [AH][notice]FCchest5 load")
+      ISstep = 144
+      end
+   end
+      if ISstep == 144 then
+      if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 3 then
+      mushFCchestload = GetControl("FreeCompanyChest"):GetRawData()[11].value
+      if tonumber(mushFCchestload) == 1 then
+      ISstep = 143
+      elseif tonumber(mushFCchestload) == 0 then
+      ISstep = 145
+      end
+      end
+   end
+   if ISstep == 145 then
+      if IsControlOpen("FreeCompanyChest") then
+      d("[AH][itemSearch]:FCchest:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local FCbags = {20000,20001,20002,20003,20004}
+       local bags = {0,1,2,3}
+       for _, e in pairs(FCbags) do
+       local FCbag = Inventory:Get(e)
+       if (table.valid(FCbag)) then
+       local FCilist = FCbag:GetList()
+       if (table.valid(FCilist)) then
+       for _, FCitem in pairs(FCilist) do
+          if itemID == FCitem.id then
+             if mushaccelerator == true then
+             FCitem:Move(mybagtype,mybagslot)
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == FCitem.id and itemID == item.id then
+                 item:Move(FCitem.type,FCitem.slot)
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      FCitem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+             ISstep = 145
+          elseif nhitemID == FCitem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Bitem:Move(3,v)
+                    d("[AH][itemSearch]:item move")
+                  end
+                end
+             end
+             end
+             end
+             end
+             ISstep = 145
+          else
+          ISstep = 146
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+      if ISstep == 146 then
+      local FCbags = {20000,20001,20002,20003,20004}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(FCbags) do
+         local FCbag = Inventory:Get(e)
+         if (table.valid(FCbag)) then
+         local FCilist = FCbag:GetList()
+         if (table.valid(FCilist)) then
+         for _, FCitem in pairs(FCilist) do
+         if itemID == FCitem.id then
+            if FCitem.count == 0 then
+              ISstep = 147
+            end
+         else
+         ISstep = 147
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count == 0 then
+              ISstep = 147
+            end
+         else
+         ISstep = 147
+         end
+         end
+         end
+         end
+         end
+      end
+   end
+   if ISstep == 147 then
+     if IsControlOpen("FreeCompanyChest") then
+     UseControlAction("FreeCompanyChest","Close")
+     ISstep = 147
+     else
+     ISstep = 148
+     end
+   end
+   if ISstep == 148 then
+     Player:ClearTarget()
+     if Player:GetTarget() == nil then
+        ISstep = 200
+     else
+     ISstep = 148
+     end
+   end
+
    if ISstep == 199 then
         if IsControlOpen("RetainerList") then
         UseControlAction("RetainerList","Close")
@@ -13600,6 +13922,7 @@ function AetheryteHelper.itemSearch()
         nhitemhqID = 0
         ISstep = 0
         ritebel = 0
+        FCchest = 0
         ritekazu = 0
         mybagslot = 0
         mybagtype = 0
