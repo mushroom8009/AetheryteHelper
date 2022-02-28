@@ -66,7 +66,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.7.0",   
+      Version =         "1.7.1",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -133,7 +133,8 @@ local kinokoProject = {
                       "          add Auto Start and End Call in Duty.",
                       "[1.6.5] - add tool to organize inventory.",
                       "[1.6.6] - Adjusted AR for some items.",
-                      "[1.7.0] - add automatic Item collection..",
+                      "[1.7.0] - add automatic Item collection.",
+                      "[1.7.1] - adjustment automatic Item collection.",
 
                     },
       
@@ -988,11 +989,13 @@ local mybagslot = 0
 local mybagtype = 0
 local itemcount = 0
 local itemmax = 0
+local syojisu = 0
 local itemunique = nil
 local mushiS_rite = true
 local mushiS_tori = false
 local mushiS_FC = false
 local mushaccelerator = true
+local mushRitekazu = 0
 ------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1921,7 +1924,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- items
-
+local mushISinbag = {}
 function AetheryteHelper.DrawadItems()
       GUI:Spacing(10)
       GUI:Columns(2)
@@ -1946,6 +1949,29 @@ function AetheryteHelper.DrawadItems()
                mybagtype = 0
                itemcount = 0
                itemmax = 0
+               mushISinbag = {}
+               mushrite1uke = false
+               mushrite1azuke = false
+               mushrite2uke = false
+               mushrite2azuke = false
+               mushrite3uke = false
+               mushrite3azuke = false
+               mushrite4uke = false
+               mushrite4azuke = false
+               mushrite5uke = false
+               mushrite5azuke = false
+               mushrite6uke = false
+               mushrite6azuke = false
+               mushrite7uke = false
+               mushrite7azuke = false
+               mushrite8uke = false
+               mushrite8azuke = false
+               mushrite9uke = false
+               mushrite9azuke = false
+               mushrite10uke = false
+               mushrite10azuke = false
+               mushRitekazu = 0
+               mushitemname = nil
                itemunique = nil
             end
             if AHSET.mushtooltips == true then
@@ -1974,6 +2000,29 @@ function AetheryteHelper.DrawadItems()
                mybagtype = 0
                itemcount = 0
                itemmax = 0
+               mushISinbag = {}
+               mushrite1uke = false
+               mushrite1azuke = false
+               mushrite2uke = false
+               mushrite2azuke = false
+               mushrite3uke = false
+               mushrite3azuke = false
+               mushrite4uke = false
+               mushrite4azuke = false
+               mushrite5uke = false
+               mushrite5azuke = false
+               mushrite6uke = false
+               mushrite6azuke = false
+               mushrite7uke = false
+               mushrite7azuke = false
+               mushrite8uke = false
+               mushrite8azuke = false
+               mushrite9uke = false
+               mushrite9azuke = false
+               mushrite10uke = false
+               mushrite10azuke = false
+               mushRitekazu = 0
+               mushitemname = nil
                itemunique = nil
                end
             if AHSET.mushtooltips == true then
@@ -2188,6 +2237,191 @@ function AetheryteHelper.DrawadItems()
               end
         end
         GUI:EndGroup()
+        GUI:Separator()
+        GUI:BeginGroup()
+        if IsControlOpen("ItemFinder") then
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[7].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[8].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[49].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[50].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[56].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[57].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[63].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[64].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[70].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[71].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[77].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[78].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[84].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[85].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[91].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[92].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[98].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[99].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[105].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[106].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[112].value)
+        table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[113].value)
+        end
+        local bags = {0,1,2,3}
+        local itemname = {}
+        for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+          table.insert(itemname,item)
+        end
+        end
+        end
+        end
+        if IsControlOpen("ItemFinder") then
+        local mono = GetControl("ItemFinder"):GetRawData()[1].value
+        for i = 1,tonumber(#itemname),1 do
+        for k,v in pairs(itemname) do
+                if k == i then
+                  if mono:match(v.name) then
+                     mushitemname = v.name
+                  end
+                end
+              end
+            end
+          end
+        if mushitemname ~= nil then
+        GUI:Text(tostring(mushitemname))
+        end
+        if IsControlOpen("RetainerList") then
+        mushRitekazu = GetControl("RetainerList"):GetRawData()[3].value
+        end
+        for k,v in pairs(mushISinbag) do
+        if k == 1 then GUI:Text(tostring(v)..":") end
+        if k == 2 then GUI:SameLine() GUI:Text(tostring(v)) end
+
+        if mushRitekazu > 0 then
+        if mushaccelerator == true and mushrite1uke == true then
+        if k == 3 then GUI:Text(tostring(v)..":") end
+        if k == 4 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite1azuke == true then
+        if k == 3 then GUI:Text(tostring(v)..":") end
+        if k == 4 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 3 then GUI:Text(tostring(v)..":") end
+        if k == 4 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 1 then
+        if mushaccelerator == true and mushrite2uke == true then
+        if k == 5 then GUI:Text(tostring(v)..":") end
+        if k == 6 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite2azuke == true then
+        if k == 5 then GUI:Text(tostring(v)..":") end
+        if k == 6 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 5 then GUI:Text(tostring(v)..":") end
+        if k == 6 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 2 then
+        if mushaccelerator == true and mushrite3uke == true then
+        if k == 7 then GUI:Text(tostring(v)..":") end
+        if k == 8 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite3azuke == true then
+        if k == 7 then GUI:Text(tostring(v)..":") end
+        if k == 8 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 7 then GUI:Text(tostring(v)..":") end
+        if k == 8 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 3 then
+        if mushaccelerator == true and mushrite4uke == true then
+        if k == 9 then GUI:Text(tostring(v)..":") end
+        if k == 10 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite4azuke == true then
+        if k == 9 then GUI:Text(tostring(v)..":") end
+        if k == 10 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 9 then GUI:Text(tostring(v)..":") end
+        if k == 10 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 4 then
+        if mushaccelerator == true and mushrite5uke == true then
+        if k == 11 then GUI:Text(tostring(v)..":") end
+        if k == 12 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite5azuke == true then
+        if k == 11 then GUI:Text(tostring(v)..":") end
+        if k == 12 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 11 then GUI:Text(tostring(v)..":") end
+        if k == 12 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 5 then
+        if mushaccelerator == true and mushrite6uke == true then
+        if k == 13 then GUI:Text(tostring(v)..":") end
+        if k == 14 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite6azuke == true then
+        if k == 13 then GUI:Text(tostring(v)..":") end
+        if k == 14 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 13 then GUI:Text(tostring(v)..":") end
+        if k == 14 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 6 then
+        if mushaccelerator == true and mushrite7uke == true then
+        if k == 15 then GUI:Text(tostring(v)..":") end
+        if k == 16 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite7azuke == true then
+        if k == 15 then GUI:Text(tostring(v)..":") end
+        if k == 16 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 15 then GUI:Text(tostring(v)..":") end
+        if k == 16 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 7 then
+        if mushaccelerator == true and mushrite8uke == true then
+        if k == 17 then GUI:Text(tostring(v)..":") end
+        if k == 18 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite8azuke == true then
+        if k == 17 then GUI:Text(tostring(v)..":") end
+        if k == 18 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 17 then GUI:Text(tostring(v)..":") end
+        if k == 18 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 8 then
+        if mushaccelerator == true and mushrite9uke == true then
+        if k == 19 then GUI:Text(tostring(v)..":") end
+        if k == 20 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite9azuke == true then
+        if k == 19 then GUI:Text(tostring(v)..":") end
+        if k == 20 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 19 then GUI:Text(tostring(v)..":") end
+        if k == 20 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+        if mushRitekazu > 9 then
+        if mushaccelerator == true and mushrite10uke == true then
+        if k == 21 then GUI:Text(tostring(v)..":") end
+        if k == 22 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        elseif mushaccelerator == false and mushrite10azuke == true then
+        if k == 21 then GUI:Text(tostring(v)..":") end
+        if k == 22 then GUI:SameLine() GUI:Text(tostring(v)) GUI:SameLine() GUI:TextColored(0,1,0,1,"/checked") end
+        else
+        if k == 21 then GUI:Text(tostring(v)..":") end
+        if k == 22 then GUI:SameLine() GUI:Text(tostring(v)) end
+        end
+        end
+
+        end
+        GUI:EndGroup()
+        
       elseif AHSET.mushitemSearch == true and mushiS_tori == true then
          GUI:Dummy(30,30)
          GUI:SameLine()
@@ -2625,7 +2859,6 @@ function AetheryteHelper.DrawadItems()
       end
 
       GUI:Spacing()
-      GUI:Separator()
 
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -9247,6 +9480,10 @@ function AetheryteHelper.Jumbocactpothelper()
     local jbc33 = AHSET.jumbo33
     local jbc34 = AHSET.jumbo34
 if (mushJumbocactpothelper) then
+     if IsControlOpen("Talk") then
+       UseControlAction("Talk","Click")
+     return
+     end
      if mushGSjcpstep == 0 then
         mushlooptimer = 100
         Player:SetTarget(4299949120)
@@ -10664,7 +10901,7 @@ function AetheryteHelper.mushsubAR()
              local Rlist = bag:GetList()
              if (table.valid(Rlist)) then
              for _, item in pairs(Rlist) do
-             if( item.IsCollectable == true and item.IsBinding == true and item.max == 1) then
+             if( item.IsCollectable == true and item.IsBinding == true and item.id ~= 19903 ) then
               mushtoItemstep = 1000
               syusyuhin = syusyuhin + 1
               if(ActionList:IsReady()) then
@@ -10700,7 +10937,7 @@ function AetheryteHelper.mushsubAR()
         local Rlist = bag:GetList()
         if (table.valid(Rlist)) then
         for _, item in pairs(Rlist) do        
-        if( item.IsCollectable == true and item.IsBinding == true and item.max == 1 ) then
+        if( item.IsCollectable == true and item.IsBinding == true and item.id ~= 19903 ) then
           syusyuhin = syusyuhin + 1
           mushlooptimer = 1000
            if(ActionList:IsReady()) then
@@ -10954,11 +11191,19 @@ function AetheryteHelper.itemsortRite()
 end
 
 -----------------------------------------------------------------------------------------------------
-
 function AetheryteHelper.itemSearch()
    local sagashimono = {}
    local bags = {0, 1, 2, 3}
    if AHSET.mushitemSearch and mushiS_rite == true or AHSET.mushitemSearch and mushiS_tori == true then
+   if IsControlOpen("Talk") then
+       UseControlAction("Talk","Click")
+   return
+   end
+   if IsControlOpen("InventoryRetainer") then
+   mushlooptimer = 2000
+   else
+   mushlooptimer = 1300
+   end
    if ISstep == 0 then
         for _, e in pairs(bags) do
         local bag = Inventory:Get(e)
@@ -10973,6 +11218,7 @@ function AetheryteHelper.itemSearch()
         end
         if IsControlOpen("ItemFinder") then
         local mono = GetControl("ItemFinder"):GetRawData()[1].value
+        syojisu = GetControl("ItemFinder"):GetRawData()[8].value
               for i = 1,tonumber(#sagashimono),1 do
               for k,v in pairs(sagashimono) do
                 if k == i then
@@ -11008,9 +11254,11 @@ function AetheryteHelper.itemSearch()
               end
             end
         end
-        if itemID > 0 and itemhqID > 0 or nhitemID > 0 and nhitemhqID > 0 then
+        if itemID > 0 and itemhqID > 0 and tonumber(syojisu) > 0 or nhitemID > 0 and nhitemhqID > 0 then
           d("[AH][itemSearch]:in bag item:"..itemID.."/ not have item:"..nhitemID)
         ISstep = 1
+        else
+        ISstep = 0
         end
    end
 
@@ -11029,11 +11277,11 @@ function AetheryteHelper.itemSearch()
            else
            ffxiv_dialog_manager.IssueNotice("AH ItemSearch", "You can only have 1 of these item.")
            end
-           ISstep = 99     
+           ISstep = 200     
           elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_rite == true then
           ISstep = 2
           elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_tori == true then
-          ISstep = 100
+          ISstep = 120
           end
    end
         
@@ -11077,7 +11325,6 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 6 then
         if IsControlOpen("RetainerList") then
-        mushlooptimer = 1500
         ISstep = 7
         else
         ISstep = 5
@@ -11132,6 +11379,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -11141,6 +11389,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -11171,7 +11420,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 12
+          ISstep = 10
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -11187,14 +11436,14 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 12
+          ISstep = 10
           else
           ISstep = 12
           end
@@ -11204,35 +11453,78 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-
    if ISstep == 12 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 12
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 11
+            end
+         else
+         mushrite1uke = true
+         ISstep = 13 
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 11
+            end
+         else
+         mushrite1azuke = true
          ISstep = 13
+         end
+         end
+         end
+         end
+         end
       end
    end
    if ISstep == 13 then
-       if IsControlOpen("SelectString") then
-       GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 13
-       else
-       ISstep = 14
-       end
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 13
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 14
+      end
    end
    if ISstep == 14 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        ISstep = 14
-        elseif IsControlOpen("RetainerList") and ritekazu > 1 then
-        ISstep = 15
-        elseif ritekazu == 1 then
-        ISstep = 98
-        end
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 14
+       else
+       ISstep = 15
+       end
    end
    if ISstep == 15 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 15
+        elseif IsControlOpen("RetainerList") and ritekazu > 1 then
+        ISstep = 16
+        elseif ritekazu == 1 then
+        ISstep = 199
+        end
+   end
+   if ISstep == 16 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -11242,10 +11534,12 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
-            ISstep = 16
+            ISstep = 20
             end
+         else
+         ISstep = 20
          end
       end
       end
@@ -11254,34 +11548,34 @@ function AetheryteHelper.itemSearch()
    end
 
 -----2
-   if ISstep == 16 then
+   if ISstep == 20 then
         if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",1)--rite
-        ISstep = 17
+        GetControl("RetainerList"):Action("SelectIndex",1)--rite  
+        ISstep = 21
         end
    end
-   if ISstep == 17 then
+   if ISstep == 21 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
         end
         if IsControlOpen("SelectString") then
-        ISstep = 18  
+        ISstep = 22  
         else
-        ISstep = 17
+        ISstep = 21
         end
    end
-   if ISstep == 18 then
+   if ISstep == 22 then
       if IsControlOpen("SelectString") then
          GetControl("SelectString"):Action("SelectIndex",0)
       end
       if IsControlOpen("InventoryRetainer") then
-      ISstep = 19
+      ISstep = 23
       else
-      ISstep = 18
+      ISstep = 22
       end  
    end
 
-   if ISstep == 19 then
+   if ISstep == 23 then
       if IsControlOpen("InventoryRetainer") then
       d("[AH][itemSearch]:2:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
@@ -11295,6 +11589,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -11304,6 +11599,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -11334,7 +11630,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 20
+          ISstep = 22
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -11350,16 +11646,16 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 20
+          ISstep = 22
           else
-          ISstep = 20
+          ISstep = 24
           end
        end
        end
@@ -11367,35 +11663,78 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-
-   if ISstep == 20 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 20
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
-         ISstep = 21
+   if ISstep == 24 then
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 23
+            end
+         else
+         mushrite2uke = true
+         ISstep = 25
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 23
+            end
+         else
+         mushrite2azuke = true
+         ISstep = 25
+         end
+         end
+         end
+         end
+         end
       end
    end
-   if ISstep == 21 then
+   if ISstep == 25 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 25
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 26
+      end
+   end
+   if ISstep == 26 then
        if IsControlOpen("SelectString") then
        GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 21
+       ISstep = 26
        else
-       ISstep = 22
+       ISstep = 27
        end
    end
-   if ISstep == 22 then
+   if ISstep == 27 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
-        ISstep = 22
+        ISstep = 27
         elseif IsControlOpen("RetainerList") and ritekazu > 2 then
-        ISstep = 23
+        ISstep = 28
         elseif ritekazu == 2 then
-        ISstep = 98
+        ISstep = 199
         end
    end
-   if ISstep == 23 then
+   if ISstep == 28 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -11405,45 +11744,48 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
-            ISstep = 24
+            ISstep = 30
             end
+         else
+         ISstep = 30
          end
       end
       end
       end
       end
    end
+
 -----3
-   if ISstep == 24 then
+   if ISstep == 30 then
         if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",2)--rite
-        ISstep = 25
+        GetControl("RetainerList"):Action("SelectIndex",2)--rite  
+        ISstep = 31
         end
    end
-   if ISstep == 25 then
+   if ISstep == 31 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
         end
         if IsControlOpen("SelectString") then
-        ISstep = 26  
+        ISstep = 32  
         else
-        ISstep = 25
+        ISstep = 31
         end
    end
-   if ISstep == 26 then
+   if ISstep == 32 then
       if IsControlOpen("SelectString") then
          GetControl("SelectString"):Action("SelectIndex",0)
       end
       if IsControlOpen("InventoryRetainer") then
-      ISstep = 27
+      ISstep = 33
       else
-      ISstep = 26
+      ISstep = 32
       end  
    end
 
-   if ISstep == 27 then
+   if ISstep == 33 then
       if IsControlOpen("InventoryRetainer") then
       d("[AH][itemSearch]:3:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
@@ -11457,6 +11799,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -11466,6 +11809,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -11496,7 +11840,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 28
+          ISstep = 32
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -11512,214 +11856,95 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 28
+          ISstep = 32
           else
-          ISstep = 28
+          ISstep = 34
           end
        end
        end
        end
        end
        end
-   end
-
-   if ISstep == 28 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 28
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
-         ISstep = 29
-      end
-   end
-   if ISstep == 29 then
-       if IsControlOpen("SelectString") then
-       GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 29
-       else
-       ISstep = 30
-       end
-   end
-   if ISstep == 30 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        ISstep = 30
-        elseif IsControlOpen("RetainerList") and ritekazu > 3 then
-        ISstep = 31
-        elseif ritekazu == 3 then
-        ISstep = 98
-        end
-   end
-   if ISstep == 31 then
-      local bags = {0, 1, 2, 3}
-      for _, e in pairs(bags) do
-      local bag = Inventory:Get(e)
-      if (table.valid(bag)) then
-      local ilist = bag:GetList()
-      if (table.valid(ilist)) then
-      for _, item in pairs(ilist) do
-         if item.id == itemID or item.id == nhitemID then
-            if item.isunique == true then
-            ISstep = 98
-            else
-            ISstep = 32
-            end
-         end
-      end
-      end
-      end
-      end
-   end
------4
-   if ISstep == 32 then
-        if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",3)--rite
-        ISstep = 33
-        end
-   end
-   if ISstep == 33 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        end
-        if IsControlOpen("SelectString") then
-        ISstep = 34  
-        else
-        ISstep = 33
-        end
    end
    if ISstep == 34 then
-      if IsControlOpen("SelectString") then
-         GetControl("SelectString"):Action("SelectIndex",0)
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 33
+            end
+         else
+         mushrite3uke = true
+         ISstep = 35
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 33
+            end
+         else
+         mushrite3azuke = true
+         ISstep = 35
+         end
+         end
+         end
+         end
+         end
       end
-      if IsControlOpen("InventoryRetainer") then
-      ISstep = 35
-      else
-      ISstep = 34
-      end  
    end
-
    if ISstep == 35 then
       if IsControlOpen("InventoryRetainer") then
-      d("[AH][itemSearch]:4:in bag item:"..itemID.."/ not have item:"..nhitemID)
-       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
-       local bags = {0,1,2,3}
-       for _, e in pairs(Rbags) do
-       local Rbag = Inventory:Get(e)
-       if (table.valid(Rbag)) then
-       local Rilist = Rbag:GetList()
-       if (table.valid(Rilist)) then
-       for _, Ritem in pairs(Rilist) do
-          if itemID == Ritem.id then
-             if mushaccelerator == true then
-             Ritem:Move(mybagtype,mybagslot)
-             elseif mushaccelerator == false then
-                 for _, e in pairs(bags) do
-                 local bag = Inventory:Get(e)
-                 if (table.valid(bag)) then
-                 local ilist = bag:GetList()
-                 if (table.valid(ilist)) then
-                 for _, item in pairs(ilist) do
-                 if itemID == Ritem.id and itemID == item.id then
-                 item:Move(Ritem.type,Ritem.slot)
-                 end
-                 end
-                 end
-                 end
-                 end
-             end
-             d("[AH][itemSearch]:item move")
-                if itemcount == itemmax and mushaccelerator == true then
-                local Fbags = {3}
-                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
-                for _, e in pairs(Fbags) do
-                local Fbag = Inventory:Get(e)
-                if (table.valid(Fbag)) then
-                local Filist = Fbag:GetList()
-                if (table.valid(Filist)) then
-                for _, Fitem in pairs(Filist) do
-                   for s = 0,34,1 do   
-                   if Fitem.slot == s then
-                      table.remove(Fslot,Fitem.slot)
-                   end 
-                   for k,v in pairs(Fslot) do
-                      Ritem:Move(3,v)
-                      d("[AH][itemSearch]:item move")
-                   end
-                   end
-                end
-                end
-                end
-                end
-                end
-             ISstep = 36
-          elseif nhitemID == Ritem.id and mushaccelerator == true then
-             local Fbags = {3}
-             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
-             for _, e in pairs(Fbags) do
-             local Fbag = Inventory:Get(e)
-             if (table.valid(Fbag)) then
-             local Filist = Fbag:GetList()
-             if (table.valid(Filist)) then
-             for _, Fitem in pairs(Filist) do
-                for s = 0,34,1 do   
-                  if Fitem.slot == s then
-                    table.remove(Fslot,Fitem.slot)
-                  end 
-                  for k,v in pairs(Fslot) do
-                    Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
-                  end
-                end
-             end
-             end
-             end
-             end
-             ISstep = 36
-          else
-          ISstep = 36
-          end
-       end
-       end
-       end
-       end
-       end
-   end
-
-   if ISstep == 36 then
-      if IsControlOpen("InventoryRetainer") then
          UseControlAction("InventoryRetainer","Close")
-         ISstep = 36
+         ISstep = 35
       elseif IsControlOpen("SelectString") then
          Inventory:SortInventory()
-         ISstep = 37
+         ISstep = 36
       end
    end
-   if ISstep == 37 then
+   if ISstep == 36 then
        if IsControlOpen("SelectString") then
        GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 37
+       ISstep = 36
        else
-       ISstep = 38
+       ISstep = 37
        end
    end
-   if ISstep == 38 then
+   if ISstep == 37 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
+        ISstep = 37
+        elseif IsControlOpen("RetainerList") and ritekazu > 3 then
         ISstep = 38
-        elseif IsControlOpen("RetainerList") and ritekazu > 4 then
-        ISstep = 39
-        elseif ritekazu == 4 then
-        ISstep = 98
+        elseif ritekazu == 3 then
+        ISstep = 199
         end
    end
-   if ISstep == 39 then
+   if ISstep == 38 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -11729,10 +11954,12 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
             ISstep = 40
             end
+         else
+         ISstep = 40
          end
       end
       end
@@ -11740,10 +11967,10 @@ function AetheryteHelper.itemSearch()
       end
    end
 
------5
+-----4
    if ISstep == 40 then
         if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",4)--rite
+        GetControl("RetainerList"):Action("SelectIndex",3)--rite  
         ISstep = 41
         end
    end
@@ -11770,7 +11997,7 @@ function AetheryteHelper.itemSearch()
 
    if ISstep == 43 then
       if IsControlOpen("InventoryRetainer") then
-      d("[AH][itemSearch]:5:in bag item:"..itemID.."/ not have item:"..nhitemID)
+      d("[AH][itemSearch]:4:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
        local bags = {0,1,2,3}
        for _, e in pairs(Rbags) do
@@ -11782,6 +12009,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -11791,6 +12019,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -11821,7 +12050,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 44
+          ISstep = 42
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -11837,14 +12066,14 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 44
+          ISstep = 42
           else
           ISstep = 44
           end
@@ -11854,35 +12083,78 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-
    if ISstep == 44 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 44
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 43
+            end
+         else
+         mushrite4uke = true
          ISstep = 45
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 43
+            end
+         else
+         mushrite4azuke = true
+         ISstep = 45
+         end
+         end
+         end
+         end
+         end
       end
    end
    if ISstep == 45 then
-       if IsControlOpen("SelectString") then
-       GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 45
-       else
-       ISstep = 46
-       end
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 45
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 46
+      end
    end
    if ISstep == 46 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        ISstep = 46
-        elseif IsControlOpen("RetainerList") and ritekazu > 5 then
-        ISstep = 47
-        elseif ritekazu == 5 then
-        ISstep = 98
-        end
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 46
+       else
+       ISstep = 47
+       end
    end
    if ISstep == 47 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 47
+        elseif IsControlOpen("RetainerList") and ritekazu > 4 then
+        ISstep = 48
+        elseif ritekazu == 4 then
+        ISstep = 199
+        end
+   end
+   if ISstep == 48 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -11892,10 +12164,222 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
-            ISstep = 48
+            ISstep = 50
             end
+         else
+         ISstep = 50
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----5
+   if ISstep == 50 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",4)--rite  
+        ISstep = 51
+        end
+   end
+   if ISstep == 51 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 52  
+        else
+        ISstep = 51
+        end
+   end
+   if ISstep == 52 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 53
+      else
+      ISstep = 52
+      end  
+   end
+
+   if ISstep == 53 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:5:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+          ISstep = 52
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")                
+                  end
+                end
+             end
+             end
+             end
+             end
+          ISstep = 52
+          else
+          ISstep = 54
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+   if ISstep == 54 then
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 53
+            end
+         else
+         mushrite5uke = true
+         ISstep = 55
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 53
+            end
+         else
+         mushrite5azuke = true
+         ISstep = 55
+         end
+         end
+         end
+         end
+         end
+      end
+   end
+   if ISstep == 55 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 55
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 56
+      end
+   end
+   if ISstep == 56 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 56
+       else
+       ISstep = 57
+       end
+   end
+   if ISstep == 57 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 57
+        elseif IsControlOpen("RetainerList") and ritekazu > 5 then
+        ISstep = 58
+        elseif ritekazu == 5 then
+        ISstep = 199
+        end
+   end
+   if ISstep == 58 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 199
+            else
+            ISstep = 60
+            end
+         else
+         ISstep = 60
          end
       end
       end
@@ -11904,34 +12388,34 @@ function AetheryteHelper.itemSearch()
    end
 
 -----6
-   if ISstep == 48 then
+   if ISstep == 60 then
         if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",5)--rite
-        ISstep = 49
+        GetControl("RetainerList"):Action("SelectIndex",5)--rite  
+        ISstep = 61
         end
    end
-   if ISstep == 49 then
+   if ISstep == 61 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
         end
         if IsControlOpen("SelectString") then
-        ISstep = 50  
+        ISstep = 62  
         else
-        ISstep = 49
+        ISstep = 61
         end
    end
-   if ISstep == 50 then
+   if ISstep == 62 then
       if IsControlOpen("SelectString") then
          GetControl("SelectString"):Action("SelectIndex",0)
       end
       if IsControlOpen("InventoryRetainer") then
-      ISstep = 51
+      ISstep = 63
       else
-      ISstep = 50
+      ISstep = 62
       end  
    end
 
-   if ISstep == 51 then
+   if ISstep == 63 then
       if IsControlOpen("InventoryRetainer") then
       d("[AH][itemSearch]:6:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
@@ -11945,6 +12429,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -11954,6 +12439,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -11984,7 +12470,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 52
+          ISstep = 62
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -12000,16 +12486,16 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 52
+          ISstep = 62
           else
-          ISstep = 52
+          ISstep = 64
           end
        end
        end
@@ -12017,35 +12503,78 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-
-   if ISstep == 52 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 52
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
-         ISstep = 53
+   if ISstep == 64 then
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 63
+            end
+         else
+         mushrite6uke = true
+         ISstep = 65
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 53
+            end
+         else
+         mushrite6azuke = true
+         ISstep = 65
+         end
+         end
+         end
+         end
+         end
       end
    end
-   if ISstep == 53 then
+   if ISstep == 65 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 65
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 66
+      end
+   end
+   if ISstep == 66 then
        if IsControlOpen("SelectString") then
        GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 53
+       ISstep = 66
        else
-       ISstep = 54
+       ISstep = 67
        end
    end
-   if ISstep == 54 then
+   if ISstep == 67 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
-        ISstep = 54
+        ISstep = 67
         elseif IsControlOpen("RetainerList") and ritekazu > 6 then
-        ISstep = 55
+        ISstep = 68
         elseif ritekazu == 6 then
-        ISstep = 98
+        ISstep = 199
         end
    end
-   if ISstep == 55 then
+   if ISstep == 68 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -12055,10 +12584,12 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
-            ISstep = 56
+            ISstep = 70
             end
+         else
+         ISstep = 70
          end
       end
       end
@@ -12067,34 +12598,34 @@ function AetheryteHelper.itemSearch()
    end
 
 -----7
-   if ISstep == 56 then
+   if ISstep == 70 then
         if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",6)--rite
-        ISstep = 57
+        GetControl("RetainerList"):Action("SelectIndex",6)--rite  
+        ISstep = 71
         end
    end
-   if ISstep == 57 then
+   if ISstep == 71 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
         end
         if IsControlOpen("SelectString") then
-        ISstep = 58  
+        ISstep = 72  
         else
-        ISstep = 57
+        ISstep = 71
         end
    end
-   if ISstep == 58 then
+   if ISstep == 72 then
       if IsControlOpen("SelectString") then
          GetControl("SelectString"):Action("SelectIndex",0)
       end
       if IsControlOpen("InventoryRetainer") then
-      ISstep = 59
+      ISstep = 73
       else
-      ISstep = 58
+      ISstep = 72
       end  
    end
 
-   if ISstep == 59 then
+   if ISstep == 73 then
       if IsControlOpen("InventoryRetainer") then
       d("[AH][itemSearch]:7:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
@@ -12108,6 +12639,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -12117,6 +12649,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -12147,7 +12680,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 60
+          ISstep = 72
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -12163,16 +12696,16 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 60
+          ISstep = 72
           else
-          ISstep = 60
+          ISstep = 74
           end
        end
        end
@@ -12180,35 +12713,78 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-
-   if ISstep == 60 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 60
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
-         ISstep = 61
+   if ISstep == 74 then
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 73
+            end
+         else
+         mushrite7uke = true
+         ISstep = 75
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 73
+            end
+         else
+         mushrite7azuke = true
+         ISstep = 75
+         end
+         end
+         end
+         end
+         end
       end
    end
-   if ISstep == 61 then
+   if ISstep == 75 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 75
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 76
+      end
+   end
+   if ISstep == 76 then
        if IsControlOpen("SelectString") then
        GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 61
+       ISstep = 76
        else
-       ISstep = 62
+       ISstep = 77
        end
    end
-   if ISstep == 62 then
+   if ISstep == 77 then
         if IsControlOpen("Talk") then
         GetControl("Talk"):Action("Click")
-        ISstep = 62
+        ISstep = 77
         elseif IsControlOpen("RetainerList") and ritekazu > 7 then
-        ISstep = 63
+        ISstep = 78
         elseif ritekazu == 7 then
-        ISstep = 98
+        ISstep = 199
         end
    end
-   if ISstep == 63 then
+   if ISstep == 78 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -12218,10 +12794,12 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
-            ISstep = 64
+            ISstep = 80
             end
+         else
+         ISstep = 80
          end
       end
       end
@@ -12230,335 +12808,9 @@ function AetheryteHelper.itemSearch()
    end
 
 -----8
-   if ISstep == 64 then
-        if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",7)--rite
-        ISstep = 65
-        end
-   end
-   if ISstep == 65 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        end
-        if IsControlOpen("SelectString") then
-        ISstep = 66  
-        else
-        ISstep = 65
-        end
-   end
-   if ISstep == 66 then
-      if IsControlOpen("SelectString") then
-         GetControl("SelectString"):Action("SelectIndex",0)
-      end
-      if IsControlOpen("InventoryRetainer") then
-      ISstep = 67
-      else
-      ISstep = 66
-      end  
-   end
-
-   if ISstep == 67 then
-      if IsControlOpen("InventoryRetainer") then
-      d("[AH][itemSearch]:8:in bag item:"..itemID.."/ not have item:"..nhitemID)
-       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
-       local bags = {0,1,2,3}
-       for _, e in pairs(Rbags) do
-       local Rbag = Inventory:Get(e)
-       if (table.valid(Rbag)) then
-       local Rilist = Rbag:GetList()
-       if (table.valid(Rilist)) then
-       for _, Ritem in pairs(Rilist) do
-          if itemID == Ritem.id then
-             if mushaccelerator == true then
-             Ritem:Move(mybagtype,mybagslot)
-             elseif mushaccelerator == false then
-                 for _, e in pairs(bags) do
-                 local bag = Inventory:Get(e)
-                 if (table.valid(bag)) then
-                 local ilist = bag:GetList()
-                 if (table.valid(ilist)) then
-                 for _, item in pairs(ilist) do
-                 if itemID == Ritem.id and itemID == item.id then
-                 item:Move(Ritem.type,Ritem.slot)
-                 end
-                 end
-                 end
-                 end
-                 end
-             end
-             d("[AH][itemSearch]:item move")
-                if itemcount == itemmax and mushaccelerator == true then
-                local Fbags = {3}
-                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
-                for _, e in pairs(Fbags) do
-                local Fbag = Inventory:Get(e)
-                if (table.valid(Fbag)) then
-                local Filist = Fbag:GetList()
-                if (table.valid(Filist)) then
-                for _, Fitem in pairs(Filist) do
-                   for s = 0,34,1 do   
-                   if Fitem.slot == s then
-                      table.remove(Fslot,Fitem.slot)
-                   end 
-                   for k,v in pairs(Fslot) do
-                      Ritem:Move(3,v)
-                      d("[AH][itemSearch]:item move")
-                   end
-                   end
-                end
-                end
-                end
-                end
-                end
-             ISstep = 68
-          elseif nhitemID == Ritem.id and mushaccelerator == true then
-             local Fbags = {3}
-             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
-             for _, e in pairs(Fbags) do
-             local Fbag = Inventory:Get(e)
-             if (table.valid(Fbag)) then
-             local Filist = Fbag:GetList()
-             if (table.valid(Filist)) then
-             for _, Fitem in pairs(Filist) do
-                for s = 0,34,1 do   
-                  if Fitem.slot == s then
-                    table.remove(Fslot,Fitem.slot)
-                  end 
-                  for k,v in pairs(Fslot) do
-                    Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
-                  end
-                end
-             end
-             end
-             end
-             end
-             ISstep = 68
-          else
-          ISstep = 68
-          end
-       end
-       end
-       end
-       end
-       end
-   end
-
-   if ISstep == 68 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 68
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
-         ISstep = 69
-      end
-   end
-   if ISstep == 69 then
-       if IsControlOpen("SelectString") then
-       GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 69
-       else
-       ISstep = 70
-       end
-   end
-   if ISstep == 70 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        ISstep = 70
-        elseif IsControlOpen("RetainerList") and ritekazu > 8 then
-        ISstep = 71
-        elseif ritekazu == 8 then
-        ISstep = 98
-        end
-   end
-   if ISstep == 71 then
-      local bags = {0, 1, 2, 3}
-      for _, e in pairs(bags) do
-      local bag = Inventory:Get(e)
-      if (table.valid(bag)) then
-      local ilist = bag:GetList()
-      if (table.valid(ilist)) then
-      for _, item in pairs(ilist) do
-         if item.id == itemID or item.id == nhitemID then
-            if item.isunique == true then
-            ISstep = 98
-            else
-            ISstep = 72
-            end
-         end
-      end
-      end
-      end
-      end
-   end
-
------9
-   if ISstep == 72 then
-        if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",8)--rite
-        ISstep = 73
-        end
-   end
-   if ISstep == 73 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        end
-        if IsControlOpen("SelectString") then
-        ISstep = 74  
-        else
-        ISstep = 73
-        end
-   end
-   if ISstep == 74 then
-      if IsControlOpen("SelectString") then
-         GetControl("SelectString"):Action("SelectIndex",0)
-      end
-      if IsControlOpen("InventoryRetainer") then
-      ISstep = 75
-      else
-      ISstep = 74
-      end  
-   end
-
-   if ISstep == 75 then
-      if IsControlOpen("InventoryRetainer") then
-      d("[AH][itemSearch]:9:in bag item:"..itemID.."/ not have item:"..nhitemID)
-       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
-       local bags = {0,1,2,3}
-       for _, e in pairs(Rbags) do
-       local Rbag = Inventory:Get(e)
-       if (table.valid(Rbag)) then
-       local Rilist = Rbag:GetList()
-       if (table.valid(Rilist)) then
-       for _, Ritem in pairs(Rilist) do
-          if itemID == Ritem.id then
-             if mushaccelerator == true then
-             Ritem:Move(mybagtype,mybagslot)
-             elseif mushaccelerator == false then
-                 for _, e in pairs(bags) do
-                 local bag = Inventory:Get(e)
-                 if (table.valid(bag)) then
-                 local ilist = bag:GetList()
-                 if (table.valid(ilist)) then
-                 for _, item in pairs(ilist) do
-                 if itemID == Ritem.id and itemID == item.id then
-                 item:Move(Ritem.type,Ritem.slot)
-                 end
-                 end
-                 end
-                 end
-                 end
-             end
-             d("[AH][itemSearch]:item move")
-                if itemcount == itemmax and mushaccelerator == true then
-                local Fbags = {3}
-                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
-                for _, e in pairs(Fbags) do
-                local Fbag = Inventory:Get(e)
-                if (table.valid(Fbag)) then
-                local Filist = Fbag:GetList()
-                if (table.valid(Filist)) then
-                for _, Fitem in pairs(Filist) do
-                   for s = 0,34,1 do   
-                   if Fitem.slot == s then
-                      table.remove(Fslot,Fitem.slot)
-                   end 
-                   for k,v in pairs(Fslot) do
-                      Ritem:Move(3,v)
-                      d("[AH][itemSearch]:item move")
-                   end
-                   end
-                end
-                end
-                end
-                end
-                end
-             ISstep = 76
-          elseif nhitemID == Ritem.id and mushaccelerator == true then
-             local Fbags = {3}
-             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
-             for _, e in pairs(Fbags) do
-             local Fbag = Inventory:Get(e)
-             if (table.valid(Fbag)) then
-             local Filist = Fbag:GetList()
-             if (table.valid(Filist)) then
-             for _, Fitem in pairs(Filist) do
-                for s = 0,34,1 do   
-                  if Fitem.slot == s then
-                    table.remove(Fslot,Fitem.slot)
-                  end 
-                  for k,v in pairs(Fslot) do
-                    Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
-                  end
-                end
-             end
-             end
-             end
-             end
-             ISstep = 76
-          else
-          ISstep = 76
-          end
-       end
-       end
-       end
-       end
-       end
-   end
-
-   if ISstep == 76 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 76
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
-         ISstep = 77
-      end
-   end
-   if ISstep == 77 then
-       if IsControlOpen("SelectString") then
-       GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 77
-       else
-       ISstep = 78
-       end
-   end
-   if ISstep == 78 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        ISstep = 78
-        elseif IsControlOpen("RetainerList") and ritekazu > 9 then
-        ISstep = 79
-        elseif ritekazu == 9 then
-        ISstep = 98
-        end
-   end
-   if ISstep == 79 then
-      local bags = {0, 1, 2, 3}
-      for _, e in pairs(bags) do
-      local bag = Inventory:Get(e)
-      if (table.valid(bag)) then
-      local ilist = bag:GetList()
-      if (table.valid(ilist)) then
-      for _, item in pairs(ilist) do
-         if item.id == itemID or item.id == nhitemID then
-            if item.isunique == true then
-            ISstep = 98
-            else
-            ISstep = 80
-            end
-         end
-      end
-      end
-      end
-      end
-   end
-
------10
    if ISstep == 80 then
         if IsControlOpen("RetainerList") then
-        GetControl("RetainerList"):Action("SelectIndex",9)--rite
+        GetControl("RetainerList"):Action("SelectIndex",7)--rite  
         ISstep = 81
         end
    end
@@ -12585,7 +12837,7 @@ function AetheryteHelper.itemSearch()
 
    if ISstep == 83 then
       if IsControlOpen("InventoryRetainer") then
-      d("[AH][itemSearch]:10:in bag item:"..itemID.."/ not have item:"..nhitemID)
+      d("[AH][itemSearch]:8:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Rbags = {10000,10001,10002,10003,10004,10005,10006}
        local bags = {0,1,2,3}
        for _, e in pairs(Rbags) do
@@ -12597,6 +12849,7 @@ function AetheryteHelper.itemSearch()
           if itemID == Ritem.id then
              if mushaccelerator == true then
              Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
              elseif mushaccelerator == false then
                  for _, e in pairs(bags) do
                  local bag = Inventory:Get(e)
@@ -12606,6 +12859,7 @@ function AetheryteHelper.itemSearch()
                  for _, item in pairs(ilist) do
                  if itemID == Ritem.id and itemID == item.id then
                  item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
                  end
                  end
                  end
@@ -12636,7 +12890,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 84
+          ISstep = 82
           elseif nhitemID == Ritem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -12652,14 +12906,14 @@ function AetheryteHelper.itemSearch()
                   end 
                   for k,v in pairs(Fslot) do
                     Ritem:Move(3,v)
-                    d("[AH][itemSearch]:item move")
+                    d("[AH][itemSearch]:item move")                
                   end
                 end
              end
              end
              end
              end
-             ISstep = 84
+          ISstep = 82
           else
           ISstep = 84
           end
@@ -12669,33 +12923,78 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-
    if ISstep == 84 then
-      if IsControlOpen("InventoryRetainer") then
-         UseControlAction("InventoryRetainer","Close")
-         ISstep = 84
-      elseif IsControlOpen("SelectString") then
-         Inventory:SortInventory()
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 83
+            end
+         else
+         mushrite8uke = true
          ISstep = 85
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 83
+            end
+         else
+         mushrite8azuke = true
+         ISstep = 85
+         end
+         end
+         end
+         end
+         end
       end
    end
    if ISstep == 85 then
-       if IsControlOpen("SelectString") then
-       GetControl("SelectString"):Action("SelectIndex",9)
-       ISstep = 85
-       else
-       ISstep = 86
-       end
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 85
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 86
+      end
    end
    if ISstep == 86 then
-        if IsControlOpen("Talk") then
-        GetControl("Talk"):Action("Click")
-        ISstep = 86
-        elseif IsControlOpen("RetainerList") then
-        ISstep = 87
-        end
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 86
+       else
+       ISstep = 87
+       end
    end
    if ISstep == 87 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 87
+        elseif IsControlOpen("RetainerList") and ritekazu > 8 then
+        ISstep = 88
+        elseif ritekazu == 8 then
+        ISstep = 199
+        end
+   end
+   if ISstep == 88 then
       local bags = {0, 1, 2, 3}
       for _, e in pairs(bags) do
       local bag = Inventory:Get(e)
@@ -12705,10 +13004,12 @@ function AetheryteHelper.itemSearch()
       for _, item in pairs(ilist) do
          if item.id == itemID or item.id == nhitemID then
             if item.isunique == true then
-            ISstep = 98
+            ISstep = 199
             else
-            ISstep = 98
+            ISstep = 90
             end
+         else
+         ISstep = 90
          end
       end
       end
@@ -12716,42 +13017,435 @@ function AetheryteHelper.itemSearch()
       end
    end
 
-   if ISstep == 98 then
+-----9
+   if ISstep == 90 then
         if IsControlOpen("RetainerList") then
-        UseControlAction("RetainerList","Close")
-        ISstep = 98
-        Player:ClearTarget()
-        elseif Player:GetTarget() == nil then
-        ISstep = 99
+        GetControl("RetainerList"):Action("SelectIndex",8)--rite  
+        ISstep = 91
         end
    end
-   
-   if ISstep == 99 then
-    d("[AH][itemSearch]:END")
-        itemID = 0
-        itemhqID = 0
-        nhitemID = 0
-        nhitemhqID = 0
-        ISstep = 0
-        ritebel = 0
-        ritekazu = 0
-        mybagslot = 0
-        mybagtype = 0
-        itemcount = 0
-        itemmax = 0
-        itemunique = nil
-        mushlooptimer = 1000
+   if ISstep == 91 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 92  
+        else
+        ISstep = 91
+        end
+   end
+   if ISstep == 92 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 93
+      else
+      ISstep = 92
+      end  
    end
 
+   if ISstep == 93 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:9:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+          ISstep = 92
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")                
+                  end
+                end
+             end
+             end
+             end
+             end
+          ISstep = 92
+          else
+          ISstep = 94
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+   if ISstep == 94 then
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 93
+            end
+         else
+         mushrite9uke = true
+         ISstep = 95
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 93
+            end
+         else
+         mushrite9azuke = true
+         ISstep = 95
+         end
+         end
+         end
+         end
+         end
+      end
+   end
+   if ISstep == 95 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 95
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 96
+      end
+   end
+   if ISstep == 96 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 96
+       else
+       ISstep = 97
+       end
+   end
+   if ISstep == 97 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 97
+        elseif IsControlOpen("RetainerList") and ritekazu > 9 then
+        ISstep = 98
+        elseif ritekazu == 9 then
+        ISstep = 199
+        end
+   end
+   if ISstep == 98 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 199
+            else
+            ISstep = 100
+            end
+         else
+         ISstep = 100
+         end
+      end
+      end
+      end
+      end
+   end
+
+-----10
    if ISstep == 100 then
+        if IsControlOpen("RetainerList") then
+        GetControl("RetainerList"):Action("SelectIndex",9)--rite  
+        ISstep = 101
+        end
+   end
+   if ISstep == 101 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        end
+        if IsControlOpen("SelectString") then
+        ISstep = 102  
+        else
+        ISstep = 101
+        end
+   end
+   if ISstep == 102 then
+      if IsControlOpen("SelectString") then
+         GetControl("SelectString"):Action("SelectIndex",0)
+      end
+      if IsControlOpen("InventoryRetainer") then
+      ISstep = 103
+      else
+      ISstep = 102
+      end  
+   end
+
+   if ISstep == 103 then
+      if IsControlOpen("InventoryRetainer") then
+      d("[AH][itemSearch]:10:in bag item:"..itemID.."/ not have item:"..nhitemID)
+       local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+       local bags = {0,1,2,3}
+       for _, e in pairs(Rbags) do
+       local Rbag = Inventory:Get(e)
+       if (table.valid(Rbag)) then
+       local Rilist = Rbag:GetList()
+       if (table.valid(Rilist)) then
+       for _, Ritem in pairs(Rilist) do
+          if itemID == Ritem.id then
+             if mushaccelerator == true then
+             Ritem:Move(mybagtype,mybagslot)
+             d("[AH][itemSearch]:item move")
+             elseif mushaccelerator == false then
+                 for _, e in pairs(bags) do
+                 local bag = Inventory:Get(e)
+                 if (table.valid(bag)) then
+                 local ilist = bag:GetList()
+                 if (table.valid(ilist)) then
+                 for _, item in pairs(ilist) do
+                 if itemID == Ritem.id and itemID == item.id then
+                 item:Move(Ritem.type,Ritem.slot)
+                 d("[AH][itemSearch]:item move")
+                 end
+                 end
+                 end
+                 end
+                 end
+             end
+             d("[AH][itemSearch]:item move")
+                if itemcount == itemmax and mushaccelerator == true then
+                local Fbags = {3}
+                local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+                for _, e in pairs(Fbags) do
+                local Fbag = Inventory:Get(e)
+                if (table.valid(Fbag)) then
+                local Filist = Fbag:GetList()
+                if (table.valid(Filist)) then
+                for _, Fitem in pairs(Filist) do
+                   for s = 0,34,1 do   
+                   if Fitem.slot == s then
+                      table.remove(Fslot,Fitem.slot)
+                   end 
+                   for k,v in pairs(Fslot) do
+                      Ritem:Move(3,v)
+                      d("[AH][itemSearch]:item move")
+                   end
+                   end
+                end
+                end
+                end
+                end
+                end
+          ISstep = 102
+          elseif nhitemID == Ritem.id and mushaccelerator == true then
+             local Fbags = {3}
+             local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
+             for _, e in pairs(Fbags) do
+             local Fbag = Inventory:Get(e)
+             if (table.valid(Fbag)) then
+             local Filist = Fbag:GetList()
+             if (table.valid(Filist)) then
+             for _, Fitem in pairs(Filist) do
+                for s = 0,34,1 do   
+                  if Fitem.slot == s then
+                    table.remove(Fslot,Fitem.slot)
+                  end 
+                  for k,v in pairs(Fslot) do
+                    Ritem:Move(3,v)
+                    d("[AH][itemSearch]:item move")                
+                  end
+                end
+             end
+             end
+             end
+             end
+          ISstep = 102
+          else
+          ISstep = 104
+          end
+       end
+       end
+       end
+       end
+       end
+   end
+   if ISstep == 104 then
+      local Rbags = {10000,10001,10002,10003,10004,10005,10006}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Rbags) do
+         local Rbag = Inventory:Get(e)
+         if (table.valid(Rbag)) then
+         local Rilist = Rbag:GetList()
+         if (table.valid(Rilist)) then
+         for _, Ritem in pairs(Rilist) do
+         if itemID == Ritem.id then
+            if Ritem.count ~= 0 then
+              ISstep = 103
+            end
+         else
+         mushrite10uke = true
+         ISstep = 105
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count ~= 0 then
+              ISstep = 103
+            end
+         else
+         mushrite10azuke = true
+         ISstep = 105
+         end
+         end
+         end
+         end
+         end
+      end
+   end
+   if ISstep == 105 then
+      if IsControlOpen("InventoryRetainer") then
+         UseControlAction("InventoryRetainer","Close")
+         ISstep = 105
+      elseif IsControlOpen("SelectString") then
+         Inventory:SortInventory()
+         ISstep = 106
+      end
+   end
+   if ISstep == 106 then
+       if IsControlOpen("SelectString") then
+       GetControl("SelectString"):Action("SelectIndex",9)
+       ISstep = 106
+       else
+       ISstep = 107
+       end
+   end
+   if ISstep == 107 then
+        if IsControlOpen("Talk") then
+        GetControl("Talk"):Action("Click")
+        ISstep = 107
+        elseif IsControlOpen("RetainerList") then
+        ISstep = 108
+        end
+   end
+   if ISstep == 108 then
+      local bags = {0, 1, 2, 3}
+      for _, e in pairs(bags) do
+      local bag = Inventory:Get(e)
+      if (table.valid(bag)) then
+      local ilist = bag:GetList()
+      if (table.valid(ilist)) then
+      for _, item in pairs(ilist) do
+         if item.id == itemID or item.id == nhitemID then
+            if item.isunique == true then
+            ISstep = 199
+            else
+            ISstep = 199
+            end
+         else
+         ISstep = 199
+         end
+      end
+      end
+      end
+      end
+   end
+
+--tori
+
+   if ISstep == 120 then
       if ActionList:Get(10,77):IsReady() == true then
         ActionList:Get(10,77):Cast()
       end
       if IsControlOpen("InventoryBuddy") then
-      ISstep = 101
+      ISstep = 121
       end
    end
-   if ISstep == 101 then
+   if ISstep == 121 then
       if IsControlOpen("InventoryBuddy") then
       d("[AH][itemSearch]:Buddy:in bag item:"..itemID.."/ not have item:"..nhitemID)
        local Bbags = {4000,4001,4100,4101}
@@ -12804,7 +13498,7 @@ function AetheryteHelper.itemSearch()
                 end
                 end
                 end
-             ISstep = 102
+             ISstep = 121
           elseif nhitemID == Bitem.id and mushaccelerator == true then
              local Fbags = {3}
              local Fslot = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34}
@@ -12827,9 +13521,9 @@ function AetheryteHelper.itemSearch()
              end
              end
              end
-             ISstep = 102
+             ISstep = 121
           else
-          ISstep = 102
+          ISstep = 122
           end
        end
        end
@@ -12837,17 +13531,108 @@ function AetheryteHelper.itemSearch()
        end
        end
    end
-   if ISstep == 102 then
+      if ISstep == 122 then
+      local Bbags = {4000,4001,4100,4101}
+      local bags = {0,1,2,3}
+      if mushaccelerator == true then
+         for _, e in pairs(Bbags) do
+         local Bbag = Inventory:Get(e)
+         if (table.valid(Bbag)) then
+         local Bilist = Bbag:GetList()
+         if (table.valid(Bilist)) then
+         for _, Bitem in pairs(Bilist) do
+         if itemID == Bitem.id then
+            if Bitem.count == 0 then
+              ISstep = 123
+            end
+         else
+         ISstep = 123
+         end
+         end
+         end
+         end
+         end
+      elseif mushaccelerator == false then  
+         for _, e in pairs(bags) do
+         local bag = Inventory:Get(e)
+         if (table.valid(bag)) then
+         local ilist = bag:GetList()
+         if (table.valid(ilist)) then
+         for _, item in pairs(ilist) do
+         if itemID == item.id then
+          d("[AH][itemcount]:"..item.count)
+            if item.count == 0 then
+              ISstep = 123
+            end
+         else
+         ISstep = 123
+         end
+         end
+         end
+         end
+         end
+      end
+   end
+   if ISstep == 123 then
      if IsControlOpen("InventoryBuddy") then
      UseControlAction("InventoryBuddy","Close")
-     ISstep = 102
+     ISstep = 123
      else
-     ISstep = 99
+     ISstep = 200
      end
    end
 
-  end
+   if ISstep == 199 then
+        if IsControlOpen("RetainerList") then
+        UseControlAction("RetainerList","Close")
+        ISstep = 199
+        Player:ClearTarget()
+        elseif Player:GetTarget() == nil then
+        ISstep = 200
+        end
+   end
+   
+   if ISstep == 200 then
+    d("[AH][itemSearch]:END")
+        itemID = 0
+        itemhqID = 0
+        nhitemID = 0
+        nhitemhqID = 0
+        ISstep = 0
+        ritebel = 0
+        ritekazu = 0
+        mybagslot = 0
+        mybagtype = 0
+        itemcount = 0
+        itemmax = 0
+        syojisu = 0
+        mushrite1uke = false
+        mushrite1azuke = false
+        mushrite2uke = false
+        mushrite2azuke = false
+        mushrite3uke = false
+        mushrite3azuke = false
+        mushrite4uke = false
+        mushrite4azuke = false
+        mushrite5uke = false
+        mushrite5azuke = false
+        mushrite6uke = false
+        mushrite6azuke = false
+        mushrite7uke = false
+        mushrite7azuke = false
+        mushrite8uke = false
+        mushrite8azuke = false
+        mushrite9uke = false
+        mushrite9azuke = false
+        mushrite10uke = false
+        mushrite10azuke = false
+        itemunique = nil
+        mushitemname = nil
+        mushISinbag = {}
+        mushlooptimer = 1000
+   end
 
+  end
 end
 
 
