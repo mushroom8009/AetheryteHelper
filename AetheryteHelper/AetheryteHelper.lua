@@ -586,6 +586,8 @@ mushtooltips = {
          tip138 = "チョコボカバンから受け取り",
          tip139 = "チョコボカバンへ受け渡し",
          tip140 = "チョコボカバンの整理\nスタックできるものをまとめます",
+         tip141 = "カンパニーチェストから受け取り",
+         tip142 = "カンパニーチェストへ収納",
 
 
 
@@ -731,6 +733,8 @@ mushtooltips = {
          tip138 = "from Saddlebag",
          tip139 = "to Saddlebag",
          tip140 = "Organizing the Saddlebag\nput together stackable items.",
+         tip141 = "from FCchest",
+         tip142 = "to FCchest",
 
   },
 }
@@ -2519,9 +2523,9 @@ function AetheryteHelper.DrawadItems()
             end
             if AHSET.mushtooltips == true then
               if language == 0 then
-              GUI:SetTooltip(mushtooltips.jp.tip138)
+              GUI:SetTooltip(mushtooltips.jp.tip141)
               else
-              GUI:SetTooltip(mushtooltips.en.tip138)
+              GUI:SetTooltip(mushtooltips.en.tip141)
               end
               end
             end
@@ -2534,9 +2538,9 @@ function AetheryteHelper.DrawadItems()
               end
             if AHSET.mushtooltips == true then
               if language == 0 then
-              GUI:SetTooltip(mushtooltips.jp.tip139)
+              GUI:SetTooltip(mushtooltips.jp.tip142)
               else
-              GUI:SetTooltip(mushtooltips.en.tip139)
+              GUI:SetTooltip(mushtooltips.en.tip142)
               end
               end
             end
