@@ -1,0 +1,12 @@
+1)
+Put "mushroom_dark_theme.lua" file in
+C:\MINIONAPP\Bots\FFXIVMinion64\GUI\UI_Styles
+
+2)
+reload minion
+
+3)
+open Style Manager
+select "mushroom_dark_theme.lua"
+
+
