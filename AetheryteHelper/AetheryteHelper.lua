@@ -7439,7 +7439,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
     end
   end
 
- if Rset.RadarEnable == true and Rset.line == true and Rset.hunt == true then
+ if Rset.RadarEnable == true and Rset.dot == true and Rset.hunt == true then
      if Rset.ARRB == true then
      for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.B) do
         AHRadardot("alive,contentID="..tostring(v),R.ARRBC.U32,Rset.dotsize)
@@ -7546,7 +7546,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
   end
 
-  if Rset.RadarEnable == true and Rset.line == true and Rset.fumyaku == true then
+  if Rset.RadarEnable == true and Rset.dot == true and Rset.fumyaku == true then
      for k,v in pairs(AetheryteHelper.AetherCurrents) do
         AHRadardot("type=7,contentID="..tostring(v),R.Colorfumyaku,Rset.dotsize)
      end
@@ -7587,10 +7587,10 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
   end
   if Rset.RadarEnable == true and Rset.line == true and Rset.TMline == true then
-     AHRadarRecetveline("type=2,alive,",R.ColorTMline.U32,TMlinethick) 
+     AHRadarRecetveline("type=2,alive,",R.ColorTMline.U32,Ret.TMlinethick) 
   end
   if Rset.RadarEnable == true and Rset.line == true and Rset.TPline == true then
-    AHRadarRecetveline("type=1",R.ColorTPline.U32,TPlinethick)
+    AHRadarRecetveline("type=1",R.ColorTPline.U32,Rset.TPlinethick)
   end
   if Rset.RadarEnable == true and Rset.mydot == true then
         if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screenppos ~= nil then
