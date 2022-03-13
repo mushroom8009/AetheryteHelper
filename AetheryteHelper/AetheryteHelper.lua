@@ -7586,10 +7586,10 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
   end
   end
-  if Rset.RadarEnable == true and Rset.line == true and Rset.TMline == true then
+  if Rset.RadarEnable == true and Rset.TMline == true then
      AHRadarRecetveline("type=2,alive,",R.ColorTMline.U32,Rset.TMlinethick) 
   end
-  if Rset.RadarEnable == true and Rset.line == true and Rset.TPline == true then
+  if Rset.RadarEnable == true and Rset.TPline == true then
     AHRadarRecetveline("type=1",R.ColorTPline.U32,Rset.TPlinethick)
   end
   if Rset.RadarEnable == true and Rset.mydot == true then
