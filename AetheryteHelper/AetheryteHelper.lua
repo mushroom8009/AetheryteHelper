@@ -56,8 +56,7 @@ mushroom#8009
 -----------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
-
-
+    
 -----------------------------------------------------------------------------------------------------------------
 AetheryteHelper = {}
 -----------------------------------------------------------------------------------------------------------------
@@ -578,30 +577,52 @@ EW = {
       },
 
 }
-AetheryteHelper.AetherCurrents = {2005536,2006187,2006190,2006189,--HW
-                                  2006195,2006204,2006197,2006201,
-                                  6006216,6006217,2006224,2006218,
-                                  2006228,2006229,2006234,2006231,
-                                  2006210,2006214,2006205,2006208,
-                                  2007965,2007967,2007971,2007972,
-                                  2008008,2008013,2008011,2008007,--StB
-                                  2007999,2008002,2007995,2008004,
-                                  2007976,2007978,2007981,2007984,
-                                  2008015,2008017,2008019,2008022,
-                                  2007987,2007992,2007994,2007993,
-                                  2010028,2010024,2010031,2010032,--ShB
-                                  2010059,2010062,2010063,2010056,
-                                  2010034,2010038,2010042,2010041,
-                                  2010044,2010050,2010047,2010052,
-                                  2010066,2010064,2010069,2010073,
-                                  2010079,2010074,2010076,2010083,
-                                  2011990,2011991,2011992,2011993,2011994,2011995,2011996,2011997,2011998,2011999,--EW
-                                  2011980,2011981,2011982,2011983,8011984,2011985,2011986,2011987,2011988,2011989,
-                                  2012000,2012001,2012002,2012003,2012004,2012005,2012006,2012007,2012008,2012009,
-                                  2012010,2012011,2012012,2012013,2012014,2012015,2012016,2012017,2012018,2012019,
-                                  2012020,2012021,2012022,2012023,2012024,2012025,2012026,2012027,2012028,2012029,
-                                  2012030,2012031,2012032,2012033,2012034,2012035,2012036,2012037,2012038,2012039
-                                }
+AetheryteHelper.AetherCurrents = {
+  HW = {
+        2005536,2006187,2006190,2006189,
+        2006195,2006204,2006197,2006201,
+        6006216,6006217,2006224,2006218,
+        2006228,2006229,2006234,2006231,
+        2006210,2006214,2006205,2006208,
+        2007965,2007967,2007971,2007972,
+      },
+  StB = {
+        2008008,2008013,2008011,2008007,
+        2007999,2008002,2007995,2008004,
+        2007976,2007978,2007981,2007984,
+        2008015,2008017,2008019,2008022,
+        2007987,2007992,2007994,2007993,
+      },
+  ShB = { 
+        2010028,2010024,2010031,2010032,
+        2010059,2010062,2010063,2010056,
+        2010034,2010038,2010042,2010041,
+        2010044,2010050,2010047,2010052,
+        2010066,2010064,2010069,2010073,
+        2010079,2010074,2010076,2010083,
+      },
+  EW = {
+        2011990,2011991,2011992,2011993,2011994,2011995,2011996,2011997,2011998,2011999,
+        2011980,2011981,2011982,2011983,8011984,2011985,2011986,2011987,2011988,2011989,
+        2012000,2012001,2012002,2012003,2012004,2012005,2012006,2012007,2012008,2012009,
+        2012010,2012011,2012012,2012013,2012014,2012015,2012016,2012017,2012018,2012019,
+        2012020,2012021,2012022,2012023,2012024,2012025,2012026,2012027,2012028,2012029,
+        2012030,2012031,2012032,2012033,2012034,2012035,2012036,2012037,2012038,2012039
+      },
+}
+
+AetheryteHelper.explorerEW = {
+  2011854,2011855,2011856,2011857,2011858,
+  2011859,2011860,2011861,2011862,2011863,
+  2011864,2011865,2011866,2012691,2011867,
+  2011868,2011869,2011870,2011871,2011872,
+  2011873,2011874,2011875,2011876,2011877,
+  2011878,2011879,2011880,2011881,2011882,
+  2011883,2011884,2011885,2011886,2011887,
+  2011888,2011889,2011890,2011891,2011892,
+  2011893,2011894,2011895,2011896,2011897,
+  2011898,
+} 
 
 
 -------------------
@@ -6883,6 +6904,10 @@ function AetheryteHelper.Radar()
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
       GUI:Text("Advanced Settings")
+      if Rset.fumyaku == true and Rset.chest == true then
+      GUI:SameLine()
+      GUI:TextColored(1,1,0,1,"Drow Sightseeing Log for EW")
+      end
       GUI:Spacing()
       GUI:BeginGroup()
       if AHRadarGeneral == true then
@@ -7035,6 +7060,51 @@ local el = EntityList(str)
 return str,Colour,thick
 end
 
+function AHRadarEXline(str,Colour,thick)
+local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+local screenppos = RenderManager:WorldToScreen(ppos)
+local el = EntityList(str)
+      if table.valid(el) then
+      for _,e in pairs(el) do
+      local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
+      local screentpos = RenderManager:WorldToScreen(tpos)
+      if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil then
+               if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
+                  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               elseif Rset.gposeoff == true and Rset.cutoff == true then
+                  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               elseif Rset.gposeoff == true and Rset.indutyoff == true then 
+                  if Player.onlinestatus ~= 18 and Duty:GetQueueStatus() < 4 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               elseif Rset.cutoff == true and Rset.indutyoff == true then 
+                  if Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               elseif Rset.indutyoff == true then 
+                  if  Duty:GetQueueStatus() < 4 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               elseif Rset.cutoff == true then 
+                  if Player.onlinestatus ~= 15 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               elseif Rset.gposeoff == true then 
+                  if Player.onlinestatus ~= 18 then
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+                  end
+               else
+                  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
+               end
+      end
+      end
+      end
+return str,Colour,thick
+end
 ----------------------------------------------------------------------------------------------------------
 
 function AHRadarlineNPC(str,Colour,thick)
@@ -7149,6 +7219,52 @@ local el = EntityList(str)
       local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
       local screentpos = RenderManager:WorldToScreen(tpos)
       if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil and e.targetable == true then
+               if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
+                  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               elseif Rset.gposeoff == true and Rset.cutoff == true then
+                  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               elseif Rset.gposeoff == true and Rset.indutyoff == true then 
+                  if Player.onlinestatus ~= 18 and Duty:GetQueueStatus() < 4 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               elseif Rset.cutoff == true and Rset.indutyoff == true then 
+                  if Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               elseif Rset.indutyoff == true then 
+                  if  Duty:GetQueueStatus() < 4 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               elseif Rset.cutoff == true then 
+                  if Player.onlinestatus ~= 15 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               elseif Rset.gposeoff == true then 
+                  if Player.onlinestatus ~= 18 then
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+                  end
+               else
+                  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
+               end
+      end
+      end
+      end
+return str,Colour,size
+end
+
+function AHRadarEXdot(str,Colour,size)
+local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+local screenppos = RenderManager:WorldToScreen(ppos)
+local el = EntityList(str)
+      if table.valid(el) then
+      for _,e in pairs(el) do
+      local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
+      local screentpos = RenderManager:WorldToScreen(tpos)
+      if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil then
                if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
                   if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
                   GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
@@ -7394,10 +7510,25 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
 
   if Rset.RadarEnable == true and Rset.line == true and Rset.fumyaku == true then
-     for k,v in pairs(AetheryteHelper.AetherCurrents) do
-        AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku,Rset.linethick)
+     for k,v in pairs(AetheryteHelper.AetherCurrents.HW) do
+        AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
+     end
+     for k,v in pairs(AetheryteHelper.AetherCurrents.StB) do
+        AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
+     end
+     for k,v in pairs(AetheryteHelper.AetherCurrents.ShB) do
+        AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
+     end
+     for k,v in pairs(AetheryteHelper.AetherCurrents.EW) do
+        AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
      end
   end
+  if Rset.RadarEnable == true and Rset.line == true and Rset.fumyaku == true and Rset.chest == true then
+     for k,v in pairs(AetheryteHelper.explorerEW) do
+        AHRadarEXline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
+     end
+  end
+
   
 
 
@@ -7547,10 +7678,25 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
 
   if Rset.RadarEnable == true and Rset.dot == true and Rset.fumyaku == true then
-     for k,v in pairs(AetheryteHelper.AetherCurrents) do
-        AHRadardot("type=7,contentID="..tostring(v),R.Colorfumyaku,Rset.dotsize)
+     for k,v in pairs(AetheryteHelper.AetherCurrents.HW) do
+        AHRadardot("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.dotsize)
+     end
+     for k,v in pairs(AetheryteHelper.AetherCurrents.StB) do
+        AHRadardot("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.dotsize)
+     end
+     for k,v in pairs(AetheryteHelper.AetherCurrents.ShB) do
+        AHRadardot(",type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.dotsize)
+     end
+     for k,v in pairs(AetheryteHelper.AetherCurrents.EW) do
+        AHRadardot("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.dotsize)
      end
   end
+  if Rset.RadarEnable == true and Rset.dot == true and Rset.fumyaku == true and Rset.chest == true then
+     for k,v in pairs(AetheryteHelper.explorerEW) do
+        AHRadarEXdot("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.dotsize)
+     end
+  end
+
 
 
 
