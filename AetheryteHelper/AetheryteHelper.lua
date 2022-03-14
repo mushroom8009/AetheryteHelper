@@ -7417,9 +7417,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ARRFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.F) do
-        AHRadarline("alive,contentID="..tostring(v),R.ARRFC.U32,Rset.linethick)
-     end
+        AHRadarline("type=2,alive,contentID=887,contentID=655,",R.ARRFC.U32,Rset.linethick)
      end
 
      if Rset.HWB == true then
@@ -7438,9 +7436,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.HWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.HW.F) do
-        AHRadarline("alive,contentID="..tostring(v),R.HWFC.U32,Rset.linethick)
-     end
+        AHRadarline("type=2,alive,contentID=3789,contentID=3783,",R.HWFC.U32,Rset.linethick)
      end
 
      if Rset.StBB == true then
@@ -7459,9 +7455,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.StBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.StB.F) do
-        AHRadarline("alive,contentID="..tostring(v),R.StBFC.U32,Rset.linethick)
-     end
+        AHRadarline("type=2,alive,contentID=6290,contentID=6392,contentID=6395,",R.StBFC.U32,Rset.linethick)
      end
 
      if Rset.ShBB == true then
@@ -7480,9 +7474,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ShBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.F) do
-        AHRadarline("alive,contentID="..tostring(v),R.ShBFC.U32,Rset.linethick)
-     end
+        AHRadarline("type=2,alive,contentID=8822,contentID=8234,",R.ShBFC.U32,Rset.linethick)
      end
 
      if Rset.EWB == true then
@@ -7501,9 +7493,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.EWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.EW.F) do
-        AHRadarline("alive,contentID="..tostring(v),R.EWFC.U32,Rset.linethick)
-     end
+        AHRadarline("type=2,alive,contentID=10400,contentID=10269",R.EWFC.U32,Rset.linethick)
      end
   end
 
@@ -7585,9 +7575,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ARRFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.F) do
-        AHRadardot("alive,contentID="..tostring(v),R.ARRFC.U32,Rset.dotsize)
-     end
+        AHRadardot("type=2,alive,contentID=887,contentID=655,",R.ARRFC.U32,Rset.dotsize)
      end
 
      if Rset.HWB == true then
@@ -7606,9 +7594,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.HWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.HW.F) do
-        AHRadardot("alive,contentID="..tostring(v),R.HWFC.U32,Rset.dotsize)
-     end
+        AHRadardot("type=2,alive,contentID=3789,contentID=3783,",R.HWFC.U32,Rset.dotsize)
      end
 
      if Rset.StBB == true then
@@ -7627,9 +7613,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.StBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.StB.F) do
-        AHRadardot("alive,contentID="..tostring(v),R.StBFC.U32,Rset.dotsize)
-     end
+        AHRadardot("type=2,alive,contentID=6290,contentID=6392,contentID=6395,",R.StBFC.U32,Rset.dotsize)
      end
 
      if Rset.ShBB == true then
@@ -7648,9 +7632,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ShBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.F) do
-        AHRadardot("alive,contentID="..tostring(v),R.ShBFC.U32,Rset.dotsize)
-     end
+        AHRadardot("type=2,alive,contentID=8822,contentID=8234,",R.ShBFC.U32,Rset.dotsize)
      end
 
      if Rset.EWB == true then
@@ -7669,9 +7651,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.EWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.EW.F) do
-        AHRadardot("alive,contentID="..tostring(v),R.EWFC.U32,Rset.dotsize)
-     end
+        AHRadardot("type=2,alive,contentID=10400,contentID=10269,",R.EWFC.U32,Rset.dotsize)
      end
   end
 
