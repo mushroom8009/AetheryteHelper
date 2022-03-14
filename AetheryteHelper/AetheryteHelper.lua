@@ -547,33 +547,31 @@ ARR = {
        B = {2919,2920,2921,2922,2923,2924,2925,2926,2927,2928,2929,2930,2931,2932,2933,2934,2935},
        A = {2936,2937,2938,2939,2940,2941,2942,2943,2945,2946,2947,2948,2949,2950,2951,2952},
        S = {2953,2954,2955,2956,2957,2958,2959,2960,2961,2962,2963,2964,2965,2966,2967,2968,2969},
-       Fate = {887,655},
+       F = {887,655},
       },
 HW = {
        B = {4350,4351,4352,4353,4354,4356,4357,4358,4359,4360,4361},
        A = {4362,4363,4364,4365,4367,4368,4369,4370,4371,4372,4373},
        S = {4374,4375,4376,4377,4378,4380},
-       Fate = {3789,3783},
+       F = {3789,3783},
       },
 StB = {
        B = {6002,6003,6004,6005,6006,6007,6008,6009,6010,6011,6012,6013},
        A = {5990,5991,5992,5993,5994,5995,5996,5997,5998,5999,6000,6001},
        S = {5948,5985,5986,5987,5988,5989},
-       Fate = {6290,6392,6395},
+       F = {6290,6392,6395},
       },
 ShB = {
        B = {8656,8657,8893,8894,8898,889,8903,8904,8908,8909,8913,8914},
        A = {8654,8655,8891,8892,8896,8897,8901,8902,8906,8907,8911,8912},
        S = {8653,8890,8895,8900,8905,8910,8915,8916},
-       --SS = {8915,8916},
-       Fate = {8822,8234},
+       F = {8822,8234},
       },
 EW = {
        B = {10635,10636,10637,10638,10639,10640,10641,10642,10643,10644,10645,10646},
        A = {10623,10624,10625,10626,10627,10628,10629,10630,10631,10632,10633,10634},
        S = {10617,10618,10619,10620,10621,10622,10615,10616},
-       --SS = {10615,10616},
-       Fate = {10400,10269},
+       F = {10400,10269},
       },
 
 }
@@ -7419,7 +7417,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ARRFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.F) do
         AHRadarline("alive,contentID="..tostring(v),R.ARRFC.U32,Rset.linethick)
      end
      end
@@ -7440,7 +7438,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.HWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.HW.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.HW.F) do
         AHRadarline("alive,contentID="..tostring(v),R.HWFC.U32,Rset.linethick)
      end
      end
@@ -7461,7 +7459,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.StBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.StB.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.StB.F) do
         AHRadarline("alive,contentID="..tostring(v),R.StBFC.U32,Rset.linethick)
      end
      end
@@ -7482,7 +7480,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ShBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.F) do
         AHRadarline("alive,contentID="..tostring(v),R.ShBFC.U32,Rset.linethick)
      end
      end
@@ -7503,7 +7501,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.EWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.EW.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.EW.F) do
         AHRadarline("alive,contentID="..tostring(v),R.EWFC.U32,Rset.linethick)
      end
      end
@@ -7587,7 +7585,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ARRFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.F) do
         AHRadardot("alive,contentID="..tostring(v),R.ARRFC.U32,Rset.dotsize)
      end
      end
@@ -7608,7 +7606,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.HWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.HW.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.HW.F) do
         AHRadardot("alive,contentID="..tostring(v),R.HWFC.U32,Rset.dotsize)
      end
      end
@@ -7629,7 +7627,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.StBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.StB.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.StB.F) do
         AHRadardot("alive,contentID="..tostring(v),R.StBFC.U32,Rset.dotsize)
      end
      end
@@ -7650,7 +7648,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ShBFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.F) do
         AHRadardot("alive,contentID="..tostring(v),R.ShBFC.U32,Rset.dotsize)
      end
      end
@@ -7671,7 +7669,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.EWFate == true then
-     for k,v in pairs(AetheryteHelper.RadarHuntList.EW.Fate) do
+     for k,v in pairs(AetheryteHelper.RadarHuntList.EW.F) do
         AHRadardot("alive,contentID="..tostring(v),R.EWFC.U32,Rset.dotsize)
      end
      end
