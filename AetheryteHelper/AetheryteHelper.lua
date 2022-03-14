@@ -7417,7 +7417,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ARRFate == true then
-        AHRadarline("type=2,alive,contentID=887,contentID=655,",R.ARRFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=887",R.ARRFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=655",R.ARRFC.U32,Rset.linethick)
      end
 
      if Rset.HWB == true then
@@ -7436,7 +7437,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.HWFate == true then
-        AHRadarline("type=2,alive,contentID=3789,contentID=3783,",R.HWFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=3783",R.HWFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=3789",R.HWFC.U32,Rset.linethick)
      end
 
      if Rset.StBB == true then
@@ -7455,7 +7457,9 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.StBFate == true then
-        AHRadarline("type=2,alive,contentID=6290,contentID=6392,contentID=6395,",R.StBFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=6395",R.StBFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=6392",R.StBFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=6290",R.StBFC.U32,Rset.linethick)
      end
 
      if Rset.ShBB == true then
@@ -7474,7 +7478,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ShBFate == true then
-        AHRadarline("type=2,alive,contentID=8822,contentID=8234,",R.ShBFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=8234",R.ShBFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=8822",R.ShBFC.U32,Rset.linethick)
      end
 
      if Rset.EWB == true then
@@ -7493,7 +7498,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.EWFate == true then
-        AHRadarline("type=2,alive,contentID=10400,contentID=10269",R.EWFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=10269",R.EWFC.U32,Rset.linethick)
+        AHRadarline("type=2,alive,contentID=10400",R.EWFC.U32,Rset.linethick)
      end
   end
 
@@ -7575,7 +7581,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ARRFate == true then
-        AHRadardot("type=2,alive,contentID=887,contentID=655,",R.ARRFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=887",R.ARRFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=655",R.ARRFC.U32,Rset.dotsize)
      end
 
      if Rset.HWB == true then
@@ -7594,7 +7601,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.HWFate == true then
-        AHRadardot("type=2,alive,contentID=3789,contentID=3783,",R.HWFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=3789",R.HWFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=3783",R.HWFC.U32,Rset.dotsize)
      end
 
      if Rset.StBB == true then
@@ -7613,7 +7621,9 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.StBFate == true then
-        AHRadardot("type=2,alive,contentID=6290,contentID=6392,contentID=6395,",R.StBFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=6395",R.StBFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=6392",R.StBFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=6290",R.StBFC.U32,Rset.dotsize)
      end
 
      if Rset.ShBB == true then
@@ -7632,7 +7642,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.ShBFate == true then
-        AHRadardot("type=2,alive,contentID=8822,contentID=8234,",R.ShBFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=8822",R.ShBFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=8234",R.ShBFC.U32,Rset.dotsize)
      end
 
      if Rset.EWB == true then
@@ -7651,7 +7662,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
      end
      end
      if Rset.EWFate == true then
-        AHRadardot("type=2,alive,contentID=10400,contentID=10269,",R.EWFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=10269",R.EWFC.U32,Rset.dotsize)
+        AHRadardot("type=2,alive,contentID=10400",R.EWFC.U32,Rset.dotsize)
      end
   end
 
