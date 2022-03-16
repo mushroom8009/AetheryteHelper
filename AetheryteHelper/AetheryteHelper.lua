@@ -65,7 +65,7 @@ local kinokoProject = {
   Addon  = {
       Folder =        "AetheryteHelper",
       Name =          "Aetheryte Helper",
-      Version =         "1.7.5",   
+      Version =         "1.7.6",   
       VersionList = { "[0.9.0] - Pre Release",
                       "[0.9.1] - hot fix",
                       "[0.9.5] - Add tool・UIchange",
@@ -136,6 +136,7 @@ local kinokoProject = {
                       "[1.7.1] - adjustment automatic Item collection.",
                       "[1.7.2] - Support for moving items from FCchest.",
                       "[1.7.5] - add new function.",
+                      "[1.7.6] - add AetheryteTicket settings.",
 
                     },
       
@@ -446,6 +447,10 @@ AetheryteHelper.DutyPlay = {
     word02 = "/goodbye",
   },  
 
+}
+AetheryteHelper.ATuse = {
+  ATuseEnable = false,
+  gil = 300,
 }
 
 AetheryteHelper.RadarSettings = {
@@ -823,6 +828,8 @@ mushtooltips = {
          tip188 = "風脈の泉",
          tip189 = "左クリックでカスタムリストに追加\n右クリックでキャンセル",
          tip190 = "AH レーダー\n標準ウィンドウ",
+         tip191 = "転送網利用券を使用",
+         tip192 = "金額設定",
 
 
 
@@ -1018,6 +1025,8 @@ mushtooltips = {
          tip188 = "Aether Currents",
          tip189 = "Left-click to Add to CustomList\nRight-click to Cancel",
          tip190 = "AH Radar\nopen to standard window",
+         tip191 = "Use AetheryteTicket",
+         tip192 = "Amount Setting",
 
   },
 }
@@ -1214,6 +1223,7 @@ AetheryteHelper.Dutyfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\User
 AetheryteHelper.Radarfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'Radarsettings.lua'
 AetheryteHelper.huntlistfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userCustomList.lua'
 AetheryteHelper.RCfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'RadarColor.lua'
+AetheryteHelper.ATfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'AetheryteTicket.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -1478,8 +1488,13 @@ function AetheryteHelper.LoadSettings()
       table.merge(AetheryteHelper.RadarColor,RC)    
     end
   end
+  if FileExists(AetheryteHelper.ATfile) then
+    local AT = persistence.load(AetheryteHelper.RCfile)
+    if (ValidTable(AT)) then
+      table.merge(AetheryteHelper.ATuse,AT)    
+    end
+  end
 end
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
@@ -1491,6 +1506,7 @@ function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.Radarfile, AetheryteHelper.RadarSettings)
   persistence.store(AetheryteHelper.huntlistfile, AetheryteHelper.RadarCustomList)
   persistence.store(AetheryteHelper.RCfile, AetheryteHelper.RadarColor)
+  persistence.store(AetheryteHelper.ATfile, AetheryteHelper.ATuse)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local AHSET = AetheryteHelper.settings.SET
@@ -1898,8 +1914,8 @@ function AetheryteHelper.accessdelay()
       GUI:Separator()    
       GUI:Spacing()
       GUI:AlignFirstTextHeightToWidgets()
-      GUI:PushItemWidth(120)
       GUI:BeginGroup()
+      GUI:PushItemWidth(120)
       local changed
         AHSET.delay, changed = GUI:SliderInt("ms",AHSET.delay,100,1000)
         if (GUI:IsItemHovered()) then
@@ -1912,6 +1928,7 @@ function AetheryteHelper.accessdelay()
            end
            end
         end
+      GUI:PopItemWidth()
       GUI:EndGroup()
       GUI:SameLine()
       GUI:BeginGroup()
@@ -1937,8 +1954,58 @@ end
 -- telepo button GUI
 
 function AetheryteHelper.GLUtelepo()
+      GUI:Dummy(20,20)
+      GUI:SameLine()
+      GUI:BeginGroup()
+      if AetheryteHelper.ATuse.ATuseEnable == true then
+      GUI:Image(ImageFolder..[[ACon.png]],20,20)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AetheryteHelper.ATuse.ATuseEnable = not AetheryteHelper.ATuse.ATuseEnable
+              AetheryteHelper.SaveSettings()
+              end
+              end
+      elseif AetheryteHelper.ATuse.ATuseEnable == false then
+      GUI:Image(ImageFolder..[[ACoff.png]],20,20)
+              if (GUI:IsItemHovered()) then
+              if (GUI:IsMouseClicked(0)) then
+              AetheryteHelper.ATuse.ATuseEnable = not AetheryteHelper.ATuse.ATuseEnable
+              AetheryteHelper.SaveSettings()
+              end
+              end
+      end
+      GUI:EndGroup()
+      if (GUI:IsItemHovered()) then  
+        if AHSET.mushtooltips == true then
+           if language == 0 then
+           GUI:SetTooltip(mushtooltips.jp.tip191)
+           else
+           GUI:SetTooltip(mushtooltips.en.tip191)
+           end
+           end
+        end
+      GUI:SameLine()
+      GUI:AlignFirstTextHeightToWidgets()
+      GUI:BeginGroup()
+      GUI:PushItemWidth(160)
+      AetheryteHelper.ATuse.gil, changed = GUI:SliderInt("Gil",AetheryteHelper.ATuse.gil,0,1000)
+      if changed then
+      AetheryteHelper.ATuse.gil = AetheryteHelper.ATuse.gil
+      AetheryteHelper.SaveSettings()
+      end
+      if (GUI:IsItemHovered()) then  
+        if AHSET.mushtooltips == true then
+           if language == 0 then
+           GUI:SetTooltip(mushtooltips.jp.tip192)
+           else
+           GUI:SetTooltip(mushtooltips.en.tip192)
+           end
+           end
+        end
+      GUI:PopItemWidth()
+      GUI:EndGroup()
       GUI:Spacing()
-      GUI:SameLine(10)
+      --GUI:SameLine(10)
       GUI:BeginGroup()
       GUI:Dummy(40,40)
       if AHSET.mushmovetoMB == true then
@@ -12076,6 +12143,7 @@ function AetheryteHelper.movetoGCAll()
       end
 end
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --move to GC (beta)
 function AetheryteHelper.movetoCOMPANYlimsa()
@@ -12083,8 +12151,22 @@ function AetheryteHelper.movetoCOMPANYlimsa()
          if( Player.localmapid == 128 ) then GCStep = 3 end
          if ( Player.localmapid ~= 129 )and( Player.localmapid ~= 128 ) and (Player:GetTarget() == nil) then        
              if(ActionList:Get(5,7):IsReady() == true) then
-              Player:Teleport(8,0)
+              if AetheryteHelper.ATuse.ATuseEnable == true then
+                local aelist = Player:GetAetheryteList()
+                if (table.valid(aelist)) then
+                for id, e in pairs(aelist) do
+                mushtelepogil = e.price
+                end
+                end
+                if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                Player:Teleport(8,0,true)
+                elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                Player:Teleport(8,0,false)
+                end
+              else
+              Player:Teleport(8,0,false)
               end
+            end
          end      
 
              if (GCStep == 0) then
@@ -12143,7 +12225,21 @@ function AetheryteHelper.movetoCOMPANYgridania()
               elseif ( Player.localmapid ~= 132 ) then
                   if Player.localmapid ~= 132  and (Player:GetTarget() == nil) then        
                   if(ActionList:Get(5,7):IsReady() == true) then
-                  Player:Teleport(2,0)
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(2,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(2,0,false)
+                    end
+                  else
+                  Player:Teleport(2,0,false)
+                  end
                   end
                   end
               end  
@@ -12161,7 +12257,21 @@ function AetheryteHelper.movetoCOMPANYuldah()
               elseif ( Player.localmapid ~= 130 ) then
                   if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then        
                   if(ActionList:Get(5,7):IsReady() == true) then
-                  Player:Teleport(9,0)
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(9,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(9,0,false)
+                    end
+                  else
+                  Player:Teleport(9,0,false)
+                  end
                   end
                   end
               end 
@@ -12188,7 +12298,21 @@ function AetheryteHelper.moveMBlimsa()
             if limMBStep == 0 then
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
-                  Player:Teleport(8,0)
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(8,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(8,0,false)
+                    end
+                  else
+                  Player:Teleport(8,0,false)
+                  end
                   mushlooptimer = 1000
                   end
                   if Player.localmapid == 129 then
@@ -12200,7 +12324,21 @@ function AetheryteHelper.moveMBlimsa()
                   end
                elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
-                  Player:Teleport(8,0)
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(8,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(8,0,false)
+                    end
+                  else
+                  Player:Teleport(8,0,false)
+                  end
                   end           
                   if Player.localmapid == 129 then
                   limMBStep = 1
@@ -12302,7 +12440,21 @@ function AetheryteHelper.moveMBgridania()
             if griMBStep == 0 then
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
-                  Player:Teleport(2,0)
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(2,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(2,0,false)
+                    end
+                  else
+                  Player:Teleport(2,0,false)
+                  end
                   mushlooptimer = 1000
                   end
                   if Player.localmapid == 132 then
@@ -12314,7 +12466,21 @@ function AetheryteHelper.moveMBgridania()
                   end
                elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
-                  Player:Teleport(2,0)
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(2,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(2,0,false)
+                    end
+                  else
+                  Player:Teleport(2,0,false)
+                  end
                   end           
                   if Player.localmapid == 133 then
                   griMBStep = 1
@@ -12428,7 +12594,21 @@ function AetheryteHelper.moveMBuldah()
             if uldMBStep == 0 then
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-                  Player:Teleport(9,0)
+                    if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(9,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(9,0,false)
+                    end
+                  else
+                  Player:Teleport(9,0,false)
+                  end
                   end
                   if Player.localmapid == 130 then
                   mushlooptimer = 1000
@@ -12439,8 +12619,22 @@ function AetheryteHelper.moveMBuldah()
                   end
                elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-                  Player:Teleport(9,0)
-                  end           
+                    if AetheryteHelper.ATuse.ATuseEnable == true then
+                    local aelist = Player:GetAetheryteList()
+                    if (table.valid(aelist)) then
+                    for id, e in pairs(aelist) do
+                    mushtelepogil = e.price
+                    end
+                    end
+                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
+                    Player:Teleport(9,0,true)
+                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
+                    Player:Teleport(9,0,false)
+                    end
+                  else
+                  Player:Teleport(9,0,false)
+                  end
+                  end         
                   if Player.localmapid == 130 then
                   uldMBStep = 10
                   elseif Player.localmapid == 131 then
