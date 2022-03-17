@@ -1982,9 +1982,32 @@ function AetheryteHelper.GLUtelepo()
            else
            GUI:SetTooltip(mushtooltips.en.tip191)
            end
-           end
         end
-      GUI:SameLine()
+      end
+      local mushAT = {}
+      local bags = {0,1,2,3}
+      for _, e in pairs(bags) do
+        local bag = Inventory:Get(e)
+        if (table.valid(bag)) then
+        local ilist = bag:GetList()
+        if (table.valid(ilist)) then
+        for _, item in pairs(ilist) do
+        if item.hqid == 7569 then
+        table.insert(mushAT,item)
+        if #mushAT > 0 then
+        GUI:SameLine()
+        GUI:Text(item.count)
+        end
+        end
+        end
+        end
+        end      
+      end
+      if #mushAT == 0 then
+        GUI:SameLine()
+        GUI:Text("0")
+        AetheryteHelper.ATuse.ATuseEnable = false
+      end
       --[[GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:PushItemWidth(160)
