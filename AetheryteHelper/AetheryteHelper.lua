@@ -1489,9 +1489,9 @@ function AetheryteHelper.LoadSettings()
     end
   end
   if FileExists(AetheryteHelper.ATfile) then
-    local AT = persistence.load(AetheryteHelper.RCfile)
+    local AT = persistence.load(AetheryteHelper.ATfile)
     if (ValidTable(AT)) then
-      table.merge(AetheryteHelper.ATuse,AT)    
+      table.merge(AetheryteHelper.ATuse,AT)
     end
   end
 end
@@ -1954,7 +1954,7 @@ end
 -- telepo button GUI
 
 function AetheryteHelper.GLUtelepo()
-      GUI:Dummy(20,20)
+      GUI:Dummy(10,10)
       GUI:SameLine()
       GUI:BeginGroup()
       if AetheryteHelper.ATuse.ATuseEnable == true then
@@ -1985,10 +1985,10 @@ function AetheryteHelper.GLUtelepo()
            end
         end
       GUI:SameLine()
-      GUI:AlignFirstTextHeightToWidgets()
+      --[[GUI:AlignFirstTextHeightToWidgets()
       GUI:BeginGroup()
       GUI:PushItemWidth(160)
-      AetheryteHelper.ATuse.gil, changed = GUI:SliderInt("Gil",AetheryteHelper.ATuse.gil,0,1000)
+      AetheryteHelper.ATuse.gil, changed = GUI:SliderInt("Gil",AetheryteHelper.ATuse.gil,50,1000)
       if changed then
       AetheryteHelper.ATuse.gil = AetheryteHelper.ATuse.gil
       AetheryteHelper.SaveSettings()
@@ -2003,7 +2003,7 @@ function AetheryteHelper.GLUtelepo()
            end
         end
       GUI:PopItemWidth()
-      GUI:EndGroup()
+      GUI:EndGroup()]]
       GUI:Spacing()
       --GUI:SameLine(10)
       GUI:BeginGroup()
@@ -12152,17 +12152,7 @@ function AetheryteHelper.movetoCOMPANYlimsa()
          if ( Player.localmapid ~= 129 )and( Player.localmapid ~= 128 ) and (Player:GetTarget() == nil) then        
              if(ActionList:Get(5,7):IsReady() == true) then
               if AetheryteHelper.ATuse.ATuseEnable == true then
-                local aelist = Player:GetAetheryteList()
-                if (table.valid(aelist)) then
-                for id, e in pairs(aelist) do
-                mushtelepogil = e.price
-                end
-                end
-                if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                Player:Teleport(8,0,true)
-                elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                Player:Teleport(8,0,false)
-                end
+              Player:Teleport(8,0,true)
               else
               Player:Teleport(8,0,false)
               end
@@ -12226,17 +12216,7 @@ function AetheryteHelper.movetoCOMPANYgridania()
                   if Player.localmapid ~= 132  and (Player:GetTarget() == nil) then        
                   if(ActionList:Get(5,7):IsReady() == true) then
                   if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(2,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(2,0,false)
-                    end
+                  Player:Teleport(2,0,true)
                   else
                   Player:Teleport(2,0,false)
                   end
@@ -12258,17 +12238,7 @@ function AetheryteHelper.movetoCOMPANYuldah()
                   if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then        
                   if(ActionList:Get(5,7):IsReady() == true) then
                   if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(9,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(9,0,false)
-                    end
+                  Player:Teleport(9,0,true)
                   else
                   Player:Teleport(9,0,false)
                   end
@@ -12299,17 +12269,7 @@ function AetheryteHelper.moveMBlimsa()
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
                   if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(8,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(8,0,false)
-                    end
+                  Player:Teleport(8,0,true)
                   else
                   Player:Teleport(8,0,false)
                   end
@@ -12325,17 +12285,7 @@ function AetheryteHelper.moveMBlimsa()
                elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
                   if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(8,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(8,0,false)
-                    end
+                  Player:Teleport(8,0,true)
                   else
                   Player:Teleport(8,0,false)
                   end
@@ -12441,17 +12391,7 @@ function AetheryteHelper.moveMBgridania()
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
                   if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(2,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(2,0,false)
-                    end
+                  Player:Teleport(2,0,true)
                   else
                   Player:Teleport(2,0,false)
                   end
@@ -12467,17 +12407,7 @@ function AetheryteHelper.moveMBgridania()
                elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
                   if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(2,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(2,0,false)
-                    end
+                  Player:Teleport(2,0,true)
                   else
                   Player:Teleport(2,0,false)
                   end
@@ -12594,18 +12524,8 @@ function AetheryteHelper.moveMBuldah()
             if uldMBStep == 0 then
                if AHSET.mushmovetoMB == false then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-                    if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(9,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(9,0,false)
-                    end
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                  Player:Teleport(9,0,true)
                   else
                   Player:Teleport(9,0,false)
                   end
@@ -12619,18 +12539,8 @@ function AetheryteHelper.moveMBuldah()
                   end
                elseif AHSET.mushmovetoMB == true then
                   if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-                    if AetheryteHelper.ATuse.ATuseEnable == true then
-                    local aelist = Player:GetAetheryteList()
-                    if (table.valid(aelist)) then
-                    for id, e in pairs(aelist) do
-                    mushtelepogil = e.price
-                    end
-                    end
-                    if mushtelepogil >= AetheryteHelper.ATuse.gil then
-                    Player:Teleport(9,0,true)
-                    elseif mushtelepogil < AetheryteHelper.ATuse.gil then
-                    Player:Teleport(9,0,false)
-                    end
+                  if AetheryteHelper.ATuse.ATuseEnable == true then
+                  Player:Teleport(9,0,true)
                   else
                   Player:Teleport(9,0,false)
                   end
