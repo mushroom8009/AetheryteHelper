@@ -65,7 +65,7 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "Aetheryte Helper",
-	  Version =         "1.7.7",
+	  Version =         "1.7.8",
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -138,6 +138,7 @@ local kinokoProject = {
 					  "[1.7.5] - add new function.",
 					  "[1.7.6] - add AetheryteTicket settings.",
 					  "[1.7.7] - Supports display of retainer bag deployment.",
+            "[1.7.8] - Supports CN・KR Server.",
 
 					},
 
@@ -1035,8 +1036,8 @@ mushtooltips = {
 ----------------------------------------------------
 
 
-FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia" }
---FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Meteor", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia" }
+FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
+--FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Meteor", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
 noDClist = { "sorry" }
 
 FFXIVServerlist = {
@@ -1050,7 +1051,12 @@ FFXIVServerlist = {
 	[8] = { "------", "Lich", "Odin", "Phoenix","Shiva","Twintania","Zodiark" },
 	[9] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
 	[10] = { "------", "Bismarck", "Ravana", "Sephirot", "Sophia", "Zurvan"},
-	[11] = { "not support region" },
+  [11] = { "------", "水晶塔", "银泪湖","太阳海岸","伊修加德","红茶川",},
+  [12] = { "------", "紫水栈桥", "延夏","静语庄园","摩杜纳","海猫茶屋","柔风海湾","琥珀原",},
+  [13] = { "------", "白银乡", "白金幻象","神拳痕","潮风亭","旅人栈桥","拂晓之间","龙巢神殿","梦羽宝境",},
+  [14] = { "------", "红玉海", "神意之地","拉诺西亚","幻影群岛","萌芽池","宇宙和音","沃仙曦染","晨曦王座",},
+	[15] = { "------", "펜리르","톤베리","카벙클","초코보","모그리",},
+  [16] = { "Error" },
   --[[
 	[1] = { "------" },
 	[2] = { "------", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Tonberry", "Typhon" },
@@ -1063,7 +1069,12 @@ FFXIVServerlist = {
 	[9] = { "------", "Lich", "Odin", "Phoenix","Shiva","Twintania","Zodiark" },
 	[10] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
 	[11] = { "------", "Bismarck", "Ravana", "Sephirot", "Sophia", "Zurvan"},
-	[12] = { "not support region" },
+	[12] = { "------", "水晶塔", "银泪湖","太阳海岸","伊修加德","红茶川",},
+  [13] = { "------", "紫水栈桥", "延夏","静语庄园","摩杜纳","海猫茶屋","柔风海湾","琥珀原",},
+  [14] = { "------", "白银乡", "白金幻象","神拳痕","潮风亭","旅人栈桥","拂晓之间","龙巢神殿","梦羽宝境",},
+  [15] = { "------", "红玉海", "神意之地","拉诺西亚","幻影群岛","萌芽池","宇宙和音","沃仙曦染","晨曦王座",},
+  [16] = { "------", "펜리르","톤베리","카벙클","초코보","모그리",},
+  [17] = { "Error" },
   ]]
   }
 
@@ -1167,6 +1178,42 @@ WorldID = {
 {id=97,Name="Ragnarok",DC="Chaos"},
 {id=98,Name="Ridill",DC="Gaia"},
 {id=99,Name="Sargatanas",DC="Aether"},
+--CN
+{id=1042,Name="拉诺西亚",DC="陆行鸟"},
+{id=1043,Name="紫水栈桥",DC="猫小胖"},
+{id=1044,Name="幻影群岛",DC="陆行鸟"},
+{id=1045,Name="摩杜纳",DC="猫小胖"},
+{id=1048,Name="太阳海岸",DC="豆豆柴"},
+{id=1050,Name="银泪湖",DC="豆豆柴"},
+{id=1056,Name="红茶川",DC="豆豆柴"},
+{id=1057,Name="伊修加德",DC="豆豆柴"},
+{id=1060,Name="萌芽池",DC="陆行鸟"},
+{id=1074,Name="水晶塔",DC="豆豆柴"},
+{id=1076,Name="白金幻象",DC="莫古力"},
+{id=1081,Name="神意之地",DC="陆行鸟"},
+{id=1106,Name="静语庄园",DC="猫小胖"},
+{id=1113,Name="旅人栈桥",DC="莫古力"},
+{id=1121,Name="拂晓之间",DC="莫古力"},
+{id=1166,Name="龙巢神殿",DC="莫古力"},
+{id=1167,Name="红玉海",DC="陆行鸟"},
+{id=1169,Name="延夏",DC="猫小胖"},
+{id=1170,Name="潮风亭",DC="莫古力"},
+{id=1171,Name="神拳痕",DC="莫古力"},
+{id=1172,Name="白银乡",DC="莫古力"},
+{id=1173,Name="宇宙和音",DC="陆行鸟"},
+{id=1174,Name="沃仙曦染",DC="陆行鸟"},
+{id=1175,Name="晨曦王座",DC="陆行鸟"},
+{id=1176,Name="梦羽宝境",DC="莫古力"},
+{id=1177,Name="海猫茶屋",DC="猫小胖"},
+{id=1178,Name="柔风海湾",DC="猫小胖"},
+{id=1179,Name="琥珀原",DC="猫小胖"},
+--KR
+{id=2075,Name="카벙클",DC="KR"},
+{id=2076,Name="초코보",DC="KR"},
+{id=2077,Name="모그리",DC="KR"},
+{id=2078,Name="톤베리",DC="KR"},
+{id=2080,Name="펜리르",DC="KR"},
+
 }
 mushPlayerGCrank = {
 	  {rank = 1, max = "10000"},
@@ -11331,7 +11378,7 @@ function AetheryteHelper.Drawafooter()
 function AetheryteHelper.homeDCinfo()
 	GUI:BeginGroup()
 	for k,v in pairs(WorldID) do
-	   if (k == Player.homeworld) then local homeWorld = v
+	   if (v.id == Player.homeworld) then local homeWorld = v
 		  GUI:Text("Home：" ..tostring(homeWorld.Name).."["..tostring(homeWorld.DC).."]")
 	   end
 	end
@@ -11339,7 +11386,7 @@ function AetheryteHelper.homeDCinfo()
 	--GUI:SameLine()
 	GUI:BeginGroup()
 	for k,v in pairs(WorldID) do
-	   if (k == Player.currentworld) then local NowWorld = v
+	   if (v.id == Player.currentworld) then local NowWorld = v
 		  GUI:Text("Now：" ..tostring(NowWorld.Name).."["..tostring(NowWorld.DC).."]")
 	   AH_AutoDC = tostring(NowWorld.DC)
 	   end
@@ -11359,7 +11406,12 @@ function AetheryteHelper.autoDCset()
 		 elseif (AH_AutoDC == "Light" ) then AHSET.selectDC = 8
 		 elseif (AH_AutoDC == "Crystal" ) then AHSET.selectDC = 9
 		 elseif (AH_AutoDC == "Materia" ) then AHSET.selectDC = 10
-		 else AHSET.selectDC = 1
+     elseif (AH_AutoDC == "豆豆柴" ) then AHSET.selectDC = 11
+     elseif (AH_AutoDC == "猫小胖" ) then AHSET.selectDC = 12
+     elseif (AH_AutoDC == "莫古力" ) then AHSET.selectDC = 13
+     elseif (AH_AutoDC == "陆行鸟" ) then AHSET.selectDC = 14
+     elseif (AH_AutoDC == "KR" ) then AHSET.selectDC = 15
+     else AHSET.selectDC = 1
 	  end
 	  --[[
 	  if (AH_AutoDC == "Elemental") then AHSET.selectDC = 2
@@ -11372,6 +11424,11 @@ function AetheryteHelper.autoDCset()
 		 elseif (AH_AutoDC == "Light" ) then AHSET.selectDC = 9
 		 elseif (AH_AutoDC == "Crystal" ) then AHSET.selectDC = 10
 		 elseif (AH_AutoDC == "Materia" ) then AHSET.selectDC = 11
+     elseif (AH_AutoDC == "豆豆柴" ) then AHSET.selectDC = 12
+     elseif (AH_AutoDC == "猫小胖" ) then AHSET.selectDC = 13
+     elseif (AH_AutoDC == "莫古力" ) then AHSET.selectDC = 14
+     elseif (AH_AutoDC == "陆行鸟" ) then AHSET.selectDC = 15
+     elseif (AH_AutoDC == "KR" ) then AHSET.selectDC = 16
 		 else AHSET.selectDC = 1
 	  end
 	  ]]
@@ -11457,7 +11514,7 @@ function AetheryteHelper.SVRSelectermini()
 				local templist = MushmoveServerlist
 --d(templist)
 				for k,v in pairs(WorldID) do
-					if (k == Player.currentworld) then local tempWorld = v
+					if (v.id == Player.currentworld) then local tempWorld = v
 					tempname = tostring(tempWorld.Name)
 --d(tempname)
 					for k,v in pairs(templist) do
@@ -11479,8 +11536,8 @@ function AetheryteHelper.SVRSelectermini()
 	 selectSVR = GUI:Combo( "###server",selectSVR,MushmoveServerlist,height or 20)
 	 else
 	 GUI:Combo( "DC",1,noDClist,1)
-	 GUI:Combo( "server",1,FFXIVServerlist[11],1)
-	 --GUI:Combo( "server",1,FFXIVServerlist[12],1)
+	 GUI:Combo( "server",1,FFXIVServerlist[16],1)
+	 --GUI:Combo( "server",1,FFXIVServerlist[17],1)
 	 end
 	 if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
@@ -11532,7 +11589,7 @@ function AetheryteHelper.DCSVselect()
 				local templist = MushmoveServerlist
 --d(templist)
 				for k,v in pairs(WorldID) do
-					if (k == Player.currentworld) then local tempWorld = v
+					if (v.id == Player.currentworld) then local tempWorld = v
 					tempname = tostring(tempWorld.Name)
 --d(tempname)
 					for k,v in pairs(templist) do
@@ -11550,9 +11607,9 @@ function AetheryteHelper.DCSVselect()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(80)
 
-	 if ( gRegion == 1) then
+	 --if ( gRegion == 1) then
 		AHSET.selectDC = GUI:Combo( "###DC", AHSET.selectDC,FFXIVDClist,1)
-	 end
+	 --end
 	 if (GUI:IsItemHovered()) then
 	 if AHSET.mushtooltips == true then
 			  if language == 0 then
@@ -11607,7 +11664,7 @@ function AetheryteHelper.DCSVselect()
 	 selectSVR = GUI:Combo( "###server",selectSVR,MushmoveServerlist,height or 20)
 	 else
 	 GUI:Combo( "DC",1,noDClist,1)
-	 GUI:Combo( "server",1,FFXIVServerlist[11],1)
+	 GUI:Combo( "server",1,FFXIVServerlist[16],1)
 	 end
 	 if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
