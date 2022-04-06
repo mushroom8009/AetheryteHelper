@@ -65,7 +65,7 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "Aetheryte Helper",
-	  Version =         "1.7.8",
+	  Version =         "1.8.0",
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -139,6 +139,7 @@ local kinokoProject = {
 					  "[1.7.6] - add AetheryteTicket settings.",
 					  "[1.7.7] - Supports display of retainer bag deployment.",
             "[1.7.8] - Supports CN・KR Server.",
+            "[1.8.0] - bug fix & Many additional features.",
 
 					},
 
@@ -188,8 +189,8 @@ local kinokoProject = {
 					+ GUI.WindowFlags_NoBringToFrontOnFocus
 					+ GUI.WindowFlags_NoScrollbar,
 	  Visible =       true,
-
 	},
+	
   },
 --  ---------------
   Update = {
@@ -307,7 +308,25 @@ AetheryteHelper.miniRadarWindow = {
   visible = true,
   locked = false,
 }
- AetheryteHelper.settings = {
+AetheryteHelper.CreateButton = {
+  name = "CBWindow###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.CBcodeEditor = {
+  name = "CBcodeEditorWindow###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.userbutton = {
+	  name = "userfunc###AetheryteHelper",
+	  open =  false,
+	  visible = true,
+	  locked = false,
+}
+AetheryteHelper.settings = {
   SET = {
 
 	delay = 200,
@@ -629,7 +648,7 @@ AetheryteHelper.explorerEW = {
   2011898,
 }
 
-
+AetheryteHelper.userCustomfunc = {}
 -------------------
 AHLinks = {
 	  Name = "Minion Discord JP",
@@ -639,7 +658,8 @@ AHLinks = {
 	   link4 = [[https://youtube.com/playlist?list=PLS5EIB6BeDoKSRglypQIr_g9-MF6Cvbqh]],
 }
 mushtooltips = {
-  jp = { tip00 = "対象エリア外",
+  jp = { 
+  	 tip00 = "対象エリア外",
 		 tip01 = "AH オン/オフ",
 		 tip02 = "アクセス間隔を\n100msから1秒まで選べます",
 		 tip03 = "テキストコマンド[ /e <flag> ]を実行します",
@@ -806,7 +826,7 @@ mushtooltips = {
 		 tip164 = "グルポ中は表示しない",
 		 tip165 = "IDでは表示しない",
 		 tip166 = "色変更",
-		 tip167 = "自分のドットサイズ",
+		 tip167 = "自分のドットサイズと色",
 		 tip168 = "他のドットサイズ",
 		 tip169 = "線の太さ",
 		 tip170 = "リスキーモブ",
@@ -832,11 +852,37 @@ mushtooltips = {
 		 tip190 = "AH レーダー\n標準ウィンドウ",
 		 tip191 = "転送網利用券を使用",
 		 tip192 = "金額設定",
-
+		 tip193 = "コンテンツID",
+		 tip194 = "名前",
+		 tip195 = "メモ欄",
+		 tip196 = "他プレイヤーからのターゲット線の色変更",
+		 tip197 = "モンスターからのターゲット線の色変更",
+		 tip198 = "Normal(通常)/Hazard(警戒)切り替え",
+		 tip199 = "この距離に対象プレイヤーがいる場合、BOTの移動を停止\nギャザラーでの使用を推奨",
+		 tip200 = "カスタムボタンの作成",
+		 tip201 = "テキストコマンドボタン",
+		 tip202 = "クリックボタン",
+		 tip203 = "オン/オフボタン",
+		 tip204 = "ボタンの追加",
+		 tip205 = "入力項目のリセット",
+		 tip206 = "ボタンの名前(必須)",
+		 tip207 = "ボタンに使用する画像\nAetheryteHelper\\CustomImage\\内のファイル名を入力",
+		 tip208 = "ツールチップ",
+		 tip209 = "左クリック時のコマンド",
+		 tip210 = "右クリック時のコマンド",
+		 tip211 = "左クリック時の実行コード",
+		 tip212 = "右クリック時の実行コード",
+		 tip213 = "コードのパルスタイム\n0-3000\n\nAHPulseは他の機能と共有しているので、同時に実行すると影響を受けます",
+		 tip214 = "ボタンがオンの時の実行コード",
+		 tip215 = "ボタンの削除",
+		 tip216 = "ボタンの内容を更新",
+		 tip217 = "ボタンの設定を呼び出し",
+		 tip218 = "ボタンの表示/非表示",
 
 
   },
-  en = { tip01 = "Outside of use area",
+  en = { 
+  	 tip00 = "Outside of use area",
 		 tip01 = "AH Enable/Disable",
 		 tip02 = "access delay\n100ms-1sec",
 		 tip03 = "Send TextCommand in Game>> /e <flag>",
@@ -1003,7 +1049,7 @@ mushtooltips = {
 		 tip164 = "Disabled during gpose",
 		 tip165 = "Disabled during in Duty",
 		 tip166 = "Color Change",
-		 tip167 = "Self dot size",
+		 tip167 = "Self dot size & Color",
 		 tip168 = "Other dot size",
 		 tip169 = "line thickness",
 		 tip170 = "Hunt",
@@ -1029,6 +1075,32 @@ mushtooltips = {
 		 tip190 = "AH Radar\nopen to standard window",
 		 tip191 = "Use AetheryteTicket",
 		 tip192 = "Amount Setting",
+		 tip193 = "ContentID",
+		 tip194 = "name",
+		 tip195 = "note",
+		 tip196 = "Color Change for Target Lines from Other Players",
+		 tip197 = "Color Change for Target Lines from mob",
+		 tip198 = "Normal/Hazard",
+		 tip199 = "Stops BOT move if target player is within this distance,\nrecommended for use with gatherer",
+		 tip200 = "Creat Buttons",
+		 tip201 = "Text Command Button",
+		 tip202 = "Click Button(Custom Function)",
+		 tip203 = "ON/OFF Button(Custom Function)",
+		 tip204 = "Add Button",
+		 tip205 = "Initialization of input items",
+		 tip206 = "Button Name(must)",
+		 tip207 = "Image to use for Button\nEnter the name of file in \"AetheryteHelper\\CustomImage\\\" folder",
+		 tip208 = "tooltip",
+		 tip209 = "TextCommands to be executed by Left-click",
+		 tip210 = "TextCommands to be executed by Right-click",
+		 tip211 = "Execution code on Left-click",
+		 tip212 = "Execution code on Right-click",
+		 tip213 = "Pulse time of code\n0-3000\n\nAHPulse is shared with other functions and will be affected if executed at the same time",
+		 tip214 = "Execution code when button is on",
+		 tip215 = "Delete Button",
+		 tip216 = "Change of Button content",
+		 tip217 = "Load of Button settings",
+		 tip218 = "Show/hide Buttons",
 
   },
 }
@@ -1259,8 +1331,6 @@ GCexchangeItems = {
 }
 
 
-
-
 MoveServer = { 132, 129, 130 }
 ploc = { 956, 957, 958, 959, 960, 961 }
 mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
@@ -1272,6 +1342,7 @@ AetheryteHelper.Radarfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\Use
 AetheryteHelper.huntlistfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userCustomList.lua'
 AetheryteHelper.RCfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'RadarColor.lua'
 AetheryteHelper.ATfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'AetheryteTicket.lua'
+AetheryteHelper.userfunc = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userCustomfunction.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -1314,6 +1385,7 @@ local MinionPath = GetStartupPath()
 local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
+local userImage = ModulePath .. [[CustomImage\]]
 local GCdelistep = 0
 local GCStep = 0
 local limMBStep = 0
@@ -1381,6 +1453,7 @@ local tempCustomlist = {}
 local AHRadarGeneral = false
 local AHRadarhunt = false
 local AHRadarCustomList = true
+local AHRadarBlockList = false
 local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
 local Rwroldname = ""
@@ -1542,6 +1615,12 @@ function AetheryteHelper.LoadSettings()
 	  table.merge(AetheryteHelper.ATuse,AT)
 	end
   end
+  if FileExists(AetheryteHelper.userfunc) then
+	local userfunc = persistence.load(AetheryteHelper.userfunc)
+	if (ValidTable(userfunc)) then
+	  table.merge(AetheryteHelper.userCustomfunc,userfunc)
+	end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1555,6 +1634,7 @@ function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.huntlistfile, AetheryteHelper.RadarCustomList)
   persistence.store(AetheryteHelper.RCfile, AetheryteHelper.RadarColor)
   persistence.store(AetheryteHelper.ATfile, AetheryteHelper.ATuse)
+  persistence.store(AetheryteHelper.userfunc, AetheryteHelper.userCustomfunc)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local AHSET = AetheryteHelper.settings.SET
@@ -2272,7 +2352,7 @@ function AetheryteHelper.GLUtelepo()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
--- wip tab3 button GUI
+-- toy GUI
 
 function AetheryteHelper.DrawadWIP()
 	  GUI:Spacing(10)
@@ -2353,6 +2433,22 @@ function AetheryteHelper.DrawadWIP()
 			  GUI:SetTooltip(mushtooltips.jp.tip112)
 			  else
 			  GUI:SetTooltip(mushtooltips.en.tip112)
+			  end
+			  end
+	  end
+	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[CustomButton.png]],30,30)
+	  if (GUI:IsItemHovered()) then
+			if (GUI:IsMouseClicked(0)) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip200)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip200)
 			  end
 			  end
 	  end
@@ -2730,28 +2826,48 @@ function AetheryteHelper.DrawadItems()
 		GUI:Separator()
 		GUI:BeginGroup()
 		if IsControlOpen("ItemFinder") then
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[7].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[8].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[49].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[50].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[56].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[57].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[63].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[64].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[70].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[71].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[77].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[78].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[84].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[85].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[91].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[92].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[98].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[99].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[105].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[106].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[112].value)
-		table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[113].value)
+			table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[7].value)
+			table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[8].value)
+			if GetControl("ItemFinder"):GetRawData()[49] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[49].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[50].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[56] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[56].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[57].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[63] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[63].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[64].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[70] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[70].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[71].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[77] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[77].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[78].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[84] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[84].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[85].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[91] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[91].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[92].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[98] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[98].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[99].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[105] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[105].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[106].value)
+			end
+			if GetControl("ItemFinder"):GetRawData()[112] ~= nil then
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[112].value)
+				table.insert(mushISinbag,GetControl("ItemFinder"):GetRawData()[113].value)
+			end
 		end
 		local bags = {0,1,2,3}
 		local itemname = {}
@@ -3417,6 +3533,28 @@ function AetheryteHelper.minimush()
    end
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.TCListHeader()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[howto.png]],20,20)
@@ -3499,7 +3637,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("mini ins selecter")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###114","/e AHmode 114",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3528,11 +3666,40 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("mini World selecter")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###WVmini","/e AHWV mini",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHWV mini")
+		  if language == 0 then
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  else
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  end
+		 end
+		if AHSET.mushtooltips == true then
+			if language == 0 then
+			GUI:SetTooltip(mushtooltips.jp.tip110)
+			else
+			GUI:SetTooltip(mushtooltips.en.tip110)
+			end
+		end
+	  end
+	  GUI:EndGroup()
+	  GUI:Spacing()
+	  GUI:Separator()
+	  GUI:Spacing()
+	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[AHon.png]],30,40)
+	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Text("World Visit(ex:/e AHWV:Asura)")
+	  GUI:PushItemWidth(180)
+	  GUI:InputText("###WVcmd","/e AHWV:ServerName",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(1) then
+		  GUI:SetClipboardText("/e AHWV:")
 		  if language == 0 then
 		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
 		  else
@@ -3557,7 +3724,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("move to MB in limsa")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###MB1","/e AHMB limsa",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3586,7 +3753,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("move to MB in gridania")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###MB2","/e AHMB gridania",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3615,7 +3782,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("move to MB in Ul'dah")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###MB3","/e AHMB uldah",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3644,7 +3811,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("move to GC")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###GC","/e AHGC move",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3673,7 +3840,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("bicolor gemstone amount")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###BJ","/e AHBJ num",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3702,7 +3869,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("minion WeeEa count")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###WeeEa","/e AH WeeEa ",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3731,7 +3898,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("Inventory Sort")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###itemsort","/e AH itemsort",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3760,7 +3927,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("miniRadar")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###itemsort","/e AHminiRadar",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3789,7 +3956,7 @@ function AetheryteHelper.TCListwindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Text("Minion on/off")
-	  GUI:PushItemWidth(120)
+	  GUI:PushItemWidth(180)
 	  GUI:InputText("###minion","/e AH minion",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
@@ -3839,9 +4006,9 @@ function AetheryteHelper.SubWindow()
 			  end
 	  end
 	  GUI:Separator()
-	  GUI:BeginGroup()
-	  GUI:TextColored(1,0,0,1,"Probably (350) is limit")
-	  GUI:EndGroup()
+	  --GUI:BeginGroup()
+	  --GUI:TextColored(1,0,0,1,"Probably (350) is limit")
+	  --GUI:EndGroup()
 
 	  GUI:Spacing()
 	  if mushins == nil or selectins == false then
@@ -3871,10 +4038,847 @@ function AetheryteHelper.SubWindow()
 	  end
 	end
 	GUI:End()
-
   end
-
 end
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local AHuserfuncCode01 = [[--Lclick function]]
+local AHuserfuncCode02 = [[--Rclick function]]
+local AHuserfuncCode03 = [[--on/off function]].."\n\n"..[[--Can't be too complicated]]
+local CBcode01 = [[]]
+local CBcode02 = [[]]
+local CBcode03 = [[]]
+local CBname = ""
+local CBImage01 = [[]]
+local CBImage02 = [[]]
+local CBImage03 = [[]]
+local CBtip = ""
+local CBtextL = ""
+local CBtextR = ""
+local CBmode = 0
+local CBpulse = 1000
+local CBmodetext = true
+local CBmodeclick = false
+local CBmodeonoff = false
+local AHCBtmp = {}
+local CBwindowx
+local CBwindowy
+local CBwindoww
+local CBEsizex
+local CBEsizey
+
+function AetheryteHelper.CBReset()
+	CBname = ""
+	CBImage01 = [[]]
+	CBImage02 = [[]]
+	CBImage03 = [[]]
+	CBtip = ""
+	CBmode = 0
+	CBtextL = ""
+	CBtextR = ""
+	AHuserfuncCode01 = [[--L-click function]]
+	AHuserfuncCode02 = [[--R-click function]]
+	AHuserfuncCode03 = [[--on/off function]].."\n\n"..[[--Can't be too complicated]]
+	CBpulse = 1000
+	CBcode01 = [[]]
+	CBcode02 = [[]]
+	CBcode03 = [[]]
+	AHCBtmp = {}
+end
+
+
+function AetheryteHelper.CBcodeEditWindows()
+  if (AetheryteHelper.CBcodeEditor.open) then
+	local CBEflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoFocusOnAppearing
+	GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
+	if (AetheryteHelper.CreateButton.visible) then
+	GUI:SetNextWindowPos(CBwindowx+CBwindoww,CBwindowy+20)
+  else
+  GUI:SetNextWindowPos(CBwindowx,CBwindowy+20)
+  end
+	 AetheryteHelper.CBcodeEditor.visible, AetheryteHelper.CBcodeEditor.open = GUI:Begin('Code Editor', AetheryteHelper.CBcodeEditor.open,CBEflags)
+	if (AetheryteHelper.CBcodeEditor.visible) then
+	CBEsizex,CBEsizey = GUI:GetWindowSize()
+	GUI:BeginGroup()
+	GUI:Text("Code Editor")
+	GUI:EndGroup()
+	if CBmodeclick == true then
+		GUI:BeginGroup()
+		GUI:Text("Left-click")
+		GUI:EndGroup()
+	  GUI:BeginGroup()
+	  AHuserfuncCode01, changed = GUI:InputTextEditor("##CBeditor01", AHuserfuncCode01, CBEsizex-20, CBEsizey/2-40, GUI.InputTextFlags_AllowTabInput)
+	  if changed then
+				CBcode01 = AHuserfuncCode01
+		end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip211)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip211)
+			  end
+		end
+	  end
+	  GUI:Spacing()
+	  GUI:BeginGroup()
+		GUI:Text("Right-click")
+		GUI:EndGroup()
+	  GUI:BeginGroup()
+	  AHuserfuncCode02, changed = GUI:InputTextEditor("##CBeditor02", AHuserfuncCode02, CBEsizex-20, CBEsizey/2-40, GUI.InputTextFlags_AllowTabInput)
+	  if changed then
+				CBcode02 = AHuserfuncCode02
+		end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip212)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip212)
+			  end
+		end
+	  end
+	  end
+
+	  if CBmodeonoff == true then
+	  GUI:BeginGroup()
+	  AHuserfuncCode03, changed = GUI:InputTextEditor("##CBeditor03", AHuserfuncCode03, CBEsizex-20,CBEsizey-40, GUI.InputTextFlags_AllowTabInput)
+	  if changed then
+				CBcode03 = AHuserfuncCode03
+		end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip214)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip214)
+			  end
+		end
+	  end
+	  end
+	end
+	GUI:End()
+  end
+  if AetheryteHelper.CreateButton.open == false then
+  	 AetheryteHelper.CBcodeEditor.open = false
+  elseif AetheryteHelper.CreateButton.open == true and CBmodeonoff == true or
+  			 AetheryteHelper.CreateButton.open == true and CBmodeclick == true then
+  	 AetheryteHelper.CBcodeEditor.open = true
+  end
+end
+-------------------------------------------------------------------
+
+function AetheryteHelper.CreateButtonWindows()
+  if (AetheryteHelper.CreateButton.open) then
+	local CBflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+	GUI:SetNextWindowSize(300,450)
+	 AetheryteHelper.CreateButton.visible, AetheryteHelper.CreateButton.open = GUI:Begin('User Create Button Editor', AetheryteHelper.CreateButton.open,CBflags)
+	 CBwindowx, CBwindowy = GUI:GetWindowPos()
+	 CBwindoww = GUI:GetWindowWidth()
+	if (AetheryteHelper.CreateButton.visible) then
+	  GUI:Spacing()
+	  GUI:Columns(2)
+	  GUI:SetColumnOffset(1, 150)
+	  GUI:BeginGroup()
+	  GUI:Text("Button Mode")
+	  GUI:EndGroup()
+
+	  GUI:BeginGroup()
+	  if CBmodetext == true then
+	  GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,0,.5,0,1)
+	  GUI:ImageButton("##TextCommand",ImageFolder..[[free_chat.png]], 30,30)
+	  GUI:PopStyleColor(2)
+	  else
+	  GUI:ImageButton("##TextCommand",ImageFolder..[[free_chat.png]], 30,30)
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+	 		if GUI:IsItemClicked(0) then
+		  CBmodetext = true
+		  CBmodeclick = false
+		  CBmodeonoff = false
+		  CBmode = 0
+		  AetheryteHelper.CBcodeEditor.open = false
+			end
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip201)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip201)
+			  end
+			end
+	  end
+
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  if CBmodeclick == true then
+	  GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,0,.5,0,1)
+	  GUI:ImageButton("##Click",ImageFolder..[[CB_click.png]], 30,30)
+	  GUI:PopStyleColor(2)
+	  else
+	  GUI:ImageButton("##Click",ImageFolder..[[CB_click.png]], 30,30)
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+	 		if GUI:IsItemClicked(0) then
+		  CBmodetext = false
+		  CBmodeclick = true
+		  CBmodeonoff = false
+		  CBmode = 1
+			AetheryteHelper.CBcodeEditor.open = true
+			end
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip202)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip202)
+			  end
+			end
+	  end
+	  
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  if CBmodeonoff == true then
+	  GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,0,.5,0,1)
+	  GUI:ImageButton("##CB_onoff",ImageFolder..[[CB_onoff.png]], 30,30)
+	  GUI:PopStyleColor(2)
+	  else
+  	GUI:ImageButton("##CB_onoff",ImageFolder..[[CB_onoff.png]], 30,30)
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+	 		if GUI:IsItemClicked(0) then
+		  CBmodetext = false
+		  CBmodeclick = false
+		  CBmodeonoff = true
+		  CBmode = 2
+		  AetheryteHelper.CBcodeEditor.open = true
+			end
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip203)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip203)
+			  end
+			end
+	  end
+	  GUI:NextColumn()
+	  GUI:BeginGroup()
+	  GUI:Text("add/clear")
+	  GUI:EndGroup()
+	  GUI:BeginGroup()
+	  GUI:ImageButton("##CB_add",ImageFolder..[[R_add.png]], 30,30)
+	  if GUI:IsItemHovered() then
+	 		if GUI:IsItemClicked(0) then
+	 			if CBname ~= "" then
+	 			table.insert(AHCBtmp,1)--[1]on1/off0
+	 			table.insert(AHCBtmp,CBname)--[2]name
+	 			table.insert(AHCBtmp,CBImage01)--[3]image
+	 			table.insert(AHCBtmp,CBImage02)--[4]onimage
+	 			table.insert(AHCBtmp,CBImage03)--[5]offimage
+	 			table.insert(AHCBtmp,CBtip)--[6]tooltip
+	 			table.insert(AHCBtmp,CBmode)--[7]mode
+	 			table.insert(AHCBtmp,CBtextL)--[8]textcommandL
+	 			table.insert(AHCBtmp,CBtextR)--[9]textcommandR
+	 			table.insert(AHCBtmp,0)--[10]funconoff
+	 			table.insert(AHCBtmp,CBcode01)--[11]clickfuncL
+	 			table.insert(AHCBtmp,CBcode02)--[12]clickfuncR
+	 			table.insert(AHCBtmp,CBpulse)--[13]pulse
+	 			table.insert(AHCBtmp,CBcode03)--[14]onofffunc
+	 			table.insert(AHCBtmp,0)--[15]Reserve
+	 			table.insert(AHCBtmp,0)--[16]Reserve
+	 			table.insert(AetheryteHelper.userCustomfunc,AHCBtmp)
+		  	AetheryteHelper.SaveSettings()
+		  	AetheryteHelper.CBReset()
+		    end
+		  end
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip204)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip204)
+			  end
+			end
+	  end
+	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:ImageButton("##CB_clear",ImageFolder..[[CB_clear.png]], 30,30)
+	  if GUI:IsItemHovered() then
+	 		if GUI:IsItemClicked(0) then
+	 			AetheryteHelper.CBReset()
+		  end
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip205)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip205)
+			  end
+			end
+	  end
+	  GUI:EndGroup()
+	  
+
+	  GUI:Columns()
+	  GUI:BeginGroup()
+	  GUI:Text("Button Name")
+	  CBname = GUI:InputText("##CBname",CBname)
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip206)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip206)
+			  end
+		end
+	  end
+
+	  if CBmodeonoff == false then
+	  GUI:BeginGroup()
+	  GUI:Text("Image")
+	  GUI:PushItemWidth(100)
+	  CBImage01 = GUI:InputText("##CBImage01",CBImage01)
+	  GUI:PopItemWidth()
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip207)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip207)
+			  end
+		end
+	  end
+	  elseif CBmodeonoff == true then
+	  GUI:BeginGroup()
+	  GUI:Text("ON Image")
+	  GUI:PushItemWidth(100)
+	  CBImage02 = GUI:InputText("##CBImage02",CBImage02)
+	  GUI:PopItemWidth()
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip207)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip207)
+			  end
+		end
+	  end
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Text("OFF Image")
+	  GUI:PushItemWidth(100)
+	  CBImage03 = GUI:InputText("##CBImage03",CBImage03)
+	  GUI:PopItemWidth()
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip207)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip207)
+			  end
+		end
+	  end
+	  end
+
+	  GUI:BeginGroup()
+	  GUI:Text("tooltip")
+	  CBtip = GUI:InputText("##CBtip",CBtip)
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip208)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip208)
+			  end
+		end
+	  end
+	  if CBmodetext == true then
+	  GUI:BeginGroup()
+	  GUI:Text("in game Text Command(L)")
+	  CBtextL = GUI:InputText("##CBtextL",CBtextL)
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip209)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip209)
+			  end
+		end
+	  end
+	  GUI:EndGroup()
+	  GUI:BeginGroup()
+	  GUI:Text("in game Text Command(R)")
+	  CBtextR = GUI:InputText("##CBtextR",CBtextR)
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip210)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip210)
+			  end
+		end
+	  end
+	  GUI:EndGroup()
+	  end
+
+	  if CBmodeonoff == true then
+	  GUI:BeginGroup()
+	  GUI:PushItemWidth(100)
+	  GUI:Text("Pulse")
+	  CBpulse = GUI:InputInt("##CBpulse",CBpulse,1,100)
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip213)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip213)
+			  end
+		end
+	  end
+	  if CBpulse < 0 then CBpulse = 0 end
+	  if CBpulse > 3000 then CBpulse = 3000 end
+	  GUI:EndGroup()
+	  end
+
+	  GUI:Spacing()
+	  GUI:Separator()
+	  GUI:Spacing()
+	  if CBmodetext == true then
+	  GUI:BeginChild("##AHCBlist", 0, GUI_GetFrameHeight(5), true)
+	  elseif CBmodeclick == true then
+	  GUI:BeginChild("##AHCBlist", 0, GUI_GetFrameHeight(9), true)
+	  elseif CBmodeonoff == true then
+	  GUI:BeginChild("##AHCBlist", 0, GUI_GetFrameHeight(7), true)
+	  end
+	  AetheryteHelper.CBlist()
+	  GUI:EndChild()
+
+	end
+	GUI:End()
+  end
+end
+
+
+
+function AetheryteHelper.CBlist()
+	if #AetheryteHelper.userCustomfunc ~= 0 then
+		for k,v in pairs(AetheryteHelper.userCustomfunc) do
+			GUI:Columns(3)
+			GUI:SetColumnOffset(1, 35) GUI:SetColumnOffset(2, 200)
+			GUI:BeginGroup()
+   		if v[1] == 1 then
+	  	GUI:Image(ImageFolder..[[CB_view.png]],20,20)
+	  		if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  		v[1] = 0
+	  		AetheryteHelper.SaveSettings()
+	  		end
+	  		end
+   		elseif v[1] == 0 then
+	  	GUI:Image(ImageFolder..[[CB_view_non.png]],20,20)
+	  		if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  		v[1] = 1
+	  		AetheryteHelper.SaveSettings()
+	  		end
+	  		end
+   		end
+   		GUI:EndGroup()
+   		if GUI:IsItemHovered() then
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip218)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip218)
+			  end
+			end
+	  	end
+			GUI:NextColumn()
+      if v[7] == 0 then
+			GUI:BeginGroup()
+			GUI:Image(ImageFolder..[[free_chat.png]], 20,20)
+			GUI:EndGroup()
+			if GUI:IsItemHovered() then
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip201)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip201)
+			  end
+			end
+	  	end
+			elseif v[7] == 1 then
+			GUI:BeginGroup()
+			GUI:Image(ImageFolder..[[CB_click.png]], 20,20)
+			GUI:EndGroup()
+			if GUI:IsItemHovered() then
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip202)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip202)
+			  end
+			end
+	  	end
+			elseif v[7] == 2 then
+		  GUI:BeginGroup()
+		  GUI:Image(ImageFolder..[[CB_onoff.png]], 20,20)
+		  GUI:EndGroup()
+		  if GUI:IsItemHovered() then
+			if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip203)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip203)
+			  end
+			end
+	  	end
+		  end
+		  GUI:SameLine()
+			GUI:BeginGroup()
+			GUI:Button(v[2],120,20)
+			if GUI:IsItemHovered() then
+				if GUI:IsItemClicked(0) then
+					if v[7] == 0 then
+						CBmodetext = true
+						CBmodeclick = false
+						CBmodeonoff = false
+						AetheryteHelper.CBcodeEditor.open = false
+					elseif v[7] == 1 then
+						CBmodetext = false
+		  			CBmodeclick = true
+		  			CBmodeonoff = false
+		  		elseif v[7] == 2 then
+		  			CBmodetext = false
+		  			CBmodeclick = false
+		  			CBmodeonoff = true
+		  		end
+					CBname = v[2]
+					CBImage01 = v[3]
+					CBImage02 = v[4]
+					CBImage03 = v[5]
+					CBtip = v[6]
+					CBmode = v[7]
+					CBtextL = v[8]
+					CBtextR = v[9]
+					AHuserfuncCode01 = v[11]
+					AHuserfuncCode02 = v[12]
+					CBpulse = v[13]
+					AHuserfuncCode03 = v[14]
+				end
+				if AHSET.mushtooltips == true then
+			  	if language == 0 then
+			  	GUI:SetTooltip("["..v[2].."]\n"..mushtooltips.jp.tip217)
+			  	else
+			  	GUI:SetTooltip("["..v[2].."]\n"..mushtooltips.en.tip217)
+			  	end
+				end
+			end
+			GUI:EndGroup()
+			GUI:NextColumn()
+			GUI:BeginGroup()
+			GUI:ImageButton("##CBedit",ImageFolder..[[CB_edit.png]], 15,15)
+   		if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  			if CBname ~= "" then 
+	  			 v[2] = CBname
+					 v[3] = CBImage01
+					 v[4] = CBImage02
+					 v[5] = CBImage03
+					 v[6] = CBtip
+					 v[7] = CBmode
+					 v[8] = CBtextL
+					 v[9] = CBtextR
+					 v[11] = AHuserfuncCode01
+					 v[12] = AHuserfuncCode02
+					 v[13] = CBpulse
+					 v[14] = AHuserfuncCode03
+	  			 AetheryteHelper.SaveSettings()
+	  			end
+	  		end
+	  		if AHSET.mushtooltips == true then
+				if language == 0 then
+				GUI:SetTooltip(mushtooltips.jp.tip216)
+				else
+				GUI:SetTooltip(mushtooltips.en.tip216)
+				end
+	  		end
+   		end
+			GUI:EndGroup()
+			GUI:SameLine()
+			GUI:BeginGroup()
+			GUI:ImageButton("##CBdel",ImageFolder..[[R_trash.png]], 15,15)
+   		if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  		table.remove(AetheryteHelper.userCustomfunc,k)
+	  		AetheryteHelper.SaveSettings()
+	  		end
+	  		if AHSET.mushtooltips == true then
+				if language == 0 then
+				GUI:SetTooltip(mushtooltips.jp.tip215)
+				else
+				GUI:SetTooltip(mushtooltips.en.tip215)
+				end
+	  		end
+   		end
+			GUI:EndGroup()
+			GUI:Columns()
+			GUI:Separator()
+
+		end
+	else
+		GUI:BeginGroup()
+		GUI:Text("Button not found")
+		GUI:EndGroup()
+	end
+end
+
+--------------------------------------------------------
+function AetheryteHelper.userButtonAllDrow()
+	local btndrow = 0
+  for k,v in pairs(AetheryteHelper.userCustomfunc) do
+	  	if v[1] == 1 then
+	  	btndrow = btndrow + 1
+	    end
+	end
+  if (btndrow > 0) then
+  AetheryteHelper.userbutton.open = true
+  else
+  AetheryteHelper.userbutton.open = false
+  end
+  local sizex = 40*btndrow
+  local sizey = 60
+  if sizex > 190 then sizex = 190 end 
+  if btndrow > 25 then sizey = 210
+  elseif btndrow > 20 then sizey = 180
+  elseif btndrow > 15 then sizey = 150
+  elseif btndrow > 10 then sizey = 120 
+  elseif btndrow > 5 then sizey = 90 end
+  if AetheryteHelper.userbutton.open then
+	local UBflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_AlwaysAutoResize  
+	GUI:SetNextWindowSize(sizex,sizey)
+  AetheryteHelper.userbutton.visible, AetheryteHelper.userbutton.open = GUI:Begin('User Button', AetheryteHelper.userbutton.open,UBflags)
+	if (AetheryteHelper.userbutton.visible) then
+		GUI:Separator()
+		GUI:Spacing()
+		for k,v in pairs(AetheryteHelper.userCustomfunc) do
+		if v[1] == 1 then
+			if v[7] == 0 then
+		    if k == 5 or k == 10 or k == 15 or k == 20 or k == 25 or k == 30 or k == 35 or k == 40 then 
+		    AetheryteHelper.UBDmode01(v[2],v[3],v[6],v[8],v[9],[[free_chat.png]])
+		    else
+		    AetheryteHelper.UBDmode01(v[2],v[3],v[6],v[8],v[9],[[free_chat.png]])
+	      GUI:SameLine()
+	      end
+	  	end
+	  	if v[7] == 1 then
+		    if k == 5 or k == 10 or k == 15 or k == 20 or k == 25 or k == 30 or k == 35 or k == 40 then 
+		    AetheryteHelper.UBDmode02(v[2],v[3],v[6],v[11],v[12],[[CB_click.png]])
+		    else
+		    AetheryteHelper.UBDmode02(v[2],v[3],v[6],v[11],v[12],[[CB_click.png]])
+	      GUI:SameLine()
+	      end
+	  	end
+	  	if v[7] == 2 then
+		    if k == 5 or k == 10 or k == 15 or k == 20 or k == 25 or k == 30 or k == 35 or k == 40 then 
+		    	if v[10] == 1 then
+		      AetheryteHelper.UBDmode03on(v[2],v[4],v[6],[[R_on.png]])
+		      	if GUI:IsItemHovered() then
+		      	if GUI:IsItemClicked(0) then
+			      v[10] = 0
+			      AetheryteHelper.SaveSettings()
+		      	end
+		        end
+		      elseif v[10] == 0 then
+		      AetheryteHelper.UBDmode03off(v[2],v[5],v[6],[[R_off.png]])
+		        if GUI:IsItemHovered() then
+		      	if GUI:IsItemClicked(0) then
+			      v[10] = 1
+			      AetheryteHelper.SaveSettings()
+		      	end
+		        end
+		      end
+		    else
+		    	if v[10] == 1 then
+		      AetheryteHelper.UBDmode03on(v[2],v[4],v[6],[[R_on.png]])
+		        if GUI:IsItemHovered() then
+		      	if GUI:IsItemClicked(0) then
+			      v[10] = 0
+			      AetheryteHelper.SaveSettings()
+		      	end
+		        end
+		      GUI:SameLine()
+		      elseif v[10] == 0 then
+		      AetheryteHelper.UBDmode03off(v[2],v[5],v[6],[[R_off.png]])
+		        if GUI:IsItemHovered() then
+		      	if GUI:IsItemClicked(0) then
+			      v[10] = 1
+			      AetheryteHelper.SaveSettings()
+		      	end
+		        end
+		      GUI:SameLine()
+		      end
+	      end
+	  	end
+	  end
+		end
+		GUI:Spacing()
+		GUI:Separator()
+	end
+	GUI:End()
+  end
+end
+
+
+function AetheryteHelper.UBDmode01(name,image,tips,Lcmd,Rcmd,icon)
+ GUI:BeginGroup()
+ if image == "" or image == nil then
+ GUI:ImageButton("###",ImageFolder..icon,20,20)
+ elseif image ~= "" or image ~= nil then
+ GUI:ImageButton("###",userImage..image,20,20)
+ end
+ GUI:EndGroup()
+ if GUI:IsItemHovered() then
+		if Lcmd ~= "" then
+			if GUI:IsItemClicked(0) then
+				SendTextCommand(Lcmd)
+			end
+		else
+			if GUI:IsItemClicked(0) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+		end
+		if Rcmd ~= "" then
+			if GUI:IsItemClicked(1) then
+				SendTextCommand(Rcmd)
+			end
+		else
+			if GUI:IsItemClicked(1) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+		end
+		if AHSET.mushtooltips == true then
+			if tips ~= "" then
+			GUI:SetTooltip(tips)
+		  else
+		  GUI:SetTooltip(name)
+		  end
+ 		end
+ end
+ 
+ return name,image,tips,Lcmd,Rcmd,icon
+end
+
+
+function AetheryteHelper.UBDmode02(name,image,tips,Lcode,Rcode,icon)
+ GUI:BeginGroup()
+ if image == "" or image == nil then
+ GUI:ImageButton("###",ImageFolder..icon,20,20)
+ elseif image ~= "" or image ~= nil then
+ GUI:ImageButton("###",userImage..image,20,20)
+ end
+ GUI:EndGroup()
+ if GUI:IsItemHovered() then
+		if Lcode ~= "" then
+			if GUI:IsItemClicked(0) then
+			   local codeL = assert(loadstring(Lcode))
+			   codeL()
+			end
+		else
+			if GUI:IsItemClicked(0) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+		end
+		if Rcode ~= "" then
+			if GUI:IsItemClicked(1) then
+				 local codeR = assert(loadstring(Rcode))
+			   codeR()
+			end
+		else
+			if GUI:IsItemClicked(1) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+		end
+		if AHSET.mushtooltips == true then
+			if tips ~= "" then
+			GUI:SetTooltip(tips)
+		  else
+		  GUI:SetTooltip(name)
+		  end
+ 		end
+ end
+ 
+ return name,image,tips,Lcode,Rcode,icon
+end
+
+
+
+
+function AetheryteHelper.UBDmode03off(name,offimage,tips,officon)
+ 	  GUI:BeginGroup()
+  	GUI:PushStyleColor(GUI.Col_Button,.3,0,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,.3,0,0,1)
+  	if offimage == "" or offimage == nil then
+ 		GUI:ImageButton("###",ImageFolder..officon,20,20)
+ 		elseif offimage ~= "" or offimage ~= nil then
+ 		GUI:ImageButton("###",userImage..offimage,20,20)
+ 		end
+ 		GUI:PopStyleColor(2)
+ 	  GUI:EndGroup()
+ 			if GUI:IsItemHovered() then	
+			if GUI:IsItemClicked(1) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+			if AHSET.mushtooltips == true then
+				if tips ~= "" then
+				GUI:SetTooltip(tips)
+		  	else
+		  	GUI:SetTooltip(name)
+		  	end
+ 			end
+			end
+ return name,offimage,tips,officon
+end
+
+function AetheryteHelper.UBDmode03on(name,onimage,tips,onicon)
+  	GUI:BeginGroup()	
+ 	  GUI:PushStyleColor(GUI.Col_Button,0,.3,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,0,.3,0,1)
+ 	  if onimage == "" or onimage == nil then
+ 		GUI:ImageButton("###",ImageFolder..onicon,20,20)
+  	elseif onimage ~= "" or onimage ~= nil then
+ 		GUI:ImageButton("###",userImage..onimage,20,20)
+ 		end
+ 		GUI:PopStyleColor(2)
+	  GUI:EndGroup()
+ 			if GUI:IsItemHovered() then	
+			if GUI:IsItemClicked(1) then
+			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
+			end
+			if AHSET.mushtooltips == true then
+				if tips ~= "" then
+				GUI:SetTooltip(tips)
+		  	else
+		  	GUI:SetTooltip(name)
+		  	end
+ 			end
+			end
+ return name,onimage,tips,onicon
+end
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.VlWindow()
   if (AetheryteHelper.VersionList.open) then
@@ -3927,6 +4931,8 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Dummy(20,20)
+ 		if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or
+	  Player.localmapid == 959 or Player.localmapid == 960 or Player.localmapid == 961 then
 	  if selectins == true then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
@@ -3972,6 +4978,19 @@ function AetheryteHelper.insSelecterWindow()
 			  GUI:SetTooltip(mushtooltips.jp.tip01)
 			  else
 			  GUI:SetTooltip(mushtooltips.en.tip01)
+			  end
+			  end
+			  end
+	  end
+	  else
+	  	  GUI:SameLine(-5,-20)
+			  GUI:Image(ImageFolder..[[AH_non.png]],20,20)
+			  if (GUI:IsItemHovered()) then
+			  if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip00)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip00)
 			  end
 			  end
 			  end
@@ -4700,6 +5719,13 @@ function AetheryteHelper.Radarinitialize()
 end
 
 function AetheryteHelper.Radaradd()
+	  if #AetheryteHelper.RadarCustomList ~= 0 then
+	  	for _,v in pairs(AetheryteHelper.RadarCustomList) do
+	  		if v[1] == tonumber(Rcid) and v[3] == Rname then
+	  			AetheryteHelper.Radarinitialize()
+	  		end
+	  	end
+	  end
 	  if Rcid ~= "" and Rname ~= "" and Rid ~= Player.id and Rname ~= Player.name then
 		  table.insert(tempCustomlist,tonumber(Rcid))--1
 		  table.insert(tempCustomlist,Rid)--2
@@ -4828,7 +5854,18 @@ function AetheryteHelper.RadarGeneralDrow()
 	AetheryteHelper.SaveSettings()
 	end
 	GUI:PopItemWidth()
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			if language == 0 then
+			GUI:SetTooltip(mushtooltips.jp.tip196)
+			else
+			GUI:SetTooltip(mushtooltips.en.tip196)
+			end
+		end
+	end
 	GUI:SameLine()
+	GUI:BeginGroup()
 	GUI:PushItemWidth(70)
 	Rset.TPlinethick,changed = GUI:InputInt("##TPlinethick",Rset.TPlinethick,1,1)
 	if (changed) then
@@ -4858,7 +5895,18 @@ function AetheryteHelper.RadarGeneralDrow()
 	AetheryteHelper.SaveSettings()
 	end
 	GUI:PopItemWidth()
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			if language == 0 then
+			GUI:SetTooltip(mushtooltips.jp.tip197)
+			else
+			GUI:SetTooltip(mushtooltips.en.tip197)
+			end
+		end
+	end
 	GUI:SameLine()
+	GUI:BeginGroup()
 	GUI:PushItemWidth(70)
 	Rset.TMlinethick,changed = GUI:InputInt("##TMlinethick",Rset.TMlinethick,1,1)
 	if (changed) then
@@ -6295,6 +7343,7 @@ function AetheryteHelper.RadarCustomListDrow()
 	  GUI:Separator()
 end
 
+
 --------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.miniRadar()
   if (AetheryteHelper.miniRadarWindow.open) then
@@ -7131,6 +8180,7 @@ function AetheryteHelper.Radar()
 			  end
 		end
 	  end
+
 	  GUI:Spacing()
 	  GUI:Separator()
 	  GUI:Spacing()
@@ -7143,7 +8193,6 @@ function AetheryteHelper.Radar()
 	  if AHRadarCustomList == true then
 	  AetheryteHelper.RadarCustomListDrow()
 	  end
-
 	end
 	GUI:End()
   end
@@ -7153,7 +8202,7 @@ end
 function AHRadarline(str,Colour,thick)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -7199,7 +8248,7 @@ end
 function AHRadarEXline(str,Colour,thick)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -7246,7 +8295,7 @@ end
 function AHRadarlineNPC(str,Colour,thick)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -7294,7 +8343,7 @@ end
 function AHRadarRecetveline(str,Colour,thick)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local targetname = ""
@@ -7349,7 +8398,7 @@ end
 function AHRadardot(str,Colour,size)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -7395,7 +8444,7 @@ end
 function AHRadarEXdot(str,Colour,size)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -7442,7 +8491,7 @@ end
 function AHRadardotNPC(str,Colour,size)
 local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
 local screenppos = RenderManager:WorldToScreen(ppos)
-local el = EntityList(str)
+local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -7539,125 +8588,160 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
 
   if Rset.RadarEnable == true and Rset.line == true and Rset.hunt == true then
+   if Player.localmapid == 148 or Player.localmapid == 152 or Player.localmapid == 153 or Player.localmapid == 154 or
+   	Player.localmapid == 135 or Player.localmapid == 137 or Player.localmapid == 138 or Player.localmapid == 139 or
+   	Player.localmapid == 180 or Player.localmapid == 140 or Player.localmapid == 145 or Player.localmapid == 146 or
+   	Player.localmapid == 147 or Player.localmapid == 155 or Player.localmapid == 156 or Player.localmapid == 141 or
+   	Player.localmapid == 134 then 
 	 if Rset.ARRB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.B) do
-		AHRadarline("alive,contentID="..tostring(v),R.ARRBC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,contentID="..tostring(v),R.ARRBC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.ARRA == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.A) do
-		AHRadarline("alive,contentID="..tostring(v),R.ARRAC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.ARRAC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.ARRS == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.S) do
-		AHRadarline("alive,contentID="..tostring(v),R.ARRSC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.ARRSC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.ARRFate == true then
-		AHRadarline("type=2,alive,contentID=887",R.ARRFC.U32,Rset.linethick)
-		AHRadarline("type=2,alive,contentID=655",R.ARRFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=887",R.ARRFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=655",R.ARRFC.U32,Rset.linethick)
+	 end
 	 end
 
+	 if Player.localmapid == 397 or Player.localmapid == 401 or Player.localmapid == 402 or Player.localmapid == 398 or
+	 	Player.localmapid == 400 or Player.localmapid == 399 then
 	 if Rset.HWB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.HW.B) do
-		AHRadarline("alive,contentID="..tostring(v),R.HWBC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,contentID="..tostring(v),R.HWBC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.HWA == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.HW.A) do
-		AHRadarline("alive,contentID="..tostring(v),R.HWAC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.HWAC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.HWS == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.HW.S) do
-		AHRadarline("alive,contentID="..tostring(v),R.HWSC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.HWSC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.HWFate == true then
-		AHRadarline("type=2,alive,contentID=3783",R.HWFC.U32,Rset.linethick)
-		AHRadarline("type=2,alive,contentID=3789",R.HWFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=3783",R.HWFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=3789",R.HWFC.U32,Rset.linethick)
+	 end
 	 end
 
+	 if Player.localmapid == 612 or Player.localmapid == 620 or Player.localmapid == 621 or Player.localmapid == 613 or
+	 	Player.localmapid == 614 or Player.localmapid == 622 then
 	 if Rset.StBB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.StB.B) do
-		AHRadarline("alive,contentID="..tostring(v),R.StBBC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,contentID="..tostring(v),R.StBBC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.StBA == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.StB.A) do
-		AHRadarline("alive,contentID="..tostring(v),R.StBAC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.StBAC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.StBS == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.StB.S) do
-		AHRadarline("alive,contentID="..tostring(v),R.StBSC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.StBSC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.StBFate == true then
-		AHRadarline("type=2,alive,contentID=6395",R.StBFC.U32,Rset.linethick)
-		AHRadarline("type=2,alive,contentID=6392",R.StBFC.U32,Rset.linethick)
-		AHRadarline("type=2,alive,contentID=6290",R.StBFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=6395",R.StBFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=6392",R.StBFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=6290",R.StBFC.U32,Rset.linethick)
+	 end
 	 end
 
+	 if Player.localmapid == 813 or Player.localmapid == 814 or Player.localmapid == 815 or Player.localmapid == 817 or
+	 	Player.localmapid == 816 or Player.localmapid == 818 then
 	 if Rset.ShBB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.B) do
-		AHRadarline("alive,contentID="..tostring(v),R.ShBBC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,contentID="..tostring(v),R.ShBBC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.ShBA == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.A) do
-		AHRadarline("alive,contentID="..tostring(v),R.ShBAC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.ShBAC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.ShBS == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.S) do
-		AHRadarline("alive,contentID="..tostring(v),R.ShBSC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.ShBSC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.ShBFate == true then
-		AHRadarline("type=2,alive,contentID=8234",R.ShBFC.U32,Rset.linethick)
-		AHRadarline("type=2,alive,contentID=8822",R.ShBFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=8234",R.ShBFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=8822",R.ShBFC.U32,Rset.linethick)
+	 end
 	 end
 
+	 if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or Player.localmapid == 959 or
+	 	Player.localmapid == 961 or Player.localmapid == 960 then
 	 if Rset.EWB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.EW.B) do
-		AHRadarline("alive,contentID="..tostring(v),R.EWBC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,contentID="..tostring(v),R.EWBC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.EWA == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.EW.A) do
-		AHRadarline("alive,contentID="..tostring(v),R.EWAC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.EWAC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.EWS == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.EW.S) do
-		AHRadarline("alive,contentID="..tostring(v),R.EWSC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID="..tostring(v),R.EWSC.U32,Rset.linethick)
 	 end
 	 end
 	 if Rset.EWFate == true then
-		AHRadarline("type=2,alive,contentID=10269",R.EWFC.U32,Rset.linethick)
-		AHRadarline("type=2,alive,contentID=10400",R.EWFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=10269",R.EWFC.U32,Rset.linethick)
+		AHRadarline("type=2,alive,attackable,aggressive,contentID=10400",R.EWFC.U32,Rset.linethick)
+	 end
 	 end
   end
 
+
   if Rset.RadarEnable == true and Rset.line == true and Rset.fumyaku == true then
+   if Player.localmapid == 397 or Player.localmapid == 401 or Player.localmapid == 402 or Player.localmapid == 398 or
+	 	Player.localmapid == 400 or Player.localmapid == 399 then
 	 for k,v in pairs(AetheryteHelper.AetherCurrents.HW) do
 		AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
 	 end
+	 end
+	 if Player.localmapid == 612 or Player.localmapid == 620 or Player.localmapid == 621 or Player.localmapid == 613 or
+	 	Player.localmapid == 614 or Player.localmapid == 622 then
 	 for k,v in pairs(AetheryteHelper.AetherCurrents.StB) do
 		AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
 	 end
+	 end
+	 if Player.localmapid == 813 or Player.localmapid == 814 or Player.localmapid == 815 or Player.localmapid == 817 or
+	 	Player.localmapid == 816 or Player.localmapid == 818 then
 	 for k,v in pairs(AetheryteHelper.AetherCurrents.ShB) do
 		AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
 	 end
+	 end
+	 if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or Player.localmapid == 959 or
+	 	Player.localmapid == 961 or Player.localmapid == 960 then
 	 for k,v in pairs(AetheryteHelper.AetherCurrents.EW) do
 		AHRadarline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
 	 end
+	 end
   end
+
   if Rset.RadarEnable == true and Rset.line == true and Rset.fumyaku == true and Rset.chest == true then
+	 if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or Player.localmapid == 959 or
+	 	Player.localmapid == 961 or Player.localmapid == 960 or Player.localmapid == 962 or Player.localmapid == 963 then
 	 for k,v in pairs(AetheryteHelper.explorerEW) do
 		AHRadarEXline("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.linethick)
+	 end
 	 end
   end
 
@@ -7703,6 +8787,11 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
 
  if Rset.RadarEnable == true and Rset.dot == true and Rset.hunt == true then
+ 	 if Player.localmapid == 148 or Player.localmapid == 152 or Player.localmapid == 153 or Player.localmapid == 154 or
+   	Player.localmapid == 135 or Player.localmapid == 137 or Player.localmapid == 138 or Player.localmapid == 139 or
+   	Player.localmapid == 180 or Player.localmapid == 140 or Player.localmapid == 145 or Player.localmapid == 146 or
+   	Player.localmapid == 147 or Player.localmapid == 155 or Player.localmapid == 156 or Player.localmapid == 141 or
+   	Player.localmapid == 134 then 
 	 if Rset.ARRB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.B) do
 		AHRadardot("alive,contentID="..tostring(v),R.ARRBC.U32,Rset.dotsize)
@@ -7722,7 +8811,10 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 		AHRadardot("type=2,alive,contentID=887",R.ARRFC.U32,Rset.dotsize)
 		AHRadardot("type=2,alive,contentID=655",R.ARRFC.U32,Rset.dotsize)
 	 end
+	 end
 
+	 if Player.localmapid == 397 or Player.localmapid == 401 or Player.localmapid == 402 or Player.localmapid == 398 or
+	 	Player.localmapid == 400 or Player.localmapid == 399 then
 	 if Rset.HWB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.HW.B) do
 		AHRadardot("alive,contentID="..tostring(v),R.HWBC.U32,Rset.dotsize)
@@ -7742,7 +8834,10 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 		AHRadardot("type=2,alive,contentID=3789",R.HWFC.U32,Rset.dotsize)
 		AHRadardot("type=2,alive,contentID=3783",R.HWFC.U32,Rset.dotsize)
 	 end
+	 end
 
+	 if Player.localmapid == 612 or Player.localmapid == 620 or Player.localmapid == 621 or Player.localmapid == 613 or
+	 	Player.localmapid == 614 or Player.localmapid == 622 then
 	 if Rset.StBB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.StB.B) do
 		AHRadardot("alive,contentID="..tostring(v),R.StBBC.U32,Rset.dotsize)
@@ -7763,7 +8858,10 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 		AHRadardot("type=2,alive,contentID=6392",R.StBFC.U32,Rset.dotsize)
 		AHRadardot("type=2,alive,contentID=6290",R.StBFC.U32,Rset.dotsize)
 	 end
+	 end
 
+	 if Player.localmapid == 813 or Player.localmapid == 814 or Player.localmapid == 815 or Player.localmapid == 817 or
+	 	Player.localmapid == 816 or Player.localmapid == 818 then
 	 if Rset.ShBB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.B) do
 		AHRadardot("alive,contentID="..tostring(v),R.ShBBC.U32,Rset.dotsize)
@@ -7783,7 +8881,10 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 		AHRadardot("type=2,alive,contentID=8822",R.ShBFC.U32,Rset.dotsize)
 		AHRadardot("type=2,alive,contentID=8234",R.ShBFC.U32,Rset.dotsize)
 	 end
+	 end
 
+	 if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or Player.localmapid == 959 or
+	 	Player.localmapid == 961 or Player.localmapid == 960 then
 	 if Rset.EWB == true then
 	 for k,v in pairs(AetheryteHelper.RadarHuntList.EW.B) do
 		AHRadardot("alive,contentID="..tostring(v),R.EWBC.U32,Rset.dotsize)
@@ -7803,6 +8904,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 		AHRadardot("type=2,alive,contentID=10269",R.EWFC.U32,Rset.dotsize)
 		AHRadardot("type=2,alive,contentID=10400",R.EWFC.U32,Rset.dotsize)
 	 end
+	 end
   end
 
   if Rset.RadarEnable == true and Rset.dot == true and Rset.fumyaku == true then
@@ -7820,8 +8922,11 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	 end
   end
   if Rset.RadarEnable == true and Rset.dot == true and Rset.fumyaku == true and Rset.chest == true then
+ 	 if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or Player.localmapid == 959 or
+	 	Player.localmapid == 961 or Player.localmapid == 960 or Player.localmapid == 962 or Player.localmapid == 963 then
 	 for k,v in pairs(AetheryteHelper.explorerEW) do
 		AHRadarEXdot("type=7,contentID="..tostring(v),R.Colorfumyaku.U32,Rset.dotsize)
+	 end
 	 end
   end
 
@@ -7829,7 +8934,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 
 
   for k,v in pairs(AetheryteHelper.RadarCustomList) do
-  if v[5] ~= 1 then
+  if tonumber(v[1]) ~= 0 and v[5] ~= 1 then
 	 if Rset.RadarEnable == true and Rset.line == true and v[11] == 1 then
 		AHRadarline("alive,contentID="..tostring(v[1]),v[6],v[13])
 		AHRadarline("type=9,contentID="..tostring(v[1]),v[6],v[13])
@@ -7838,14 +8943,14 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
   end
   for k,v in pairs(AetheryteHelper.RadarCustomList) do
-  if v[5] == 1 then
+  if tonumber(v[1]) == 0 or v[5] == 1 then
 	 if Rset.RadarEnable == true and Rset.line == true and v[11] == 1 then
 	 AHRadarline("name="..tostring(v[3]),v[6],v[13])
 	 end
   end
   end
   for k,v in pairs(AetheryteHelper.RadarCustomList) do
-  if v[5] ~= 1 then
+  if tonumber(v[1]) ~= 0 and v[5] ~= 1 then
 	 if Rset.RadarEnable == true and Rset.dot == true and v[11] == 1 then
 		AHRadardot("alive,contentID="..tostring(v[1]),v[6],Rset.dotsize)
 		AHRadardot("type=9,contentID="..tostring(v[1]),v[6],Rset.dotsize)
@@ -7854,7 +8959,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
   end
   for k,v in pairs(AetheryteHelper.RadarCustomList) do
-  if v[5] == 1 then
+  if tonumber(v[1]) == 0 or v[5] == 1 then
 	 if Rset.RadarEnable == true and Rset.dot == true and v[11] == 1 then
 	 AHRadardot("name="..tostring(v[3]),v[6],Rset.dotsize)
 	 end
@@ -8139,6 +9244,15 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    end
    GUI:PopItemWidth()
    GUI:EndGroup()
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip193)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip193)
+			  end
+		 end
+	  end
    GUI:SameLine()
    GUI:BeginGroup()
    GUI:PushItemWidth(210)
@@ -8162,6 +9276,15 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    end
    GUI:PopItemWidth()
    GUI:EndGroup()
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip194)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip194)
+			  end
+		 end
+	  end
    GUI:BeginGroup()
    GUI:PushItemWidth(280)
    v[14],changed = GUI:InputText( "##note"..tostring(k), v[14])
@@ -8171,6 +9294,15 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    end
    GUI:PopItemWidth()
    GUI:EndGroup()
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip195)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip195)
+			  end
+		 end
+	  end
    GUI:BeginGroup()
    GUI:PushItemWidth(200)
    GUI:ColorEditMode(GUI.ColorEditMode_AlphaBar+GUI.ColorEditMode_NoOptions)
@@ -8181,6 +9313,15 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    end
    GUI:PopItemWidth()
    GUI:EndGroup()
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip166)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip166)
+			  end
+		 end
+	  end
    GUI:SameLine()
    GUI:BeginGroup()
    GUI:PushItemWidth(70)
@@ -8195,6 +9336,68 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    if v[13] > 10 then v[13] = 10 end
    GUI:PopItemWidth()
    GUI:EndGroup()
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip169)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip169)
+			  end
+		 end
+	  end
+   if v[1] == 0 then
+   GUI:BeginGroup()
+   if v[17] == 0 then
+   GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1)
+   GUI:Button("Normal",80,20)
+   GUI:PopStyleColor()
+   if GUI:IsItemHovered() then
+	  if GUI:IsItemClicked(0) then
+	  v[17] = 1
+	  AetheryteHelper.SaveSettings()
+	  end
+   end
+   elseif v[17] == 1 then
+   GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
+   GUI:Button("Hazard",80,20)
+   GUI:PopStyleColor()
+   if GUI:IsItemHovered() then
+	  if GUI:IsItemClicked(0) then
+	  v[17] = 0
+	  AetheryteHelper.SaveSettings()
+	  end
+   end
+   end
+   GUI:EndGroup()
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip198)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip198)
+			  end
+		 end
+	  end
+   if v[17] == 1 then
+   GUI:SameLine()
+   GUI:BeginGroup()
+   GUI:PushItemWidth(120)
+	 v[18], changed = GUI:SliderInt("##ylm"..tostring(k),v[18],10,150)
+	 GUI:SameLine()
+	 GUI:Text("ylm")
+   GUI:EndGroup()
+    if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip199)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip199)
+			  end
+		 end
+	  end
+   if v[11] == 1 then AetheryteHelper.HazardPlayer(v[18],v[3]) end
+   end
+   end
    GUI:NextColumn()
    GUI:BeginGroup()
    GUI:ImageButton("###del",ImageFolder..[[R_trash.png]], 25,25)
@@ -8225,9 +9428,7 @@ GUI:Text("CustomList Empty")
 GUI:EndGroup()
 end
 end
-
-
---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.subtoolDesOPwindow()
   if (AetheryteHelper.subtoolDesOP.open) then
@@ -11466,6 +12667,7 @@ function AetheryteHelper.SVRSelectermini()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Dummy(20,20)
+	  if Player.localmapid == 132 or Player.localmapid == 129 or Player.localmapid == 130 then
 	  if selectins == true then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
@@ -11488,7 +12690,7 @@ function AetheryteHelper.SVRSelectermini()
 			  end
 			  end
 	  elseif selectins == false then
-			  GUI:SameLine(-5,-30)
+			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHoff.png]],20,20)
 			  if (GUI:IsItemHovered()) then
 			  if (GUI:IsMouseClicked(0)) then
@@ -11503,6 +12705,19 @@ function AetheryteHelper.SVRSelectermini()
 			  end
 			  end
 			  end
+	  end
+	  else
+	  	GUI:SameLine(-5,-20)
+		  GUI:Image(ImageFolder..[[AH_non.png]],20,20)
+		  if (GUI:IsItemHovered()) then
+			  if AHSET.mushtooltips == true then
+			  if language == 0 then
+			  GUI:SetTooltip(mushtooltips.jp.tip00)
+			  else
+			  GUI:SetTooltip(mushtooltips.en.tip00)
+			  end
+			  end
+			end
 	  end
 	  GUI:EndGroup()
 	  GUI:NextColumn()
@@ -11994,6 +13209,9 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.Radar()
   AetheryteHelper.DrawlineandDot()
   AetheryteHelper.miniRadar()
+  AetheryteHelper.CreateButtonWindows()
+  AetheryteHelper.CBcodeEditWindows()
+  AetheryteHelper.userButtonAllDrow()
   end
 end
 
@@ -12017,7 +13235,7 @@ function AetheryteHelper.insselect()
   if (selectins) then
 	  if autheVar and TimeSince(isTime) > AHSET.delay then
 			  aetheID = 0
-			  local el = EntityList("nearest,type=5")
+			  local el = MEntityList("nearest,type=5")
 			  if table.valid(el) then
 					  for k,v in pairs(el) do
 							  aetheID = v.id
@@ -12331,14 +13549,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.moveMBlimsa()
 				limaetheID = 0
-				local el = EntityList("nearest,type=5")
+				local el = MEntityList("nearest,type=5")
 				if table.valid(el) then
 				for k,v in pairs(el) do
 				limaetheID = v.id
 				end
 				end
 				limMBID = 0
-				local elm = EntityList("nearest,contentID=2000402")
+				local elm = MEntityList("nearest,contentID=2000402")
 				if table.valid(elm) then
 				for k,v in pairs(elm) do
 				limMBID = v.id
@@ -12453,14 +13671,14 @@ end
 
 function AetheryteHelper.moveMBgridania()
 				griaetheID = 0
-				local el = EntityList("nearest,type=5")
+				local el = MEntityList("nearest,type=5")
 				if table.valid(el) then
 				for k,v in pairs(el) do
 				griaetheID = v.id
 				end
 				end
 				griMBID = 0
-				local elm = EntityList("nearest,contentID=2000402")
+				local elm = MEntityList("nearest,contentID=2000402")
 				if table.valid(elm) then
 				for k,v in pairs(elm) do
 				griMBID = v.id
@@ -12587,14 +13805,14 @@ end
 
 function AetheryteHelper.moveMBuldah()
 				uldaetheID = 0
-				local el = EntityList("nearest,type=5")
+				local el = MEntityList("nearest,type=5")
 				if table.valid(el) then
 				for k,v in pairs(el) do
 				uldaetheID = v.id
 				end
 				end
 				uldMBID = 0
-				local elm = EntityList("nearest,contentID=2000442")
+				local elm = MEntityList("nearest,contentID=2000442")
 				if table.valid(elm) then
 				for k,v in pairs(elm) do
 				uldMBID = v.id
@@ -14913,6 +16131,21 @@ function AetheryteHelper.Salvagefilter()
 
 end
 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.HazardPlayer(ylm,Pname)
+	if Rset.RadarEnable == true then
+		local el = MEntityList("maxdistance="..tostring(ylm))
+		if table.valid(el) then
+			for _,e in pairs(el) do
+				if e.name == Pname and e.distance <= ylm then
+				Player:Stop()
+				end
+			end
+  	end
+  	return ylm,Pname
+  end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.nonAFK()
   if Player.OnlineStatus == 17 then
@@ -15486,7 +16719,7 @@ function AetheryteHelper.itemSearch()
    end
 
    if ISstep == 2 then
-		local el = EntityList("nearest,contentID=196630,contentID=2000401,contentID=2010284,contentID=2000441")
+		local el = MEntityList("nearest,contentID=196630,contentID=2000401,contentID=2010284,contentID=2000441")
 		if table.valid(el) then
 		for k,v in pairs(el) do
 		ritebel = v.id
@@ -17834,7 +19067,7 @@ function AetheryteHelper.itemSearch()
 
 --FC
    if ISstep == 130 then
-		local el = EntityList("nearest,contentID=2000470,contentID=196627")
+		local el = MEntityList("nearest,contentID=2000470,contentID=196627")
 		if table.valid(el) then
 		for k,v in pairs(el) do
 		FCchest = v.id
@@ -18247,7 +19480,7 @@ function AetheryteHelper.PartyCall()
 		 end
    end
    local Entity = 0
-   local el = EntityList("type=2")
+   local el = MEntityList("type=2")
 			  if table.valid(el) then
 					  for k,v in pairs(el) do
 							Entity = Entity + 1
@@ -18287,6 +19520,22 @@ end
 
 
 
+--------------------------------------------------------------
+
+function AetheryteHelper.UBDmode03func()
+	for k,v in pairs(AetheryteHelper.userCustomfunc) do
+			if v[1] == 1 and v[7] == 2 then
+				if v[10] == 1 then
+				mushlooptimer = v[13]
+    		assert(loadstring(v[14]))()
+  			end
+	  	end
+  end
+end
+
+------------------------------------------------------------
+
+
 function AetheryteHelper.mushTextCommands()
 	local log = GetChatLines()
 	local logmatch = nil
@@ -18294,10 +19543,8 @@ function AetheryteHelper.mushTextCommands()
 	local logmatchtime = 2
 	local ezt = GetEorzeaTime().servertime
 	local mushlogtime = ezt
-
-
-
-
+	local worldname = ""
+	
 	if Duty:GetQueueStatus() <= 2 then
 	for _, command in pairs(log) do
 	if command.timestamp > ezt-5 and command.code == 56 then
@@ -18355,6 +19602,11 @@ function AetheryteHelper.mushTextCommands()
 		   logmatch = command.line
 		   mushlogtime = command.timestamp
 		   mushtextstep = 100
+	  end
+	  if command.line:match("AHWV:.*") then
+		   logmatch = command.line
+		   mushlogtime = command.timestamp
+		   mushtextstep = 110
 	  end
 	end
 	end
@@ -18523,14 +19775,14 @@ function AetheryteHelper.mushTextCommands()
 	 end
 	 if mushtextstep == 61 then
 		  local WeeEa = 0
-		  local el = EntityList("type=9")
+		  local el = MEntityList("type=9,maxdistance=30")
 		  for i,entity in pairs(el) do
 			  if entity.ContentID == 423 then
 				WeeEa = WeeEa + 1
 			  end
 		  end
 		  d("[AH][textcommand]:success")
-		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH]WeeEa："..WeeEa))
+		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH]WeeEa(within 30ylm)："..WeeEa))
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 70 then
@@ -18650,6 +19902,96 @@ function AetheryteHelper.mushTextCommands()
 		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MiniRadar]:open")
 		   mushtextstep = 99
 	 end
+	 if mushtextstep == 110 then
+	 		AetheryteHelper.Origin()
+			AetheryteHelper.SaveSettings()
+			MushmoveServerlist = Origin_list
+			for k, v in pairs(MushmoveServerlist) do
+			local templist = MushmoveServerlist
+			for k,v in pairs(WorldID) do
+			if (v.id == Player.currentworld) then local tempWorld = v
+			tempname = tostring(tempWorld.Name)
+			for k,v in pairs(templist) do
+			local tempindex = table.find(templist, tempname)
+			if (tempindex ~= nil) then
+			table.remove(templist,tempindex)
+			else tempindex = 0
+			end
+			end
+			end
+			end
+			end
+			AetheryteHelper.autoDCset()
+	 		if #MushmoveServerlist == 1 then
+	 			if kinokoProject.Windows.minibutton.Open == true then
+	 			kinokoProject.Windows.minibutton.Open = false	
+	 			kinokoProject.Windows.MainWindows.Open = true
+	 			AetheryteHelper.miniWV.open = false
+	 			AetheryteHelper.SaveSettings()
+	 			elseif kinokoProject.Windows.minibutton.Open == false and kinokoProject.Windows.MainWindows.Open == false then
+	 			kinokoProject.Windows.MainWindows.Open = true
+	 			AetheryteHelper.miniWV.open = false
+  			AetheryteHelper.SaveSettings()
+	 			end
+	 			d("[AH][textcommand]:Get ServerList")
+		  	SendTextCommand("/e [AH][notice]:Get ServerList/Please Retry")
+	 			logmatch = nil
+    		mushtextstep = 99
+	 		elseif #MushmoveServerlist > 1 then
+	 			if kinokoProject.Windows.MainWindows.Open == true and AetheryteHelper.GUI.tabs[1].isselected == true then
+	 			kinokoProject.Windows.minibutton.Open = true	
+	 			kinokoProject.Windows.MainWindows.Open = false
+	 		  end
+	 	  	for k, v in pairs(MushmoveServerlist) do
+	     		if logmatch:match(v) then
+	     		worldname = v
+	     	  mushtextstep = 111
+	     	  end 
+	    	end
+	  	end
+	end
+	if mushtextstep == 111 then
+	   if logmatch then
+		d("[AH][text][Progress]"..(mushlogtime+logmatchtime)-ezt)
+		  if mushlogtime+logmatchtime == ezt then
+	  	AetheryteHelper.miniWV.open = false
+		  mushlooptimer = 1000
+		  mushtextstep = 112
+		  else
+		  mushtextstep = 99
+		  end
+	   end
+	 end
+	 if mushtextstep == 112 then
+	 		if Player.localmapid == 132 or Player.localmapid == 129 or Player.localmapid == 130 then
+	 			for k, v in pairs(MushmoveServerlist) do
+	 				if worldname == v then
+      		isServer = k
+      		end
+      	end
+      selectins = true
+		  d("[AH][textcommand]:success")
+		  	if isServer == 1 then
+      	SendTextCommand("/e \x02\x13\x06\xfe\xff\x99\x11\x11 [AH][WV]:not found or Now World")
+      	elseif isServer > 1 then
+		  	SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV]:move to "..worldname)
+		  	end
+		  mushtextstep = 113
+			else
+			d("[AH][textcommand]:success")
+			d("[AH][textcommand]:Not Support Area")
+		  SendTextCommand("/e [AH][notice]:Not Support Area")
+		  mushtextstep = 99
+			end
+	 end
+	 if mushtextstep == 113 then
+	 	  if IsControlOpen("WorldTravelFinderReady") or isServer == 1 then
+      selectins = false
+      isServer = 1
+      mushtextstep = 99
+      end
+	 end
+
 	 if mushtextstep == 99 then
 		mushlogtime = ezt
 		logmatch = nil
@@ -18664,6 +20006,7 @@ function AetheryteHelper.mushsubtool()
 	if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
 	   lastUpdatePulse = Now()
 
+			AetheryteHelper.UBDmode03func()
 			AetheryteHelper.Exchange()
 			AetheryteHelper.mushSealstoItem()
 			AetheryteHelper.movetoGCAll()
@@ -18687,6 +20030,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.itemSearch()
 			AetheryteHelper.itemsortRite()
 			AetheryteHelper.itemsortB()
+			
 
 	 end
 AetheryteHelper.Inventoryfree()
