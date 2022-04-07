@@ -65,7 +65,7 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "Aetheryte Helper",
-	  Version =         "1.8.0",
+	  Version =         "1.8.1",
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -140,6 +140,7 @@ local kinokoProject = {
 					  "[1.7.7] - Supports display of retainer bag deployment.",
             "[1.7.8] - Supports CN・KR Server.",
             "[1.8.0] - bug fix & Many additional features.",
+            "[1.8.1] - change CN ServerList.",
 
 					},
 
@@ -652,7 +653,7 @@ AetheryteHelper.userCustomfunc = {}
 -------------------
 AHLinks = {
 	  Name = "Minion Discord JP",
-	   link1 = [[https://discord.com/channels/127540472812929024/335225564803891210]],
+	   link1 = [[https://discord.gg/kCp95cpprd]],
 	   link2 = [[https://github.com/mushroom8009/AetheryteHelper]],
 	   link3 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
 	   link4 = [[https://youtube.com/playlist?list=PLS5EIB6BeDoKSRglypQIr_g9-MF6Cvbqh]],
@@ -1124,9 +1125,9 @@ FFXIVServerlist = {
 	[9] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
 	[10] = { "------", "Bismarck", "Ravana", "Sephirot", "Sophia", "Zurvan"},
   [11] = { "------", "水晶塔", "银泪湖","太阳海岸","伊修加德","红茶川",},
-  [12] = { "------", "紫水栈桥", "延夏","静语庄园","摩杜纳","海猫茶屋","柔风海湾","琥珀原",},
-  [13] = { "------", "白银乡", "白金幻象","神拳痕","潮风亭","旅人栈桥","拂晓之间","龙巢神殿","梦羽宝境",},
-  [14] = { "------", "红玉海", "神意之地","拉诺西亚","幻影群岛","萌芽池","宇宙和音","沃仙曦染","晨曦王座",},
+  [12] = { "------", "延夏", "摩杜纳","柔风海湾","海猫茶屋","琥珀原","紫水栈桥","静语庄园",},
+  [13] = { "------", "拂晓之间", "旅人栈桥","梦羽宝境","潮风亭","白金幻象","白银乡","神拳痕","龙巢神殿",},
+  [14] = { "------", "宇宙和音", "幻影群岛","拉诺西亚","晨曦王座","沃仙曦染","神意之地","红玉海","萌芽池",},
 	[15] = { "------", "모그리","초코보","카벙클","톤베리","펜리르",},
   [16] = { "Error" },
   --[[
@@ -1142,9 +1143,9 @@ FFXIVServerlist = {
 	[10] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
 	[11] = { "------", "Bismarck", "Ravana", "Sephirot", "Sophia", "Zurvan"},
 	[12] = { "------", "水晶塔", "银泪湖","太阳海岸","伊修加德","红茶川",},
-  [13] = { "------", "紫水栈桥", "延夏","静语庄园","摩杜纳","海猫茶屋","柔风海湾","琥珀原",},
-  [14] = { "------", "白银乡", "白金幻象","神拳痕","潮风亭","旅人栈桥","拂晓之间","龙巢神殿","梦羽宝境",},
-  [15] = { "------", "红玉海", "神意之地","拉诺西亚","幻影群岛","萌芽池","宇宙和音","沃仙曦染","晨曦王座",},
+  [13] = { "------", "延夏", "摩杜纳","柔风海湾","海猫茶屋","琥珀原","紫水栈桥","静语庄园",},
+  [14] = { "------", "拂晓之间", "旅人栈桥","梦羽宝境","潮风亭","白金幻象","白银乡","神拳痕","龙巢神殿",},
+  [15] = { "------", "宇宙和音", "幻影群岛","拉诺西亚","晨曦王座","沃仙曦染","神意之地","红玉海","萌芽池",},
   [16] = { "------", "모그리","초코보","카벙클","톤베리","펜리르",},
   [17] = { "Error" },
   ]]
