@@ -3,6 +3,8 @@
 # Aetheryte Helper
 this is a module in MMOminion(FFXIV Minion64)
 
+![Latest Version Release note & Download](https://github.com/mushroom8009/AetheryteHelper/releases)
+
 # ~v1.5.3
 ![sample image](https://github.com/mushroom8009/AetheryteHelper/blob/main/Readme_image/sample.png)<br>
 
