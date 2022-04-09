@@ -1,62 +1,35 @@
 -----------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
---history--
-
 --[[
------2021/12/20----------
-I don't support this module because I made it for myself.
-This code is Frankenstein, so I'm sure there is a better code.
-Please feel free to modify it.
------2021/12/24----------
-code like spaghetti is Organized
-but it's still tangled
-chang whole GUI mechanism
-maybe,made it easier to manage
-!!!Merry Christmas!!!
------2021/12/25----------
-Add features and change UI
-Create an explanation (guide)
------2021/12/27---------
-Added a drop-down list for WorldVisit.
-However, it doesn't work because it hasn't been configured yet.
-Geted home world and current world.
-This information is not for showing, but is necessary for mechanic.
-my great thanks to Madao & denvo for their help and advice.
+this module is open source and anyone may modify it as they wish.
+however, please refrain from claiming that you created it all.
+that would be very embarrassing.
+i started making them as a hobby for myself, but people from all walks of life seem to like them.
+i did not intend to provide support, but now i provide some support as well.
 
-Some items will be automatically saved as user data.
------2021/12/29---------
-Desynth can now specify IL.
------2021/12/30---------
-If you have select a server from list,
-you can check enable checkbox for a quick worldvisit.
+i also created a Discord server for support
+if you need support and haven't joined us yet, please do.
 
-i will enhance desynthesis function in the future.
+[mushroom's Room]
+https://discord.gg/kCp95cpprd
 
------2021/12/31---------
-The order of the servers in some Data Centers was different, so I fixed it.
-Materia Extract and Desythesis will stop when the bag is full.
+and here comes the most important part...
 
-Add Aetherial Reduction
-bug fix
+who advised me and consulted with me in the creation of this module.
+Madao#2970
+denvo#5217
 
------2022/1/1---------
-Add filters to desynthesis
-Collection of items becomes easier
+some functions were created by kali#3326
 
-however, the code is terrible.
+Chinese translation was done by 长院张#1544
 
-----------------------
-tyty kali
+I am so grateful to them!
 
-mushroom#8009
+
+and now for you, who are using this module
+thank you usasing it
 ]]
 -----------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
-
 -----------------------------------------------------------------------------------------------------------------
 AetheryteHelper = {}
 -----------------------------------------------------------------------------------------------------------------
@@ -65,7 +38,7 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "Aetheryte Helper",
-	  Version =         "1.8.1",
+	  Version =         "1.8.2",
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -141,6 +114,7 @@ local kinokoProject = {
             "[1.7.8] - Supports CN・KR Server.",
             "[1.8.0] - bug fix & Many additional features.",
             "[1.8.1] - change CN ServerList.",
+            "[1.8.2] - Added ability to change tooltip language.",
 
 					},
 
@@ -326,6 +300,12 @@ AetheryteHelper.userbutton = {
 	  open =  false,
 	  visible = true,
 	  locked = false,
+}
+AetheryteHelper.selectlanguage = {
+  name = "selectlanguage###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
 }
 AetheryteHelper.settings = {
   SET = {
@@ -658,6 +638,16 @@ AHLinks = {
 	   link3 = [[https://github.com/mushroom8009/AutheryteHelper/releases]],
 	   link4 = [[https://youtube.com/playlist?list=PLS5EIB6BeDoKSRglypQIr_g9-MF6Cvbqh]],
 }
+
+AetheryteHelper.mushAHlanguage = {
+	JP = false,
+	EN = false,
+	DE = false,
+	FR = false,
+	CN = false,
+	KR = false,
+}
+
 mushtooltips = {
   jp = { 
   	 tip00 = "対象エリア外",
@@ -692,7 +682,7 @@ mushtooltips = {
 		 tip29 = "分解とマテリア錬成をID内でのみ行ないます",
 		 tip30 = "IL1-IL1000\nこの数字より大きいIL装備を分解します",
 		 tip31 = "リセット",
-		 tip32 = "IL-IL1000\nIL1を除きこれ未満のIL装備を分解します",
+		 tip32 = "IL5-IL1000\nIL1を除きこれ未満のIL装備を分解します",
 		 tip33 = "選択したものを分解します。\n大事な装備はアーマリーチェストへ入れましょう",
 		 tip34 = "武器・主道具",
 		 tip35 = "盾・副道具",
@@ -740,7 +730,7 @@ mushtooltips = {
 		 tip77 = "軍票がこれ以上になると交換を開始",
 		 tip78 = "0を入力すると最大値になります",
 		 tip79 = "交換数(自動で最大値になります)",
-		 tip80 = "交換に必要なGCランクに満たないものを選ぶと\nチェックが外れます",
+		 tip80 = "交換に必要なGCランクに満たないものを選ぶと\nオフになります",
 		 tip81 = "交換に必要な軍票/現在の軍票",
 		 tip82 = "錬精薬の自動使用\n右クリックでminion連動のオンオフ",
 		 tip83 = "スピリットマニュアルの自動使用\n右クリックでminion連動のオンオフ",
@@ -769,7 +759,7 @@ mushtooltips = {
 		 tip106 = "つつかないでｗ",
 		 tip107 = "クジを3枚購入",
 		 tip108 = "分解オプションを開く",
-		 tip109 = "ツールチップの表示/非表示",
+		 tip109 = "ツールチップの表示/非表示\n右クリックで言語選択",
 		 tip110 = "右クリックでコピーできます",
 		 tip111 = "安定を重視したため、コマンドの受付までに最大3秒程度かかります\n受理されるとカラーメッセージ(エコー)でお知らせします\n進捗はコンソールで確認できます。",
 		 tip112 = "MIPアシスト",
@@ -871,16 +861,14 @@ mushtooltips = {
 		 tip208 = "ツールチップ",
 		 tip209 = "左クリック時のコマンド",
 		 tip210 = "右クリック時のコマンド",
-		 tip211 = "左クリック時の実行コード",
-		 tip212 = "右クリック時の実行コード",
+		 tip211 = "左クリック時の実行コード\n右クリックでコピーできます",
+		 tip212 = "右クリック時の実行コード\n右クリックでコピーできます",
 		 tip213 = "コードのパルスタイム\n0-3000\n\nAHPulseは他の機能と共有しているので、同時に実行すると影響を受けます",
-		 tip214 = "ボタンがオンの時の実行コード",
+		 tip214 = "ボタンがオンの時の実行コード\n右クリックでコピーできます",
 		 tip215 = "ボタンの削除",
 		 tip216 = "ボタンの内容を更新",
 		 tip217 = "ボタンの設定を呼び出し",
 		 tip218 = "ボタンの表示/非表示",
-
-
   },
   en = { 
   	 tip00 = "Outside of use area",
@@ -940,14 +928,14 @@ mushtooltips = {
 		 tip54 = "Scouting",
 		 tip55 = "WHM's Arm/Shield",
 		 tip56 = "WAR's Arm",
-		 tip57 = "SCH's ARM",
+		 tip57 = "SCH's Arm",
 		 tip58 = "DRK's Arm",
 		 tip59 = "AST's Arm",
 		 tip60 = "GNB's Arm",
 		 tip61 = "SGE's Arm",
 		 tip62 = "MNK's Arm",
 		 tip63 = "BRD's Arm",
-		 tip64 = "DRF's Arm",
+		 tip64 = "DRG's Arm",
 		 tip65 = "MCN's Arm",
 		 tip66 = "NIN's Arm",
 		 tip67 = "DNC's Arm",
@@ -992,7 +980,7 @@ mushtooltips = {
 		 tip106 = "please don't poke me...",
 		 tip107 = "3 ticket purchases",
 		 tip108 = "Desynthseise Options",
-		 tip109 = "tooltips Show/hide",
+		 tip109 = "tooltips Show/hide\nRight-click to select language",
 		 tip110 = "Right click to copy",
 		 tip111 = "Due to the importance of stability,\nit may take a about 3 sec for the command to be accepted.\nit will be notified with a color message when it is accepted.\nProgress can be checked in the console.",
 		 tip112 = "Auto Commendation",
@@ -1094,18 +1082,919 @@ mushtooltips = {
 		 tip208 = "tooltip",
 		 tip209 = "TextCommands to be executed by Left-click",
 		 tip210 = "TextCommands to be executed by Right-click",
-		 tip211 = "Execution code on Left-click",
-		 tip212 = "Execution code on Right-click",
+		 tip211 = "Execution code on Left-click\nRight click to copy",
+		 tip212 = "Execution code on Right-click\nRight click to copy",
 		 tip213 = "Pulse time of code\n0-3000\n\nAHPulse is shared with other functions and will be affected if executed at the same time",
-		 tip214 = "Execution code when button is on",
+		 tip214 = "Execution code when button is on\nRight click to copy",
 		 tip215 = "Delete Button",
 		 tip216 = "Change of Button content",
 		 tip217 = "Load of Button settings",
 		 tip218 = "Show/hide Buttons",
-
   },
+  fr = { 
+  	 tip00 = "En dehors de la zone couverte",
+		 tip01 = "AH On/Off",
+		 tip02 = "L'intervalle d'accès peut être sélectionné\nentre 100 ms et 1 seconde",
+		 tip03 = "Exécutez la commande texte [ /e <flag> ]",
+		 tip04 = "Quartier résidentiel\nActivez cette option si vous n'avez pas terminé la quête",
+		 tip05 = "Réinitialiser la valeur du délai à la valeur par défaut",
+		 tip06 = "Vous pouvez voir le nombre de personnes dans l'instance",
+		 tip07 = "Passez à l'instance 1",
+		 tip08 = "Passez à l'instance 2",
+		 tip09 = "Passez à l'instance 3",
+		 tip10 = "Téléportation à Gridania",
+		 tip11 = "Aller au Tableau des ventes de Gridania",
+		 tip12 = "Téléportation à Limsa",
+		 tip13 = "Aller au Tableau des ventes de Limsa",
+		 tip14 = "Téléportation à Ul'dah",
+		 tip15 = "Aller au Tableau des ventes de Ul'dah",
+		 tip16 = "Passage de la téléportation à la Tableau des ventes",
+		 tip17 = "Aide à la saisie de Méga Cactpot",
+		 tip18 = "Switching [Sans restriction]",
+		 tip19 = "Switching [Mode exploration]",
+		 tip20 = "Lien vers la vidéo de présentation de la fonction",
+		 tip21 = "Double-cliquez pour ouvrir",
+		 tip22 = "fermer une fenêtre",
+		 tip23 = "Acheter par numéro aléatoire",
+		 tip24 = "Dites-moi si cela ne fonctionne pas correctement",
+		 tip25 = "Réparation des l'équipements\nArtisans requis car ils réparent leur propre matériel",
+		 tip26 = "Activation/désactivation du mode de confiance.\n\nL'onglet est fixé sur [GC]",
+		 tip27 = "Cliquez pour activer/désactiver le Recyclage\nCliquez avec le bouton droit de la souris pour activer ou désactiver les filtres",
+		 tip28 = "Désactiver le recyclage chez les Disciples de la main",
+		 tip29 = "Exécutez Recyclage et Matérialisation uniquement en Donjon",
+		 tip30 = "Niveau d'objet1-1000\nSi le Niveau objet est supérieur à ce chiffre, Recyclage l'article",
+		 tip31 = "réinitialiser",
+		 tip32 = "Niveau d'objet5-1000\nRecyclage Niveau objet moins que cela sauf Nv objet1",
+		 tip33 = "Recyclage de la sélection\nMettez votre objet de valeur dans le Arsenal de l'armurerie",
+		 tip34 = "Armes/Outil principal",
+		 tip35 = "Bouclier/Outil secondaire",
+		 tip36 = "Tête",
+		 tip37 = "Boucle d'oreille",
+		 tip38 = "Torse",
+		 tip39 = "Collier",
+		 tip40 = "Mains",
+		 tip41 = "Bracelet",
+		 tip42 = "Jambes",
+		 tip43 = "Bague",
+		 tip44 = "Pieds",
+		 tip45 = "Cliquez avec le bouton droit de la souris pour tout sélectionner\nCliquez avec le bouton gauche pour faire marche arrière",
+		 tip46 = "Tanks",
+		 tip47 = "Soigneurs",
+		 tip48 = "mêlée",
+		 tip49 = "physiques à distance",
+		 tip50 = "d'agresseur",
+		 tip51 = "magiques à distance",
+		 tip52 = "d'abatteur",
+		 tip53 = "Toutes les classes(Faible Nv)",
+		 tip54 = "d'éclaireur",
+		 tip55 = "Arme d'élémentaliste(à deux mains)/Bouclier",
+		 tip56 = "Arme de maraudeur",
+		 tip57 = "Arme d'érudit",
+		 tip58 = "Arme de chevalier noir",
+		 tip59 = "Arme d'astromancien",
+		 tip60 = "Arme de pistosabreur",
+		 tip61 = "Arme de sage",
+		 tip62 = "Arme de pugiliste",
+		 tip63 = "Arme d'archer",
+		 tip64 = "Arme d'hast",
+		 tip65 = "Arme de machiniste",
+		 tip66 = "Arme de surineur",
+		 tip67 = "Arme de danseur",
+		 tip68 = "Arme de samouraï",
+		 tip69 = "Arme d'occultiste(à deux mains)/Bouclier",
+		 tip70 = "Arme de faucheur",
+		 tip71 = "Arme d'arcaniste",
+		 tip72 = "Arme de mage rouge",
+		 tip73 = "Disciples de la main(Tous les équipements)",
+		 tip74 = "Disciples de la terre(Tous les équipements)",
+		 tip75 = "Sceaux de compagnie d'échange pour les articles",
+		 tip76 = "Activation/désactivation du réglage automatique",
+		 tip77 = "Sceaux de compagnie a ce chiffre. Commence à remplacer quand il dépasse",
+		 tip78 = "Entrez 0 pour la valeur maximale",
+		 tip79 = "Nombre d'échanges (automatiquement max.)",
+		 tip80 = "La fonction est désactivée si le rang sélectionné est inférieur au rang GC requis pour l'échange.",
+		 tip81 = "Sceaux de compagnie requise pour le remplacement/Sceaux de compagnie actuelle",
+		 tip82 = "Utilisation automatique de l'Essence de symbiose\nClic droit pour basculer vers/depuis le lien avec les minion",
+		 tip83 = "Utilisation automatique de Manuel militaire de méditation\nClic droit pour activer/désactiver la liaison des minion.",
+		 tip84 = "Le GC auquel vous appartenez est automatiquement sélectionné.",
+		 tip85 = "Matérialisation",
+		 tip86 = "Recyclage les équipements de l'inventaire\nCliquez avec le bouton droit de la souris pour activer ou désactiver les filtres.",
+		 tip87 = "Livraison de marchandises rares pour le GC",
+		 tip88 = "Automatiquement déplacé vers GC pour la livraison.",
+		 tip89 = "Arrêt du mouvement automatique.",
+		 tip90 = "Ne pas livrer plus que le maximum de Sceaux de compagnie",
+		 tip91 = "Retirez le Matéria de l'équipement dans le sac.",
+		 tip92 = "utilisant l'éthérolyse\nNe fonctionne pas lorsque l'espace du sac atteint zéro.\nClic droit pour basculer vers/depuis le lien avec les minion",
+		 tip93 = "DC est automatiquement sélectionné.",
+		 tip94 = "Allez au panneau du marché ou passez en téléportation.",
+		 tip95 = "Sélectionner le monde de destination",
+		 tip96 = "Veuillez soutenir mes activités.\n\nLa nourriture de mon chat sera magnifique.",
+		 tip97 = "DM moi si vous avez des problèmes ou des demandes.\nJe suis motivé par les louanges.",
+		 tip98 = "Clic gauche vers l'accueil AH de github\nFaites un clic gauche pour aller à la page Release.",
+		 tip99 = "La compétence n'est pas disponible car la quête n'est pas terminée.",
+		 tip100 = "[MEx]=Matérialisation\n[SbP]=l'Essence de symbiose\n[SbM]=Manuel militaire de méditation",
+		 tip101 = "[Dsy]=Recyclage\n[Fil]=filtres\n[Cft]=Désactiver le recyclage chez les Disciples de la main\n[IDm]=Exécutez Recyclage et Matérialisable uniquement en Donjon",
+		 tip102 = "[AR]=utilisant l'éthérolyse\n[Link]=Lié à des minion",
+		 tip103 = "[Ex]=Prises de guerre(Missions de ravitaillement)\n[M2G]=Déplacement vers le GC\n[LM]=Ne pas livrer plus que le maximum de Sceaux de compagnie\n[RM]=Retirez le Matéria de l'équipement dans le sac.",
+		 tip104 = "Arme de gladiateur/Bouclier",
+		 tip105 = "Pas assez de temps.",
+		 tip106 = "Ne me piquez pas",
+		 tip107 = "Le Méga Cactpot Acheter trois billets",
+		 tip108 = "Option de recyclage ouverte",
+		 tip109 = "Afficher/masquer les infobulles\nCliquez avec le bouton droit de la souris pour sélectionner la langue",
+		 tip110 = "Cliquez avec le bouton droit de la souris pour copier.",
+		 tip111 = "En raison de l'accent mis sur la stabilité, l'acceptation d'une commande peut prendre jusqu'à 3 secondes.\nVous informe par un message en couleur (écho) de l'acceptation de la demande.\nLa progression peut être suivie dans la console.",
+		 tip112 = "envoyer les honneurs",
+		 tip113 = "Ordre de la liste des partis, à l'exclusion de vous-même.\nLes icônes sont données à titre de référence uniquement pour une utilisation en solo avec mission.",
+		 tip114 = "On/Off",
+		 tip115 = "Je vais en parler dans le chat du parti.",
+		 tip116 = "Les commandes textuelles du jeu peuvent être utilisées.",
+		 tip117 = "Exécutez la commande texte [/e <pos>]",
+		 tip118 = "Déclarations automatiques au début et à la fin",
+		 tip119 = "Organiser son sac\nRésumez ce qui peut être empilé.",
+		 tip120 = "en cours de triage",
+		 tip121 = "Bouton de partage pour le module complémentaire XIVQuickLauncher, QoLBar.\nCliquez pour copier et importer avec QoLBar",
+		 tip122 = "Recherche objects\nOn/Off\n\n[Nombre Possédé]\n[Recettes associées] le trouvera automatiquement.",
+		 tip123 = "Servants",
+		 tip124 = "Sacoche chocobo",
+		 tip125 = "Coffre de compagnie libre",
+		 tip126 = "Baisser la qualité(uniquement l'inventaire)\nIl sera exécuté dès que vous aurez organisé l'inventaire.",
+		 tip127 = "Ingrédient",
+		 tip128 = "Pierre",
+		 tip129 = "Métal",
+		 tip130 = "Bois",
+		 tip131 = "Tissu",
+		 tip132 = "Cuir",
+		 tip133 = "Os",
+		 tip134 = "Réactif",
+		 tip135 = "Recevez des objets de Servants",
+		 tip136 = "Déposer des objets dans un Servants",
+		 tip137 = "Organizing the Retainer bag\nput together stackable items.",
+		 tip138 = "Recevez des objets de Sacoche chocobo",
+		 tip139 = "Déposer des objets dans un Sacoche chocobo",
+		 tip140 = "Organizing the Saddlebag\nput together stackable items.",
+		 tip141 = "Recevez des objets de Coffre de compagnie libre",
+		 tip142 = "Déposer des objets dans un Coffre de compagnie libre",
+		 tip143 = "AH Radar\nCliquez avec le bouton gauche de la souris pour ouvrir une fenêtre standard/Cliquez avec le bouton droit de la souris pour ouvrir une mini-fenêtre.",
+		 tip144 = "Joueur",
+		 tip145 = "Ennemis",
+		 tip146 = "PNJ",
+		 tip147 = "Coffre au trésor",
+		 tip148 = "ALÉA",
+		 tip149 = "meubles",
+		 tip150 = "Vents éthérite",
+		 tip151 = "Autres objets",
+		 tip152 = "inconnu\ndonnées d'entrée de l'utilisateur",
+		 tip153 = "Compagnon",
+		 tip154 = "familiers",
+		 tip155 = "gathering node",
+		 tip156 = "Mascotte",
+		 tip157 = "Radar On/Off",
+		 tip158 = "Montrez-vous un point.",
+		 tip159 = "Afficher d'autres points",
+		 tip160 = "Dessiner des lignes",
+		 tip161 = "Lignes cibles des autres joueurs",
+		 tip162 = "Lignes cibles de la Ennemis",
+		 tip163 = "Désactivé pendant les cutscenes",
+		 tip164 = "Désactivé pendant la Pose de Groupe",
+		 tip165 = "Désactivé pendant la mission",
+		 tip166 = "Changement de couleur",
+		 tip167 = "Modifier la taille et la couleur de ses propres points",
+		 tip168 = "Modification des autres tailles de points",
+		 tip169 = "Modifier l'épaisseur du trait",
+		 tip170 = "chasser",
+		 tip171 = "2.0",
+		 tip172 = "3.0",
+		 tip173 = "4.0",
+		 tip174 = "5.0",
+		 tip175 = "6.0",
+		 tip176 = "Rang B",
+		 tip177 = "Rang A",
+		 tip178 = "Rang S/SS",
+		 tip179 = "ALÉA spéciale",
+		 tip180 = "Obtenir des informations sur la cible.",
+		 tip181 = "Ajouter à une liste personnalisée",
+		 tip182 = "Supprimé de la liste personnalisée",
+		 tip183 = "Entrez ContentID (obligatoire).",
+		 tip184 = "Entrez votre nom (obligatoire)",
+		 tip185 = "affichage de listes personnalisées",
+		 tip186 = "Réglage de la chasser",
+		 tip187 = "Paramètres généraux",
+		 tip188 = "Vents éthérés",
+		 tip189 = "Cliquez avec le bouton gauche de la souris pour ajouter à la liste personnalisée\nCliquez avec le bouton droit de la souris pour annuler.",
+		 tip190 = "AH Radar\nfenêtre standard",
+		 tip191 = "Utilisez Billet de transport éthéré",
+		 tip192 = "Fixer le montant de l'argent",
+		 tip193 = "ContentID",
+		 tip194 = "Nom",
+		 tip195 = "boîte à mémos",
+		 tip196 = "Changement de couleur pour les lignes cibles des autres joueurs",
+		 tip197 = "Changement de couleur des lignes cibles de la Ennemis",
+		 tip198 = "Normal/Dangereux",
+		 tip199 = "Si le joueur cible se trouve à cette distance, le BOT arrête de se déplacer",
+		 tip200 = "Création de boutons personnalisés",
+		 tip201 = "bouton de commande de texte",
+		 tip202 = "bouton de clic",
+		 tip203 = "Bouton marche/arrêt",
+		 tip204 = "Ajouter un bouton",
+		 tip205 = "Réinitialiser les entrées",
+		 tip206 = "Nom du bouton (obligatoire)",
+		 tip207 = "Image à utiliser pour le bouton\nAetheryteHelper\\CustomImage\\\nSaisissez le nom du fichier dans le dossier CustomImage",
+		 tip208 = "infobulle",
+		 tip209 = "Commandes lors d'un clic gauche",
+		 tip210 = "Commandes lors d'un clic droit",
+		 tip211 = "Code d'exécution sur le clic gauche.\nCliquez avec le bouton droit de la souris pour copier.",
+		 tip212 = "Code d'exécution lors d'un clic droit.\nCliquez avec le bouton droit de la souris pour copier.",
+		 tip213 = "Temps d'impulsion du code\n0-3000\n\nAHPulse est partagé avec d'autres fonctions et est affecté lorsqu'il est exécuté en même temps.",
+		 tip214 = "Code d'exécution lorsque le bouton est activé.\nCliquez avec le bouton droit de la souris pour copier.",
+		 tip215 = "Bouton de suppression.",
+		 tip216 = "Mettre à jour le contenu du bouton.",
+		 tip217 = "Paramètres des boutons de chargement.",
+		 tip218 = "Afficher/masquer les boutons",
+  },
+  de = { 
+  	 tip00 = "Außerhalb des Einsatzgebietes",
+		 tip01 = "AH Aktivieren/Deaktivieren",
+		 tip02 = "Zugriffsverzögerung\n100ms-1sec",
+		 tip03 = "TextBefehl im Spiel senden>> /e <Flag>",
+		 tip04 = "Wohnbezirk noch nicht geöffnet",
+		 tip05 = "Verzögerung RESET",
+		 tip06 = "Instanz-Information",
+		 tip07 = "zur Instanz 1 gehen",
+		 tip08 = "zur Instanz 2 gehen",
+		 tip09 = "zur Instanz 3 gehen",
+		 tip10 = "Teleport to Gridania",
+		 tip11 = "Zu Marktbrett in Gridania gehen",
+		 tip12 = "Teleport to Limsa",
+		 tip13 = "Zu Marktbrett in Limsa gehen",
+		 tip14 = "Teleport to Uldah",
+		 tip15 = "Zu Marktbrett in Uldah gehen",
+		 tip16 = "Vermittlung Marktbrett/Teleport",
+		 tip17 = "Jumbo-Glückskaktor helfen",
+		 tip18 = "Umschalten keine beschränkungen",
+		 tip19 = "Umschalten Erkundungsmodus",
+		 tip20 = "Einführung in AH",
+		 tip21 = "offene AH\nDoppelklick",
+		 tip22 = "schließen",
+		 tip23 = "Zufällig",
+		 tip24 = "Wenn es nicht gut funktioniert, melden Sie es bitte",
+		 tip25 = "Sie brauchen einen Handwerker, um Reparaturen selbst durchzuführen.",
+		 tip26 = "Verwenden Sie den Trust-Zusatz zum Austausch\nAktivieren/Deaktivieren\n\nDie Registerkarte wechselt von selbst zu [GC]",
+		 tip27 = "Klicken Sie hier, um Materialverwertung ein/auszuschalten\nRechtsklick zum Ein- und Ausschalten des Filters",
+		 tip28 = "Automatisch ausschalten in Handwerker für Materialverwertung",
+		 tip29 = "Materialverwertung & Materia Extrahieren nur in ssuche",
+		 tip30 = "Gegenstabdsstufe1-1000\nMaterialverwertung Gegenstabdsstufe-Geräte größer als diese Zahl",
+		 tip31 = "Einstellung Gegenstabdsstufe Reset",
+		 tip32 = "Gegenstabdsstufe5-1000\nMaterialverwertung beliebige Gegenstabdsstufe-Ausrüstung\nweniger als dies, außer Gegenstabdsstufe1",
+		 tip33 = "Auswahl wird Materialverwertung sein\nWertvolle Ausrüstung\nbefindet sich in der Arsenal",
+		 tip34 = "Haupthhand",
+		 tip35 = "Nebenhand",
+		 tip36 = "Kopf",
+		 tip37 = "Ohren",
+		 tip38 = "Rumpf",
+		 tip39 = "Hals",
+		 tip40 = "Hände",
+		 tip41 = "Handgelenke",
+		 tip42 = "Beine",
+		 tip43 = "Finger",
+		 tip44 = "Füße",
+		 tip45 = "Linke Maustaste: alles ein\nRechtsklick : Umkehren",
+		 tip46 = "Verteidiger",
+		 tip47 = "Heiler",
+		 tip48 = "Schlachtens",
+		 tip49 = "Zielens",
+		 tip50 = "Schlagens",
+		 tip51 = "Magie",
+		 tip52 = "Verstümmelns",
+		 tip53 = "Alle Klassen",
+		 tip54 = "Spähens",
+		 tip55 = "Druiden-Zweihandwaffe(Waffe)/Schild",
+		 tip56 = "Hauptwaffe der Marodeure",
+		 tip57 = "Hauptwaffe der Gelehrten",
+		 tip58 = "Hauptwaffe der Dunkelritter",
+		 tip59 = "Hauptwaffe der Astrologen",
+		 tip60 = "Hauptwaffe der Revolverklingen",
+		 tip61 = "Hauptwaffe der Weisen",
+		 tip62 = "Hauptwaffe der Faustkämpfer",
+		 tip63 = "Hauptwaffe der Waldläufer",
+		 tip64 = "Hauptwaffe der Pikeniere",
+		 tip65 = "Hauptwaffe der Maschinisten",
+		 tip66 = "Hauptwaffe der Schurken",
+		 tip67 = "Hauptwaffe der Tänzer",
+		 tip68 = "Hauptwaffe der Samurai",
+		 tip69 = "Thaumaturgen-Zweihandwaffe(Waffe)/Schild",
+		 tip70 = "Hauptwaffe der Schnitter",
+		 tip71 = "Grimoire",
+		 tip72 = "Hauptwaffe der Rotmagier",
+		 tip73 = "Handwerker",
+		 tip74 = "Sammler",
+		 tip75 = "Tausche Staatstaler gegen Gegenstände",
+		 tip76 = "Mengeneinstellung ein/aus",
+		 tip77 = "Geldbetrag für den Beginn des Umtauschs",
+		 tip78 = "0 eingeben, um den Maximalwert zu erhalten",
+		 tip79 = "Benötigte Menge (automatische Anpassung)",
+		 tip80 = "Beachten Sie, dass Sie, wenn Sie den GC-Rang nicht erreichen,\nAutomatisch ausgeschaltet",
+		 tip81 = "Anzahl der erforderlichen Staatstaler/Anzahl der derzeit im Besitz befindlichen Staatstaler",
+		 tip82 = "Verwenden Sie den automatischen Trank der Bindung.\nKlicken Sie mit der rechten Maustaste, um den Minion-Link ein- oder auszuschalten",
+		 tip83 = "Verwenden Sie den automatischen Gesellschafts-Leitfaden „Materialeinsatz“\nKlicken Sie mit der rechten Maustaste, um den Minion-Link ein- oder auszuschalten.",
+		 tip84 = "Ihr GC\nautomatisch auswählen",
+		 tip85 = "Materia-Extrakition",
+		 tip86 = "Materialverwertung aller Geräte in Ihrem Invebtar\nKlicken Sie mit der rechten Maustaste, um die Optionen ein- und auszuschalten.",
+		 tip87 = "Experteneinsätza",
+		 tip88 = "Automatische Übertragung an GC",
+		 tip89 = "Nicht mehr bewegen",
+		 tip90 = "nicht erfolgter Austausch über Max Staatstaler",
+		 tip91 = "Entnahme von Materia aus der Ausrüstung im Inventar",
+		 tip92 = "Raffinieren\nAnhalten, wenn kein Platz mehr im Inventar vorhanden ist\nRechtsklick zum Ein- und Ausschalten des Minion-Links",
+		 tip93 = "Automatische Auswahl Datenzentrums",
+		 tip94 = "Automatischer Umzug nach Marktbrett",
+		 tip95 = "Welt wählen",
+		 tip96 = "Bitte unterstützen Sie uns, damit es gut wird.\n\nFür meine Katze...",
+		 tip97 = "Bitte senden Sie mir ein DM, wenn Sie irgendwelche Probleme oder Wünsche haben.\nBitte fördern Sie auch die",
+		 tip98 = "Github-Link,\nLinks klicken: Home\nRechtsklick: Loslassen",
+		 tip99 = "Erhalte Fähigkeiten durch das Lösen von Quests!",
+		 tip100 = "[MEx]=Materia-Extrakition\n[SbP]=Trank der Bindung\n[SbM]=Gesellschafts-Leitfaden „Materialeinsatz“",
+		 tip101 = "[Dsy]=Materialverwertung\n[Fil]=Materialverwertung Optionen\n[Cft]=Materia-Extrakition und Materialverwertung in Handwerker deaktiviert.\n[IDm]=Materia-Extrakition und Materialverwertung nur im Dungeons",
+		 tip102 = "[AR]=Raffinieren\n[Link]=Minion-Links",
+		 tip103 = "[Ex]=Austausch\n[M2G]=Übertragung an GC\n[LM]=Nicht mehr als das Maximum\n[RM]=Beseitigung von Materia",
+		 tip104 = "Hauptwaffe der Gladiatoren/Schild",
+		 tip105 = "・・・Ich brauche mehr Zeit",
+		 tip106 = "Bitte stupsen Sie mich nicht an...",
+		 tip107 = "Kaufen Sie drei Tickets",
+		 tip108 = "Materialverwertung Options",
+		 tip109 = "Tooltip ein-/ausblenden\nRechtsklick zur Auswahl der Sprache",
+		 tip110 = "Rechtsklick zum Kopieren",
+		 tip111 = "Aufgrund der Bedeutung der Stabilität kann es bis zu drei Sekunden dauern,\nbis ein Befehl angenommen wird.\nWenn Sie angenommen werden, werden Sie durch eine farbige Nachricht benachrichtigt.\nDer Fortschritt kann auf der Konsole überprüft werden.",
+		 tip112 = "Ehrungen automatisch senden",
+		 tip113 = "Zeigt einen Index der Gruppenmitglieder an, die nicht Sie selbst sind.\nDie Symbole an der Seite dienen nur als Referenz bei der Verwendung des Inhaltssuche solo.",
+		 tip114 = "Aktivieren/Deaktivieren",
+		 tip115 = "Nur im Gruppenchat gesendet.",
+		 tip116 = "Es können spielinterne Textbefehle verwendet werden.",
+		 tip117 = "[/e <pos>]",
+		 tip118 = "Automatischer Beginn chat und Ende chat des Dungeons",
+		 tip119 = "Inventar organisieren\nstapelbare Gegenstände zusammenstellen.",
+		 tip120 = "Jetzt arbeiten...",
+		 tip121 = "Dies ist die Freigabe-Schaltfläche für das XIVQuickLauncher-Addon, QoLBar\nZum Kopieren und Importieren in QoLBar anklicken",
+		 tip122 = "GegenständeSuche\nEIN/AUS\n\nAutomatische Suche\n[Im Inbentar shchen]\n[Nach Rezept mit diesem Material suchen]",
+		 tip123 = "Gehilfen",
+		 tip124 = "Chocobo-Satteltasche",
+		 tip125 = "Gesellschaftstruhe",
+		 tip126 = "Qualitat mindern(inventar)\nSie wird ausgeführt, sobald Sie Inventar organisieren.",
+		 tip127 = "Zutat",
+		 tip128 = "Baustein",
+		 tip129 = "Metall",
+		 tip130 = "Nutzholz",
+		 tip131 = "Stoff",
+		 tip132 = "Leder",
+		 tip133 = "Knochen/Horn",
+		 tip134 = "Reagenz",
+		 tip135 = "Vom Gehilfen erhalten",
+		 tip136 = "Kaution an Gehilfen",
+		 tip137 = "Organisieren Gehilfe Inventar\nFassen Sie zusammen, was gestapelt werden kann.",
+		 tip138 = "Vom Chocobo-Satteltasche erhalten",
+		 tip139 = "Kaution an Chocobo-Satteltasche",
+		 tip140 = "Organisieren Chocobo-Satteltasche\nFassen Sie zusammen, was gestapelt werden kann.",
+		 tip141 = "Vom Gesellschaftstruhe erhalten",
+		 tip142 = "Kaution an Gesellschaftstruhe",
+		 tip143 = "AH-Radar\nLinksklick zum Öffnen des Standardfensters\nKlicken Sie mit der rechten Maustaste, um ein Minifenster zu öffnen",
+		 tip144 = "PCs",
+		 tip145 = "Feinde",
+		 tip146 = "NPCs",
+		 tip147 = "Schatztruhe",
+		 tip148 = "FATE",
+		 tip149 = "Möbel",
+		 tip150 = "Ätheryt",
+		 tip151 = "Andere Objekte",
+		 tip152 = "unbekannt\nVom Benutzer eingegebene Daten",
+		 tip153 = "Mitstreiter",
+		 tip154 = "Familiare",
+		 tip155 = "Sammelstelle",
+		 tip156 = "Begleiter",
+		 tip157 = "Radar ein/aus",
+		 tip158 = "Zeigen Sie die Punkte zu Ihren Füßen an",
+		 tip159 = "Andere Punkte anzeigen",
+		 tip160 = "Zeile anzeigen",
+		 tip161 = "Zeigen Sie eine Linie an, wenn Sie von anderen PCs beobachtet werden",
+		 tip162 = "Eine Linie anzeigen, wenn der Feinde angreift",
+		 tip163 = "Wird während der Zwischensequenzen nicht angezeigt",
+		 tip164 = "Wird während der Gruppenfotos nicht angezeigt",
+		 tip165 = "Wird in Dungeons nicht gezeigt",
+		 tip166 = "Farbwechsel",
+		 tip167 = "Ändern Sie ihre Punktgröße und Farbe.",
+		 tip168 = "Andere Punktgrößen",
+		 tip169 = "Linienstärke",
+		 tip170 = "Hochwild",
+		 tip171 = "2.0",
+		 tip172 = "3.0",
+		 tip173 = "4.0",
+		 tip174 = "5.0",
+		 tip175 = "6.0",
+		 tip176 = "B Rank",
+		 tip177 = "A Rank",
+		 tip178 = "S/SS Rank",
+		 tip179 = "FATEs",
+		 tip180 = "Informieren Sie sich",
+		 tip181 = "Zur benutzerdefinierten Liste hinzufügen",
+		 tip182 = "Aus der benutzerdefinierten Liste entfernt",
+		 tip183 = "ContentID eingeben (erforderlich)",
+		 tip184 = "Namen ein (erforderlich)",
+		 tip185 = "Benutzerdefinierte Listenanzeige",
+		 tip186 = "Hochwild einrichten",
+		 tip187 = "Allgemeine Einstellungen",
+		 tip188 = "Windätherquellen",
+		 tip189 = "Linksklick zum Hinzufügen zur benutzerdefinierten Liste\nRechtsklick zum Abbrechen",
+		 tip190 = "AH Radar\nStandardfenster",
+		 tip191 = "Verwenden Sie Teleport-Ticket",
+		 tip192 = "Einrichten eines Gil",
+		 tip193 = "ContentID",
+		 tip194 = "Name",
+		 tip195 = "Memo-Box",
+		 tip196 = "Farbwechsel der linie von PCs",
+		 tip197 = "Farbwechsel der linie von Feinde",
+		 tip198 = "Umschaltung Normal/Gefahr",
+		 tip199 = "Wenn sich der Zielspieler innerhalb dieser Entfernung befindet, hält der BOT an",
+		 tip200 = "Benutzerdefinierte Schaltflächen erstellen",
+		 tip201 = "Text-Befehlsschaltfläche",
+		 tip202 = "Klick-Taste",
+		 tip203 = "Ein/Aus-Taste",
+		 tip204 = "Schaltfläche Hinzufügen",
+		 tip205 = "Einträge zurücksetzen.",
+		 tip206 = "Name der Schaltfläche (erforderlich)",
+		 tip207 = "Bild, das für die Schaltfläche verwendet werden soll\nAetheryteHelper\\CustomImage\\Geben Sie den Namen der Datei im Ordner ein",
+		 tip208 = "Tooltip",
+		 tip209 = "Befehle beim Klicken mit der linken Maustaste",
+		 tip210 = "Befehle beim Klicken mit der rechten Maustaste",
+		 tip211 = "Ausführungscode bei Linksklick\nZum Kopieren mit der rechten Maustaste klicken",
+		 tip212 = "Ausführungscode bei Rechtsklick\nZum Kopieren mit der rechten Maustaste klicken",
+		 tip213 = "Impulszeit des Codes\n0-3000\n\nAHPulse wird mit anderen Funktionen geteilt und ist betroffen, wenn sie gleichzeitig ausgeführt werden",
+		 tip214 = "Ausführungscode, wenn die Taste eingeschaltet ist.\nZum Kopieren mit der rechten Maustaste klicken",
+		 tip215 = "Schaltfläche Löschen",
+		 tip216 = "Aktualisieren Sie den Inhalt der Schaltfläche",
+		 tip217 = "Einstellungen der Schaltfläche laden",
+		 tip218 = "Schaltflächen ein-/ausblenden",
+  },
+  cn = {
+  	 tip00 = "不在可使用区域内",
+     tip01 = "AH 开启/关闭",
+     tip02 = "傳送时间间隔\n可在100ms~1s之间选择",
+     tip03 = "在游戏中发送文本命令>> /e <flag>",
+     tip04 = "冒险者居住区未開啟",
+     tip05 = "恢复默认延迟设置",
+     tip06 = "副本區-人数",
+     tip07 = "一线",
+     tip08 = "二线",
+     tip09 = "三线",
+     tip10 = "传送至森都",
+     tip11 = "去森都的市场板",
+     tip12 = "传送至海都",
+     tip13 = "去海都的市场板",
+     tip14 = "传送到沙都",
+     tip15 = "去沙都的市场板",
+     tip16 = "切换 市场板/大水晶",
+     tip17 = "仙人仙彩助手",
+     tip18 = "切换解限模式",
+  	 tip19 = "切换自由探索",
+  	 tip20 = "功能介绍视频链接",
+  	 tip21 = "双击打开",
+  	 tip22 = "关闭",
+   	 tip23 = "按随机数购买",
+  	 tip24 = "如果它出BUG了，请向我反饋",
+  	 tip25 = "装备修理",
+  	 tip26 = "亲信裝備交換\n\n开启之后,会固定在[GC]功能界面,如想使用其他功能,請关闭亲信裝備交換",
+  	 tip27 = "道具分解\n右键开启或关闭过滤列表",
+  	 tip28 = "在生產時关闭道具分解",
+  	 tip29 = "只分解和精制副本内的装备和道具",
+  	 tip30 = "品级:1-1000\n分解品级大于这个数字的裝备",
+  	 tip31 = "重置品级設置",
+  	 tip32 = "品级-1000\n分解任何低于这个数字的装备，除了品级1的装备",
+  	 tip33 = "开启之后会分解装备\n开启前請確保背包內沒有重要的裝備",
+  	 tip34 = "主手",
+  	 tip35 = "副手",
+  	 tip36 = "头部防具",
+  	 tip37 = "耳饰",
+  	 tip38 = "身体防具",
+  	 tip39 = "项链",
+  	 tip40 = "手部防具",
+  	 tip41 = "手镯",
+  	 tip42 = "腿部防具",
+  	 tip43 = "戒指",
+  	 tip44 = "脚部防具",
+  	 tip45 = "右键全选\n左键全不选",
+  	 tip46 = "通用T装备",
+  	 tip47 = "通用奶装备",
+  	 tip48 = "强攻装备",
+  	 tip49 = "通用远敏装备",
+  	 tip50 = "强袭装備",
+  	 tip51 = "通用法系装备",
+  	 tip52 = "制敌装備",
+  	 tip53 = "全部职业装备",
+  	 tip54 = "游击装備",
+  	 tip55 = "白杖/盾",
+  	 tip56 = "斧",
+  	 tip57 = "学者书",
+  	 tip58 = "大剑",
+  	 tip59 = "占星盘",
+  	 tip60 = "枪刃",
+  	 tip61 = "贤具",
+  	 tip62 = "格鬥武器",
+  	 tip63 = "诗人弓",
+  	 tip64 = "龙骑枪",
+  	 tip65 = "机工火铳",
+  	 tip66 = "忍者双剑",
+  	 tip67 = "投擲武器",
+  	 tip68 = "刀",
+  	 tip69 = "黒杖/盾",
+  	 tip70 = "镰刀",
+  	 tip71 = "召唤书",
+  	 tip72 = "赤魔杖",
+  	 tip73 = "生产工具·防具·饰品",
+  	 tip74 = "采集生产工具·防具·饰品",
+  	 tip75 = "用军票兑换物品",
+  	 tip76 = "兌換數量限制 开/关",
+  	 tip77 = "军票超过此数字-开始兑换",
+  	 tip78 = "0表示設置為軍票上限",
+  	 tip79 = "兑换数量(默認是有多少換多少)",
+  	 tip80 = "如果军衔等級不夠\n兑换不了",
+  	 tip81 = "兑换物品需要的军票/现在持有军票",
+  	 tip82 = "自动使用精炼药\n右键可以同步到Minion设置",
+  	 tip83 = "自动军用精神学指南\n右键可以同步到Minion设置",
+  	 tip84 = "自动选择所属的軍隊",
+  	 tip85 = "精制魔晶石",
+  	 tip86 = "精制所有装备\n右鍵打開精制設置",
+  	 tip87 = "兑换军票",
+  	 tip88 = "自动去兑换军票",
+  	 tip89 = "停止自动移动",
+  	 tip90 = "当军票超过上限时不做兑换",
+  	 tip91 = "回收背包内装备的魔晶石",
+  	 tip92 = "精選\n當背包沒有空位時停止\n右鍵同步到Minion設置",
+  	 tip93 = "自動選擇大區",
+  	 tip94 = "切换去市场板",
+  	 tip95 = "选择服务器",
+  	 tip96 = "我的猫猫想吃好吃的\n\n可以给牠投个币嗎QAQ",
+  	 tip97 = "如果你有任何问题或要求，可以私聊我\n另外,你对我的鼓励是我最大的动力",
+  	 tip98 = "Github页面\n左鍵是主頁\n右鍵是Release",
+  	 tip99 = "请完成任务,解锁技能",
+  	 tip100 = "[MEx]=精制魔晶石\n[SbP]=精煉藥\n[SbM]=精神学指南",
+  	 tip101 = "[Dsy]=裝備分解\n[Fil]=分解过滤列表中的裝備\n[Cft]=生產模式\n[IDm]=副本模式",
+  	 tip102 = "[AR]=精選\n[Link]=同步Minion設置",
+  	 tip103 = "[Ex]=兌換軍票\n[M2G]=移動去軍隊\n[LM]=军票上限\n[RM]=回收魔晶石",
+  	 tip104 = "單手劍/盾",
+  	 tip105 = "敬請期待",
+  	 tip106 = "不要戳我OWO",
+  	 tip107 = "购买仙人彩",
+  	 tip108 = "道具分解設置",
+  	 tip109 = "功能說明 開/關\n右键单击选择语言",
+  	 tip110 = "右键复制",
+  	 tip111 = "為了穩定運行\n每條文本命令需要3秒時間來運行\n可以在控制台查看",
+  	 tip112 = "自動給讚",
+  	 tip113 = "按照小隊列表的顺序，不包括自己\n僅供参考",
+  	 tip114 = "开/关",
+  	 tip115 = "只在小隊聊天中說話",
+  	 tip116 = "可以使用游戏中的文本命令",
+  	 tip117 = "[/e <pos>]:查看你現在在幾線",
+  	 tip118 = "在副本開始前和結束後喊話",
+  	 tip119 = "整理背包\n将可堆叠的物品放在一起",
+  	 tip120 = "整理中",
+  	 tip121 = "XIVQuickLauncher插件、QoLBar的分享按钮\n点击复制并在QoLBar中导入",
+  	 tip122 = "物品搜索\n開/關\n\n[查看持有情況]\n[搜索物品]自動搜索物品",
+  	 tip123 = "雇員背包",
+  	 tip124 = "陆行鸟背包",
+  	 tip125 = "部隊箱",
+  	 tip126 = "降低品質(背包)\n整理背包時就會降低品質",
+  	 tip127 = "食材",
+  	 tip128 = "石材",
+  	 tip129 = "金属",
+  	 tip130 = "木材",
+  	 tip131 = "布材",
+  	 tip132 = "皮革",
+  	 tip133 = "骨材",
+  	 tip134 = "煉金素材",
+  	 tip135 = "從雇員背包里拿",
+  	 tip136 = "放在雇員背包里",
+  	 tip137 = "整理雇員背包\n将可堆叠的物品放在一起",
+  	 tip138 = "從陆行鸟背包里拿",
+  	 tip139 = "放在陆行鸟背包里",
+  	 tip140 = "整理陆行鸟背包\n将可堆叠的物品放在一起",
+  	 tip141 = "從部隊箱里拿",
+  	 tip142 = "放在部隊箱里",
+  	 tip143 = "AH 雷達\n左鍵標準界面/右鍵小界面",
+  	 tip144 = "玩家",
+  	 tip145 = "怪物",
+  	 tip146 = "NPC",
+  	 tip147 = "宝箱",
+  	 tip148 = "F.A.T.E",
+  	 tip149 = "家具",
+  	 tip150 = "风脉點",
+  	 tip151 = "其他",
+  	 tip152 = "不明\n用户输入的数据",
+  	 tip153 = "搭档",
+  	 tip154 = "召唤兽",
+  	 tip155 = "采集点",
+  	 tip156 = "宠物",
+  	 tip157 = "雷达开/关",
+  	 tip158 = "显示自己的圆点",
+  	 tip159 = "显示其他的圆点",
+  	 tip160 = "显示连线",
+  	 tip161 = "显示其他玩家的连线",
+  	 tip162 = "显示怪物的连线",
+  	 tip163 = "截圖時不显示",
+  	 tip164 = "拍照模式時不显示",
+  	 tip165 = "在副本中不显示",
+  	 tip166 = "改变颜色",
+  	 tip167 = "玩家小圆点大小",
+  	 tip168 = "其他小圆点大小",
+  	 tip169 = "连线粗細",
+  	 tip170 = "狩獵",
+  	 tip171 = "2.0",
+  	 tip172 = "3.0",
+  	 tip173 = "4.0",
+  	 tip174 = "5.0",
+  	 tip175 = "6.0",
+  	 tip176 = "B怪",
+  	 tip177 = "A怪",
+  	 tip178 = "S/SS怪",
+  	 tip179 = "特殊FATE",
+  	 tip180 = "获取目标信息",
+  	 tip181 = "添加到自定义列表",
+  	 tip182 = "从自定义列表删除",
+  	 tip183 = "输入物品id(必填)",
+  	 tip184 = "输入名称(必填)",
+  	 tip185 = "自定义列表显示",
+  	 tip186 = "狩獵設置",
+  	 tip187 = "常规设置",
+  	 tip188 = "风脉泉",
+  	 tip189 = "左键单击添加到自定义列表\n右键单击取消",
+  	 tip190 = "AH 雷達\n打开雷达设置",
+  	 tip191 = "使用传送券",
+  	 tip192 = "设置金额",
+  	 tip193 = "內容ID",
+  	 tip194 = "名稱",
+  	 tip195 = "备注",
+  	 tip196 = "其他玩家連线的颜色改變",
+  	 tip197 = "怪物連线的颜色改變",
+  	 tip198 = "正常/危险",
+  	 tip199 = "如果目标玩家在这个距离内，则停止腳本的移动\n建议与采集一起使用",
+  	 tip200 = "创建按钮",
+  	 tip201 = "文本命令按钮",
+  	 tip202 = "点击按钮(自定义功能)",
+  	 tip203 = "开/关按钮(自定义功能)",
+  	 tip204 = "添加按钮",
+  	 tip205 = "初始化输入项目",
+  	 tip206 = "按钮名称(必须)",
+  	 tip207 = "按钮要使用的图片\n圖片文件路徑在 \"AetheryteHelper\\CustomImage\\\" ",
+  	 tip208 = "功能提示",
+  	 tip209 = "通過点击左键执行文本命令",
+  	 tip210 = "通過点击右键执行文本命令",
+  	 tip211 = "左键点击时执行代码\n右键复制",
+  	 tip212 = "右键点击时执行代码\n右键复制",
+  	 tip213 = "Pulse 時間 of code\n0-3000\n\nAHPluse与其他函数共享，如果同时执行，将受到影响。",
+  	 tip214 = "按钮开启时的执行代码\n右键复制",
+  	 tip215 = "删除按钮",
+  	 tip216 = "改变按钮的内容",
+  	 tip217 = "加载按钮设置",
+  	 tip218 = "显示/隐藏按钮",
+  },
+  kr = { 
+  	 tip00 = "Outside of use area",
+		 tip01 = "AH Enable/Disable",
+		 tip02 = "access delay\n100ms-1sec",
+		 tip03 = "Send TextCommand in Game>> /e <flag>",
+		 tip04 = "didn't complete quest of residential",
+		 tip05 = "delay RESET",
+		 tip06 = "instance info",
+		 tip07 = "go to instance 1",
+		 tip08 = "go to instance 2",
+		 tip09 = "go to instance 3",
+		 tip10 = "Teleport to Gridania",
+		 tip11 = "Go to MB in Gridania",
+		 tip12 = "Teleport to Limsa",
+		 tip13 = "Go to MB in Limsa",
+		 tip14 = "Teleport to Uldah",
+		 tip15 = "Go to MB in Ul'dah",
+		 tip16 = "switching MB/Teleport",
+		 tip17 = "Jumbo cactpot assist",
+		 tip18 = "switching undersize for dungeon",
+		 tip19 = "switching Explorer for dungeon",
+		 tip20 = "Introduction to AH",
+		 tip21 = "open AH\ndouble click",
+		 tip22 = "close",
+		 tip23 = "Random num",
+		 tip24 = "If it does not work well, please report it",
+		 tip25 = "you'll need a crafter to do repairs yourself",
+		 tip26 = "Use Trust addon to exchange\nEnable/Disable\n\ntab will change to [GC] by itself",
+		 tip27 = "Click to Desynthsie on/off\nRightclick to turn filter on/off",
+		 tip28 = "Auto off in Crafter for Desynth",
+		 tip29 = "Desynth & Materia Extract  only in ID",
+		 tip30 = "IL1-IL1000\nDesynth IL equipment larger than this number",
+		 tip31 = "Setting IL Reset",
+		 tip32 = "IL5-IL1000\nDesynth any IL equipment\nless than this except IL1",
+		 tip33 = "selection will be Desynthesis\nValuable equipment\nis in armoury chest",
+		 tip34 = "Primary",
+		 tip35 = "Secondary & Shield",
+		 tip36 = "Head",
+		 tip37 = "Earrings",
+		 tip38 = "Body",
+		 tip39 = "Necklace",
+		 tip40 = "Hand",
+		 tip41 = "Bracelets",
+		 tip42 = "Legs",
+		 tip43 = "Ring",
+		 tip44 = "Feet",
+		 tip45 = "Left click : all on\nRight click : Reverse",
+		 tip46 = "Tank",
+		 tip47 = "Healer",
+		 tip48 = "Slaying",
+		 tip49 = "Aiming",
+		 tip50 = "Striking",
+		 tip51 = "Sorcerer",
+		 tip52 = "Maiming",
+		 tip53 = "All class",
+		 tip54 = "Scouting",
+		 tip55 = "WHM's Arm/Shield",
+		 tip56 = "WAR's Arm",
+		 tip57 = "SCH's Arm",
+		 tip58 = "DRK's Arm",
+		 tip59 = "AST's Arm",
+		 tip60 = "GNB's Arm",
+		 tip61 = "SGE's Arm",
+		 tip62 = "MNK's Arm",
+		 tip63 = "BRD's Arm",
+		 tip64 = "DRG's Arm",
+		 tip65 = "MCN's Arm",
+		 tip66 = "NIN's Arm",
+		 tip67 = "DNC's Arm",
+		 tip68 = "SAM's Arm",
+		 tip69 = "BLM's Arm/Shield",
+		 tip70 = "RPR's Arm",
+		 tip71 = "SMN's Arm",
+		 tip72 = "RDM's Arm",
+		 tip73 = "Tool & Armor & Accessories for Crafter",
+		 tip74 = "Tool & Armor & Accessories for Gatherer",
+		 tip75 = "Exchange seals for items",
+		 tip76 = "Quantity adjustment on/off",
+		 tip77 = "amount to start trun in",
+		 tip78 = "enter 0 to get the max value",
+		 tip79 = "number want(auto adjustment)",
+		 tip80 = "Note that if you do not meet GC rank,\nyou cannot trun in",
+		 tip81 = "Required seals/have seals",
+		 tip82 = "auto use potion\nRight-click to turn on/off minion link",
+		 tip83 = "auto use spiritbond manual\nRight-click to turn on/off minion link",
+		 tip84 = "Your GC\nautomatically select",
+		 tip85 = "Materia Extract",
+		 tip86 = "desynthesis all equipment in your inventory\nRight-click to turn on/off options",
+		 tip87 = "for GC seals",
+		 tip88 = "Auto Move to GC",
+		 tip89 = "move to stop",
+		 tip90 = "not done exchange over max seals",
+		 tip91 = "Remove materia from equipment in inventory",
+		 tip92 = "Aetherial Reduction\nStop when there is no more space in inventory\nRight-click to turn on/off minion link",
+		 tip93 = "Auto select DC",
+		 tip94 = "Switch to move to MB",
+		 tip95 = "Select World",
+		 tip96 = "please support me to make good\n\nfor my cat....",
+		 tip97 = "Please DM me if you have any problems or requests\nalso, please promote it.",
+		 tip98 = "Github link,\nLeft click:home\nRight click:Release",
+		 tip99 = "Quest complete to Get skill!",
+		 tip100 = "[MEx]=MateriaExtract\n[SbP]=Spiritbond Potion\n[SbM]=Spiritbond Manual",
+		 tip101 = "[Dsy]=Desynthesis\n[Fil]=Desynthesis Filter\n[Cft]=Crafter mode\n[IDm]=IDmode",
+		 tip102 = "[AR]=Aetherial Reduction\n[Link]=Minion Link mode",
+		 tip103 = "[Ex]=Exchange\n[M2G]=move to GC\n[LM]=less max\n[RM]=Remove Materia",
+		 tip104 = "PLD's Arm/Shield",
+		 tip105 = "・・・i need more time",
+		 tip106 = "please don't poke me...",
+		 tip107 = "3 ticket purchases",
+		 tip108 = "Desynthseise Options",
+		 tip109 = "tooltips Show/hide\nRight-click to select language",
+		 tip110 = "Right click to copy",
+		 tip111 = "Due to the importance of stability,\nit may take a about 3 sec for the command to be accepted.\nit will be notified with a color message when it is accepted.\nProgress can be checked in the console.",
+		 tip112 = "Auto Commendation",
+		 tip113 = "index of party member in exclud you.\nthe side icon are just for reference when used DF for solo.",
+		 tip114 = "Enable/Disable",
+		 tip115 = "Send only in Party Chat.",
+		 tip116 = "Can use ingame text commands",
+		 tip117 = "[/e <pos>]:Check your instance.",
+		 tip118 = "Auto Start and End Call in Duty",
+		 tip119 = "organize inventory\nput together stackable items.",
+		 tip120 = "Now working...",
+		 tip121 = "This is share button for XIVQuickLauncher addon, QoLBar\nClick to copy and import it in QoLBar",
+		 tip122 = "ItemSearch\nON/OFF\n\nAuto retrieval\n[Search for Item]\n[Search Recipes]",
+		 tip123 = "Retainer",
+		 tip124 = "Saddlebag",
+		 tip125 = "FC Chest",
+		 tip126 = "HQ to NQ (only inventory)\nIt will be executed as soon as you organize inventory.",
+		 tip127 = "Ingredients",
+		 tip128 = "Stone",
+		 tip129 = "Metal",
+		 tip130 = "Lumber",
+		 tip131 = "Cloth",
+		 tip132 = "Leather",
+		 tip133 = "Bone",
+		 tip134 = "Reagents",
+		 tip135 = "from Retainer",
+		 tip136 = "to Retainer",
+		 tip137 = "Organizing the Retainer bag\nput together stackable items.",
+		 tip138 = "from Saddlebag",
+		 tip139 = "to Saddlebag",
+		 tip140 = "Organizing the Saddlebag\nput together stackable items.",
+		 tip141 = "from FCchest",
+		 tip142 = "to FCchest",
+		 tip143 = "AH Radar\nLeft-click for standard window / Right-click for mini window",
+		 tip144 = "Player",
+		 tip145 = "Monster",
+		 tip146 = "NPC",
+		 tip147 = "chest",
+		 tip148 = "F.A.T.E",
+		 tip149 = "furniture",
+		 tip150 = "Aetheryte",
+		 tip151 = "object",
+		 tip152 = "Unknown\nUser input data",
+		 tip153 = "buddy",
+		 tip154 = "pet",
+		 tip155 = "gathering node",
+		 tip156 = "minions",
+		 tip157 = "Radar Enable/Disable",
+		 tip158 = "Drow Player Dot",
+		 tip159 = "Drow Other Dots",
+		 tip160 = "Drow Line",
+		 tip161 = "Target Lines from Other Players",
+		 tip162 = "Target Lines from mob",
+		 tip163 = "Disabled during cutscenes",
+		 tip164 = "Disabled during gpose",
+		 tip165 = "Disabled during in Duty",
+		 tip166 = "Color Change",
+		 tip167 = "Self dot size & Color",
+		 tip168 = "Other dot size",
+		 tip169 = "line thickness",
+		 tip170 = "Hunt",
+		 tip171 = "ARR(2.x)",
+		 tip172 = "HW(3.x)",
+		 tip173 = "StB(4.x)",
+		 tip174 = "ShB(5.x)",
+		 tip175 = "EW(6.x)",
+		 tip176 = "B Ranks",
+		 tip177 = "A Ranks",
+		 tip178 = "S/SS Ranks",
+		 tip179 = "FATEs",
+		 tip180 = "Retrieve target information",
+		 tip181 = "Add to CustomList",
+		 tip182 = "Remove from CustomList",
+		 tip183 = "ContentID (required)",
+		 tip184 = "Name (required)",
+		 tip185 = "View CustomList",
+		 tip186 = "Hunts Settings",
+		 tip187 = "General settings",
+		 tip188 = "Aether Currents",
+		 tip189 = "Left-click to Add to CustomList\nRight-click to Cancel",
+		 tip190 = "AH Radar\nopen to standard window",
+		 tip191 = "Use AetheryteTicket",
+		 tip192 = "Amount Setting",
+		 tip193 = "ContentID",
+		 tip194 = "name",
+		 tip195 = "note",
+		 tip196 = "Color Change for Target Lines from Other Players",
+		 tip197 = "Color Change for Target Lines from mob",
+		 tip198 = "Normal/Hazard",
+		 tip199 = "Stops BOT move if target player is within this distance,\nrecommended for use with gatherer",
+		 tip200 = "Creat Buttons",
+		 tip201 = "Text Command Button",
+		 tip202 = "Click Button(Custom Function)",
+		 tip203 = "ON/OFF Button(Custom Function)",
+		 tip204 = "Add Button",
+		 tip205 = "Initialization of input items",
+		 tip206 = "Button Name(must)",
+		 tip207 = "Image to use for Button\nEnter the name of file in \"AetheryteHelper\\CustomImage\\\" folder",
+		 tip208 = "tooltip",
+		 tip209 = "TextCommands to be executed by Left-click",
+		 tip210 = "TextCommands to be executed by Right-click",
+		 tip211 = "Execution code on Left-click\nRight click to copy",
+		 tip212 = "Execution code on Right-click\nRight click to copy",
+		 tip213 = "Pulse time of code\n0-3000\n\nAHPulse is shared with other functions and will be affected if executed at the same time",
+		 tip214 = "Execution code when button is on\nRight click to copy",
+		 tip215 = "Delete Button",
+		 tip216 = "Change of Button content",
+		 tip217 = "Load of Button settings",
+		 tip218 = "Show/hide Buttons",
+  },
+
 }
 
+AHitemsortError = {
+	title01 = "AH ItemSort",
+	J01 = "例外が発生したのでソートを停止します",
+	E01 = "An error has occurred\nstop organizing items.",
+	D01 = "Es ist ein Fehler aufgetreten\nHören Sie auf, Gegenstände zu organisieren.",
+	F01 = "Une erreur s'est produite\narrêtez d'organiser les objets.",
+	C01 = "发生了一个错误,停止整理物品",
+	K01 = "오류가 발생했습니다\n항목 정리 중지",
+	
+	title02 = "AH ItemSearch",
+	J02 = "このアイテムはひとつしか持てません",
+	E02 = "You can only have one of this item.",
+	D02 = "Sie können nur ein Exemplar dieses Artikels besitzen.",
+	F02 = "Vous ne pouvez avoir qu'une seule de ces choses.",
+	C02 = "你只能拥有其中一个项目",
+	K02 = "오류가 발생했습니다\n항목 정리 중지",
+}
 ----------------------------------------------------
 
 
@@ -1299,7 +2188,7 @@ mushPlayerGCrank = {
 	  {rank = 8, max = "45000"},
 	  {rank = 9, max = "50000"},
 	  {rank = 10, max = "80000"},
-	  {rank = 11, max = "90000"},
+    {rank = 11, max = "90000"},
 }
 mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
 mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
@@ -1307,11 +2196,15 @@ mushGCEN = {"Maelst","Adders","Flames","------"}
 mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
 mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
 mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
+mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
+mushGCKR = {"흑와단","쌍사당","불멸대","------"}
 GCexchangeItems = {
 		 jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンテナ(紅蓮)","転送網利用券(GC)"}, ---0
 		 En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},---1
 		 De = {"Wertmarken","G8Dunkelmaterie ","Glasfasern","Sonderziehungstruhe(ARR/HW)","Sonderziehungstruhe(SB) ","Teleport-Ticket(GC)"},---2
 		 Fr = {"Jetons de tâche","Matière sombre G8","Fibre de verre","Malle-surprise(ARR/HW)","Malle-surprise(SB)","Billet de transport éthéré(GC)"},---3
+		 Cn = {"探险币","8级暗物质","玻璃纤维","特殊配给货箱（重生/苍穹）","特殊配给货箱（红莲）","传送网使用券(军队)"},
+		 Kr = {"집사 급료","8등급 암흑물질","유리섬유","MaterielContainer3.0","MaterielContainer4.0","전송망 이용권(총사령부)"},
 		 cost = {
 		 [1] = 200,
 		 [2] = 600,
@@ -1344,6 +2237,7 @@ AetheryteHelper.huntlistfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\
 AetheryteHelper.RCfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'RadarColor.lua'
 AetheryteHelper.ATfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'AetheryteTicket.lua'
 AetheryteHelper.userfunc = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userCustomfunction.lua'
+AetheryteHelper.language = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'Customlanguage.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -1434,6 +2328,7 @@ local mushiS_tori = false
 local mushiS_FC = false
 local mushaccelerator = true
 local mushRitekazu = 0
+local AuL = AetheryteHelper.mushAHlanguage
 ------------------
 --Radar
 local Rcid = ""
@@ -1515,8 +2410,40 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- close
 
-function AetheryteHelper.SwitchOpen()
-  kinokoProject.Windows.MainWindows.Open = not kinokoProject.Windows.MainWindows.Open
+function AHSwitchOpen(mado)
+	  if mado == "main" then
+		  if kinokoProject.Windows.minibutton.Open == false and kinokoProject.Windows.MainWindows.Open == false then
+      kinokoProject.Windows.MainWindows.Open = not kinokoProject.Windows.MainWindows.Open
+      else
+      kinokoProject.Windows.MainWindows.Open = not kinokoProject.Windows.MainWindows.Open
+      kinokoProject.Windows.minibutton.Open = not kinokoProject.Windows.minibutton.Open
+  	  end
+    end
+  	if mado == "mI" then
+  	AetheryteHelper.insSelectGUI.open = not AetheryteHelper.insSelectGUI.open
+  	end
+  	if mado == "mWV" then
+  	AetheryteHelper.miniWV.open = not AetheryteHelper.miniWV.open
+  	end
+  	if mado == "Rd" then
+  	AetheryteHelper.RadarWindow.open = not AetheryteHelper.RadarWindow.open
+  	end
+  	if mado == "mRd" then
+  	AetheryteHelper.miniRadarWindow.open = not AetheryteHelper.miniRadarWindow.open
+  	end
+  	if mado == "JcA" then
+  	AetheryteHelper.Jumbocactpot.open = not AetheryteHelper.Jumbocactpot.open
+  	end
+  	if mado == "mip" then
+  	AetheryteHelper.mip.open = not AetheryteHelper.mip.open
+  	end
+  	if mado == "call" then
+  	AetheryteHelper.yoro_otu.open = not AetheryteHelper.yoro_otu.open
+  	end
+  	if mado == nil then
+  	io.popen([[cmd /c start "" "https://discord.com/channels/961235833124450374/961251151737679972"]]):close()
+  	end
+return tostring(mado)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1622,8 +2549,13 @@ function AetheryteHelper.LoadSettings()
 	  table.merge(AetheryteHelper.userCustomfunc,userfunc)
 	end
   end
+  if FileExists(AetheryteHelper.language) then
+	local userlanguage = persistence.load(AetheryteHelper.language)
+	if (ValidTable(userlanguage)) then
+	  table.merge(AetheryteHelper.language,userlanguage)
+	end
+  end
 end
-
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
 AetheryteHelper.LoadSettings()
@@ -1636,11 +2568,82 @@ function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.RCfile, AetheryteHelper.RadarColor)
   persistence.store(AetheryteHelper.ATfile, AetheryteHelper.ATuse)
   persistence.store(AetheryteHelper.userfunc, AetheryteHelper.userCustomfunc)
+  persistence.store(AetheryteHelper.language, AetheryteHelper.mushAHlanguage)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local AHSET = AetheryteHelper.settings.SET
 local eqFilter = AetheryteHelper.settings.Filter
 local AHeqjob = AetheryteHelper.settings.Job
+---------------------------------------------------------------------------------------------------------------------------------------------------
+local mJTp = mushtooltips.jp
+local mETp = mushtooltips.en
+local mDTp = mushtooltips.de
+local mFTp = mushtooltips.fr
+local mCTp = mushtooltips.cn
+local mKTp = mushtooltips.kr
+function AetheryteHelper.SetToolTips(tipsJ,tipsE,tipsD,tipsF,tipsC,tipsK)
+		if AuL.JP == true then
+			  GUI:SetTooltip(tipsJ)
+		elseif AuL.EN == true then
+			  GUI:SetTooltip(tipsE)
+		elseif AuL.DE == true then
+			  GUI:SetTooltip(tipsD)
+		elseif AuL.FR == true then
+			  GUI:SetTooltip(tipsF)
+		elseif AuL.CN == true then
+			  GUI:SetTooltip(tipsC)
+		elseif AuL.KR == true then
+			  GUI:SetTooltip(tipsK)
+		elseif language == 0 and gRegion == 1 then
+			  GUI:SetTooltip(tipsJ)
+		elseif language == 1 and gRegion == 1 then
+			  GUI:SetTooltip(tipsE)
+		elseif language == 2 and gRegion == 1 then
+			  GUI:SetTooltip(tipsD)
+		elseif language == 3 and gRegion == 1 then
+			  GUI:SetTooltip(tipsF)
+		elseif gRegion == 2 then
+			  GUI:SetTooltip(tipsC)
+		elseif gRegion == 3 then
+			  GUI:SetTooltip(tipsK)
+		else
+			  GUI:SetTooltip(tipsE)
+		end
+	return tipsJ,tipsE,tipsD,tipsF,tipsC,tipsK
+end
+
+
+function AetheryteHelper.IssueNotice(title,J,E,D,F,C,K)
+	  if AuL.JP == true then
+			  ffxiv_dialog_manager.IssueNotice(title,J)
+		elseif AuL.EN == true then
+			  ffxiv_dialog_manager.IssueNotice(title,E)
+		elseif AuL.DE == true then
+			  ffxiv_dialog_manager.IssueNotice(title,D)
+		elseif AuL.FR == true then
+			  ffxiv_dialog_manager.IssueNotice(title,F)
+		elseif AuL.CN == true then
+			  ffxiv_dialog_manager.IssueNotice(title,C)
+		elseif AuL.KR == true then
+			  ffxiv_dialog_manager.IssueNotice(title,K)
+		elseif language == 0 and gRegion == 1 then
+			  ffxiv_dialog_manager.IssueNotice(title,J)
+		elseif language == 1 and gRegion == 1 then
+			  ffxiv_dialog_manager.IssueNotice(title,E)
+		elseif language == 2 and gRegion == 1 then
+			  ffxiv_dialog_manager.IssueNotice(title,D)
+		elseif language == 3 and gRegion == 1 then
+			  ffxiv_dialog_manager.IssueNotice(title,F)
+		elseif gRegion == 2 then
+			  ffxiv_dialog_manager.IssueNotice(title,C)
+		elseif gRegion == 3 then
+			  ffxiv_dialog_manager.IssueNotice(title,K)
+		else
+			  ffxiv_dialog_manager.IssueNotice(title,E)
+		end
+	return title,J,E,D,F,C,K
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- ins select GUI
 local insHistory = {
@@ -1648,6 +2651,7 @@ local insHistory = {
 	selectins = false,
 	autheStep = 0
 }
+
 function AetheryteHelper.Drawinsselect()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
@@ -1671,11 +2675,7 @@ function AetheryteHelper.Drawinsselect()
 			  Player:Stop()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			  end
 			  end
 	  elseif selectins == false then
@@ -1694,11 +2694,7 @@ function AetheryteHelper.Drawinsselect()
 			 end
 			 end
 			 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			 end
 			 end
 	  end
@@ -1721,11 +2717,7 @@ function AetheryteHelper.Serverselect()
 			  Player:Stop()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			   AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			  end
 			  end
 	  elseif selectins == false then
@@ -1737,11 +2729,7 @@ function AetheryteHelper.Serverselect()
 			 autheStep = 0
 			 end
 			 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			 end
 			 end
 	  end
@@ -1757,11 +2745,7 @@ function AetheryteHelper.notuseAH()
 			  GUI:Image(ImageFolder..[[AH_non.png]],40,60)
 			  if (GUI:IsItemHovered()) then
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip00)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip00)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip00,mETp.tip00,mDTp.tip00,mFTp.tip00,mCTp.tip00,mKTp.tip00)
 			  end
 			  end
 	  GUI:EndGroup()
@@ -1778,11 +2762,7 @@ function AetheryteHelper.maininsButton()
 			 AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip06)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip06)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip06,mETp.tip06,mDTp.tip06,mFTp.tip06,mCTp.tip06,mKTp.tip06)
 			end
 	  end
 	  GUI:EndGroup()
@@ -1817,11 +2797,7 @@ function AetheryteHelper.maininsButton()
 		  insHistory.autheStep = 2
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip07)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip07)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip07,mETp.tip07,mDTp.tip07,mFTp.tip07,mCTp.tip07,mKTp.tip07)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -1841,12 +2817,8 @@ function AetheryteHelper.maininsButton()
 		  insHistory.autheStep = 2
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip08)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip08)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip08,mETp.tip08,mDTp.tip08,mFTp.tip08,mCTp.tip08,mKTp.tip08)
+			end
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -1865,12 +2837,8 @@ function AetheryteHelper.maininsButton()
 		  insHistory.autheStep = 2
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip09)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip09)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip09,mETp.tip09,mDTp.tip09,mFTp.tip09,mCTp.tip09,mKTp.tip09)
+			end
 	  end
 	  GUI:EndGroup()
 end
@@ -2047,14 +3015,12 @@ function AetheryteHelper.accessdelay()
 	  GUI:PushItemWidth(120)
 	  local changed
 		AHSET.delay, changed = GUI:SliderInt("ms",AHSET.delay,100,1000)
-		if (GUI:IsItemHovered()) then
+		if changed then
 		AetheryteHelper.SaveSettings()
-		if AHSET.mushtooltips == true then
-		   if language == 0 then
-		   GUI:SetTooltip(mushtooltips.jp.tip02)
-		   else
-		   GUI:SetTooltip(mushtooltips.en.tip02)
-		   end
+	  end
+		if (GUI:IsItemHovered()) then
+		   if AHSET.mushtooltips == true then
+		   AetheryteHelper.SetToolTips(mJTp.tip02,mETp.tip02,mDTp.tip02,mFTp.tip02,mCTp.tip02,mKTp.tip02)
 		   end
 		end
 	  GUI:PopItemWidth()
@@ -2063,18 +3029,14 @@ function AetheryteHelper.accessdelay()
 	  GUI:BeginGroup()
 	  GUI:Button( "Reset",40, 20)
 	  if (GUI:IsItemHovered()) then
-		if (GUI:IsMouseClicked(0)) then
-		  AHSET.delay = 200
-		  AetheryteHelper.SaveSettings()
-		  autheStep = 0
-		end
-		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip05)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip05)
-			  end
-			  end
+			if (GUI:IsMouseClicked(0)) then
+			  AHSET.delay = 200
+		  	AetheryteHelper.SaveSettings()
+		  	autheStep = 0
+			end
+			if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip05,mETp.tip05,mDTp.tip05,mFTp.tip05,mCTp.tip05,mKTp.tip05)
+			end
 		end
 	  GUI:EndGroup()
 end
@@ -2105,13 +3067,9 @@ function AetheryteHelper.GLUtelepo()
 	  end
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
-		if AHSET.mushtooltips == true then
-		   if language == 0 then
-		   GUI:SetTooltip(mushtooltips.jp.tip191)
-		   else
-		   GUI:SetTooltip(mushtooltips.en.tip191)
+			 if AHSET.mushtooltips == true then
+		   AetheryteHelper.SetToolTips(mJTp.tip191,mETp.tip191,mDTp.tip191,mFTp.tip191,mCTp.tip191,mKTp.tip191)
 		   end
-		end
 	  end
 	  local mushAT = {}
 	  local bags = {0,1,2,3}
@@ -2147,11 +3105,7 @@ function AetheryteHelper.GLUtelepo()
 	  end
 	  if (GUI:IsItemHovered()) then
 		if AHSET.mushtooltips == true then
-		   if language == 0 then
-		   GUI:SetTooltip(mushtooltips.jp.tip192)
-		   else
-		   GUI:SetTooltip(mushtooltips.en.tip192)
-		   end
+		   AetheryteHelper.SetToolTips(mJTp.tip192,mETp.tip192,mDTp.tip192,mFTp.tip192,mCTp.tip192,mKTp.tip192)
 		   end
 		end
 	  GUI:PopItemWidth()
@@ -2169,11 +3123,7 @@ function AetheryteHelper.GLUtelepo()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip16)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip16)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip16,mETp.tip16,mDTp.tip16,mFTp.tip16,mCTp.tip16,mKTp.tip16)
 			  end
 			  end
 	  elseif AHSET.mushmovetoMB == false then
@@ -2185,11 +3135,7 @@ function AetheryteHelper.GLUtelepo()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip16)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip16)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip16,mETp.tip16,mDTp.tip16,mFTp.tip16,mCTp.tip16,mKTp.tip16)
 			  end
 			  end
 	  end
@@ -2214,12 +3160,8 @@ function AetheryteHelper.GLUtelepo()
 			   griMBStep = 0
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip11)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip11)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip11,mETp.tip11,mDTp.tip11,mFTp.tip11,mCTp.tip11,mKTp.tip11)
+			end
 			end
 	  elseif AHSET.mushmovetoMB == false then
 			GUI:SameLine(-10,-40)
@@ -2237,12 +3179,8 @@ function AetheryteHelper.GLUtelepo()
 			  modechg = 2
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip10)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip10)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip10,mETp.tip10,mDTp.tip10,mFTp.tip10,mCTp.tip10,mKTp.tip10)
+			end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2261,12 +3199,8 @@ function AetheryteHelper.GLUtelepo()
 			   griMBStep = 0
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip13)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip13)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip13,mETp.tip13,mDTp.tip13,mFTp.tip13,mCTp.tip13,mKTp.tip13)
+		  end
 			end
 	  elseif AHSET.mushmovetoMB == false then
 			GUI:SameLine(-10,-40)
@@ -2284,12 +3218,8 @@ function AetheryteHelper.GLUtelepo()
 			  modechg = 2
 			end
 		   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip12)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip12)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip12,mETp.tip12,mDTp.tip12,mFTp.tip12,mCTp.tip12,mKTp.tip12)
+			 end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2308,12 +3238,8 @@ function AetheryteHelper.GLUtelepo()
 			   griMBStep = 0
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip15)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip15)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip15,mETp.tip15,mDTp.tip15,mFTp.tip15,mCTp.tip15,mKTp.tip15)
+		  end
 			end
 	  elseif AHSET.mushmovetoMB == false then
 			GUI:SameLine(-10,-40)
@@ -2331,12 +3257,8 @@ function AetheryteHelper.GLUtelepo()
 			  modechg = 2
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip14)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip14)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip14,mETp.tip14,mDTp.tip14,mFTp.tip14,mCTp.tip14,mKTp.tip14)
+		  end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2364,11 +3286,7 @@ function AetheryteHelper.DrawadWIP()
 			 AetheryteHelper.Jumbocactpot.open = not AetheryteHelper.Jumbocactpot.open
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip17)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip17)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip17,mETp.tip17,mDTp.tip17,mFTp.tip17,mCTp.tip17,mKTp.tip17)
 			  end
 			end
 	  GUI:EndGroup()
@@ -2381,12 +3299,8 @@ function AetheryteHelper.DrawadWIP()
 			mushundersize = true
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip18)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip18)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip18,mETp.tip18,mDTp.tip18,mFTp.tip18,mCTp.tip18,mKTp.tip18)
+			end
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -2398,12 +3312,8 @@ function AetheryteHelper.DrawadWIP()
 			mushExplorer = true
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip19)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip19)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip19,mETp.tip19,mDTp.tip19,mFTp.tip19,mCTp.tip19,mKTp.tip19)
+			end
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -2414,12 +3324,8 @@ function AetheryteHelper.DrawadWIP()
 			AetheryteHelper.yoro_otu.open = not AetheryteHelper.yoro_otu.open
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip118)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip118)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip118,mETp.tip118,mDTp.tip118,mFTp.tip118,mCTp.tip118,mKTp.tip118)
+		  end
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -2430,12 +3336,8 @@ function AetheryteHelper.DrawadWIP()
 			AetheryteHelper.mip.open = not AetheryteHelper.mip.open
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip112)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip112)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip112,mETp.tip112,mDTp.tip112,mFTp.tip112,mCTp.tip112,mKTp.tip112)
+			end
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -2446,12 +3348,8 @@ function AetheryteHelper.DrawadWIP()
 			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip200)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip200)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip200,mETp.tip200,mDTp.tip200,mFTp.tip200,mCTp.tip200,mKTp.tip200)
+		  end
 	  end
 	  GUI:EndGroup()
 	  GUI:Spacing()
@@ -2472,12 +3370,8 @@ function AetheryteHelper.Drawadjank()
 			io.popen([[cmd /c start "" "]]..AHLinks.link4..[["]]):close()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip20)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip20)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip20,mETp.tip20,mDTp.tip20,mFTp.tip20,mCTp.tip20,mKTp.tip20)
+			end
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -2488,17 +3382,9 @@ function AetheryteHelper.Drawadjank()
 		  AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
 		end
 		if GUI:IsMouseDown(0) then
-		if language == 0 then
-		GUI:SetTooltip(mushtooltips.jp.tip106)
+		AetheryteHelper.SetToolTips(mJTp.tip106,mETp.tip106,mDTp.tip106,mFTp.tip106,mCTp.tip106,mKTp.tip106)
 		else
-		GUI:SetTooltip(mushtooltips.en.tip106)
-		end
-		else
-		if language == 0 then
-		GUI:SetTooltip(mushtooltips.jp.tip105)
-		else
-		GUI:SetTooltip(mushtooltips.en.tip105)
-		end
+		AetheryteHelper.SetToolTips(mJTp.tip105,mETp.tip105,mDTp.tip105,mFTp.tip105,mCTp.tip105,mKTp.tip105)
 	  end
 	  end
 	  GUI:EndGroup()
@@ -2561,12 +3447,8 @@ function AetheryteHelper.DrawadItems()
 			   itemunique = nil
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip122)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip122)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip122,mETp.tip122,mDTp.tip122,mFTp.tip122,mCTp.tip122,mKTp.tip122)
+		  end
 			end
 	  elseif AHSET.mushitemSearch == false then
 			GUI:SameLine(10,-40)
@@ -2613,12 +3495,8 @@ function AetheryteHelper.DrawadItems()
 			   itemunique = nil
 			   end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip122)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip122)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip122,mETp.tip122,mDTp.tip122,mFTp.tip122,mCTp.tip122,mKTp.tip122)
+			end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2635,12 +3513,8 @@ function AetheryteHelper.DrawadItems()
 			  mushiS_FC = false
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip123)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip123)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip123,mETp.tip123,mDTp.tip123,mFTp.tip123,mCTp.tip123,mKTp.tip123)
+		  end
 			end
 	  elseif AHSET.mushitemSearch == false or mushiS_rite == false then
 			GUI:SameLine(10,-40)
@@ -2652,12 +3526,8 @@ function AetheryteHelper.DrawadItems()
 			  mushiS_FC = false
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip123)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip123)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip123,mETp.tip123,mDTp.tip123,mFTp.tip123,mCTp.tip123,mKTp.tip123)
+			end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2674,12 +3544,8 @@ function AetheryteHelper.DrawadItems()
 			  mushiS_FC = false
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip124)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip124)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip124,mETp.tip124,mDTp.tip124,mFTp.tip124,mCTp.tip124,mKTp.tip124)
+		  end
 			end
 	  elseif AHSET.mushitemSearch == false or mushiS_tori == false then
 			GUI:SameLine(10,-40)
@@ -2691,12 +3557,8 @@ function AetheryteHelper.DrawadItems()
 			  mushiS_FC = false
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip124)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip124)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip124,mETp.tip124,mDTp.tip124,mFTp.tip124,mCTp.tip124,mKTp.tip124)
+		  end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2713,12 +3575,8 @@ function AetheryteHelper.DrawadItems()
 			  mushiS_rite = false
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip125)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip125)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip125,mETp.tip125,mDTp.tip125,mFTp.tip125,mCTp.tip125,mKTp.tip125)
+		  end
 			end
 	  elseif AHSET.mushitemSearch == false or mushiS_FC == false then
 			GUI:SameLine(10,-40)
@@ -2730,12 +3588,8 @@ function AetheryteHelper.DrawadItems()
 			  mushiS_rite = false
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip125)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip125)
-			  end
-			  end
+        AetheryteHelper.SetToolTips(mJTp.tip125,mETp.tip125,mDTp.tip125,mFTp.tip125,mCTp.tip125,mKTp.tip125)
+			end
 			end
 	  end
 	  GUI:EndGroup()
@@ -2760,12 +3614,8 @@ function AetheryteHelper.DrawadItems()
 			  mushaccelerator = not mushaccelerator
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip135)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip135)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip135,mETp.tip135,mDTp.tip135,mFTp.tip135,mCTp.tip135,mKTp.tip135)
+			end
 			end
 		 elseif mushaccelerator == false then
 			GUI:SameLine(5,-30)
@@ -2775,12 +3625,8 @@ function AetheryteHelper.DrawadItems()
 			 mushaccelerator = not mushaccelerator
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip136)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip136)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip136,mETp.tip136,mDTp.tip136,mFTp.tip136,mCTp.tip136,mKTp.tip136)
+		  end
 			end
 		 end
 		 GUI:EndGroup()
@@ -2808,20 +3654,12 @@ function AetheryteHelper.DrawadItems()
 			   end
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-				if AHitemsortR == false then
-				GUI:SetTooltip(mushtooltips.jp.tip137)
+			  if AHitemsortR == false then
+				AetheryteHelper.SetToolTips(mJTp.tip137,mETp.tip137,mDTp.tip137,mFTp.tip137,mCTp.tip137,mKTp.tip137)
 				else
-				GUI:SetTooltip(mushtooltips.jp.tip120)
+				AetheryteHelper.SetToolTips(mJTp.tip120,mETp.tip120,mDTp.tip120,mFTp.tip120,mCTp.tip120,mKTp.tip120)
 				end
-			  else
-				if AHitemsortR == false then
-				GUI:SetTooltip(mushtooltips.en.tip137)
-				else
-				GUI:SetTooltip(mushtooltips.en.tip120)
-				end
-			  end
-			  end
+			end
 		end
 		GUI:EndGroup()
 		GUI:Separator()
@@ -3046,12 +3884,8 @@ function AetheryteHelper.DrawadItems()
 			  mushaccelerator = not mushaccelerator
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip138)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip138)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip138,mETp.tip138,mDTp.tip138,mFTp.tip138,mCTp.tip138,mKTp.tip138)
+			end
 			end
 		 elseif mushaccelerator == false then
 			GUI:SameLine(5,-30)
@@ -3061,12 +3895,8 @@ function AetheryteHelper.DrawadItems()
 			 mushaccelerator = not mushaccelerator
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip139)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip139)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip139,mETp.tip139,mDTp.tip139,mFTp.tip139,mCTp.tip139,mKTp.tip139)
+			end
 			end
 		 end
 		 GUI:EndGroup()
@@ -3088,20 +3918,12 @@ function AetheryteHelper.DrawadItems()
 			   end
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
 				if AHitemsortR == false then
-				GUI:SetTooltip(mushtooltips.jp.tip140)
+				AetheryteHelper.SetToolTips(mJTp.tip140,mETp.tip140,mDTp.tip140,mFTp.tip140,mCTp.tip140,mKTp.tip140)
 				else
-				GUI:SetTooltip(mushtooltips.jp.tip120)
+				AetheryteHelper.SetToolTips(mJTp.tip120,mETp.tip120,mDTp.tip120,mFTp.tip120,mCTp.tip120,mKTp.tip120)
 				end
-			  else
-				if AHitemsortR == false then
-				GUI:SetTooltip(mushtooltips.en.tip140)
-				else
-				GUI:SetTooltip(mushtooltips.en.tip120)
-				end
-			  end
-			  end
+			end
 		end
 		GUI:EndGroup()
 	  elseif AHSET.mushitemSearch == true and mushiS_FC == true then
@@ -3121,12 +3943,8 @@ function AetheryteHelper.DrawadItems()
 			  mushaccelerator = not mushaccelerator
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip141)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip141)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip141,mETp.tip141,mDTp.tip141,mFTp.tip141,mCTp.tip141,mKTp.tip141)
+		  end
 			end
 		 elseif mushaccelerator == false then
 			GUI:SameLine(5,-30)
@@ -3136,12 +3954,8 @@ function AetheryteHelper.DrawadItems()
 			 mushaccelerator = not mushaccelerator
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip142)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip142)
-			  end
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip142,mETp.tip142,mDTp.tip142,mFTp.tip142,mCTp.tip142,mKTp.tip142)
+		  end
 			end
 		 end
 		 GUI:EndGroup()
@@ -3166,20 +3980,12 @@ function AetheryteHelper.DrawadItems()
 			   end
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
 				if AHitemsort == false then
-				GUI:SetTooltip(mushtooltips.jp.tip119)
+				AetheryteHelper.SetToolTips(mJTp.tip119,mETp.tip119,mDTp.tip119,mFTp.tip119,mCTp.tip119,mKTp.tip119)
 				else
-				GUI:SetTooltip(mushtooltips.jp.tip120)
+				AetheryteHelper.SetToolTips(mJTp.tip120,mETp.tip120,mDTp.tip120,mFTp.tip120,mCTp.tip120,mKTp.tip120)
 				end
-			  else
-				if AHitemsort == false then
-				GUI:SetTooltip(mushtooltips.en.tip119)
-				else
-				GUI:SetTooltip(mushtooltips.en.tip120)
-				end
-			  end
-			  end
+		  end
 	  end
 	  GUI:EndGroup()
 	  GUI:Spacing()
@@ -3196,11 +4002,7 @@ function AetheryteHelper.DrawadItems()
 		GUI:EndGroup()
 		if (GUI:IsItemHovered()) then
 			if AHSET.mushtooltips == true then
-				if language == 0 then
-				GUI:SetTooltip(mushtooltips.jp.tip126)
-				else
-				GUI:SetTooltip(mushtooltips.jp.tip126)
-				end
+				AetheryteHelper.SetToolTips(mJTp.tip126,mETp.tip126,mDTp.tip126,mFTp.tip126,mCTp.tip126,mKTp.tip126)
 			end
 		end
 		GUI:Spacing()
@@ -3215,11 +4017,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip127)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip127)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip127,mETp.tip127,mDTp.tip127,mFTp.tip127,mCTp.tip127,mKTp.tip127)
 			  end
 			end
 		 elseif AHSET.syokuzai == false then
@@ -3231,11 +4029,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip127)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip127)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip127,mETp.tip127,mDTp.tip127,mFTp.tip127,mCTp.tip127,mKTp.tip127)
 			  end
 			end
 		 end
@@ -3252,11 +4046,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip128)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip128)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip128,mETp.tip128,mDTp.tip128,mFTp.tip128,mCTp.tip128,mKTp.tip128)
 			  end
 			end
 		 elseif AHSET.sekizai == false then
@@ -3268,11 +4058,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip128)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip128)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip128,mETp.tip128,mDTp.tip128,mFTp.tip128,mCTp.tip128,mKTp.tip128)
 			  end
 			end
 		 end
@@ -3289,11 +4075,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip129)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip129)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip129,mETp.tip129,mDTp.tip129,mFTp.tip129,mCTp.tip129,mKTp.tip129)
 			  end
 			end
 		 elseif AHSET.kinzoku == false then
@@ -3305,11 +4087,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip129)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip129)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip129,mETp.tip129,mDTp.tip129,mFTp.tip129,mCTp.tip129,mKTp.tip129)
 			  end
 			end
 		 end
@@ -3326,11 +4104,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip130)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip130)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip130,mETp.tip130,mDTp.tip130,mFTp.tip130,mCTp.tip130,mKTp.tip130)
 			  end
 			end
 		 elseif AHSET.mokuzai == false then
@@ -3342,11 +4116,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip130)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip130)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip130,mETp.tip130,mDTp.tip130,mFTp.tip130,mCTp.tip130,mKTp.tip130)
 			  end
 			end
 		 end
@@ -3363,11 +4133,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip131)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip131)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip131,mETp.tip131,mDTp.tip131,mFTp.tip131,mCTp.tip131,mKTp.tip131)
 			  end
 			end
 		 elseif AHSET.nuno == false then
@@ -3379,11 +4145,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip131)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip131)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip131,mETp.tip131,mDTp.tip131,mFTp.tip131,mCTp.tip131,mKTp.tip131)
 			  end
 			end
 		 end
@@ -3400,11 +4162,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip132)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip132)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip132,mETp.tip132,mDTp.tip132,mFTp.tip132,mCTp.tip132,mKTp.tip132)
 			  end
 			end
 		 elseif AHSET.kawa == false then
@@ -3416,11 +4174,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip132)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip132)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip132,mETp.tip132,mDTp.tip132,mFTp.tip132,mCTp.tip132,mKTp.tip132)
 			  end
 			end
 		 end
@@ -3437,11 +4191,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip133)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip133)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip133,mETp.tip133,mDTp.tip133,mFTp.tip133,mCTp.tip133,mKTp.tip133)
 			  end
 			end
 		 elseif AHSET.hone == false then
@@ -3453,11 +4203,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip133)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip133)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip133,mETp.tip133,mDTp.tip133,mFTp.tip133,mCTp.tip133,mKTp.tip133)
 			  end
 			end
 		 end
@@ -3474,11 +4220,7 @@ function AetheryteHelper.DrawadItems()
 			  AetheryteHelper.SaveSettings()
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip134)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip134)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip134,mETp.tip134,mDTp.tip134,mFTp.tip134,mCTp.tip134,mKTp.tip134)
 			  end
 			end
 		 elseif AHSET.renkin == false then
@@ -3490,11 +4232,7 @@ function AetheryteHelper.DrawadItems()
 			 AetheryteHelper.SaveSettings()
 			  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip134)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip134)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip134,mETp.tip134,mDTp.tip134,mFTp.tip134,mCTp.tip134,mKTp.tip134)
 			  end
 			end
 		 end
@@ -3512,23 +4250,19 @@ function AetheryteHelper.minimush()
 	  GUI:SetNextWindowSize(40,40)
 	  minikinoko.Visible, minikinoko.Open = GUI:Begin('mini', minikinoko.Open,minikinoko.Option)
 	  if (minikinoko.Visible) then
-	  GUI:SameLine(5)
-	  GUI:BeginGroup()
-	  GUI:Image(ImageFolder..[[AetheryteHelper.png]],30,30)
-	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
-		 if GUI:IsMouseDoubleClicked(0) then
-		 Windows.Open = true
-		 minikinoko.Open = false
-		 end
-		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip21)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip21)
-			  end
-			  end
-	  end
+	  	GUI:SameLine(5)
+	  	GUI:BeginGroup()
+	  	GUI:Image(ImageFolder..[[AetheryteHelper.png]],30,30)
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		 		if GUI:IsMouseDoubleClicked(0) then
+		 		Windows.Open = true
+		 		minikinoko.Open = false
+		 		end
+		 		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip21,mETp.tip21,mDTp.tip21,mFTp.tip21,mCTp.tip21,mKTp.tip21)
+	   		end
+	  	end
 	  end
 	  GUI:End()
    end
@@ -3560,11 +4294,7 @@ function AetheryteHelper.TCListHeader()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[howto.png]],20,20)
 	  if GUI:IsItemHovered() then
-		if language == 0 then
-		  GUI:SetTooltip(mushtooltips.jp.tip111)
-		else
-		  GUI:SetTooltip(mushtooltips.en.tip111)
-		end
+		AetheryteHelper.SetToolTips(mJTp.tip111,mETp.tip111,mDTp.tip111,mFTp.tip111,mCTp.tip111,mKTp.tip111)
 	  end
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -3611,11 +4341,7 @@ function AetheryteHelper.TCListHeader()
 		  end
 		end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip121)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip121)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip121,mETp.tip121,mDTp.tip121,mFTp.tip121,mCTp.tip121,mKTp.tip121)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -3650,11 +4376,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		 end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3679,11 +4401,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		 end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3708,11 +4426,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		 end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3737,11 +4451,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3766,11 +4476,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3795,11 +4501,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3824,11 +4526,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3853,11 +4551,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3882,11 +4576,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3911,11 +4601,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3940,11 +4626,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3969,11 +4651,7 @@ function AetheryteHelper.TCListwindow()
 		  end
 		  end
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip110)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip110)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
 		end
 	  end
 	  GUI:EndGroup()
@@ -3999,11 +4677,7 @@ function AetheryteHelper.SubWindow()
 		AetheryteHelper.miniGUI.open = false
 		end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip22)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip22)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
 			  end
 	  end
 	  GUI:Separator()
@@ -4113,12 +4787,12 @@ function AetheryteHelper.CBcodeEditWindows()
 		end
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
+	  	if GUI:IsItemClicked(1) then
+	  	GUI:SetClipboardText(AHuserfuncCode01)
+	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied")
+	  	end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip211)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip211)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip211,mETp.tip211,mDTp.tip211,mFTp.tip211,mCTp.tip211,mKTp.tip211)
 		end
 	  end
 	  GUI:Spacing()
@@ -4132,12 +4806,12 @@ function AetheryteHelper.CBcodeEditWindows()
 		end
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
+	  	if GUI:IsItemClicked(1) then
+	  	GUI:SetClipboardText(AHuserfuncCode02)
+	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied")
+	  	end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip212)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip212)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip212,mETp.tip212,mDTp.tip212,mFTp.tip212,mCTp.tip212,mKTp.tip212)
 		end
 	  end
 	  end
@@ -4150,12 +4824,12 @@ function AetheryteHelper.CBcodeEditWindows()
 		end
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
+	  	if GUI:IsItemClicked(1) then
+	  	GUI:SetClipboardText(AHuserfuncCode03)
+	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied")
+	  	end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip214)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip214)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip214,mETp.tip214,mDTp.tip214,mFTp.tip214,mCTp.tip214,mKTp.tip214)
 		end
 	  end
 	  end
@@ -4205,11 +4879,7 @@ function AetheryteHelper.CreateButtonWindows()
 		  AetheryteHelper.CBcodeEditor.open = false
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip201)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip201)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip201,mETp.tip201,mDTp.tip201,mFTp.tip201,mCTp.tip201,mKTp.tip201)
 			end
 	  end
 
@@ -4233,11 +4903,7 @@ function AetheryteHelper.CreateButtonWindows()
 			AetheryteHelper.CBcodeEditor.open = true
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip202)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip202)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip202,mETp.tip202,mDTp.tip202,mFTp.tip202,mCTp.tip202,mKTp.tip202)
 			end
 	  end
 	  
@@ -4261,11 +4927,7 @@ function AetheryteHelper.CreateButtonWindows()
 		  AetheryteHelper.CBcodeEditor.open = true
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip203)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip203)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip203,mETp.tip203,mDTp.tip203,mFTp.tip203,mCTp.tip203,mKTp.tip203)
 			end
 	  end
 	  GUI:NextColumn()
@@ -4299,11 +4961,7 @@ function AetheryteHelper.CreateButtonWindows()
 		    end
 		  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip204)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip204)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip204,mETp.tip204,mDTp.tip204,mFTp.tip204,mCTp.tip204,mKTp.tip204)
 			end
 	  end
 	  GUI:EndGroup()
@@ -4315,11 +4973,7 @@ function AetheryteHelper.CreateButtonWindows()
 	 			AetheryteHelper.CBReset()
 		  end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip205)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip205)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip205,mETp.tip205,mDTp.tip205,mFTp.tip205,mCTp.tip205,mKTp.tip205)
 			end
 	  end
 	  GUI:EndGroup()
@@ -4332,11 +4986,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip206)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip206)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip206,mETp.tip206,mDTp.tip206,mFTp.tip206,mCTp.tip206,mKTp.tip206)
 		end
 	  end
 
@@ -4349,11 +4999,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip207)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip207)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip207,mETp.tip207,mDTp.tip207,mFTp.tip207,mCTp.tip207,mKTp.tip207)
 		end
 	  end
 	  elseif CBmodeonoff == true then
@@ -4365,11 +5011,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip207)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip207)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip207,mETp.tip207,mDTp.tip207,mFTp.tip207,mCTp.tip207,mKTp.tip207)
 		end
 	  end
 	  GUI:SameLine()
@@ -4381,11 +5023,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip207)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip207)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip207,mETp.tip207,mDTp.tip207,mFTp.tip207,mCTp.tip207,mKTp.tip207)
 		end
 	  end
 	  end
@@ -4396,11 +5034,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip208)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip208)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip208,mETp.tip208,mDTp.tip208,mFTp.tip208,mCTp.tip208,mKTp.tip208)
 		end
 	  end
 	  if CBmodetext == true then
@@ -4409,11 +5043,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  CBtextL = GUI:InputText("##CBtextL",CBtextL)
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip209)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip209)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip209,mETp.tip209,mDTp.tip209,mFTp.tip209,mCTp.tip209,mKTp.tip209)
 		end
 	  end
 	  GUI:EndGroup()
@@ -4422,11 +5052,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  CBtextR = GUI:InputText("##CBtextR",CBtextR)
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip210)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip210)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip210,mETp.tip210,mDTp.tip210,mFTp.tip210,mCTp.tip210,mKTp.tip210)
 		end
 	  end
 	  GUI:EndGroup()
@@ -4439,11 +5065,7 @@ function AetheryteHelper.CreateButtonWindows()
 	  CBpulse = GUI:InputInt("##CBpulse",CBpulse,1,100)
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip213)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip213)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip213,mETp.tip213,mDTp.tip213,mFTp.tip213,mCTp.tip213,mKTp.tip213)
 		end
 	  end
 	  if CBpulse < 0 then CBpulse = 0 end
@@ -4497,11 +5119,7 @@ function AetheryteHelper.CBlist()
    		GUI:EndGroup()
    		if GUI:IsItemHovered() then
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip218)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip218)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip218,mETp.tip218,mDTp.tip218,mFTp.tip218,mCTp.tip218,mKTp.tip218)
 			end
 	  	end
 			GUI:NextColumn()
@@ -4511,11 +5129,7 @@ function AetheryteHelper.CBlist()
 			GUI:EndGroup()
 			if GUI:IsItemHovered() then
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip201)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip201)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip201,mETp.tip201,mDTp.tip201,mFTp.tip201,mCTp.tip201,mKTp.tip201)
 			end
 	  	end
 			elseif v[7] == 1 then
@@ -4524,11 +5138,7 @@ function AetheryteHelper.CBlist()
 			GUI:EndGroup()
 			if GUI:IsItemHovered() then
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip202)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip202)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip202,mETp.tip202,mDTp.tip202,mFTp.tip202,mCTp.tip202,mKTp.tip202)
 			end
 	  	end
 			elseif v[7] == 2 then
@@ -4537,11 +5147,7 @@ function AetheryteHelper.CBlist()
 		  GUI:EndGroup()
 		  if GUI:IsItemHovered() then
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip203)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip203)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip203,mETp.tip203,mDTp.tip203,mFTp.tip203,mCTp.tip203,mKTp.tip203)
 			end
 	  	end
 		  end
@@ -4578,11 +5184,7 @@ function AetheryteHelper.CBlist()
 					AHuserfuncCode03 = v[14]
 				end
 				if AHSET.mushtooltips == true then
-			  	if language == 0 then
-			  	GUI:SetTooltip("["..v[2].."]\n"..mushtooltips.jp.tip217)
-			  	else
-			  	GUI:SetTooltip("["..v[2].."]\n"..mushtooltips.en.tip217)
-			  	end
+			  	AetheryteHelper.SetToolTips("["..v[2].."]\n"..mJTp.tip217,"["..v[2].."]\n"..mETp.tip217,"["..v[2].."]\n"..mDTp.tip217,"["..v[2].."]\n"..mFTp.tip217,"["..v[2].."]\n"..mCTp.tip217,"["..v[2].."]\n"..mKTp.tip217)
 				end
 			end
 			GUI:EndGroup()
@@ -4608,11 +5210,7 @@ function AetheryteHelper.CBlist()
 	  			end
 	  		end
 	  		if AHSET.mushtooltips == true then
-				if language == 0 then
-				GUI:SetTooltip(mushtooltips.jp.tip216)
-				else
-				GUI:SetTooltip(mushtooltips.en.tip216)
-				end
+				AetheryteHelper.SetToolTips(mJTp.tip216,mETp.tip216,mDTp.tip216,mFTp.tip216,mCTp.tip216,mKTp.tip216)
 	  		end
    		end
 			GUI:EndGroup()
@@ -4625,11 +5223,7 @@ function AetheryteHelper.CBlist()
 	  		AetheryteHelper.SaveSettings()
 	  		end
 	  		if AHSET.mushtooltips == true then
-				if language == 0 then
-				GUI:SetTooltip(mushtooltips.jp.tip215)
-				else
-				GUI:SetTooltip(mushtooltips.en.tip215)
-				end
+				AetheryteHelper.SetToolTips(mJTp.tip215,mETp.tip215,mDTp.tip215,mFTp.tip215,mCTp.tip215,mKTp.tip215)
 	  		end
    		end
 			GUI:EndGroup()
@@ -4905,11 +5499,7 @@ function AetheryteHelper.VlWindow()
 		AetheryteHelper.VersionList.open = false
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip22)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip22)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
 		end
 	  end
 	  GUI:EndGroup()
@@ -4952,11 +5542,7 @@ function AetheryteHelper.insSelecterWindow()
 			  Player:Stop()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			  end
 			  end
 	  elseif selectins == false then
@@ -4975,11 +5561,7 @@ function AetheryteHelper.insSelecterWindow()
 			  end
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			  end
 			  end
 	  end
@@ -4988,11 +5570,7 @@ function AetheryteHelper.insSelecterWindow()
 			  GUI:Image(ImageFolder..[[AH_non.png]],20,20)
 			  if (GUI:IsItemHovered()) then
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip00)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip00)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip00,mETp.tip00,mDTp.tip00,mFTp.tip00,mCTp.tip00,mKTp.tip00)
 			  end
 			  end
 	  end
@@ -5015,11 +5593,7 @@ function AetheryteHelper.insSelecterWindow()
 		  insHistory.autheStep = 2
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip07)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip07)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip07,mETp.tip07,mDTp.tip07,mFTp.tip07,mCTp.tip07,mKTp.tip07)
 			  end
 	  else
 	  GUI:SameLine(-5,-20)
@@ -5043,11 +5617,7 @@ function AetheryteHelper.insSelecterWindow()
 		  insHistory.autheStep = 2
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip08)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip08)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip08,mETp.tip08,mDTp.tip08,mFTp.tip08,mCTp.tip08,mKTp.tip08)
 			  end
 	  else
 	  GUI:SameLine(-5,-20)
@@ -5071,11 +5641,7 @@ function AetheryteHelper.insSelecterWindow()
 		  insHistory.autheStep = 2
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip09)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip09)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip09,mETp.tip09,mDTp.tip09,mFTp.tip09,mCTp.tip09,mKTp.tip09)
 			  end
 	  else
 	  GUI:SameLine(-5,-20)
@@ -5092,11 +5658,7 @@ function AetheryteHelper.insSelecterWindow()
 		  AetheryteHelper.insSelectGUI.open = false
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip22)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip22)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -5157,11 +5719,7 @@ function AetheryteHelper.jumboWindow()
 		 mushGSjcpstep = 0
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip23)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip23)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip23,mETp.tip23,mDTp.tip23,mFTp.tip23,mCTp.tip23,mKTp.tip23)
 			  end
 	 end
 	  GUI:AlignFirstTextHeightToWidgets()
@@ -5203,11 +5761,7 @@ function AetheryteHelper.jumboWindow()
 		 mushGSjcpstep = 0
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip23)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip23)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip23,mETp.tip23,mDTp.tip23,mFTp.tip23,mCTp.tip23,mKTp.tip23)
 			  end
 	  end
 	  GUI:AlignFirstTextHeightToWidgets()
@@ -5250,11 +5804,7 @@ function AetheryteHelper.jumboWindow()
 		 mushGSjcpstep = 0
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip23)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip23)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip23,mETp.tip23,mDTp.tip23,mFTp.tip23,mCTp.tip23,mKTp.tip23)
 			  end
 	 end
 	  GUI:AlignFirstTextHeightToWidgets()
@@ -5294,11 +5844,7 @@ function AetheryteHelper.jumboWindow()
 		 mushGSjcpstep = 0
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip107)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip107)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip107,mETp.tip107,mDTp.tip107,mFTp.tip107,mCTp.tip107,mKTp.tip107)
 			  end
 	  end
 	  GUI:SameLine()
@@ -5307,11 +5853,7 @@ function AetheryteHelper.jumboWindow()
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip24)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip24)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip24,mETp.tip24,mDTp.tip24,mFTp.tip24,mCTp.tip24,mKTp.tip24)
 			  end
 	  end
 
@@ -5473,11 +6015,7 @@ function AetheryteHelper.MIPselect()
 		  AetheryteHelper.SaveSettings()
 		end
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip114)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip114)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip114,mETp.tip114,mDTp.tip114,mFTp.tip114,mCTp.tip114,mKTp.tip114)
 		 end
 	  end
 	  GUI:EndGroup()
@@ -5496,11 +6034,7 @@ function AetheryteHelper.MIPselect()
 	  GUI:EndGroup()
 	   if GUI:IsItemHovered() then
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip113)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip113)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip113,mETp.tip113,mDTp.tip113,mFTp.tip113,mCTp.tip113,mKTp.tip113)
 		 end
 	  end
 	  GUI:SameLine()
@@ -5601,11 +6135,7 @@ function AetheryteHelper.YoroOtu()
 		  AetheryteHelper.SaveSettings()
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip114)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip114)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip114,mETp.tip114,mDTp.tip114,mFTp.tip114,mCTp.tip114,mKTp.tip114)
 		 end
 	  end
 	  GUI:SameLine()
@@ -5621,11 +6151,7 @@ function AetheryteHelper.YoroOtu()
 	  AetheryteHelper.SaveSettings()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip115)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip115)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip115,mETp.tip115,mDTp.tip115,mFTp.tip115,mCTp.tip115,mKTp.tip115)
 		end
 	  end
 	  GUI:EndGroup()
@@ -5637,11 +6163,7 @@ function AetheryteHelper.YoroOtu()
 	  AetheryteHelper.SaveSettings()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip116)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip116)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip116,mETp.tip116,mDTp.tip116,mFTp.tip116,mCTp.tip116,mKTp.tip116)
 		end
 	  end
 	  GUI:EndGroup()
@@ -5656,11 +6178,7 @@ function AetheryteHelper.YoroOtu()
 		  AetheryteHelper.SaveSettings()
 		end
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip114)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip114)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip114,mETp.tip114,mDTp.tip114,mFTp.tip114,mCTp.tip114,mKTp.tip114)
 		 end
 	  end
 	  GUI:SameLine()
@@ -5676,11 +6194,7 @@ function AetheryteHelper.YoroOtu()
 	  AetheryteHelper.SaveSettings()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip115)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip115)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip115,mETp.tip115,mDTp.tip115,mFTp.tip115,mCTp.tip115,mKTp.tip115)
 		end
 	  end
 	  GUI:EndGroup()
@@ -5692,11 +6206,7 @@ function AetheryteHelper.YoroOtu()
 	  AetheryteHelper.SaveSettings()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip116)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip116)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip116,mETp.tip116,mDTp.tip116,mFTp.tip116,mCTp.tip116,mKTp.tip116)
 		end
 	  end
 	  GUI:EndGroup()
@@ -5793,11 +6303,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip167)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip167)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip167,mETp.tip167,mDTp.tip167,mFTp.tip167,mCTp.tip167,mKTp.tip167)
 		end
 	end
 	GUI:BeginGroup()
@@ -5815,11 +6321,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip168)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip168)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip168,mETp.tip168,mDTp.tip168,mFTp.tip168,mCTp.tip168,mKTp.tip168)
 		end
 	end
 	GUI:SameLine()
@@ -5838,11 +6340,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip169)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip169)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip169,mETp.tip169,mDTp.tip169,mFTp.tip169,mCTp.tip169,mKTp.tip169)
 		end
 	end
 	GUI:BeginGroup()
@@ -5858,11 +6356,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip196)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip196)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip196,mETp.tip196,mDTp.tip196,mFTp.tip196,mCTp.tip196,mKTp.tip196)
 		end
 	end
 	GUI:SameLine()
@@ -5879,11 +6373,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip169)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip169)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip169,mETp.tip169,mDTp.tip169,mFTp.tip169,mCTp.tip169,mKTp.tip169)
 		end
 	end
 	GUI:BeginGroup()
@@ -5899,11 +6389,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip197)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip197)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip197,mETp.tip197,mDTp.tip197,mFTp.tip197,mCTp.tip197,mKTp.tip197)
 		end
 	end
 	GUI:SameLine()
@@ -5920,11 +6406,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip169)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip169)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip169,mETp.tip169,mDTp.tip169,mFTp.tip169,mCTp.tip169,mKTp.tip169)
 		end
 	end
 	GUI:Spacing()
@@ -5943,11 +6425,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -5963,11 +6441,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -5983,11 +6457,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6003,11 +6473,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6023,11 +6489,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6043,11 +6505,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6063,11 +6521,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6083,11 +6537,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6103,11 +6553,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6123,11 +6569,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6143,11 +6585,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 	GUI:BeginGroup()
@@ -6163,11 +6601,7 @@ function AetheryteHelper.RadarGeneralDrow()
 	GUI:EndGroup()
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip166)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip166)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	end
 
@@ -6180,11 +6614,7 @@ function AetheryteHelper.RadarhuntDrow()
 	GUI:Image(ImageFolder..[[FF14_ARR.png]],72,25)
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip171)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip171)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip171,mETp.tip171,mDTp.tip171,mFTp.tip171,mCTp.tip171,mKTp.tip171)
 		end
 	end
 	GUI:EndGroup()
@@ -6210,11 +6640,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip176)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip176)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip176,mETp.tip176,mDTp.tip176,mFTp.tip176,mCTp.tip176,mKTp.tip176)
 		end
 	  end
 	  GUI:SameLine()
@@ -6239,11 +6665,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip177)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip177)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip177,mETp.tip177,mDTp.tip177,mFTp.tip177,mCTp.tip177,mKTp.tip177)
 		end
 	  end
 	  GUI:SameLine()
@@ -6268,11 +6690,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip178)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip178)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip178,mETp.tip178,mDTp.tip178,mFTp.tip178,mCTp.tip178,mKTp.tip178)
 		end
 	  end
 	  GUI:SameLine()
@@ -6297,11 +6715,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip179)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip179)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip179,mETp.tip179,mDTp.tip179,mFTp.tip179,mCTp.tip179,mKTp.tip179)
 		end
 	  end
 	  GUI:SameLine()
@@ -6309,11 +6723,7 @@ function AetheryteHelper.RadarhuntDrow()
 	GUI:Image(ImageFolder..[[FF14_HW.png]],72,25)
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip172)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip172)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip172,mETp.tip172,mDTp.tip172,mFTp.tip172,mCTp.tip172,mKTp.tip172)
 		end
 	end
 	GUI:EndGroup()
@@ -6339,11 +6749,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip176)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip176)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip176,mETp.tip176,mDTp.tip176,mFTp.tip176,mCTp.tip176,mKTp.tip176)
 		end
 	  end
 	  GUI:SameLine()
@@ -6368,11 +6774,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip177)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip177)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip177,mETp.tip177,mDTp.tip177,mFTp.tip177,mCTp.tip177,mKTp.tip177)
 		end
 	  end
 	  GUI:SameLine()
@@ -6397,11 +6799,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip178)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip178)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip178,mETp.tip178,mDTp.tip178,mFTp.tip178,mCTp.tip178,mKTp.tip178)
 		end
 	  end
 	  GUI:SameLine()
@@ -6426,11 +6824,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip179)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip179)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip179,mETp.tip179,mDTp.tip179,mFTp.tip179,mCTp.tip179,mKTp.tip179)
 		end
 	  end
 	  GUI:BeginGroup()
@@ -6446,11 +6840,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6467,11 +6857,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -6487,11 +6873,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6508,11 +6890,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -6528,11 +6906,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6549,11 +6923,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -6569,11 +6939,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6590,11 +6956,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:Spacing()
@@ -6602,11 +6964,7 @@ function AetheryteHelper.RadarhuntDrow()
 	GUI:Image(ImageFolder..[[FF14_StB.png]],72,25)
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip173)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip173)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip173,mETp.tip173,mDTp.tip173,mFTp.tip173,mCTp.tip173,mKTp.tip173)
 		end
 	end
 	GUI:EndGroup()
@@ -6632,11 +6990,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip176)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip176)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip176,mETp.tip176,mDTp.tip176,mFTp.tip176,mCTp.tip176,mKTp.tip176)
 		end
 	  end
 	  GUI:SameLine()
@@ -6661,11 +7015,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip177)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip177)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip177,mETp.tip177,mDTp.tip177,mFTp.tip177,mCTp.tip177,mKTp.tip177)
 		end
 	  end
 	  GUI:SameLine()
@@ -6690,11 +7040,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip178)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip178)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip178,mETp.tip178,mDTp.tip178,mFTp.tip178,mCTp.tip178,mKTp.tip178)
 		end
 	  end
 	  GUI:SameLine()
@@ -6719,11 +7065,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip179)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip179)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip179,mETp.tip179,mDTp.tip179,mFTp.tip179,mCTp.tip179,mKTp.tip179)
 		end
 	  end
 	  GUI:SameLine()
@@ -6731,11 +7073,7 @@ function AetheryteHelper.RadarhuntDrow()
 	GUI:Image(ImageFolder..[[FF14_ShB.png]],72,25)
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip174)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip174)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip174,mETp.tip174,mDTp.tip174,mFTp.tip174,mCTp.tip174,mKTp.tip174)
 		end
 	end
 	GUI:EndGroup()
@@ -6761,11 +7099,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip176)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip176)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip176,mETp.tip176,mDTp.tip176,mFTp.tip176,mCTp.tip176,mKTp.tip176)
 		end
 	  end
 	  GUI:SameLine()
@@ -6790,11 +7124,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip177)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip177)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip177,mETp.tip177,mDTp.tip177,mFTp.tip177,mCTp.tip177,mKTp.tip177)
 		end
 	  end
 	  GUI:SameLine()
@@ -6819,11 +7149,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip178)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip178)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip178,mETp.tip178,mDTp.tip178,mFTp.tip178,mCTp.tip178,mKTp.tip178)
 		end
 	  end
 	  GUI:SameLine()
@@ -6848,11 +7174,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip179)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip179)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip179,mETp.tip179,mDTp.tip179,mFTp.tip179,mCTp.tip179,mKTp.tip179)
 		end
 	  end
 	  GUI:BeginGroup()
@@ -6868,11 +7190,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6889,11 +7207,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -6909,11 +7223,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6930,11 +7240,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -6950,11 +7256,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -6971,11 +7273,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -6991,11 +7289,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:SameLine()
@@ -7012,11 +7306,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -7024,11 +7314,7 @@ function AetheryteHelper.RadarhuntDrow()
 	GUI:Image(ImageFolder..[[FF14_EW.png]],72,25)
 	if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			if language == 0 then
-			GUI:SetTooltip(mushtooltips.jp.tip175)
-			else
-			GUI:SetTooltip(mushtooltips.en.tip175)
-			end
+			AetheryteHelper.SetToolTips(mJTp.tip175,mETp.tip175,mDTp.tip175,mFTp.tip175,mCTp.tip175,mKTp.tip175)
 		end
 	end
 	GUI:EndGroup()
@@ -7054,11 +7340,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip176)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip176)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip176,mETp.tip176,mDTp.tip176,mFTp.tip176,mCTp.tip176,mKTp.tip176)
 		end
 	  end
 	  GUI:SameLine()
@@ -7083,11 +7365,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip177)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip177)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip177,mETp.tip177,mDTp.tip177,mFTp.tip177,mCTp.tip177,mKTp.tip177)
 		end
 	  end
 	  GUI:SameLine()
@@ -7112,11 +7390,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip178)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip178)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip178,mETp.tip178,mDTp.tip178,mFTp.tip178,mCTp.tip178,mKTp.tip178)
 		end
 	  end
 	  GUI:SameLine()
@@ -7141,11 +7415,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip179)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip179)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip179,mETp.tip179,mDTp.tip179,mFTp.tip179,mCTp.tip179,mKTp.tip179)
 		end
 	  end
 	  GUI:BeginGroup()
@@ -7161,11 +7431,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -7181,11 +7447,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -7201,11 +7463,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 	  GUI:BeginGroup()
@@ -7221,11 +7479,7 @@ function AetheryteHelper.RadarhuntDrow()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		  end
 	  end
 end
@@ -7242,11 +7496,7 @@ function AetheryteHelper.RadarCustomListDrow()
 	  GUI:PopItemWidth()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip183)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip183)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip183,mETp.tip183,mDTp.tip183,mFTp.tip183,mCTp.tip183,mKTp.tip183)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7257,11 +7507,7 @@ function AetheryteHelper.RadarCustomListDrow()
 	  GUI:PopItemWidth()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip184)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip184)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip184,mETp.tip184,mDTp.tip184,mFTp.tip184,mCTp.tip184,mKTp.tip184)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7274,11 +7520,7 @@ function AetheryteHelper.RadarCustomListDrow()
 	  GUI:PopItemWidth()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7289,11 +7531,7 @@ function AetheryteHelper.RadarCustomListDrow()
 	  GUI:PopItemWidth()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip169)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip169)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip169,mETp.tip169,mDTp.tip169,mFTp.tip169,mCTp.tip169,mKTp.tip169)
 		end
 	  end
 	  if Rthicks < 1 then Rthicks = 1 end
@@ -7309,11 +7547,7 @@ function AetheryteHelper.RadarCustomListDrow()
 		 AetheryteHelper.Radarget()
 		 end
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip180)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip180)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip180,mETp.tip180,mDTp.tip180,mFTp.tip180,mCTp.tip180,mKTp.tip180)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7325,11 +7559,7 @@ function AetheryteHelper.RadarCustomListDrow()
 		 AetheryteHelper.Radaradd()
 		 end
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip181)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip181)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip181,mETp.tip181,mDTp.tip181,mFTp.tip181,mCTp.tip181,mKTp.tip181)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7373,11 +7603,7 @@ function AetheryteHelper.miniRadar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip157)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip157)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip157,mETp.tip157,mDTp.tip157,mFTp.tip157,mCTp.tip157,mKTp.tip157)
 		end
 	  end
 	  GUI:SameLine()
@@ -7389,11 +7615,7 @@ function AetheryteHelper.miniRadar()
 		 AetheryteHelper.Radarget()
 		 end
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip180)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip180)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip180,mETp.tip180,mDTp.tip180,mFTp.tip180,mCTp.tip180,mKTp.tip180)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7408,11 +7630,7 @@ function AetheryteHelper.miniRadar()
 		 AetheryteHelper.Radarinitialize()
 		 end
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip189)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip189)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip189,mETp.tip189,mDTp.tip189,mFTp.tip189,mCTp.tip189,mKTp.tip189)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7425,11 +7643,7 @@ function AetheryteHelper.miniRadar()
 		 AetheryteHelper.RadarWindow.open = not AetheryteHelper.RadarWindow.open
 		 end
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip190)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip190)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip190,mETp.tip190,mDTp.tip190,mFTp.tip190,mCTp.tip190,mKTp.tip190)
 		end
 	  end
 	  GUI:EndGroup()
@@ -7466,11 +7680,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip157)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip157)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip157,mETp.tip157,mDTp.tip157,mFTp.tip157,mCTp.tip157,mKTp.tip157)
 		end
 	  end
 	  GUI:SameLine()
@@ -7495,11 +7705,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip158)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip158)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip158,mETp.tip158,mDTp.tip158,mFTp.tip158,mCTp.tip158,mKTp.tip158)
 		end
 	  end
 	  GUI:SameLine()
@@ -7524,11 +7730,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip159)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip159)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip159,mETp.tip159,mDTp.tip159,mFTp.tip159,mCTp.tip159,mKTp.tip159)
 		end
 	  end
 	  GUI:SameLine()
@@ -7553,11 +7755,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip160)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip160)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip160,mETp.tip160,mDTp.tip160,mFTp.tip160,mCTp.tip160,mKTp.tip160)
 		end
 	  end
 	  GUI:SameLine()
@@ -7582,11 +7780,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip161)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip161)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip161,mETp.tip161,mDTp.tip161,mFTp.tip161,mCTp.tip161,mKTp.tip161)
 		end
 	  end
 	  GUI:SameLine()
@@ -7611,11 +7805,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip162)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip162)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip162,mETp.tip162,mDTp.tip162,mFTp.tip162,mCTp.tip162,mKTp.tip162)
 		end
 	  end
 	  GUI:SameLine()
@@ -7640,11 +7830,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip163)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip163)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip163,mETp.tip163,mDTp.tip163,mFTp.tip163,mCTp.tip163,mKTp.tip163)
 		end
 	  end
 	  GUI:SameLine()
@@ -7669,11 +7855,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip164)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip164)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip164,mETp.tip164,mDTp.tip164,mFTp.tip164,mCTp.tip164,mKTp.tip164)
 		end
 	  end
 	  GUI:SameLine()
@@ -7698,11 +7880,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip165)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip165)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip165,mETp.tip165,mDTp.tip165,mFTp.tip165,mCTp.tip165,mKTp.tip165)
 		end
 	  end
 	  GUI:Spacing()
@@ -7729,11 +7907,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip144)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip144)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip144,mETp.tip144,mDTp.tip144,mFTp.tip144,mCTp.tip144,mKTp.tip144)
 		end
 	  end
 	  GUI:SameLine()
@@ -7758,11 +7932,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip153)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip153)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip153,mETp.tip153,mDTp.tip153,mFTp.tip153,mCTp.tip153,mKTp.tip153)
 		end
 	  end
 	  GUI:SameLine()
@@ -7787,11 +7957,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip154)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip154)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip154,mETp.tip154,mDTp.tip154,mFTp.tip154,mCTp.tip154,mKTp.tip154)
 		end
 	  end
 	  GUI:SameLine()
@@ -7816,11 +7982,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip145)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip145)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip145,mETp.tip145,mDTp.tip145,mFTp.tip145,mCTp.tip145,mKTp.tip145)
 		end
 	  end
 	  GUI:SameLine()
@@ -7845,11 +8007,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip146)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip146)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip146,mETp.tip146,mDTp.tip146,mFTp.tip146,mCTp.tip146,mKTp.tip146)
 		end
 	  end
 	  GUI:SameLine()
@@ -7874,11 +8032,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip147)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip147)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip147,mETp.tip147,mDTp.tip147,mFTp.tip147,mCTp.tip147,mKTp.tip147)
 		end
 	  end
 	  GUI:SameLine()
@@ -7903,11 +8057,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip150)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip150)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip150,mETp.tip150,mDTp.tip150,mFTp.tip150,mCTp.tip150,mKTp.tip150)
 		end
 	  end
 	  GUI:SameLine()
@@ -7932,11 +8082,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip155)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip155)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip155,mETp.tip155,mDTp.tip155,mFTp.tip155,mCTp.tip155,mKTp.tip155)
 		end
 	  end
 	  GUI:SameLine()
@@ -7961,11 +8107,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip188)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip188)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip188,mETp.tip188,mDTp.tip188,mFTp.tip188,mCTp.tip188,mKTp.tip188)
 		end
 	  end
 	  GUI:SameLine()
@@ -7990,11 +8132,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip156)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip156)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip156,mETp.tip156,mDTp.tip156,mFTp.tip156,mCTp.tip156,mKTp.tip156)
 		end
 	  end
 	  GUI:SameLine()
@@ -8019,11 +8157,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip149)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip149)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip149,mETp.tip149,mDTp.tip149,mFTp.tip149,mCTp.tip149,mKTp.tip149)
 		end
 	  end
 	  GUI:SameLine()
@@ -8048,11 +8182,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip151)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip151)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip151,mETp.tip151,mDTp.tip151,mFTp.tip151,mCTp.tip151,mKTp.tip151)
 		end
 	  end
 	  GUI:SameLine()
@@ -8077,11 +8207,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip170)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip170)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip170,mETp.tip170,mDTp.tip170,mFTp.tip170,mCTp.tip170,mKTp.tip170)
 		end
 	  end
 
@@ -8116,11 +8242,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip187)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip187)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip187,mETp.tip187,mDTp.tip187,mFTp.tip187,mCTp.tip187,mKTp.tip187)
 		end
 	  end
 	  GUI:SameLine()
@@ -8145,11 +8267,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip186)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip186)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip186,mETp.tip186,mDTp.tip186,mFTp.tip186,mCTp.tip186,mKTp.tip186)
 		end
 	  end
 	  GUI:SameLine()
@@ -8174,11 +8292,7 @@ function AetheryteHelper.Radar()
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip185)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip185)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip185,mETp.tip185,mDTp.tip185,mFTp.tip185,mCTp.tip185,mKTp.tip185)
 		end
 	  end
 
@@ -9023,11 +9137,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_Player.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip144)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip144)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip144,mETp.tip144,mDTp.tip144,mFTp.tip144,mCTp.tip144,mKTp.tip144)
 		end
 	  end
    GUI:EndGroup()
@@ -9036,11 +9146,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_fate.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip148)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip148)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip148,mETp.tip148,mDTp.tip148,mFTp.tip148,mCTp.tip148,mKTp.tip148)
 		end
 	  end
    GUI:EndGroup()
@@ -9049,11 +9155,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_mob.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip145)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip145)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip145,mETp.tip145,mDTp.tip145,mFTp.tip145,mCTp.tip145,mKTp.tip145)
 		end
 	  end
    GUI:EndGroup()
@@ -9062,11 +9164,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_tori.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip153)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip153)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip153,mETp.tip153,mDTp.tip153,mFTp.tip153,mCTp.tip153,mKTp.tip153)
 		end
 	  end
    GUI:EndGroup()
@@ -9076,11 +9174,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_pet.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip154)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip154)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip154,mETp.tip154,mDTp.tip154,mFTp.tip154,mCTp.tip154,mKTp.tip154)
 		end
 	  end
    GUI:EndGroup()
@@ -9089,11 +9183,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_npc.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip146)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip146)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip146,mETp.tip146,mDTp.tip146,mFTp.tip146,mCTp.tip146,mKTp.tip146)
 		end
 	  end
    GUI:EndGroup()
@@ -9102,11 +9192,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_npc.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip146)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip146)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip146,mETp.tip146,mDTp.tip146,mFTp.tip146,mCTp.tip146,mKTp.tip146)
 		end
 	  end
    GUI:EndGroup()
@@ -9115,11 +9201,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_chest.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip147)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip147)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip147,mETp.tip147,mDTp.tip147,mFTp.tip147,mCTp.tip147,mKTp.tip147)
 		end
 	  end
    GUI:EndGroup()
@@ -9128,11 +9210,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_aetheryte.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip150)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip150)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip150,mETp.tip150,mDTp.tip150,mFTp.tip150,mCTp.tip150,mKTp.tip150)
 		end
 	  end
    GUI:EndGroup()
@@ -9141,11 +9219,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_node.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip155)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip155)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip155,mETp.tip155,mDTp.tip155,mFTp.tip155,mCTp.tip155,mKTp.tip155)
 		end
 	  end
    GUI:EndGroup()
@@ -9154,11 +9228,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_object.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip151)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip151)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip151,mETp.tip151,mDTp.tip151,mFTp.tip151,mCTp.tip151,mKTp.tip151)
 		end
 	  end
    GUI:EndGroup()
@@ -9167,11 +9237,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_minion.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip156)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip156)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip156,mETp.tip156,mDTp.tip156,mFTp.tip156,mCTp.tip156,mKTp.tip156)
 		end
 	  end
    GUI:EndGroup()
@@ -9180,11 +9246,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_kagu.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip149)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip149)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip149,mETp.tip149,mDTp.tip149,mFTp.tip149,mCTp.tip149,mKTp.tip149)
 		end
 	  end
    GUI:EndGroup()
@@ -9193,11 +9255,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Image(ImageFolder..[[R_nazo.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip152)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip152)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip152,mETp.tip152,mDTp.tip152,mFTp.tip152,mCTp.tip152,mKTp.tip152)
 		end
 	  end
    GUI:EndGroup()
@@ -9224,11 +9282,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip114)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip114)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip114,mETp.tip114,mDTp.tip114,mFTp.tip114,mCTp.tip114,mKTp.tip114)
 		end
 	  end
    GUI:NextColumn()
@@ -9247,11 +9301,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip193)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip193)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip193,mETp.tip193,mDTp.tip193,mFTp.tip193,mCTp.tip193,mKTp.tip193)
 		 end
 	  end
    GUI:SameLine()
@@ -9279,11 +9329,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip194)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip194)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip194,mETp.tip194,mDTp.tip194,mFTp.tip194,mCTp.tip194,mKTp.tip194)
 		 end
 	  end
    GUI:BeginGroup()
@@ -9297,11 +9343,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip195)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip195)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip195,mETp.tip195,mDTp.tip195,mFTp.tip195,mCTp.tip195,mKTp.tip195)
 		 end
 	  end
    GUI:BeginGroup()
@@ -9316,11 +9358,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip166)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip166)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip166,mETp.tip166,mDTp.tip166,mFTp.tip166,mCTp.tip166,mKTp.tip166)
 		 end
 	  end
    GUI:SameLine()
@@ -9339,11 +9377,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip169)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip169)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip169,mETp.tip169,mDTp.tip169,mFTp.tip169,mCTp.tip169,mKTp.tip169)
 		 end
 	  end
    if v[1] == 0 then
@@ -9372,11 +9406,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip198)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip198)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip198,mETp.tip198,mDTp.tip198,mFTp.tip198,mCTp.tip198,mKTp.tip198)
 		 end
 	  end
    if v[17] == 1 then
@@ -9389,11 +9419,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:EndGroup()
     if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip199)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip199)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip199,mETp.tip199,mDTp.tip199,mFTp.tip199,mCTp.tip199,mKTp.tip199)
 		 end
 	  end
    if v[11] == 1 then AetheryteHelper.HazardPlayer(v[18],v[3]) end
@@ -9408,11 +9434,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
 	  AetheryteHelper.SaveSettings()
 	  end
 	  if AHSET.mushtooltips == true then
-		if language == 0 then
-		GUI:SetTooltip(mushtooltips.jp.tip182)
-		else
-		GUI:SetTooltip(mushtooltips.en.tip182)
-		end
+		AetheryteHelper.SetToolTips(mJTp.tip182,mETp.tip182,mDTp.tip182,mFTp.tip182,mCTp.tip182,mKTp.tip182)
 	  end
    end
    GUI:EndGroup()
@@ -9430,6 +9452,232 @@ GUI:EndGroup()
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+local clx
+local cly
+function AetheryteHelper.UserLanguageSet()
+   if (AetheryteHelper.selectlanguage.open) then
+   	local languageflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+	  GUI:SetNextWindowSize(240,80)
+	  AetheryteHelper.selectlanguage.visible, AetheryteHelper.selectlanguage.open = GUI:Begin('Custom Language Select', AetheryteHelper.selectlanguage.open,languageflags)
+	  clx,cly = GUI:GetWindowPos()
+	  if (AetheryteHelper.selectlanguage.visible) then
+	  	GUI:Spacing()
+	  	GUI:BeginGroup()
+	  	if AuL.JP == true then
+	  	GUI:Image(ImageFolder..[[l_jp_on.png]],30,30)
+	  	else
+	  	GUI:Image(ImageFolder..[[l_jp_off.png]],30,30)
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		   		if GUI:IsMouseClicked(0) then
+		    	AuL.JP = not AuL.JP
+		    	AuL.EN = false
+		    	AuL.DE = false
+		    	AuL.FR = false
+		    	AuL.CN = false
+		    	AuL.KR = false
+		    	AetheryteHelper.SaveSettings()
+		   		end
+		 			if AHSET.mushtooltips == true then
+			  	GUI:SetTooltip("日本語")
+     			end
+	  	end
+	  	GUI:SameLine()
+	  	GUI:BeginGroup()
+	  	if AuL.EN == true then
+	  	GUI:Image(ImageFolder..[[l_en_on.png]],30,30)
+	  	else
+	  	GUI:Image(ImageFolder..[[l_en_off.png]],30,30)
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		  	  if GUI:IsMouseClicked(0) then
+		    	AuL.EN = not AuL.EN
+		    	AuL.JP = false
+		    	AuL.DE = false
+		    	AuL.FR = false
+		    	AuL.CN = false
+		    	AuL.KR = false
+		    	AetheryteHelper.SaveSettings()
+		   		end
+		 			if AHSET.mushtooltips == true then
+			  	GUI:SetTooltip("English")
+     			end
+	  	end
+	  	GUI:SameLine()
+	  	GUI:BeginGroup()
+	  	if AuL.DE == true then
+	  	GUI:Image(ImageFolder..[[l_de_on.png]],30,30)
+	  	else
+	  	GUI:Image(ImageFolder..[[l_de_off.png]],30,30)
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		  	  if GUI:IsMouseClicked(0) then
+		    	AuL.DE = not AuL.DE
+		    	AuL.JP = false
+		    	AuL.EN = false
+		    	AuL.FR = false
+		    	AuL.CN = false
+		    	AuL.KR = false
+		    	AetheryteHelper.SaveSettings()
+		   		end
+		 			if AHSET.mushtooltips == true then
+			  	GUI:SetTooltip("Deutsch")
+     			end
+	  	end
+	    GUI:SameLine()
+	    GUI:BeginGroup()
+	    if AuL.FR == true then
+	    GUI:Image(ImageFolder..[[l_fr_on.png]],30,30)
+	    else
+	  	GUI:Image(ImageFolder..[[l_fr_off.png]],30,30)
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		      if GUI:IsMouseClicked(0) then
+		    	AuL.FR = not AuL.FR
+		    	AuL.JP = false
+		    	AuL.EN = false
+		    	AuL.DE = false
+		    	AuL.CN = false
+		    	AuL.KR = false
+		    	AetheryteHelper.SaveSettings()
+		   		end
+		 			if AHSET.mushtooltips == true then
+			  	GUI:SetTooltip("Français")
+     			end
+	  	end
+	  	GUI:SameLine()
+	  	GUI:BeginGroup()
+	  	if AuL.CN == true then
+	  	GUI:Image(ImageFolder..[[l_cn_on.png]],30,30)
+	  	else
+	  	GUI:Image(ImageFolder..[[l_cn_off.png]],30,30)
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		      if GUI:IsMouseClicked(0) then
+		   	  AuL.CN = not AuL.CN
+		    	AuL.JP = false
+		    	AuL.EN = false
+		    	AuL.DE = false
+		    	AuL.FR = false
+		    	AuL.KR = false
+		    	AetheryteHelper.SaveSettings()
+		   		end
+		 			if AHSET.mushtooltips == true then
+			  	GUI:SetTooltip("中文")
+     			end
+	  	end
+	  	GUI:SameLine()
+	    GUI:BeginGroup()
+	    if AuL.KR == true then
+	  	GUI:Image(ImageFolder..[[l_kr_on.png]],30,30)
+	  	else
+	  	GUI:Image(ImageFolder..[[l_kr_off.png]],30,30)
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		  	  if GUI:IsMouseClicked(0) then
+		    	AuL.KR = not AuL.KR
+		    	AuL.JP = false
+		    	AuL.EN = false
+		    	AuL.DE = false
+		    	AuL.FR = false
+		    	AuL.CN = false
+		    	AetheryteHelper.SaveSettings()
+		   		end
+		 			if AHSET.mushtooltips == true then
+			  	GUI:SetTooltip("한국어")
+     			end
+	  	end
+	  end
+	  GUI:End()
+	end
+	if (AetheryteHelper.selectlanguage.open) then 
+	  GUI:SetNextWindowSize(400,150,GUI.SetCond_FirstUseEver)
+	  GUI:SetNextWindowPos(clx+240,cly+20)
+	  GUI:Begin('bosyuu',true,GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_AlwaysAutoResize)  
+	    if AuL.JP == true then
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("現在翻訳は完全ではありません\n各言語の翻訳に協力してくださる方を募集しています\n是非Discordに参加してください")
+	    GUI:EndGroup()
+	    elseif AuL.EN == true then
+	    GUI:Spacing()
+	    GUI:BeginGroup() 
+	 		GUI:Text("Translation is not yet complete\nI'm looking for people to help us translate each language\nPlease join my Discord!")
+	    GUI:EndGroup()
+	    elseif AuL.DE == true then
+	    GUI:Spacing()
+	    GUI:BeginGroup() 
+	 		GUI:Text("Die Übersetzung ist noch nicht abgeschlossen\nIch suche Leute, die uns bei der Übersetzung der einzelnen Sprachen helfen\nBitte tritt meinem Discord bei!")
+	    GUI:EndGroup()
+	    elseif AuL.FR == true then
+	    GUI:Spacing()
+	    GUI:BeginGroup() 
+	 		GUI:Text("La traduction n'est pas encore terminée\nJe cherche des personnes pour nous aider à traduire chaque langue.\nRejoignez mon Discord!")
+	    GUI:EndGroup()
+	    elseif AuL.CN == true then 
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("翻译尚未完成\n我正在寻找帮助我们翻译每种语言的人\n请加入我的 Discord!")
+	    GUI:EndGroup()
+	    elseif AuL.KR == true then
+	    GUI:Spacing()
+	    GUI:BeginGroup() 
+	 		GUI:Text("번역이 아직 완료되지 않았습니다.\n각 언어의 번역을 도와주실 분을 찾고 있습니다\n내 Discord에 가입하십시오!")
+	 	  GUI:EndGroup()
+	 	  elseif gRegion == 1 and language == 0 then
+	 	  GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("現在翻訳は完全ではありません\n各言語の翻訳に協力してくださる方を募集しています\n是非Discordに参加してください")
+	    GUI:EndGroup()
+	    elseif gRegion == 1 and language == 1 then
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("Translation is not yet complete\nI'm looking for people to help us translate each language\nPlease join my Discord!")
+	    GUI:EndGroup()
+	    elseif gRegion == 1 and language == 2 then
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("Die Übersetzung ist noch nicht abgeschlossen\nIch suche Leute, die uns bei der Übersetzung der einzelnen Sprachen helfen\nBitte tritt meinem Discord bei!")
+	    GUI:EndGroup()
+	    elseif gRegion == 1 and language == 3 then
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("La traduction n'est pas encore terminée\nJe cherche des personnes pour nous aider à traduire chaque langue.\nRejoignez mon Discord!")
+	    GUI:EndGroup()
+	    elseif gRegion == 2 then
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("翻译尚未完成\n我正在寻找帮助我们翻译每种语言的人\n请加入我的 Discord!")
+	    GUI:EndGroup()
+	    elseif gRegion == 3 then
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	 		GUI:Text("번역이 아직 완료되지 않았습니다.\n각 언어의 번역을 도와주실 분을 찾고 있습니다\n내 Discord에 가입하십시오!")
+	    GUI:EndGroup()
+	    end
+	    GUI:Spacing()
+	    GUI:BeginGroup()
+	    GUI:TextColored(1,.2,.2,1,"[[mushroom's Room]]")
+	    if (GUI:IsItemHovered()) then
+		  	  if GUI:IsMouseClicked(0) then
+		    	io.popen([[cmd /c start "" "]]..AHLinks.link1..[["]]):close()
+     			end
+     			GUI:SetTooltip("Discord Link")
+	  	end
+	    GUI:EndGroup()
+	  GUI:End()
+   end
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 function AetheryteHelper.subtoolDesOPwindow()
   if (AetheryteHelper.subtoolDesOP.open) then
@@ -9451,11 +9699,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip28)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip28)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip28,mETp.tip28,mDTp.tip28,mFTp.tip28,mCTp.tip28,mKTp.tip28)
 			  end
 		  end
 	 elseif AHSET.CrafterMode == false then
@@ -9467,11 +9711,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip28)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip28)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip28,mETp.tip28,mDTp.tip28,mFTp.tip28,mCTp.tip28,mKTp.tip28)
 			  end
 		  end
 	 end
@@ -9488,11 +9728,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip29)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip29)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip29,mETp.tip29,mDTp.tip29,mFTp.tip29,mCTp.tip29,mKTp.tip29)
 			  end
 		  end
 	 elseif AHSET.DesynthTrust == false then
@@ -9504,11 +9740,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip29)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip29)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip29,mETp.tip29,mDTp.tip29,mFTp.tip29,mCTp.tip29,mKTp.tip29)
 			  end
 		  end
 	 end
@@ -9523,11 +9755,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if (GUI:IsItemHovered()) then
 	 AetheryteHelper.SaveSettings()
 	 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip30)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip30)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip30,mETp.tip30,mDTp.tip30,mFTp.tip30,mCTp.tip30,mKTp.tip30)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -9540,11 +9768,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if (GUI:IsItemHovered()) then
 	 AetheryteHelper.SaveSettings()
 	 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip32)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip32)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip32,mETp.tip32,mDTp.tip32,mFTp.tip32,mCTp.tip32,mKTp.tip32)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -9558,11 +9782,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			AetheryteHelper.SaveSettings()
 		end
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip31)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip31)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip31,mETp.tip31,mDTp.tip31,mFTp.tip31,mCTp.tip31,mKTp.tip31)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -9614,11 +9834,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 		AetheryteHelper.SaveSettings()
 		   end
 	 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip45)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip45)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip45,mETp.tip45,mDTp.tip45,mFTp.tip45,mCTp.tip45,mKTp.tip45)
 			  end
 	  end
 	 GUI:EndGroup()
@@ -9634,11 +9850,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip34)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip34)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip34,mETp.tip34,mDTp.tip34,mFTp.tip34,mCTp.tip34,mKTp.tip34)
 			  end
 		  end
 	 elseif eqFilter.Main == false then
@@ -9650,11 +9862,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip34)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip34)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip34,mETp.tip34,mDTp.tip34,mFTp.tip34,mCTp.tip34,mKTp.tip34)
 			  end
 		  end
 	 end
@@ -9671,11 +9879,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip35)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip35)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip35,mETp.tip35,mDTp.tip35,mFTp.tip35,mCTp.tip35,mKTp.tip35)
 			  end
 		  end
 	 elseif eqFilter.Sub == false then
@@ -9687,11 +9891,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip35)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip35)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip35,mETp.tip35,mDTp.tip35,mFTp.tip35,mCTp.tip35,mKTp.tip35)
 			  end
 		  end
 	 end
@@ -9707,11 +9907,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip36)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip36)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip36,mETp.tip36,mDTp.tip36,mFTp.tip36,mCTp.tip36,mKTp.tip36)
 			  end
 		  end
 	 elseif eqFilter.Head == false then
@@ -9723,11 +9919,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip36)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip36)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip36,mETp.tip36,mDTp.tip36,mFTp.tip36,mCTp.tip36,mKTp.tip36)
 			  end
 		  end
 	 end
@@ -9744,11 +9936,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip37)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip37)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip37,mETp.tip37,mDTp.tip37,mFTp.tip37,mCTp.tip37,mKTp.tip37)
 			  end
 		  end
 	 elseif eqFilter.Earrings == false then
@@ -9760,11 +9948,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip37)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip37)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip37,mETp.tip37,mDTp.tip37,mFTp.tip37,mCTp.tip37,mKTp.tip37)
 			  end
 		  end
 	 end
@@ -9780,11 +9964,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip38)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip38)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip38,mETp.tip38,mDTp.tip38,mFTp.tip38,mCTp.tip38,mKTp.tip38)
 			  end
 		  end
 	 elseif eqFilter.Body == false then
@@ -9796,11 +9976,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip38)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip38)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip38,mETp.tip38,mDTp.tip38,mFTp.tip38,mCTp.tip38,mKTp.tip38)
 			  end
 		  end
 	 end
@@ -9817,11 +9993,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip39)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip39)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip39,mETp.tip39,mDTp.tip39,mFTp.tip39,mCTp.tip39,mKTp.tip39)
 			  end
 		  end
 	 elseif eqFilter.Necklace == false then
@@ -9833,11 +10005,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip39)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip39)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip39,mETp.tip39,mDTp.tip39,mFTp.tip39,mCTp.tip39,mKTp.tip39)
 			  end
 		  end
 	 end
@@ -9853,11 +10021,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip40)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip40)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip40,mETp.tip40,mDTp.tip40,mFTp.tip40,mCTp.tip40,mKTp.tip40)
 			  end
 		  end
 	 elseif eqFilter.Hand == false then
@@ -9869,11 +10033,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip40)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip40)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip40,mETp.tip40,mDTp.tip40,mFTp.tip40,mCTp.tip40,mKTp.tip40)
 			  end
 		  end
 	 end
@@ -9890,11 +10050,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip41)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip41)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip41,mETp.tip41,mDTp.tip41,mFTp.tip41,mCTp.tip41,mKTp.tip41)
 			  end
 		  end
 	 elseif eqFilter.Bracelets == false then
@@ -9906,11 +10062,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip41)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip41)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip41,mETp.tip41,mDTp.tip41,mFTp.tip41,mCTp.tip41,mKTp.tip41)
 			  end
 		  end
 	 end
@@ -9926,11 +10078,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip42)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip42)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip42,mETp.tip42,mDTp.tip42,mFTp.tip42,mCTp.tip42,mKTp.tip42)
 			  end
 		  end
 	 elseif eqFilter.Legs == false then
@@ -9942,11 +10090,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip42)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip42)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip42,mETp.tip42,mDTp.tip42,mFTp.tip42,mCTp.tip42,mKTp.tip42)
 			  end
 		  end
 	 end
@@ -9963,11 +10107,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip43)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip43)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip43,mETp.tip43,mDTp.tip43,mFTp.tip43,mCTp.tip43,mKTp.tip43)
 			  end
 		  end
 	 elseif eqFilter.Ring == false then
@@ -9979,11 +10119,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip43)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip43)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip43,mETp.tip43,mDTp.tip43,mFTp.tip43,mCTp.tip43,mKTp.tip43)
 			  end
 		  end
 	 end
@@ -9999,11 +10135,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip44)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip44)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip44,mETp.tip44,mDTp.tip44,mFTp.tip44,mCTp.tip44,mKTp.tip44)
 			  end
 		  end
 	 elseif eqFilter.Feet == false then
@@ -10015,11 +10147,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip44)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip44)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip44,mETp.tip44,mDTp.tip44,mFTp.tip44,mCTp.tip44,mKTp.tip44)
 			  end
 		  end
 	 end
@@ -10058,11 +10186,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 		   AetheryteHelper.SaveSettings()
 		   end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip45)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip45)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip45,mETp.tip45,mDTp.tip45,mFTp.tip45,mCTp.tip45,mKTp.tip45)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -10078,11 +10202,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip46)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip46)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip46,mETp.tip46,mDTp.tip46,mFTp.tip46,mCTp.tip46,mKTp.tip46)
 			  end
 		  end
 	  elseif AHeqjob.Tank == false then
@@ -10094,11 +10214,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip46)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip46)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip46,mETp.tip46,mDTp.tip46,mFTp.tip46,mCTp.tip46,mKTp.tip46)
 			  end
 		  end
 	  end
@@ -10122,11 +10238,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip47)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip47)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip47,mETp.tip47,mDTp.tip47,mFTp.tip47,mCTp.tip47,mKTp.tip47)
 			  end
 		  end
 	  elseif AHeqjob.Healer == false then
@@ -10138,11 +10250,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip47)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip47)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip47,mETp.tip47,mDTp.tip47,mFTp.tip47,mCTp.tip47,mKTp.tip47)
 			  end
 		  end
 	  end
@@ -10166,11 +10274,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip48)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip48)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip48,mETp.tip48,mDTp.tip48,mFTp.tip48,mCTp.tip48,mKTp.tip48)
 			  end
 		  end
 	  elseif AHeqjob.Slaying == false then
@@ -10182,11 +10286,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip48)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip48)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip48,mETp.tip48,mDTp.tip48,mFTp.tip48,mCTp.tip48,mKTp.tip48)
 			  end
 		  end
 	  end
@@ -10210,11 +10310,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip50)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip50)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip50,mETp.tip50,mDTp.tip50,mFTp.tip50,mCTp.tip50,mKTp.tip50)
 			  end
 		  end
 	  elseif AHeqjob.Striking == false then
@@ -10226,11 +10322,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip50)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip50)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip50,mETp.tip50,mDTp.tip50,mFTp.tip50,mCTp.tip50,mKTp.tip50)
 			  end
 		  end
 	  end
@@ -10250,11 +10342,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip52)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip52)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip52,mETp.tip52,mDTp.tip52,mFTp.tip52,mCTp.tip52,mKTp.tip52)
 			  end
 		  end
 	  elseif AHeqjob.Maiming == false then
@@ -10266,11 +10354,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip52)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip52)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip52,mETp.tip52,mDTp.tip52,mFTp.tip52,mCTp.tip52,mKTp.tip52)
 			  end
 		  end
 	  end
@@ -10290,11 +10374,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip54)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip54)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip54,mETp.tip54,mDTp.tip54,mFTp.tip54,mCTp.tip54,mKTp.tip54)
 			  end
 		  end
 	  elseif AHeqjob.Scouting == false then
@@ -10306,11 +10386,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip54)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip54)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip54,mETp.tip54,mDTp.tip54,mFTp.tip54,mCTp.tip54,mKTp.tip54)
 			  end
 		  end
 	  end
@@ -10328,11 +10404,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip49)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip49)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip49,mETp.tip49,mDTp.tip49,mFTp.tip49,mCTp.tip49,mKTp.tip49)
 			  end
 		  end
 	  elseif AHeqjob.Aiming == false then
@@ -10344,11 +10416,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip49)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip49)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip49,mETp.tip49,mDTp.tip49,mFTp.tip49,mCTp.tip49,mKTp.tip49)
 			  end
 		  end
 	  end
@@ -10370,11 +10438,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip51)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip51)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip51,mETp.tip51,mDTp.tip51,mFTp.tip51,mCTp.tip51,mKTp.tip51)
 			  end
 		  end
 	  elseif AHeqjob.Sorcerer == false then
@@ -10386,11 +10450,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip51)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip51)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip51,mETp.tip51,mDTp.tip51,mFTp.tip51,mCTp.tip51,mKTp.tip51)
 			  end
 		  end
 	  end
@@ -10412,11 +10472,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip53)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip53)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip53,mETp.tip53,mDTp.tip53,mFTp.tip53,mCTp.tip53,mKTp.tip53)
 			  end
 		  end
 	  elseif AHeqjob.ALL == false then
@@ -10428,11 +10484,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip53)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip53)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip53,mETp.tip53,mDTp.tip53,mFTp.tip53,mCTp.tip53,mKTp.tip53)
 			  end
 		  end
 	  end
@@ -10490,11 +10542,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			AetheryteHelper.SaveSettings()
 		   end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip45)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip45)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip45,mETp.tip45,mDTp.tip45,mFTp.tip45,mCTp.tip45,mKTp.tip45)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -10510,11 +10558,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip104)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip104)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip104,mETp.tip104,mDTp.tip104,mFTp.tip104,mCTp.tip104,mKTp.tip104)
 			  end
 		  end
 	  elseif AHeqjob.PLD == false then
@@ -10526,11 +10570,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip104)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip104)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip104,mETp.tip104,mDTp.tip104,mFTp.tip104,mCTp.tip104,mKTp.tip104)
 			  end
 		  end
 	  end
@@ -10547,11 +10587,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip55)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip55)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip55,mETp.tip55,mDTp.tip55,mFTp.tip55,mCTp.tip55,mKTp.tip55)
 			  end
 		  end
 	  elseif AHeqjob.WHM == false then
@@ -10563,11 +10599,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip55)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip55)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip55,mETp.tip55,mDTp.tip55,mFTp.tip55,mCTp.tip55,mKTp.tip55)
 			  end
 		  end
 	  end
@@ -10583,11 +10615,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip56)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip56)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip56,mETp.tip56,mDTp.tip56,mFTp.tip56,mCTp.tip56,mKTp.tip56)
 			  end
 		  end
 	  elseif AHeqjob.WAR == false then
@@ -10599,11 +10627,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip56)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip56)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip56,mETp.tip56,mDTp.tip56,mFTp.tip56,mCTp.tip56,mKTp.tip56)
 			  end
 		  end
 	  end
@@ -10620,11 +10644,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip57)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip57)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip57,mETp.tip57,mDTp.tip57,mFTp.tip57,mCTp.tip57,mKTp.tip57)
 			  end
 		  end
 	  elseif AHeqjob.SCH == false then
@@ -10636,11 +10656,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip57)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip57)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip57,mETp.tip57,mDTp.tip57,mFTp.tip57,mCTp.tip57,mKTp.tip57)
 			  end
 		  end
 	  end
@@ -10656,11 +10672,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip58)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip58)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip58,mETp.tip58,mDTp.tip58,mFTp.tip58,mCTp.tip58,mKTp.tip58)
 			  end
 		  end
 	  elseif AHeqjob.DRK == false then
@@ -10672,11 +10684,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip58)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip58)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip58,mETp.tip58,mDTp.tip58,mFTp.tip58,mCTp.tip58,mKTp.tip58)
 			  end
 		  end
 	  end
@@ -10693,11 +10701,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip59)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip59)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip59,mETp.tip59,mDTp.tip59,mFTp.tip59,mCTp.tip59,mKTp.tip59)
 			  end
 		  end
 	  elseif AHeqjob.AST == false then
@@ -10709,11 +10713,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip59)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip59)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip59,mETp.tip59,mDTp.tip59,mFTp.tip59,mCTp.tip59,mKTp.tip59)
 			  end
 		  end
 	  end
@@ -10729,11 +10729,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip60)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip60)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip60,mETp.tip60,mDTp.tip60,mFTp.tip60,mCTp.tip60,mKTp.tip60)
 			  end
 		  end
 	  elseif AHeqjob.GNB == false then
@@ -10745,11 +10741,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip60)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip60)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip60,mETp.tip60,mDTp.tip60,mFTp.tip60,mCTp.tip60,mKTp.tip60)
 			  end
 		  end
 	  end
@@ -10766,11 +10758,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip61)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip61)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip61,mETp.tip61,mDTp.tip61,mFTp.tip61,mCTp.tip61,mKTp.tip61)
 			  end
 		  end
 	  elseif AHeqjob.SGE == false then
@@ -10782,11 +10770,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip61)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip61)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip61,mETp.tip61,mDTp.tip61,mFTp.tip61,mCTp.tip61,mKTp.tip61)
 			  end
 		  end
 	  end
@@ -10802,11 +10786,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip62)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip62)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip62,mETp.tip62,mDTp.tip62,mFTp.tip62,mCTp.tip62,mKTp.tip62)
 			  end
 		  end
 	  elseif AHeqjob.MNK == false then
@@ -10818,11 +10798,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip62)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip62)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip62,mETp.tip62,mDTp.tip62,mFTp.tip62,mCTp.tip62,mKTp.tip62)
 			  end
 		  end
 	  end
@@ -10839,11 +10815,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip63)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip63)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip63,mETp.tip63,mDTp.tip63,mFTp.tip63,mCTp.tip63,mKTp.tip63)
 			  end
 		  end
 	  elseif AHeqjob.BRD == false then
@@ -10855,11 +10827,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip63)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip63)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip63,mETp.tip63,mDTp.tip63,mFTp.tip63,mCTp.tip63,mKTp.tip63)
 			  end
 		  end
 	  end
@@ -10875,11 +10843,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip64)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip64)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip64,mETp.tip64,mDTp.tip64,mFTp.tip64,mCTp.tip64,mKTp.tip64)
 			  end
 		  end
 	  elseif AHeqjob.DRG == false then
@@ -10891,11 +10855,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip64)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip64)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip64,mETp.tip64,mDTp.tip64,mFTp.tip64,mCTp.tip64,mKTp.tip64)
 			  end
 		  end
 	  end
@@ -10912,11 +10872,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip65)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip65)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip65,mETp.tip65,mDTp.tip65,mFTp.tip65,mCTp.tip65,mKTp.tip65)
 			  end
 		  end
 	  elseif AHeqjob.MCN == false then
@@ -10928,11 +10884,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip65)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip65)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip65,mETp.tip65,mDTp.tip65,mFTp.tip65,mCTp.tip65,mKTp.tip65)
 			  end
 		  end
 	  end
@@ -10948,11 +10900,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip66)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip66)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip66,mETp.tip66,mDTp.tip66,mFTp.tip66,mCTp.tip66,mKTp.tip66)
 			  end
 		  end
 	  elseif AHeqjob.NIN == false then
@@ -10964,11 +10912,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip66)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip66)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip66,mETp.tip66,mDTp.tip66,mFTp.tip66,mCTp.tip66,mKTp.tip66)
 			  end
 		  end
 	  end
@@ -10985,11 +10929,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip67)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip67)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip67,mETp.tip67,mDTp.tip67,mFTp.tip67,mCTp.tip67,mKTp.tip67)
 			  end
 		  end
 	  elseif AHeqjob.DNC == false then
@@ -11001,11 +10941,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip67)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip67)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip67,mETp.tip67,mDTp.tip67,mFTp.tip67,mCTp.tip67,mKTp.tip67)
 			  end
 		  end
 	  end
@@ -11021,11 +10957,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip68)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip68)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip68,mETp.tip68,mDTp.tip68,mFTp.tip68,mCTp.tip68,mKTp.tip68)
 			  end
 		  end
 	  elseif AHeqjob.SAM == false then
@@ -11037,11 +10969,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip68)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip68)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip68,mETp.tip68,mDTp.tip68,mFTp.tip68,mCTp.tip68,mKTp.tip68)
 			  end
 		  end
 	  end
@@ -11058,11 +10986,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip69)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip69)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip69,mETp.tip69,mDTp.tip69,mFTp.tip69,mCTp.tip69,mKTp.tip69)
 			  end
 		  end
 	  elseif AHeqjob.BLM == false then
@@ -11074,11 +10998,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip69)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip69)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip69,mETp.tip69,mDTp.tip69,mFTp.tip69,mCTp.tip69,mKTp.tip69)
 			  end
 		  end
 	  end
@@ -11094,11 +11014,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip70)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip70)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip70,mETp.tip70,mDTp.tip70,mFTp.tip70,mCTp.tip70,mKTp.tip70)
 			  end
 		  end
 	  elseif AHeqjob.RPR == false then
@@ -11110,11 +11026,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip70)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip70)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip70,mETp.tip70,mDTp.tip70,mFTp.tip70,mCTp.tip70,mKTp.tip70)
 			  end
 		  end
 	  end
@@ -11131,11 +11043,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip71)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip71)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip71,mETp.tip71,mDTp.tip71,mFTp.tip71,mCTp.tip71,mKTp.tip71)
 			  end
 		  end
 	  elseif AHeqjob.SMN == false then
@@ -11147,11 +11055,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip71)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip71)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip71,mETp.tip71,mDTp.tip71,mFTp.tip71,mCTp.tip71,mKTp.tip71)
 			  end
 		  end
 	  end
@@ -11171,11 +11075,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip72)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip72)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip72,mETp.tip72,mDTp.tip72,mFTp.tip72,mCTp.tip72,mKTp.tip72)
 			  end
 		  end
 	  elseif AHeqjob.RDM == false then
@@ -11187,11 +11087,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip72)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip72)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip72,mETp.tip72,mDTp.tip72,mFTp.tip72,mCTp.tip72,mKTp.tip72)
 			  end
 		  end
 	  end
@@ -11215,11 +11111,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip73)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip73)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip73,mETp.tip73,mDTp.tip73,mFTp.tip73,mCTp.tip73,mKTp.tip73)
 			  end
 		  end
 	  elseif AHeqjob.Crafter == false then
@@ -11231,11 +11123,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip73)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip73)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip73,mETp.tip73,mDTp.tip73,mFTp.tip73,mCTp.tip73,mKTp.tip73)
 			  end
 		  end
 	  end
@@ -11267,11 +11155,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip74)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip74)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip74,mETp.tip74,mDTp.tip74,mFTp.tip74,mCTp.tip74,mKTp.tip74)
 			  end
 		  end
 	  elseif AHeqjob.Gatherer == false then
@@ -11283,11 +11167,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			  AetheryteHelper.SaveSettings()
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip74)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip74)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip74,mETp.tip74,mDTp.tip74,mFTp.tip74,mCTp.tip74,mKTp.tip74)
 			  end
 		  end
 	  end
@@ -11340,11 +11220,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip85)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip85)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip85,mETp.tip85,mDTp.tip85,mFTp.tip85,mCTp.tip85,mKTp.tip85)
 			  end
 			  end
 		 elseif AHSET.isMateriaEnabled == false then
@@ -11356,11 +11232,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip85)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip85)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip85,mETp.tip85,mDTp.tip85,mFTp.tip85,mCTp.tip85,mKTp.tip85)
 			  end
 			  end
 		 end
@@ -11369,11 +11241,7 @@ function AetheryteHelper.subtoolmateria()
 		 GUI:Image(ImageFolder..[[materia_lock.png]],40,40)
 		 if (GUI:IsItemHovered()) then
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip99)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip99)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip99,mETp.tip99,mDTp.tip99,mFTp.tip99,mCTp.tip99,mKTp.tip99)
 			  end
 		 end
 	  end
@@ -11395,11 +11263,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip82)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip82)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip82,mETp.tip82,mDTp.tip82,mFTp.tip82,mCTp.tip82,mKTp.tip82)
 			  end
 			  end
 		 elseif AHSET.isPotionEnabled == false then
@@ -11415,11 +11279,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip82)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip82)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip82,mETp.tip82,mDTp.tip82,mFTp.tip82,mCTp.tip82,mKTp.tip82)
 			  end
 			  end
 		  end
@@ -11433,11 +11293,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip82)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip82)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip82,mETp.tip82,mDTp.tip82,mFTp.tip82,mCTp.tip82,mKTp.tip82)
 			  end
 			  end
 		 elseif AHSET.isPotionEnabled == false then
@@ -11449,11 +11305,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip82)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip82)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip82,mETp.tip82,mDTp.tip82,mFTp.tip82,mCTp.tip82,mKTp.tip82)
 			  end
 			  end
 		 end
@@ -11476,11 +11328,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip83)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip83)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip83,mETp.tip83,mDTp.tip83,mFTp.tip83,mCTp.tip83,mKTp.tip83)
 			  end
 			  end
 		 elseif AHSET.isManualEnabled == false then
@@ -11496,11 +11344,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip83)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip83)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip83,mETp.tip83,mDTp.tip83,mFTp.tip83,mCTp.tip83,mKTp.tip83)
 			  end
 			  end
 		  end
@@ -11514,11 +11358,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip83)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip83)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip83,mETp.tip83,mDTp.tip83,mFTp.tip83,mCTp.tip83,mKTp.tip83)
 			  end
 			  end
 		 elseif AHSET.isManualEnabled == false then
@@ -11530,11 +11370,7 @@ function AetheryteHelper.subtoolmateria()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip83)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip83)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip83,mETp.tip83,mDTp.tip83,mFTp.tip83,mCTp.tip83,mKTp.tip83)
 			  end
 			  end
 		 end
@@ -11568,11 +11404,7 @@ function AetheryteHelper.subtoolmateria()
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip100)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip100)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip100,mETp.tip100,mDTp.tip100,mFTp.tip100,mCTp.tip100,mKTp.tip100)
 	  end
 	  end
 
@@ -11618,11 +11450,7 @@ function AetheryteHelper.subtoolDesynth()
 				AetheryteHelper.SaveSettings()
 				end
 				if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip27)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip27)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip27,mETp.tip27,mDTp.tip27,mFTp.tip27,mCTp.tip27,mKTp.tip27)
 			  end
 				end
 			  elseif AHSET.isSalvageEnabled == false then
@@ -11639,11 +11467,7 @@ function AetheryteHelper.subtoolDesynth()
 				AetheryteHelper.SaveSettings()
 				end
 				if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip27)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip27)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip27,mETp.tip27,mDTp.tip27,mFTp.tip27,mCTp.tip27,mKTp.tip27)
 			  end
 				end
 			 end
@@ -11662,11 +11486,7 @@ function AetheryteHelper.subtoolDesynth()
 				AetheryteHelper.SaveSettings()
 				end
 				if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip27)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip27)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip27,mETp.tip27,mDTp.tip27,mFTp.tip27,mCTp.tip27,mKTp.tip27)
 			  end
 				end
 			  elseif AHSET.isSalvageEnabled == false then
@@ -11683,11 +11503,7 @@ function AetheryteHelper.subtoolDesynth()
 				AetheryteHelper.SaveSettings()
 				end
 				if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip27)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip27)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip27,mETp.tip27,mDTp.tip27,mFTp.tip27,mCTp.tip27,mKTp.tip27)
 			  end
 				end
 			 end
@@ -11697,11 +11513,7 @@ function AetheryteHelper.subtoolDesynth()
 	  GUI:Image(ImageFolder..[[desynth_lock.png]],40,40)
 		 if (GUI:IsItemHovered()) then
 		 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip99)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip99)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip99,mETp.tip99,mDTp.tip99,mFTp.tip99,mCTp.tip99,mKTp.tip99)
 			  end
 		 end
 	  end
@@ -11717,11 +11529,7 @@ function AetheryteHelper.subtoolDesynth()
 			  AetheryteHelper.subtoolDesOP.open = not AetheryteHelper.subtoolDesOP.open
 		  end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip108)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip108)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip108,mETp.tip108,mDTp.tip108,mFTp.tip108,mCTp.tip108,mKTp.tip108)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -11739,11 +11547,7 @@ function AetheryteHelper.subtoolDesynth()
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip101)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip101)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip101,mETp.tip101,mDTp.tip101,mFTp.tip101,mCTp.tip101,mKTp.tip101)
 	  end
 	  end
 
@@ -11783,11 +11587,7 @@ function AetheryteHelper.subtoolAR()
 							  AetheryteHelper.SaveSettings()
 							  end
 							  if AHSET.mushtooltips == true then
-								  if language == 0 then
-								  GUI:SetTooltip(mushtooltips.jp.tip92)
-								  else
-								  GUI:SetTooltip(mushtooltips.en.tip92)
-								  end
+								  AetheryteHelper.SetToolTips(mJTp.tip92,mETp.tip92,mDTp.tip92,mFTp.tip92,mCTp.tip92,mKTp.tip92)
 							  end
 						  end
 					elseif AHSET.isReductionEnabled == false then
@@ -11804,11 +11604,7 @@ function AetheryteHelper.subtoolAR()
 							  AetheryteHelper.SaveSettings()
 							  end
 							  if AHSET.mushtooltips == true then
-								  if language == 0 then
-								  GUI:SetTooltip(mushtooltips.jp.tip92)
-								  else
-								  GUI:SetTooltip(mushtooltips.en.tip92)
-								  end
+								  AetheryteHelper.SetToolTips(mJTp.tip92,mETp.tip92,mDTp.tip92,mFTp.tip92,mCTp.tip92,mKTp.tip92)
 							  end
 						  end
 
@@ -11827,11 +11623,7 @@ function AetheryteHelper.subtoolAR()
 									AetheryteHelper.SaveSettings()
 								end
 								if AHSET.mushtooltips == true then
-									if language == 0 then
-									GUI:SetTooltip(mushtooltips.jp.tip92)
-									else
-									GUI:SetTooltip(mushtooltips.en.tip92)
-									end
+									AetheryteHelper.SetToolTips(mJTp.tip92,mETp.tip92,mDTp.tip92,mFTp.tip92,mCTp.tip92,mKTp.tip92)
 								end
 							end
 			 end
@@ -11840,11 +11632,7 @@ function AetheryteHelper.subtoolAR()
 	  GUI:Image(ImageFolder..[[AR_lock.png]],40,40)
 	  if (GUI:IsItemHovered()) then
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip99)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip99)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip99,mETp.tip99,mDTp.tip99,mFTp.tip99,mCTp.tip99,mKTp.tip99)
 			  end
 	  end
 	  end
@@ -11856,11 +11644,7 @@ function AetheryteHelper.subtoolAR()
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip102)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip102)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip102,mETp.tip102,mDTp.tip102,mFTp.tip102,mCTp.tip102,mKTp.tip102)
 	  end
 	  end
 	  GUI:BeginGroup()
@@ -11879,27 +11663,37 @@ function AetheryteHelper.subtoolGC()
 	 GUI:EndGroup()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(100)
-	 if language == 0 and Player.GrandCompany ~= 0 then
-	 AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCJP,1)
-	 elseif language == 1 and Player.GrandCompany ~= 0 then
-	 AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
-	 elseif language == 2 and Player.GrandCompany ~= 0 then
-	 AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCDE,1)
-	 elseif language == 3 and Player.GrandCompany ~= 0 then
-	 AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCFR,1)
-	 elseif Player.GrandCompany ~= 0 then
-	 AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
+	 if AuL.JP == true then
+	    AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCJP,1)
+	 elseif AuL.EN == true then 
+	 	  AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
+	 elseif AuL.DE == true then 
+	 	  AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCDE,1)
+	 elseif AuL.FR == true then 
+	 	  AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCFR,1)
+	 elseif AuL.CN == true then 
+	 	  AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCCN,1)
+	 elseif AuL.KR == true then 
+	 	  AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCKR,1)
+	 elseif gRegion == 1 and language == 0 and Player.GrandCompany ~= 0 then
+	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCJP,1)
+	 elseif gRegion == 1 and language == 1 and Player.GrandCompany ~= 0 then
+	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCEN,1)
+	 elseif gRegion == 1 and language == 2 and Player.GrandCompany ~= 0 then
+	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCDE,1)
+	 elseif gRegion == 1 and language == 3 and Player.GrandCompany ~= 0 then
+	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCFR,1)
+	 elseif gRegion == 2 and Player.GrandCompany ~= 0 then
+	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCCN,1)
+	 elseif gRegion == 3 and Player.GrandCompany ~= 0 then
+	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCKR,1)
 	 end
 	 if Player.GrandCompany == 0 then
 	 AHSET.selectGC = GUI:Combo("###",4,mushGCEN,1) end
 	 AetheryteHelper.SaveSettings()
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip84)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip84)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip84,mETp.tip84,mDTp.tip84,mFTp.tip84,mCTp.tip84,mKTp.tip84)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -11966,11 +11760,7 @@ function AetheryteHelper.subtoolGC()
 			  AetheryteHelper.SaveSettings()
 			  end
 			 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip87)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip87)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip87,mETp.tip87,mDTp.tip87,mFTp.tip87,mCTp.tip87,mKTp.tip87)
 			  end
 			  end
 	 elseif GCexchange == false then
@@ -11996,11 +11786,7 @@ function AetheryteHelper.subtoolGC()
 			  AetheryteHelper.SaveSettings()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip87)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip87)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip87,mETp.tip87,mDTp.tip87,mFTp.tip87,mCTp.tip87,mKTp.tip87)
 			  end
 			  end
 	 end
@@ -12017,11 +11803,7 @@ function AetheryteHelper.subtoolGC()
 			  Player:Stop()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip88)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip88)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip88,mETp.tip88,mDTp.tip88,mFTp.tip88,mCTp.tip88,mKTp.tip88)
 			  end
 		   end
 	  elseif AutoMoveGC == false then
@@ -12034,11 +11816,7 @@ function AetheryteHelper.subtoolGC()
 			  end
 			  AetheryteHelper.SaveSettings()
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip88)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip88)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip88,mETp.tip88,mDTp.tip88,mFTp.tip88,mCTp.tip88,mKTp.tip88)
 			  end
 		   end
 	  end
@@ -12054,11 +11832,7 @@ function AetheryteHelper.subtoolGC()
 		end
 		AetheryteHelper.SaveSettings()
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip89)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip89)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip89,mETp.tip89,mDTp.tip89,mFTp.tip89,mCTp.tip89,mKTp.tip89)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -12073,11 +11847,7 @@ function AetheryteHelper.subtoolGC()
 		   AHSET.GCexlessmax = not AHSET.GCexlessmax
 		   end
 		   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip90)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip90)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip90,mETp.tip90,mDTp.tip90,mFTp.tip90,mCTp.tip90,mKTp.tip90)
 			  end
 		   end
 	  elseif AHSET.GCexlessmax == false then
@@ -12088,11 +11858,7 @@ function AetheryteHelper.subtoolGC()
 		   AHSET.GCexlessmax = not AHSET.GCexlessmax
 		   end
 		   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip90)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip90)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip90,mETp.tip90,mDTp.tip90,mFTp.tip90,mCTp.tip90,mKTp.tip90)
 			  end
 		   end
 	  end
@@ -12108,11 +11874,7 @@ function AetheryteHelper.subtoolGC()
 		   Remateria = not Remateria
 		   end
 		   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip91)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip91)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip91,mETp.tip91,mDTp.tip91,mFTp.tip91,mCTp.tip91,mKTp.tip91)
 			  end
 		   end
 	  elseif Remateria == false then
@@ -12123,11 +11885,7 @@ function AetheryteHelper.subtoolGC()
 		   Remateria = not Remateria
 		   end
 		   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip91)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip91)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip91,mETp.tip91,mDTp.tip91,mFTp.tip91,mCTp.tip91,mKTp.tip91)
 			  end
 		   end
 	  end
@@ -12145,11 +11903,7 @@ function AetheryteHelper.subtoolGC()
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip103)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip103)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip103,mETp.tip103,mDTp.tip103,mFTp.tip103,mCTp.tip103,mKTp.tip103)
 	  end
 	  end
 	  GUI:Separator()
@@ -12169,11 +11923,7 @@ function AetheryteHelper.GCtrunin()
 	  if AHSET.mushrepairGear > 99 then AHSET.mushrepairGear = 1 end
 	  if (GUI:IsItemHovered()) then
 		if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip25)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip25)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip25,mETp.tip25,mDTp.tip25,mFTp.tip25,mCTp.tip25,mKTp.tip25)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -12218,11 +11968,7 @@ function AetheryteHelper.GCtrunin()
 			mushtoItemstep = 0
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip75)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip75)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip75,mETp.tip75,mDTp.tip75,mFTp.tip75,mCTp.tip75,mKTp.tip75)
 			  end
 		 end
 	 elseif sealstoitem == false then
@@ -12235,11 +11981,7 @@ function AetheryteHelper.GCtrunin()
 			mushtoItemstep = 0
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip75)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip75)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip75,mETp.tip75,mDTp.tip75,mFTp.tip75,mCTp.tip75,mKTp.tip75)
 			  end
 		 end
 	 end
@@ -12255,11 +11997,7 @@ function AetheryteHelper.GCtrunin()
 			mushTrustmode = not mushTrustmode
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip26)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip26)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip26,mETp.tip26,mDTp.tip26,mFTp.tip26,mCTp.tip26,mKTp.tip26)
 			  end
 		 end
 	 elseif mushTrustmode == false then
@@ -12270,11 +12008,7 @@ function AetheryteHelper.GCtrunin()
 			mushTrustmode = not mushTrustmode
 			end
 			if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip26)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip26)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip26,mETp.tip26,mDTp.tip26,mFTp.tip26,mCTp.tip26,mKTp.tip26)
 			  end
 		 end
 	 end
@@ -12285,11 +12019,7 @@ function AetheryteHelper.GCtrunin()
 	 GUI:Text("Start amount")
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip77)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip77)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip77,mETp.tip77,mDTp.tip77,mFTp.tip77,mCTp.tip77,mKTp.tip77)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -12313,11 +12043,7 @@ function AetheryteHelper.GCtrunin()
 	 AetheryteHelper.SaveSettings()
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip78)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip78)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip78,mETp.tip78,mDTp.tip78,mFTp.tip78,mCTp.tip78,mKTp.tip78)
 			  end
 	 end
 	 for k,v in pairs(mushPlayerGCrank) do
@@ -12339,11 +12065,7 @@ function AetheryteHelper.GCtrunin()
 			   mushadjustoff = not mushadjustoff
 			   end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip76)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip76)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip76,mETp.tip76,mDTp.tip76,mFTp.tip76,mCTp.tip76,mKTp.tip76)
 			  end
 			end
 	 elseif mushadjustoff == false then
@@ -12354,11 +12076,7 @@ function AetheryteHelper.GCtrunin()
 			   mushadjustoff = not mushadjustoff
 			   end
 			   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip76)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip76)
-			  end
+         AetheryteHelper.SetToolTips(mJTp.tip76,mETp.tip76,mDTp.tip76,mFTp.tip76,mCTp.tip76,mKTp.tip76)
 			  end
 			end
 	 end
@@ -12375,41 +12093,54 @@ function AetheryteHelper.GCtrunin()
 	 AetheryteHelper.SaveSettings()
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip79)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip79)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip79,mETp.tip79,mDTp.tip79,mFTp.tip79,mCTp.tip79,mKTp.tip79)
 			  end
 	 end
 	 GUI:EndGroup()
 	 GUI:AlignFirstTextHeightToWidgets()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(170)
-	 if language == 0 then
-	 AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
-	 AetheryteHelper.SaveSettings()
-	 elseif language == 1 then
-	 AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
-	 AetheryteHelper.SaveSettings()
-	 elseif language == 2 then
-	 AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
-	 AetheryteHelper.SaveSettings()
-	 elseif language == 3 then
-	 AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
-	 AetheryteHelper.SaveSettings()
-	 else
-	 AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
-	 AetheryteHelper.SaveSettings()
+	 if AuL.JP == true then 
+	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif AuL.EN == true then 
+	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif AuL.DE == true then 
+	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif AuL.FR == true then 
+	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif AuL.CN == true then 
+	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Cn,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif AuL.KR == true then 
+	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Kr,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif language == 0 and gRegion == 1 then
+	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif language == 1 and gRegion == 1 then
+	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif language == 2 and gRegion == 1 then
+	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif language == 3 and gRegion == 1 then
+	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif gRegion == 2 then
+	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Cn,5)
+	 		AetheryteHelper.SaveSettings()
+	 elseif gRegion == 3 then
+	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Kr,5)
+	 		AetheryteHelper.SaveSettings()
 	 end
 	 GUI:EndGroup()
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip80)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip80)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip80,mETp.tip80,mDTp.tip80,mFTp.tip80,mCTp.tip80,mKTp.tip80)
 			  end
 	 end
 	 GUI:Spacing()
@@ -12457,11 +12188,7 @@ function AetheryteHelper.GCtrunin()
 	 GUI:EndGroup()
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip81)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip81)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip81,mETp.tip81,mDTp.tip81,mFTp.tip81,mCTp.tip81,mKTp.tip81)
 			  end
 	 end
 	 if AHSET.syojigunpyou <= mushGseals.count then mushtruninGCitem = true
@@ -12494,11 +12221,7 @@ function AetheryteHelper.GCtrunin()
 	 GUI:EndGroup()
 	 if (GUI:IsItemHovered()) then
 	   if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip81)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip81)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip81,mETp.tip81,mDTp.tip81,mFTp.tip81,mCTp.tip81,mKTp.tip81)
 			  end
 	 end
 	 end
@@ -12531,11 +12254,7 @@ function AetheryteHelper.Drawafooter()
 		 io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()
 	  end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip98)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip98)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip98,mETp.tip98,mDTp.tip98,mFTp.tip98,mCTp.tip98,mKTp.tip98)
 			  end
 	  end
 
@@ -12558,11 +12277,7 @@ function AetheryteHelper.Drawafooter()
 			io.popen([[cmd /c start "" "]]..AHLinks.link1..[["]]):close()
 	  end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip97)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip97)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip97,mETp.tip97,mDTp.tip97,mFTp.tip97,mCTp.tip97,mKTp.tip97)
 			  end
 	  end
 
@@ -12683,11 +12398,7 @@ function AetheryteHelper.SVRSelectermini()
 			  Player:Stop()
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			  end
 			  end
 	  elseif selectins == false then
@@ -12699,11 +12410,7 @@ function AetheryteHelper.SVRSelectermini()
 			  selectins = not selectins
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip01)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip01)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
 			  end
 			  end
 	  end
@@ -12712,11 +12419,7 @@ function AetheryteHelper.SVRSelectermini()
 		  GUI:Image(ImageFolder..[[AH_non.png]],20,20)
 		  if (GUI:IsItemHovered()) then
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip00)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip00)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip00,mETp.tip00,mDTp.tip00,mFTp.tip00,mCTp.tip00,mKTp.tip00)
 			  end
 			end
 	  end
@@ -12757,11 +12460,7 @@ function AetheryteHelper.SVRSelectermini()
 	 end
 	 if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip95)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip95)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip95,mETp.tip95,mDTp.tip95,mFTp.tip95,mCTp.tip95,mKTp.tip95)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -12775,11 +12474,7 @@ function AetheryteHelper.SVRSelectermini()
 		  AetheryteHelper.miniWV.open = false
 		  end
 		  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip22)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip22)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -12828,11 +12523,7 @@ function AetheryteHelper.DCSVselect()
 	 --end
 	 if (GUI:IsItemHovered()) then
 	 if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip93)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip93)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip93,mETp.tip93,mDTp.tip93,mFTp.tip93,mCTp.tip93,mKTp.tip93)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -12847,11 +12538,7 @@ function AetheryteHelper.DCSVselect()
 			  AHSET.nohousing = not AHSET.nohousing
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip04)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip04)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip04,mETp.tip04,mDTp.tip04,mFTp.tip04,mCTp.tip04,mKTp.tip04)
 			  end
 			  end
 	  elseif AHSET.nohousing == false then
@@ -12862,11 +12549,7 @@ function AetheryteHelper.DCSVselect()
 			  AHSET.nohousing = not AHSET.nohousing
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip04)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip04)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip04,mETp.tip04,mDTp.tip04,mFTp.tip04,mCTp.tip04,mKTp.tip04)
 			  end
 			  end
 	 end
@@ -12884,11 +12567,7 @@ function AetheryteHelper.DCSVselect()
 	 end
 	 if (GUI:IsItemHovered()) then
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip95)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip95)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip95,mETp.tip95,mDTp.tip95,mFTp.tip95,mCTp.tip95,mKTp.tip95)
 			  end
 	 end
 	 GUI:EndGroup()
@@ -12903,29 +12582,27 @@ function AetheryteHelper.minitools()
 			  GUI:SameLine(2.5,-25)
 			  GUI:Image(ImageFolder..[[tips.png]],25,25)
 			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  AHSET.mushtooltips = not AHSET.mushtooltips
-			  AetheryteHelper.SaveSettings()
-			  end
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip109)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip109)
-			  end
+			  	if (GUI:IsMouseClicked(0)) then
+			  	AHSET.mushtooltips = not AHSET.mushtooltips
+			  	AetheryteHelper.SaveSettings()
+			  	end
+			  	if (GUI:IsMouseClicked(1)) then
+			  	AetheryteHelper.selectlanguage.open = not AetheryteHelper.selectlanguage.open
+			  	end
+			  AetheryteHelper.SetToolTips(mJTp.tip109,mETp.tip109,mDTp.tip109,mFTp.tip109,mCTp.tip109,mKTp.tip109)
 			  end
 	  elseif AHSET.mushtooltips == false then
 			  GUI:SameLine(2.5,-25)
 			  GUI:Image(ImageFolder..[[tips_non.png]],25,25)
 			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  AHSET.mushtooltips = not AHSET.mushtooltips
-			  AetheryteHelper.SaveSettings()
-			  end
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip109)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip109)
-			  end
+			  	if (GUI:IsMouseClicked(0)) then
+			  	AHSET.mushtooltips = not AHSET.mushtooltips
+			  	AetheryteHelper.SaveSettings()
+			  	end
+			  	if (GUI:IsMouseClicked(1)) then
+			  	AetheryteHelper.selectlanguage.open = not AetheryteHelper.selectlanguage.open
+			  	end
+			  AetheryteHelper.SetToolTips(mJTp.tip109,mETp.tip109,mDTp.tip109,mFTp.tip109,mCTp.tip109,mKTp.tip109)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -12940,11 +12617,7 @@ function AetheryteHelper.minitools()
 			  AetheryteHelper.miniRadarWindow.open = not AetheryteHelper.miniRadarWindow.open
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip143)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip143)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip143,mETp.tip143,mDTp.tip143,mFTp.tip143,mCTp.tip143,mKTp.tip143)
 			  end
 			end
 	  GUI:EndGroup()
@@ -12955,11 +12628,7 @@ function AetheryteHelper.minitools()
 			  SendTextCommand("/e <flag>")
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip03)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip03)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip03,mETp.tip03,mDTp.tip03,mFTp.tip03,mCTp.tip03,mKTp.tip03)
 			  end
 			end
 	  GUI:EndGroup()
@@ -12971,11 +12640,7 @@ function AetheryteHelper.minitools()
 			  SendTextCommand("/e [AH]Now Instance: \x02\x13\x06\xfe\xff\xff\xff\x11 <pos>")
 			  end
 			  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip117)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip117)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip117,mETp.tip117,mDTp.tip117,mFTp.tip117,mCTp.tip117,mKTp.tip117)
 			  end
 			end
 	  GUI:EndGroup()
@@ -13011,11 +12676,7 @@ function AetheryteHelper.footerkofi()
 			io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
 	  end
 	  if AHSET.mushtooltips == true then
-			  if language == 0 then
-			  GUI:SetTooltip(mushtooltips.jp.tip96)
-			  else
-			  GUI:SetTooltip(mushtooltips.en.tip96)
-			  end
+			  AetheryteHelper.SetToolTips(mJTp.tip96,mETp.tip96,mDTp.tip96,mFTp.tip96,mCTp.tip96,mKTp.tip96)
 			  end
 	  end
 	  GUI:EndGroup()
@@ -13213,6 +12874,7 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.CreateButtonWindows()
   AetheryteHelper.CBcodeEditWindows()
   AetheryteHelper.userButtonAllDrow()
+  AetheryteHelper.UserLanguageSet()
   end
 end
 
@@ -16487,13 +16149,8 @@ function AetheryteHelper.itemsort()
 		  end
 		  d("[AH][ItemSort]num of items to separated:"..jufuku)
 		  if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 30 and jufuku == jufuku and jufuku > 1 then
-		   if language == 0 then
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSort", "例外が発生したのでソートを停止します")
+		   AetheryteHelper.IssueNotice(AHitemsortError.title01,AHitemsortError.J01,AHitemsortError.E01,AHitemsortError.D01,AHitemsortError.F01,AHitemsortError.C01,AHitemsortError.K01)
 		   AHitemsort = false
-		   else
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSort", "There was an irregularity.")
-		   AHitemsort = false
-		   end
 		  end
 		  if jufuku == 0 then
 		  mushlooptimer = 1000
@@ -16543,13 +16200,8 @@ function AetheryteHelper.itemsortB()
 		  end
 		  d("[AH][ItemSort]num of items to separated:"..jufukuB)
 		  if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 30 and jufukuB == jufukuB and jufukuB > 1 then
-		   if language == 0 then
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSort", "例外が発生したのでソートを停止します")
+		   AetheryteHelper.IssueNotice(AHitemsortError.title01,AHitemsortError.J01,AHitemsortError.E01,AHitemsortError.D01,AHitemsortError.F01,AHitemsortError.C01,AHitemsortError.K01)
 		   AHitemsortB = false
-		   else
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSort", "There was an irregularity.")
-		   AHitemsortB = false
-		   end
 		  end
 		  if jufukuB == 0 then
 		  mushlooptimer = 1000
@@ -16601,13 +16253,8 @@ function AetheryteHelper.itemsortRite()
 		  end
 		  d("[AH][ItemSort]num of items to separated:"..jufukuR)
 		  if GetChatLines()[table.maxn(GetChatLines())].timestamp == GetEorzeaTime().servertime - 40 and jufukuR == jufukuR and jufukuR > 1 then
-		   if language == 0 then
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSort", "例外が発生したのでソートを停止します")
+		   AetheryteHelper.IssueNotice(AHitemsortError.title01,AHitemsortError.J01,AHitemsortError.E01,AHitemsortError.D01,AHitemsortError.F01,AHitemsortError.C01,AHitemsortError.K01)
 		   AHitemsortR = false
-		   else
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSort", "There was an irregularity.")
-		   AHitemsortR = false
-		   end
 		  end
 		  if jufukuR == 0 then
 		  mushlooptimer = 1000
@@ -16704,11 +16351,7 @@ function AetheryteHelper.itemSearch()
 		  ISstep = 1
 		  elseif itemunique == true then
 		   d("[AH][itemSearch]:UnidueItem Noticet")
-		   if language  == 0 then
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSearch", "このアイテムはひとつしか持てません")
-		   else
-		   ffxiv_dialog_manager.IssueNotice("AH ItemSearch", "You can only have 1 of these item.")
-		   end
+		   AetheryteHelper.IssueNotice(AHitemsortError.title02,AHitemsortError.J02,AHitemsortError.E02,AHitemsortError.D02,AHitemsortError.F02,AHitemsortError.C02,AHitemsortError.K02)
 		   ISstep = 200
 		  elseif itemunique ~= true and AHSET.mushitemSearch and mushiS_rite == true then
 		  ISstep = 2
