@@ -38,7 +38,7 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "Aetheryte Helper",
-	  Version =         "1.8.2",
+	  Version =         "1.8.3",
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -115,6 +115,7 @@ local kinokoProject = {
             "[1.8.0] - bug fix & Many additional features.",
             "[1.8.1] - change CN ServerList.",
             "[1.8.2] - Added ability to change tooltip language.",
+            "[1.8.3] - bug fix & add API.",
 
 					},
 
@@ -1014,7 +1015,7 @@ mushtooltips = {
 		 tip140 = "Organizing the Saddlebag\nput together stackable items.",
 		 tip141 = "from FCchest",
 		 tip142 = "to FCchest",
-		 tip143 = "AH Radar\nLeft-click for standard window / Right-click for mini window",
+		 tip143 = "AH Radar\nLeft-click for standard window\nRight-click for mini window",
 		 tip144 = "Player",
 		 tip145 = "Monster",
 		 tip146 = "NPC",
@@ -1119,10 +1120,10 @@ mushtooltips = {
 		 tip24 = "Dites-moi si cela ne fonctionne pas correctement",
 		 tip25 = "Réparation des l'équipements\nArtisans requis car ils réparent leur propre matériel",
 		 tip26 = "Activation/désactivation du mode de confiance.\n\nL'onglet est fixé sur [GC]",
-		 tip27 = "Cliquez pour activer/désactiver le Recyclage\nCliquez avec le bouton droit de la souris pour activer ou désactiver les filtres",
+		 tip27 = "Cliquez pour activer/désactiver le Recyclage\nCliquez avec le bouton droit de activer ou désactiver les filtres",
 		 tip28 = "Désactiver le recyclage chez les Disciples de la main",
 		 tip29 = "Exécutez Recyclage et Matérialisation uniquement en Donjon",
-		 tip30 = "Niveau d'objet1-1000\nSi le Niveau objet est supérieur à ce chiffre, Recyclage l'article",
+		 tip30 = "Niveau d'objet1-1000\nSi le Niveau objet est supérieur à ce chiffre,\nRecyclage l'article",
 		 tip31 = "réinitialiser",
 		 tip32 = "Niveau d'objet5-1000\nRecyclage Niveau objet moins que cela sauf Nv objet1",
 		 tip33 = "Recyclage de la sélection\nMettez votre objet de valeur dans le Arsenal de l'armurerie",
@@ -1137,7 +1138,7 @@ mushtooltips = {
 		 tip42 = "Jambes",
 		 tip43 = "Bague",
 		 tip44 = "Pieds",
-		 tip45 = "Cliquez avec le bouton droit de la souris pour tout sélectionner\nCliquez avec le bouton gauche pour faire marche arrière",
+		 tip45 = "Cliquez avec le bouton droit de tout sélectionner\nCliquez avec le bouton gauche pour faire marche arrière",
 		 tip46 = "Tanks",
 		 tip47 = "Soigneurs",
 		 tip48 = "mêlée",
@@ -1169,16 +1170,16 @@ mushtooltips = {
 		 tip74 = "Disciples de la terre(Tous les équipements)",
 		 tip75 = "Sceaux de compagnie d'échange pour les articles",
 		 tip76 = "Activation/désactivation du réglage automatique",
-		 tip77 = "Sceaux de compagnie a ce chiffre. Commence à remplacer quand il dépasse",
+		 tip77 = "Sceaux de compagnie a ce chiffre.\nCommence à remplacer quand il dépasse",
 		 tip78 = "Entrez 0 pour la valeur maximale",
 		 tip79 = "Nombre d'échanges (automatiquement max.)",
-		 tip80 = "La fonction est désactivée si le rang sélectionné est inférieur au rang GC requis pour l'échange.",
+		 tip80 = "La fonction est désactivée si\nle rang sélectionné est inférieur au rang GC requis pour l'échange.",
 		 tip81 = "Sceaux de compagnie requise pour le remplacement/Sceaux de compagnie actuelle",
 		 tip82 = "Utilisation automatique de l'Essence de symbiose\nClic droit pour basculer vers/depuis le lien avec les minion",
 		 tip83 = "Utilisation automatique de Manuel militaire de méditation\nClic droit pour activer/désactiver la liaison des minion.",
 		 tip84 = "Le GC auquel vous appartenez est automatiquement sélectionné.",
 		 tip85 = "Matérialisation",
-		 tip86 = "Recyclage les équipements de l'inventaire\nCliquez avec le bouton droit de la souris pour activer ou désactiver les filtres.",
+		 tip86 = "Recyclage les équipements de l'inventaire\nCliquez avec le bouton droit de activer ou désactiver les filtres.",
 		 tip87 = "Livraison de marchandises rares pour le GC",
 		 tip88 = "Automatiquement déplacé vers GC pour la livraison.",
 		 tip89 = "Arrêt du mouvement automatique.",
@@ -1201,11 +1202,11 @@ mushtooltips = {
 		 tip106 = "Ne me piquez pas",
 		 tip107 = "Le Méga Cactpot Acheter trois billets",
 		 tip108 = "Option de recyclage ouverte",
-		 tip109 = "Afficher/masquer les infobulles\nCliquez avec le bouton droit de la souris pour sélectionner la langue",
-		 tip110 = "Cliquez avec le bouton droit de la souris pour copier.",
-		 tip111 = "En raison de l'accent mis sur la stabilité, l'acceptation d'une commande peut prendre jusqu'à 3 secondes.\nVous informe par un message en couleur (écho) de l'acceptation de la demande.\nLa progression peut être suivie dans la console.",
+		 tip109 = "Afficher/masquer les infobulles\nCliquez avec le bouton droit de sélectionner la langue",
+		 tip110 = "Cliquez avec le bouton droit de copier.",
+		 tip111 = "En raison de l'accent mis sur la stabilité,\nl'acceptation d'une commande peut prendre jusqu'à 3 secondes.\nVous informe par un message en couleur (écho) de l'acceptation de la demande.\nLa progression peut être suivie dans la console.",
 		 tip112 = "envoyer les honneurs",
-		 tip113 = "Ordre de la liste des partis, à l'exclusion de vous-même.\nLes icônes sont données à titre de référence uniquement pour une utilisation en solo avec mission.",
+		 tip113 = "Ordre de la liste des partis,\nà l'exclusion de vous-même.\nLes icônes sont données à titre\nde référence uniquement pour une utilisation en solo avec mission.",
 		 tip114 = "On/Off",
 		 tip115 = "Je vais en parler dans le chat du parti.",
 		 tip116 = "Les commandes textuelles du jeu peuvent être utilisées.",
@@ -1235,7 +1236,7 @@ mushtooltips = {
 		 tip140 = "Organizing the Saddlebag\nput together stackable items.",
 		 tip141 = "Recevez des objets de Coffre de compagnie libre",
 		 tip142 = "Déposer des objets dans un Coffre de compagnie libre",
-		 tip143 = "AH Radar\nCliquez avec le bouton gauche de la souris pour ouvrir une fenêtre standard/Cliquez avec le bouton droit de la souris pour ouvrir une mini-fenêtre.",
+		 tip143 = "AH Radar\nCliquez avec le bouton gauche de ouvrir une\nfenêtre standard\nCliquez avec le bouton droit de ouvrir\nune mini-fenêtre.",
 		 tip144 = "Joueur",
 		 tip145 = "Ennemis",
 		 tip146 = "PNJ",
@@ -1281,7 +1282,7 @@ mushtooltips = {
 		 tip186 = "Réglage de la chasser",
 		 tip187 = "Paramètres généraux",
 		 tip188 = "Vents éthérés",
-		 tip189 = "Cliquez avec le bouton gauche de la souris pour ajouter à la liste personnalisée\nCliquez avec le bouton droit de la souris pour annuler.",
+		 tip189 = "Cliquez avec le bouton gauche de ajouter à la liste personnalisée\nCliquez avec le bouton droit de annuler.",
 		 tip190 = "AH Radar\nfenêtre standard",
 		 tip191 = "Utilisez Billet de transport éthéré",
 		 tip192 = "Fixer le montant de l'argent",
@@ -1291,7 +1292,7 @@ mushtooltips = {
 		 tip196 = "Changement de couleur pour les lignes cibles des autres joueurs",
 		 tip197 = "Changement de couleur des lignes cibles de la Ennemis",
 		 tip198 = "Normal/Dangereux",
-		 tip199 = "Si le joueur cible se trouve à cette distance, le BOT arrête de se déplacer",
+		 tip199 = "Si le joueur cible se trouve à cette distance,\nle BOT arrête de se déplacer",
 		 tip200 = "Création de boutons personnalisés",
 		 tip201 = "bouton de commande de texte",
 		 tip202 = "bouton de clic",
@@ -1303,10 +1304,10 @@ mushtooltips = {
 		 tip208 = "infobulle",
 		 tip209 = "Commandes lors d'un clic gauche",
 		 tip210 = "Commandes lors d'un clic droit",
-		 tip211 = "Code d'exécution sur le clic gauche.\nCliquez avec le bouton droit de la souris pour copier.",
-		 tip212 = "Code d'exécution lors d'un clic droit.\nCliquez avec le bouton droit de la souris pour copier.",
+		 tip211 = "Code d'exécution sur le clic gauche.\nCliquez avec le bouton droit de copier.",
+		 tip212 = "Code d'exécution lors d'un clic droit.\nCliquez avec le bouton droit de copier.",
 		 tip213 = "Temps d'impulsion du code\n0-3000\n\nAHPulse est partagé avec d'autres fonctions et est affecté lorsqu'il est exécuté en même temps.",
-		 tip214 = "Code d'exécution lorsque le bouton est activé.\nCliquez avec le bouton droit de la souris pour copier.",
+		 tip214 = "Code d'exécution lorsque le bouton est activé.\nCliquez avec le bouton droit de copier.",
 		 tip215 = "Bouton de suppression.",
 		 tip216 = "Mettre à jour le contenu du bouton.",
 		 tip217 = "Paramètres des boutons de chargement.",
@@ -1337,8 +1338,8 @@ mushtooltips = {
 		 tip21 = "offene AH\nDoppelklick",
 		 tip22 = "schließen",
 		 tip23 = "Zufällig",
-		 tip24 = "Wenn es nicht gut funktioniert, melden Sie es bitte",
-		 tip25 = "Sie brauchen einen Handwerker, um Reparaturen selbst durchzuführen.",
+		 tip24 = "Wenn es nicht gut funktioniert,\nmelden Sie es bitte",
+		 tip25 = "Sie brauchen einen Handwerker,\num Reparaturen selbst durchzuführen.",
 		 tip26 = "Verwenden Sie den Trust-Zusatz zum Austausch\nAktivieren/Deaktivieren\n\nDie Registerkarte wechselt von selbst zu [GC]",
 		 tip27 = "Klicken Sie hier, um Materialverwertung ein/auszuschalten\nRechtsklick zum Ein- und Ausschalten des Filters",
 		 tip28 = "Automatisch ausschalten in Handwerker für Materialverwertung",
@@ -1358,7 +1359,7 @@ mushtooltips = {
 		 tip42 = "Beine",
 		 tip43 = "Finger",
 		 tip44 = "Füße",
-		 tip45 = "Linke Maustaste: alles ein\nRechtsklick : Umkehren",
+		 tip45 = "Linke Maustaste:alles ein\nRechtsklick:Umkehren",
 		 tip46 = "Verteidiger",
 		 tip47 = "Heiler",
 		 tip48 = "Schlachtens",
@@ -1393,13 +1394,13 @@ mushtooltips = {
 		 tip77 = "Geldbetrag für den Beginn des Umtauschs",
 		 tip78 = "0 eingeben, um den Maximalwert zu erhalten",
 		 tip79 = "Benötigte Menge (automatische Anpassung)",
-		 tip80 = "Beachten Sie, dass Sie, wenn Sie den GC-Rang nicht erreichen,\nAutomatisch ausgeschaltet",
-		 tip81 = "Anzahl der erforderlichen Staatstaler/Anzahl der derzeit im Besitz befindlichen Staatstaler",
-		 tip82 = "Verwenden Sie den automatischen Trank der Bindung.\nKlicken Sie mit der rechten Maustaste, um den Minion-Link ein- oder auszuschalten",
-		 tip83 = "Verwenden Sie den automatischen Gesellschafts-Leitfaden „Materialeinsatz“\nKlicken Sie mit der rechten Maustaste, um den Minion-Link ein- oder auszuschalten.",
+		 tip80 = "Beachten Sie, dass Sie,\nwenn Sie den GC-Rang nicht erreichen,\nAutomatisch ausgeschaltet",
+		 tip81 = "Anzahl der erforderlichen Staatstaler\nAnzahl der derzeit im Besitz befindlichen Staatstaler",
+		 tip82 = "Verwenden Sie den automatischen Trank der Bindung.\nKlicken Sie mit der rechten Maustaste,\num den Minion-Link ein- oder auszuschalten",
+		 tip83 = "Verwenden Sie den automatischen Gesellschafts-Leitfaden „Materialeinsatz“\nKlicken Sie mit der rechten Maustaste,\num den Minion-Link ein- oder auszuschalten.",
 		 tip84 = "Ihr GC\nautomatisch auswählen",
 		 tip85 = "Materia-Extrakition",
-		 tip86 = "Materialverwertung aller Geräte in Ihrem Invebtar\nKlicken Sie mit der rechten Maustaste, um die Optionen ein- und auszuschalten.",
+		 tip86 = "Materialverwertung aller Geräte in Ihrem Invebtar\nKlicken Sie mit der rechten Maustaste,\num die Optionen ein- und auszuschalten.",
 		 tip87 = "Experteneinsätza",
 		 tip88 = "Automatische Übertragung an GC",
 		 tip89 = "Nicht mehr bewegen",
@@ -1409,8 +1410,8 @@ mushtooltips = {
 		 tip93 = "Automatische Auswahl Datenzentrums",
 		 tip94 = "Automatischer Umzug nach Marktbrett",
 		 tip95 = "Welt wählen",
-		 tip96 = "Bitte unterstützen Sie uns, damit es gut wird.\n\nFür meine Katze...",
-		 tip97 = "Bitte senden Sie mir ein DM, wenn Sie irgendwelche Probleme oder Wünsche haben.\nBitte fördern Sie auch die",
+		 tip96 = "Bitte unterstützen Sie uns,\ndamit es gut wird.\n\nFür meine Katze...",
+		 tip97 = "Bitte senden Sie mir ein DM,\nwenn Sie irgendwelche Probleme oder Wünsche haben.\nBitte fördern Sie auch die",
 		 tip98 = "Github-Link,\nLinks klicken: Home\nRechtsklick: Loslassen",
 		 tip99 = "Erhalte Fähigkeiten durch das Lösen von Quests!",
 		 tip100 = "[MEx]=Materia-Extrakition\n[SbP]=Trank der Bindung\n[SbM]=Gesellschafts-Leitfaden „Materialeinsatz“",
@@ -1424,13 +1425,13 @@ mushtooltips = {
 		 tip108 = "Materialverwertung Options",
 		 tip109 = "Tooltip ein-/ausblenden\nRechtsklick zur Auswahl der Sprache",
 		 tip110 = "Rechtsklick zum Kopieren",
-		 tip111 = "Aufgrund der Bedeutung der Stabilität kann es bis zu drei Sekunden dauern,\nbis ein Befehl angenommen wird.\nWenn Sie angenommen werden, werden Sie durch eine farbige Nachricht benachrichtigt.\nDer Fortschritt kann auf der Konsole überprüft werden.",
+		 tip111 = "Aufgrund der Bedeutung der Stabilität kann es bis zu drei Sekunden dauern,\nbis ein Befehl angenommen wird.\nWenn Sie angenommen werden,\nwerden Sie durch eine farbige Nachricht benachrichtigt.\nDer Fortschritt kann auf der Konsole überprüft werden.",
 		 tip112 = "Ehrungen automatisch senden",
-		 tip113 = "Zeigt einen Index der Gruppenmitglieder an, die nicht Sie selbst sind.\nDie Symbole an der Seite dienen nur als Referenz bei der Verwendung des Inhaltssuche solo.",
+		 tip113 = "Zeigt einen Index der Gruppenmitglieder an,\ndie nicht Sie selbst sind.\nDie Symbole an der Seite dienen nur als Referenz bei der Verwendung des Inhaltssuche solo.",
 		 tip114 = "Aktivieren/Deaktivieren",
 		 tip115 = "Nur im Gruppenchat gesendet.",
 		 tip116 = "Es können spielinterne Textbefehle verwendet werden.",
-		 tip117 = "[/e <pos>]",
+		 tip117 = "TextBefehl im Spiel senden>> /e <pos>",
 		 tip118 = "Automatischer Beginn chat und Ende chat des Dungeons",
 		 tip119 = "Inventar organisieren\nstapelbare Gegenstände zusammenstellen.",
 		 tip120 = "Jetzt arbeiten...",
@@ -1456,7 +1457,7 @@ mushtooltips = {
 		 tip140 = "Organisieren Chocobo-Satteltasche\nFassen Sie zusammen, was gestapelt werden kann.",
 		 tip141 = "Vom Gesellschaftstruhe erhalten",
 		 tip142 = "Kaution an Gesellschaftstruhe",
-		 tip143 = "AH-Radar\nLinksklick zum Öffnen des Standardfensters\nKlicken Sie mit der rechten Maustaste, um ein Minifenster zu öffnen",
+		 tip143 = "AH-Radar\nLinksklick zum Öffnen des Standardfensters\nKlicken Sie mit der rechten Maustaste,\num ein Minifenster zu öffnen",
 		 tip144 = "PCs",
 		 tip145 = "Feinde",
 		 tip146 = "NPCs",
@@ -1526,7 +1527,7 @@ mushtooltips = {
 		 tip210 = "Befehle beim Klicken mit der rechten Maustaste",
 		 tip211 = "Ausführungscode bei Linksklick\nZum Kopieren mit der rechten Maustaste klicken",
 		 tip212 = "Ausführungscode bei Rechtsklick\nZum Kopieren mit der rechten Maustaste klicken",
-		 tip213 = "Impulszeit des Codes\n0-3000\n\nAHPulse wird mit anderen Funktionen geteilt und ist betroffen, wenn sie gleichzeitig ausgeführt werden",
+		 tip213 = "Impulszeit des Codes\n0-3000\n\nAHPulse wird mit anderen Funktionen geteilt und ist betroffen,\nwenn sie gleichzeitig ausgeführt werden",
 		 tip214 = "Ausführungscode, wenn die Taste eingeschaltet ist.\nZum Kopieren mit der rechten Maustaste klicken",
 		 tip215 = "Schaltfläche Löschen",
 		 tip216 = "Aktualisieren Sie den Inhalt der Schaltfläche",
@@ -1566,7 +1567,7 @@ mushtooltips = {
   	 tip29 = "只分解和精制副本内的装备和道具",
   	 tip30 = "品级:1-1000\n分解品级大于这个数字的裝备",
   	 tip31 = "重置品级設置",
-  	 tip32 = "品级-1000\n分解任何低于这个数字的装备，除了品级1的装备",
+  	 tip32 = "品级:5-1000\n分解任何低于这个数字的装备，除了品级1的装备",
   	 tip33 = "开启之后会分解装备\n开启前請確保背包內沒有重要的裝備",
   	 tip34 = "主手",
   	 tip35 = "副手",
@@ -1898,7 +1899,7 @@ mushtooltips = {
 		 tip140 = "Organizing the Saddlebag\nput together stackable items.",
 		 tip141 = "from FCchest",
 		 tip142 = "to FCchest",
-		 tip143 = "AH Radar\nLeft-click for standard window / Right-click for mini window",
+		 tip143 = "AH Radar\nLeft-click for standard window\nRight-click for mini window",
 		 tip144 = "Player",
 		 tip145 = "Monster",
 		 tip146 = "NPC",
@@ -1994,6 +1995,16 @@ AHitemsortError = {
 	F02 = "Vous ne pouvez avoir qu'une seule de ces choses.",
 	C02 = "你只能拥有其中一个项目",
 	K02 = "오류가 발생했습니다\n항목 정리 중지",
+}
+
+AHnormalError = {
+	title01 = "Create Button",
+	J01 = "ボタンは100個までしか表示できません",
+	E01 = "Only 100 buttons can be displayed",
+	D01 = "Es können nur 100 Schaltflächen angezeigt werden",
+	F01 = "Seuls 100 boutons au maximum peuvent être affichés.",
+	C01 = "最多只能显示100个按钮",
+	K01 = "버튼은 100개까지만 표시할 수 있습니다.",
 }
 ----------------------------------------------------
 
@@ -2329,6 +2340,9 @@ local mushiS_FC = false
 local mushaccelerator = true
 local mushRitekazu = 0
 local AuL = AetheryteHelper.mushAHlanguage
+local AHSET = AetheryteHelper.settings.SET
+local eqFilter = AetheryteHelper.settings.Filter
+local AHeqjob = AetheryteHelper.settings.Job
 ------------------
 --Radar
 local Rcid = ""
@@ -2408,7 +2422,7 @@ end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
--- close
+-- api
 
 function AHSwitchOpen(mado)
 	  if mado == "main" then
@@ -2445,6 +2459,108 @@ function AHSwitchOpen(mado)
   	end
 return tostring(mado)
 end
+
+function AHfuncSwitch(kinou,bool)
+	if kinou == "GC" and bool ~= nil then
+		 AutoMoveGC = bool
+	end
+	if kinou == "MB" and bool ~= nil then
+		 AHSET.mushmovetoMB = bool
+		 mushMBlim = false
+     mushMBgri = false
+     mushMBul = false
+	end
+	if kinou == "MBlimsa" and bool ~= nil then
+		 AHSET.mushmovetoMB = bool
+		 mushMBlim = bool
+     mushMBgri = false
+     mushMBul = false
+	end
+	if kinou == "MBgridania" and bool ~= nil then
+		 AHSET.mushmovetoMB = bool
+		 mushMBlim = false
+     mushMBgri = bool
+     mushMBul = false
+	end
+	if kinou == "MBuldah" and bool ~= nil then
+		 AHSET.mushmovetoMB = bool
+		 mushMBlim = false
+     mushMBgri = false
+     mushMBul = bool
+	end
+	if kinou == "MateriaExtract" and bool ~= nil then
+		 AHSET.isMateriaEnabled = bool
+	end
+	if kinou == "Salvage" and bool ~= nil then
+		 AHSET.isSalvageEnabled = bool
+		 AHSET.isReductionOption = false
+		 if bool == true then
+		 GCexchange = false
+		 end
+	end
+	if kinou == "fil" and bool ~= nil then
+		 AHSET.isReductionOption = bool
+	end
+	if kinou == "Salvage,fil" and bool ~= nil then
+		 AHSET.isSalvageEnabled = bool
+		 AHSET.isReductionOption = bool
+		 if bool == true then
+		 GCexchange = false
+		 end
+	end
+	if kinou == "SPpotion" and bool ~= nil then
+		 AHSET.isMateriaEnabled = bool
+		 AHSET.isPotionEnabled = bool
+	end
+	if kinou == "SPmanual" and bool ~= nil then
+		 AHSET.isMateriaEnabled = bool
+		 AHSET.isManualEnabled = bool
+	end
+	if kinou == "AR" and bool ~= nil then
+		 AHSET.isReductionEnabled = bool
+	end
+return tostring(kinou),bool
+end
+
+function AHCustomButtonAutoOFF(name,bool)
+   for k,v in pairs(AetheryteHelper.userCustomfunc) do
+			if v[2] == name and v[7] == 2 then
+				if v[10] == 1 then
+				   v[10] = 0
+				   AetheryteHelper.SaveSettings()
+				end
+				if bool == false and v[1] == 0 then
+					v[1] = 1
+					AetheryteHelper.SaveSettings()
+				elseif bool == true and v[1] == 1 then
+					v[1] = 0
+					AetheryteHelper.SaveSettings()
+				end
+	  	end
+    end
+return tostring(name),bool
+end
+
+function AHCustomButtonAutoON(name,bool)
+   for k,v in pairs(AetheryteHelper.userCustomfunc) do
+			if v[2] == name and v[7] == 2 then
+				if v[10] == 0 then
+				   v[10] = 1
+				   AetheryteHelper.SaveSettings()
+				end
+				if bool == true and v[1] == 0 then
+					v[1] = 1
+					AetheryteHelper.SaveSettings()
+				elseif bool == false and v[1] == 1 then
+					v[1] = 0
+					AetheryteHelper.SaveSettings()
+				end
+	  	end
+    end
+return tostring(name),bool
+end
+
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- tab setting
@@ -2571,9 +2687,6 @@ function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.language, AetheryteHelper.mushAHlanguage)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-local AHSET = AetheryteHelper.settings.SET
-local eqFilter = AetheryteHelper.settings.Filter
-local AHeqjob = AetheryteHelper.settings.Job
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local mJTp = mushtooltips.jp
 local mETp = mushtooltips.en
@@ -5240,36 +5353,47 @@ end
 
 --------------------------------------------------------
 function AetheryteHelper.userButtonAllDrow()
-	local btndrow = 0
+	local btndrowA = 0
+	local btndrowB = 0
+	local childH = 1.35
   for k,v in pairs(AetheryteHelper.userCustomfunc) do
 	  	if v[1] == 1 then
-	  	btndrow = btndrow + 1
+	  	btndrowA = btndrowA + 1
 	    end
 	end
-  if (btndrow > 0) then
+  if (btndrowA > 0) then
   AetheryteHelper.userbutton.open = true
   else
   AetheryteHelper.userbutton.open = false
   end
-  local sizex = 40*btndrow
-  local sizey = 60
-  if sizex > 190 then sizex = 190 end 
-  if btndrow > 25 then sizey = 210
-  elseif btndrow > 20 then sizey = 180
-  elseif btndrow > 15 then sizey = 150
-  elseif btndrow > 10 then sizey = 120 
-  elseif btndrow > 5 then sizey = 90 end
+  local sizex = 40*btndrowA
+  local sizey = 75
+  if btndrowA > 30 then sizex = 210
+  elseif sizex > 195 then sizex = 195 end 
+  if btndrowA > 25 then sizey = 230 childH = 1.35*6
+  elseif btndrowA > 20 then sizey = 200 childH = 1.35*5
+  elseif btndrowA > 15 then sizey = 170 childH = 1.35*4
+  elseif btndrowA > 10 then sizey = 140 childH = 1.35*3
+  elseif btndrowA > 5 then sizey = 110 childH = 1.35*2 end
   if AetheryteHelper.userbutton.open then
 	local UBflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_AlwaysAutoResize  
-	GUI:SetNextWindowSize(sizex,sizey)
+	GUI:SetNextWindowSize(sizex+10,sizey)
   AetheryteHelper.userbutton.visible, AetheryteHelper.userbutton.open = GUI:Begin('User Button', AetheryteHelper.userbutton.open,UBflags)
 	if (AetheryteHelper.userbutton.visible) then
 		GUI:Separator()
 		GUI:Spacing()
+		GUI:BeginChild("##UBTN", 0, GUI_GetFrameHeight(childH), true)
 		for k,v in pairs(AetheryteHelper.userCustomfunc) do
 		if v[1] == 1 then
+			btndrowB = btndrowB + 1
+			if btndrowB > 50 then
+				 AetheryteHelper.IssueNotice(AHnormalError.title01,AHnormalError.J01,AHnormalError.E01,AHnormalError.D01,AHnormalError.F01,AHnormalError.C01,AHnormalError.K01)
+				 v[1] = 0
+				 AetheryteHelper.SaveSettings()
+			end
 			if v[7] == 0 then
-		    if k == 5 or k == 10 or k == 15 or k == 20 or k == 25 or k == 30 or k == 35 or k == 40 then 
+		    if btndrowB/5 == 1 or btndrowB/5 == 2 or btndrowB/5 == 3 or btndrowB/5 == 4 or btndrowB/5 == 5 or
+		    	 btndrowB/5 == 6  or btndrowB/5 == 7 or btndrowB/5 == 8 or btndrowB/5 == 9 or btndrowB/5 == 10 then
 		    AetheryteHelper.UBDmode01(v[2],v[3],v[6],v[8],v[9],[[free_chat.png]])
 		    else
 		    AetheryteHelper.UBDmode01(v[2],v[3],v[6],v[8],v[9],[[free_chat.png]])
@@ -5277,7 +5401,8 @@ function AetheryteHelper.userButtonAllDrow()
 	      end
 	  	end
 	  	if v[7] == 1 then
-		    if k == 5 or k == 10 or k == 15 or k == 20 or k == 25 or k == 30 or k == 35 or k == 40 then 
+		    if btndrowB/5 == 1 or btndrowB/5 == 2 or btndrowB/5 == 3 or btndrowB/5 == 4 or btndrowB/5 == 5 or
+		    	 btndrowB/5 == 6  or btndrowB/5 == 7 or btndrowB/5 == 8 or btndrowB/5 == 9 or btndrowB/5 == 10 then
 		    AetheryteHelper.UBDmode02(v[2],v[3],v[6],v[11],v[12],[[CB_click.png]])
 		    else
 		    AetheryteHelper.UBDmode02(v[2],v[3],v[6],v[11],v[12],[[CB_click.png]])
@@ -5285,7 +5410,8 @@ function AetheryteHelper.userButtonAllDrow()
 	      end
 	  	end
 	  	if v[7] == 2 then
-		    if k == 5 or k == 10 or k == 15 or k == 20 or k == 25 or k == 30 or k == 35 or k == 40 then 
+		    if btndrowB/5 == 1 or btndrowB/5 == 2 or btndrowB/5 == 3 or btndrowB/5 == 4 or btndrowB/5 == 5 or
+		    	 btndrowB/5 == 6  or btndrowB/5 == 7 or btndrowB/5 == 8 or btndrowB/5 == 9 or btndrowB/5 == 10 then
 		    	if v[10] == 1 then
 		      AetheryteHelper.UBDmode03on(v[2],v[4],v[6],[[R_on.png]])
 		      	if GUI:IsItemHovered() then
@@ -5327,6 +5453,7 @@ function AetheryteHelper.userButtonAllDrow()
 	  	end
 	  end
 		end
+		GUI:EndChild()
 		GUI:Spacing()
 		GUI:Separator()
 	end
@@ -16122,7 +16249,7 @@ function AetheryteHelper.itemsort()
 			   item:LowerQuality()
 			end
 		  end
-		  if item.count ~= item.max then
+		  if item.count ~= item.max and item.IsCollectable == false then
 			table.insert(nonmaxitem,item)
 		  end
 		end
@@ -16173,7 +16300,7 @@ function AetheryteHelper.itemsortB()
 		local Bilist = Bbag:GetList()
 		if (table.valid(Bilist)) then
 		for _, Bitem in pairs(Bilist) do
-		  if Bitem.count ~= Bitem.max then
+		  if Bitem.count ~= Bitem.max and Bitem.IsCollectable == false then
 			table.insert(nonmaxitemB,Bitem)
 		  end
 		end
@@ -16226,7 +16353,7 @@ function AetheryteHelper.itemsortRite()
 		local Rilist = Rbag:GetList()
 		if (table.valid(Rilist)) then
 		for _, Ritem in pairs(Rilist) do
-		  if Ritem.count ~= Ritem.max then
+		  if Ritem.count ~= Ritem.max and Ritem.IsCollectable == false then
 			table.insert(nonmaxitemR,Ritem)
 		  end
 		end
