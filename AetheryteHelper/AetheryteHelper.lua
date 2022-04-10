@@ -1999,12 +1999,12 @@ AHitemsortError = {
 
 AHnormalError = {
 	title01 = "Create Button",
-	J01 = "ボタンは100個までしか表示できません",
-	E01 = "Only 100 buttons can be displayed",
-	D01 = "Es können nur 100 Schaltflächen angezeigt werden",
-	F01 = "Seuls 100 boutons au maximum peuvent être affichés.",
-	C01 = "最多只能显示100个按钮",
-	K01 = "버튼은 100개까지만 표시할 수 있습니다.",
+	J01 = "ボタンは50個までしか表示できません",
+	E01 = "Only 50 buttons can be displayed",
+	D01 = "Es können nur 50 Schaltflächen angezeigt werden",
+	F01 = "Seuls 50 boutons au maximum peuvent être affichés.",
+	C01 = "最多只能显示50个按钮",
+	K01 = "버튼은 50개까지만 표시할 수 있습니다.",
 }
 ----------------------------------------------------
 
