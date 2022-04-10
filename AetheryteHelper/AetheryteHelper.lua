@@ -2536,6 +2536,14 @@ function AHCustomButtonAutoOFF(name,bool)
 					v[1] = 0
 					AetheryteHelper.SaveSettings()
 				end
+			elseif v[2] == name and v[7] ~= 2 then
+				if bool == false and v[1] == 0 then
+					v[1] = 1
+					AetheryteHelper.SaveSettings()
+				elseif bool == true and v[1] == 1 then
+					v[1] = 0
+					AetheryteHelper.SaveSettings()
+				end
 	  	end
     end
 return tostring(name),bool
@@ -2548,6 +2556,14 @@ function AHCustomButtonAutoON(name,bool)
 				   v[10] = 1
 				   AetheryteHelper.SaveSettings()
 				end
+				if bool == true and v[1] == 0 then
+					v[1] = 1
+					AetheryteHelper.SaveSettings()
+				elseif bool == false and v[1] == 1 then
+					v[1] = 0
+					AetheryteHelper.SaveSettings()
+				end
+			elseif v[2] == name and v[7] ~= 2 then
 				if bool == true and v[1] == 0 then
 					v[1] = 1
 					AetheryteHelper.SaveSettings()
