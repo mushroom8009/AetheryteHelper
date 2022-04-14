@@ -1,6 +1,6 @@
 [![Downloads](https://img.shields.io/github/downloads/mushroom8009/AetheryteHelper/total.svg)](https://github.com/mushroom8009/AetheryteHelper/releases)
 
-# Aetheryte Helper
+# Aetheryte Helper(mushroom tools)
 this is a module in MMOminion(FFXIV Minion64)
 
 ![Latest Version Release note & Download](https://github.com/mushroom8009/AetheryteHelper/releases)
