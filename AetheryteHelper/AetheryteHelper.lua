@@ -38,8 +38,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.4",
-	  tag = 20220415,
+	  Version =         "1.8.4.3",
+	  tag = 2022041605,
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -119,6 +119,9 @@ local kinokoProject = {
             "[1.8.3] - bug fix & add API.",
             "[1.8.4] - add API & gil amount setting to ticket",
             "          add Auto Updater",
+            "[1.8.4.1] - fix Exchange in patch 6.1",
+            "[1.8.4.2] - fix retainer(item search) in patch 6.1",
+            "[1.8.4.3] - fix retainer(item search) add retry function",
 
 					},
 
@@ -5852,12 +5855,26 @@ function AetheryteHelper.UpdateWindow()
 		     end
  	     end
  	     GUI:EndGroup()
- 	   else
+ 	   elseif mushVUP == nil then
  	   	 GUI:BeginGroup()
  	     GUI:PushStyleColor(GUI.Col_Button,.5,.5,0,1)
  	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[loading.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
+ 		     if AHSET.mushtooltips == true then
+			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
+		     end
+ 	     end
+ 	     GUI:EndGroup()
+ 	   else
+       GUI:BeginGroup()
+ 	     GUI:PushStyleColor(GUI.Col_Button,0,.8,0,1)
+ 	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[CB_clear.png]], 30,30)
+ 	     GUI:PopStyleColor()
+ 	     if GUI:IsItemHovered() then
+ 		     if GUI:IsMouseClicked(0) then
+ 		     AetheryteHelper.VersionCheck()
+ 		     end
  		     if AHSET.mushtooltips == true then
 			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
 		     end
@@ -14170,7 +14187,7 @@ function AetheryteHelper.Exchange()
 			  end
 			  if (mushEXstep == 3) then
 				d("[AH][Exchange]step:FilterCheck")
-				  if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or 3 then
+				  if GetControl("GrandCompanySupplyList"):GetRawData()[7].value < 20 then
 				  mushEXstep = 4
 				  else
 				  mushEXstep = 10
@@ -14178,7 +14195,7 @@ function AetheryteHelper.Exchange()
 			  end
 			  if (mushEXstep == 4) then
 				d("[AH][Exchange]step:itemDelivery")
-					 if GetControl("GrandCompanySupplyList"):GetRawData()[8].value == 0 then
+					 if GetControl("GrandCompanySupplyList"):GetRawData()[7].value == 0 then
 					 mushEXstep = 10
 					 elseif IsControlOpen("GrandCompanySupplyList") then
 					 GetControl("GrandCompanySupplyList"):Action("CompleteDelivery",0)
@@ -14871,10 +14888,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
 						end
 						if step == 34 then
 							--d("[AH][Tmode][Exchange]step:"..step)
-								if GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 0 or
-								   GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 1 or
-								   GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 2 or
-								   GetControl("GrandCompanySupplyList"):GetRawData()[347].value == 3 then
+								if GetControl("GrandCompanySupplyList"):GetRawData()[7].value < 20 then
 								step = 35
 								end
 						end
@@ -16792,7 +16806,7 @@ function AetheryteHelper.itemSearch()
    local bags = {0, 1, 2, 3}
   if AHSET.mushitemSearch and mushiS_rite == true or AHSET.mushitemSearch and mushiS_tori == true or AHSET.mushitemSearch and mushiS_FC == true then
 		if IsControlOpen("Talk") then
-			UseControlAction("Talk","Click")
+			UseControlAction("Talk","Close")
 			return
 		end
 		if IsControlOpen("InventoryRetainer") then
@@ -16802,9 +16816,9 @@ function AetheryteHelper.itemSearch()
 		elseif IsControlOpen("FreeCompanyChest") then
 			mushlooptimer = 3000
 		else
-			mushlooptimer = 1300
+			mushlooptimer = 1000
 		end
-
+d(ISstep)
    if ISstep == 0 then
 		for _, e in pairs(bags) do
 		local bag = Inventory:Get(e)
@@ -16956,6 +16970,10 @@ function AetheryteHelper.itemSearch()
    if ISstep == 10 then
 	  if IsControlOpen("SelectString") then
 		 GetControl("SelectString"):Action("SelectIndex",0)
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 10
 	  end
 	  if IsControlOpen("InventoryRetainer") then
 	  ISstep = 11
@@ -17112,7 +17130,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 14 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 14
 	   else
 	   ISstep = 15
@@ -17164,6 +17182,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 22
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	  ISstep = 20
 		else
 		ISstep = 21
 		end
@@ -17327,7 +17349,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 26 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 26
 	   else
 	   ISstep = 27
@@ -17379,6 +17401,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 32
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 30
 		else
 		ISstep = 31
 		end
@@ -17542,7 +17568,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 36 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 36
 	   else
 	   ISstep = 37
@@ -17594,6 +17620,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 42
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 40
 		else
 		ISstep = 41
 		end
@@ -17757,7 +17787,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 46 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 46
 	   else
 	   ISstep = 47
@@ -17809,6 +17839,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 52
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 50
 		else
 		ISstep = 51
 		end
@@ -17972,7 +18006,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 56 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 56
 	   else
 	   ISstep = 57
@@ -18024,6 +18058,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 62
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 60
 		else
 		ISstep = 61
 		end
@@ -18187,7 +18225,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 66 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 66
 	   else
 	   ISstep = 67
@@ -18239,6 +18277,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 72
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 70
 		else
 		ISstep = 71
 		end
@@ -18402,7 +18444,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 76 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 76
 	   else
 	   ISstep = 77
@@ -18454,6 +18496,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 82
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 80
 		else
 		ISstep = 81
 		end
@@ -18617,7 +18663,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 86 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 86
 	   else
 	   ISstep = 87
@@ -18669,6 +18715,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 92
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 90
 		else
 		ISstep = 91
 		end
@@ -18832,7 +18882,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 96 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 96
 	   else
 	   ISstep = 97
@@ -18884,6 +18934,10 @@ function AetheryteHelper.itemSearch()
 		end
 		if IsControlOpen("SelectString") then
 		ISstep = 102
+		elseif Player:GetTarget() == nil then
+	   Player:SetTarget(ritebel)
+	   Player:Interact(ritebel)
+	   ISstep = 100
 		else
 		ISstep = 101
 		end
@@ -19047,7 +19101,7 @@ function AetheryteHelper.itemSearch()
    end
    if ISstep == 106 then
 	   if IsControlOpen("SelectString") then
-	   GetControl("SelectString"):Action("SelectIndex",9)
+	   GetControl("SelectString"):Action("SelectIndex",10)
 	   ISstep = 106
 	   else
 	   ISstep = 107
@@ -20200,7 +20254,7 @@ function AetheryteHelper.VersionCheck()
   if NewV ~= nil then	NewVtext = NewV:read() NewV:close()	end
   if NowV ~= nil then	NowVtext = NowV:read() NowV:close()	end
   if tag ~= nil then tagtext = tag:read() tag:close()	end
-    if NewVtext ~= NowVtext and tonumber(tagtext) > kinokoProject.Addon.tag then
+    if NewVtext ~= NowVtext and tonumber(tagtext) ~= kinokoProject.Addon.tag then
   	 mushVC = true
   	 mushVUP = true
   	end
