@@ -39,7 +39,7 @@ local kinokoProject = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
 	  Version =         "1.8.4",
-	  tag = 20220415
+	  tag = 20220415,
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -20193,6 +20193,7 @@ function AetheryteHelper.VersionCheck()
   io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\downloadURL.txt' -Value $json[0].assets[0].browser_download_url; stop-process -Id $PID"]]):close()
   io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\version.txt' -Value $name[0].name; stop-process -Id $PID"]]):close()
   io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\tag.txt' -Value $tag[0].tag_name; stop-process -Id $PID"]]):close()
+  io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\version_info\version.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
   local NewV = io.open(ModulePath.."version_info/version.txt")
   local tag = io.open(ModulePath.."version_info/tag.txt")
   local NowV = io.open(ModulePath.."version_info/nowversion.txt")
