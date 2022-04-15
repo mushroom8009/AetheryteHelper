@@ -1,6 +1,6 @@
 [Module]
 Name=AetheryteHelper
-Dependencies=minionlib,AceLib,FFXIVMINION
+Dependencies=minionlib,FFXIVMINION
 Version=1
 Files=AetheryteHelper.lua
 Enabled=1
