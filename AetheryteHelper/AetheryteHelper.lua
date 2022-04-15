@@ -39,6 +39,7 @@ local kinokoProject = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
 	  Version =         "1.8.4",
+	  tag = 20220415
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
