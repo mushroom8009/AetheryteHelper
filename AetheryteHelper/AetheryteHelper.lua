@@ -37,8 +37,8 @@ AetheryteHelper = {}
 local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
-	  Name =          "Aetheryte Helper",
-	  Version =         "1.8.3",
+	  Name =          "AH(mushroom tools)",
+	  Version =         "1.8.4",
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -116,6 +116,8 @@ local kinokoProject = {
             "[1.8.1] - change CN ServerList.",
             "[1.8.2] - Added ability to change tooltip language.",
             "[1.8.3] - bug fix & add API.",
+            "[1.8.4] - add API & gil amount setting to ticket",
+            "          add Auto Updater",
 
 					},
 
@@ -125,6 +127,7 @@ local kinokoProject = {
 	  linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
 	  linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
 	  mykofi = [[https://ko-fi.com/mushroom8009]],
+	  mypatreon = [[https://www.patreon.com/mushroom8009]],
   },
 --  ---------------
   Menu = {
@@ -308,10 +311,14 @@ AetheryteHelper.selectlanguage = {
   visible = true,
   locked = false,
 }
-AetheryteHelper.settings = {
-  SET = {
-
-	delay = 200,
+AetheryteHelper.UpdateConfig = {
+  name = "UpdateConfig###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.settingsSET = {
+  delay = 200,
 	isMateriaEnabled = false,
 	isSalvageEnabled = false,
 	isPotionEnabled = false,
@@ -359,11 +366,12 @@ AetheryteHelper.settings = {
 	kawa = false,
 	hone = false,
 	renkin = false,
+	AutoLegacy = true,
 	Pcurrnt = Player.currentworld,
-
-	},
-
-  Filter = {
+	AutoUpdate = false,
+	}
+AetheryteHelper.UpdateTimeSince = {}
+AetheryteHelper.settingsFilter = {
 			   Main = true,
 			   Sub = true,
 			   Head = true,
@@ -375,10 +383,9 @@ AetheryteHelper.settings = {
 			   Necklace = true,
 			   Bracelets = true,
 			   Ring = true,
+	}
 
-	},
-
-  Job = {
+AetheryteHelper.settingsJob = {
 
 			 Crafter = false,
 			 --CRP = true,
@@ -429,9 +436,6 @@ AetheryteHelper.settings = {
 			 SMN = true,
 			 RDM = true,
 			 ALL = true,
-
-  },
-
 }
 
 AetheryteHelper.DutyPlay = {
@@ -632,7 +636,7 @@ AetheryteHelper.explorerEW = {
 
 AetheryteHelper.userCustomfunc = {}
 -------------------
-AHLinks = {
+local AHLinks = {
 	  Name = "Minion Discord JP",
 	   link1 = [[https://discord.gg/kCp95cpprd]],
 	   link2 = [[https://github.com/mushroom8009/AetheryteHelper]],
@@ -649,7 +653,7 @@ AetheryteHelper.mushAHlanguage = {
 	KR = false,
 }
 
-mushtooltips = {
+local mushtooltips = {
   jp = { 
   	 tip00 = "対象エリア外",
 		 tip01 = "AH オン/オフ",
@@ -870,6 +874,13 @@ mushtooltips = {
 		 tip216 = "ボタンの内容を更新",
 		 tip217 = "ボタンの設定を呼び出し",
 		 tip218 = "ボタンの表示/非表示",
+		 tip219 = "移動モードの切り替え\nレガシー/スタンダード",
+		 tip220 = "モジュールのアップデート",
+		 tip221 = "ダウンロード",
+		 tip222 = "更新を確認",
+		 tip223 = "新しいバージョンがリリースされています",
+		 tip224 = "自動確認(2時間ごと)",
+
   },
   en = { 
   	 tip00 = "Outside of use area",
@@ -1091,6 +1102,12 @@ mushtooltips = {
 		 tip216 = "Change of Button content",
 		 tip217 = "Load of Button settings",
 		 tip218 = "Show/hide Buttons",
+		 tip219 = "MovementSetting\nLegacy/Standard",
+		 tip220 = "Module Update",
+		 tip221 = "Download",
+		 tip222 = "Check for update",
+		 tip223 = "New version released",
+		 tip224 = "Auto confirmat\n(every 2h)",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1312,6 +1329,12 @@ mushtooltips = {
 		 tip216 = "Mettre à jour le contenu du bouton.",
 		 tip217 = "Paramètres des boutons de chargement.",
 		 tip218 = "Afficher/masquer les boutons",
+		 tip219 = "Type de déplacement\nLegacy/Standard",
+		 tip220 = "Mise à jour du module",
+		 tip221 = "Téléchargement",
+		 tip222 = "Vérifier les mises à jour",
+		 tip223 = "Nouvelle version publiée",
+		 tip224 = "Confirmation automatique\n(toutes les 2 heures)",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1533,6 +1556,12 @@ mushtooltips = {
 		 tip216 = "Aktualisieren Sie den Inhalt der Schaltfläche",
 		 tip217 = "Einstellungen der Schaltfläche laden",
 		 tip218 = "Schaltflächen ein-/ausblenden",
+		 tip219 = "Bewegungsstruerung\nLegacy/Standard",
+		 tip220 = "Aktualisierung des Moduls",
+		 tip221 = "Herunterladen",
+		 tip222 = "Auf Aktualisierung prüfen",
+		 tip223 = "Neue Version veröffentlicht",
+		 tip224 = "Automatische Bestätigung\n(alle 2h)",
   },
   cn = {
   	 tip00 = "不在可使用区域内",
@@ -1754,6 +1783,12 @@ mushtooltips = {
   	 tip216 = "改变按钮的内容",
   	 tip217 = "加载按钮设置",
   	 tip218 = "显示/隐藏按钮",
+  	 tip219 = "行走方式\n传统/标准",
+  	 tip220 = "模块更新",
+  	 tip221 = "下载",
+		 tip222 = "检查更新",
+		 tip223 = "一个新的版本已经发布",
+		 tip224 = "自动确认（每2小时）",
   },
   kr = { 
   	 tip00 = "Outside of use area",
@@ -1975,11 +2010,17 @@ mushtooltips = {
 		 tip216 = "Change of Button content",
 		 tip217 = "Load of Button settings",
 		 tip218 = "Show/hide Buttons",
+		 tip219 = "MovementSetting\nLegacy/Standard",
+		 tip220 = "Module Update",
+		 tip221 = "Download",
+		 tip222 = "Check for update",
+		 tip223 = "New version released",
+		 tip224 = "Auto confirmat\n(every 2h)",
   },
 
 }
 
-AHitemsortError = {
+local AHitemsortError = {
 	title01 = "AH ItemSort",
 	J01 = "例外が発生したのでソートを停止します",
 	E01 = "An error has occurred\nstop organizing items.",
@@ -1997,7 +2038,7 @@ AHitemsortError = {
 	K02 = "오류가 발생했습니다\n항목 정리 중지",
 }
 
-AHnormalError = {
+local AHnormalError = {
 	title01 = "Create Button",
 	J01 = "ボタンは50個までしか表示できません",
 	E01 = "Only 50 buttons can be displayed",
@@ -2009,11 +2050,11 @@ AHnormalError = {
 ----------------------------------------------------
 
 
-FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
+local FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
 --FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Meteor", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
-noDClist = { "sorry" }
+local noDClist = { "sorry" }
 
-FFXIVServerlist = {
+local FFXIVServerlist = {
 	[1] = { "------" },
 	[2] = { "------", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Ramuh", "Tonberry", "Typhon", "Unicorn" },
 	[3] = { "------", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima", "Valefor", "Yojimbo", "Zeromus" },
@@ -2051,7 +2092,7 @@ FFXIVServerlist = {
   ]]
   }
 
-WorldID = {
+local WorldID = {
 {id=1,Name="Unknown",DC="-"},
 {id=2,Name="Unknown",DC="-"},
 {id=3,Name="Unknown",DC="-"},
@@ -2188,7 +2229,7 @@ WorldID = {
 {id=2080,Name="펜리르",DC="KR"},
 
 }
-mushPlayerGCrank = {
+local mushPlayerGCrank = {
 	  {rank = 1, max = "10000"},
 	  {rank = 2, max = "15000"},
 	  {rank = 3, max = "20000"},
@@ -2201,15 +2242,15 @@ mushPlayerGCrank = {
 	  {rank = 10, max = "80000"},
     {rank = 11, max = "90000"},
 }
-mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
-mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
-mushGCEN = {"Maelst","Adders","Flames","------"}
-mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
-mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
-mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
-mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
-mushGCKR = {"흑와단","쌍사당","불멸대","------"}
-GCexchangeItems = {
+local mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
+local mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
+local mushGCEN = {"Maelst","Adders","Flames","------"}
+local mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
+local mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
+local mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
+local mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
+local mushGCKR = {"흑와단","쌍사당","불멸대","------"}
+local GCexchangeItems = {
 		 jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンテナ(紅蓮)","転送網利用券(GC)"}, ---0
 		 En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},---1
 		 De = {"Wertmarken","G8Dunkelmaterie ","Glasfasern","Sonderziehungstruhe(ARR/HW)","Sonderziehungstruhe(SB) ","Teleport-Ticket(GC)"},---2
@@ -2232,16 +2273,39 @@ GCexchangeItems = {
 		 [5] = 36636,
 		 [6] = nil,
 		 },
+}
 
+local FCactionName = {
+	jpG1 = {"討伐経験値アップ","採集経験値アップ","製作経験値アップ","バディ経験値アップ","対人戦績アップ","軍票アップ","ビギナーボーナス","獲得力アップ","技術力アップ","作業精度アップ","加工精度アップ","錬精度上昇量アップ","食事効果時間延長","装備品劣化低減","都市内スプリント効果時間延長","テレポ割引","MGPアップ"},
+	jpG2 = {"討伐経験値アップII ","採集経験値アップII","製作経験値アップII","バディ経験値アップII","対人戦績アップII","軍票アップII","ビギナーボーナスII","獲得力アップII","技術力アップII","作業精度アップII","加工精度アップII","錬精度上昇量アップII","食事効果時間延長II","装備品劣化低減II","都市内スプリント効果時間延長II","テレポ割引II","MGPアップII"},
+	jpG3 = {"討伐経験値アップIII","採集経験値アップIII","製作経験値アップIII","バディ経験値アップIII","対人戦績アップIII","軍票アップIII","獲得力アップIII","技術力アップIII","作業精度アップIII","加工精度アップIII","錬精度上昇量アップIII","食事効果時間延長III","装備品劣化低減III","テレポ割引III","MGPアップIII"},
+	enG1 = {"The Heat of Battle","Earth and Water","Helping Hand"," A Man's Best Friend","Mark Up"," Seal Sweetener","Brave New World ","Live off the Land","What You See","Eat from the Hand","In Control","That Which Binds Us","Meat and Mead","Proper Care","Fleet-footed","Reduced Rates","Jackpot"},
+	enG2 = {"The Heat of Battle II","Earth and Water II","Helping Hand II","A Man's Best Friend II","Mark Up II","Seal Sweetener II","Brave New World II","Live off the Land II","What You See II","Eat from the Hand II","In Control II","That Which Binds Us II","Meat and Mead II","Proper Care II","Fleet-footed II","Reduced Rates II","Jackpot II"},
+	enG3 = {"The Heat of Battle III","Earth and Water III","Helping Hand III"," A Man's Best Friend III","Mark Up III"," Seal Sweetener III","Live off the Land III","What You See III","Eat from the Hand III","In Control III","That Which Binds Us III","Meat and Mead III","Proper Care III","Reduced Rates III","Jackpot III"},
+	deG1 = {"Kampfroutine-Bonus","Sammelroutine-Bonus","Syntheseroutine-Bonus","Mitstreiterroutine-Bonus","Wolfsmarken-Bonus","Staatstaler-Bonus","Startbonus","Sammelgeschick-Bonus","Wahrnehmungsbonus","Kunstfertigkeitsbonus","Kontrolle-Bonus","Bindungsbonus","Längere Nahrungseffekte","Verminderter Verschleiß","Stadtsprint-Bonus","Vergünstigter Teleport","MGP-Bonus"},
+	deG2 = {"Kampfroutine-Bonus II","Sammelroutine-Bonus II","Syntheseroutine-Bonus II","Mitstreiterroutine-Bonus II","Wolfsmarken-Bonus II","Staatstaler-Bonus II","Startbonus II","Sammelgeschick-Bonus II","Wahrnehmungsbonus II","Kunstfertigkeitsbonus II","Kontrolle-Bonus II","Bindungsbonus II","Längere Nahrungseffekte II","Verminderter Verschleiß II","Stadtsprint-Bonus II","Vergünstigter Teleport II","MGP-Bonus II"},
+	deG3 = {"Kampfroutine-Bonus","Sammelroutine-Bonus","Syntheseroutine-Bonus","Mitstreiterroutine-Bonus","Wolfsmarken-Bonus","Staatstaler-Bonus","Sammelgeschick-Bonus","Wahrnehmungsbonus","Kunstfertigkeitsbonus","Kontrolle-Bonus","Bindungsbonus","Längere Nahrungseffekte","Verminderter Verschleiß","Vergünstigter Teleport","MGP-Bonus"},
+	frG1 = {"Feu du combat","Terre et eau","Être en bonnes mains","Meilleur ami de l'homme","Marque des vainqueurs","Solde accrue","Un nouveau monde","Vivre de la terre","Avoir le coup d'œil","La main qui nourrit","Passer maître","Union parfaite","À boire et à manger","Protections protégées","La grande forme","Prix d'ami","Gros lot"},
+	frG2 = {"Feu du combat II","Terre et eau II","Être en bonnes mains II","Meilleur ami de l'homme II","Marque des vainqueurs II","Solde accrue II","Un nouveau monde II","Vivre de la terre II","Avoir le coup d'œil II","La main qui nourrit II","Passer maître II","Union parfaite II","À boire et à manger II","Protections protégées II","La grande forme II","Prix d'ami II","Gros lot II"},
+	frG3 = {"Feu du combat III","Terre et eau III","Être en bonnes mains III","Meilleur ami de l'homme III","Marque des vainqueurs III","Solde accrue III","Vivre de la terre III","Avoir le coup d'œil III","La main qui nourrit III","Passer maître III","Union parfaite III","À boire et à manger III","Protections protégées III","Prix d'ami III","Gros lot III"},
+	cnG1 = {"讨伐经验值提高","采集经验值提高","制作经验值提高","搭档经验值提高","对战战绩提高","军票提高","鼓励新人","获得力提高","鉴别力提高","作业精度提高","加工精度提高","精炼度增加量提高","食物效果时间延长","装备损耗降低","城内冲刺时间延长","传送优惠","金碟币提高",},
+	cnG2 = {"讨伐经验值提高II","采集经验值提高II","制作经验值提高II","搭档经验值提高II","对战战绩提高II","军票提高II","鼓励新人II","获得力提高II","鉴别力提高II","作业精度提高II","加工精度提高II","精炼度增加量提高II","食物效果时间延长II","装备损耗降低II","城内冲刺时间延长II","传送优惠II","金碟币提高II",},
+	cnG3 = {"讨伐经验值提高III","采集经验值提高III","制作经验值提高III","搭档经验值提高III","对战战绩提高III","军票提高III","获得力提高III","鉴别力提高III","作业精度提高III","加工精度提高III","精炼度增加量提高III","食物效果时间延长III","装备损耗降低III","传送优惠III","金碟币提高III",},
+	krG1 = {"처치 경험치 상승","채집 경험치 상승","제작 경험치 상승","버디 경험치 상승","버디 경험치 상승","군표 증가","초보자 지원","획득력 상승","감별력 상승","작업 숙련도 상승","가공 숙련도 상승","결속도 증가량 향상","식사 지속시간 연장","장비 소모 절감","쇠약 시간 단축","텔레포 할인","MGP 증가"},
+	krG2 = {"처치 경험치 상승 2","채집 경험치 상승 2","제작 경험치 상승 2","버디 경험치 상승 2","버디 경험치 상승 2","군표 증가 2","초보자 지원 2","획득력 상승 2","감별력 상승 2","작업 숙련도 상승 2","가공 숙련도 상승 2","결속도 증가량 향상 2","식사 지속시간 연장 2","장비 소모 절감 2","쇠약 시간 단축 2","텔레포 할인 2","MGP 증가 2"},
+	krG3 = {"처치 경험치 상승 3","채집 경험치 상승 3","제작 경험치 상승 3","버디 경험치 상승 3","버디 경험치 상승 3","군표 증가 3","획득력 상승 3","감별력 상승 3","작업 숙련도 상승 3","가공 숙련도 상승 3","결속도 증가량 향상 3","식사 지속시간 연장 3","장비 소모 절감 3","쇠약 시간 단축 3","텔레포 할인 3","MGP 증가 3"},
+--365 367 368 366 413 414 353 354 355 356 357 361 360 362 2932 364 902
 }
 
 
-MoveServer = { 132, 129, 130 }
-ploc = { 956, 957, 958, 959, 960, 961 }
-mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
+local MoveServer = { 132, 129, 130 }
+local ploc = { 956, 957, 958, 959, 960, 961 }
+local mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
 local uuid = GetUUID()
-AetheryteHelper.savefile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userID'..uuid.. '_setting.lua'
-AetheryteHelper.settingfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'kinoko_setting.lua'
+AetheryteHelper.settingfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userID'..uuid.. '_setting.lua'
+AetheryteHelper.jobfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userJob.lua'
+AetheryteHelper.filterfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userfilter.lua'
+AetheryteHelper.winset = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'kinoko_setting.lua'
 AetheryteHelper.Dutyfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userDuty.lua'
 AetheryteHelper.Radarfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'Radarsettings.lua'
 AetheryteHelper.huntlistfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userCustomList.lua'
@@ -2310,7 +2374,7 @@ local Remateria = false
 local mushTrustmode = false
 local Dawncloser = nil
 local times = os.time()
-local mushlooptimer = 1000
+local mushlooptimer = mushlooptimer or 1000
 local GCexchangeT = false
 local sealstoitemT = false
 local mushMBinterat = false
@@ -2340,9 +2404,9 @@ local mushiS_FC = false
 local mushaccelerator = true
 local mushRitekazu = 0
 local AuL = AetheryteHelper.mushAHlanguage
-local AHSET = AetheryteHelper.settings.SET
-local eqFilter = AetheryteHelper.settings.Filter
-local AHeqjob = AetheryteHelper.settings.Job
+local AHSET = AetheryteHelper.settingsSET
+local eqFilter = AetheryteHelper.settingsFilter
+local AHeqjob = AetheryteHelper.settingsJob
 ------------------
 --Radar
 local Rcid = ""
@@ -2417,9 +2481,98 @@ function AetheryteHelper.ModuleInit()
 	isOpen = function () return Windows.Open end
   }
   table.insert(ml_global_information.menu.windows,menutab)
-
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--load fanction
+function AetheryteHelper.LoadSettings()
+  if FileExists(AetheryteHelper.settingfile) then
+	local setting = persistence.load(AetheryteHelper.settingfile)
+	if (ValidTable(setting)) then
+	  table.merge(AetheryteHelper.settingsSET,setting)
+	end
+  end
+  
+  if FileExists(AetheryteHelper.filterfile) then
+	local filter = persistence.load(AetheryteHelper.filterfile)
+	if (ValidTable(filter)) then
+	  table.merge(AetheryteHelper.settingsFilter,filter)
+	end
+  end
+  
+  if FileExists(AetheryteHelper.jobfile) then
+	local job = persistence.load(AetheryteHelper.jobfile)
+	if (ValidTable(job)) then
+	  table.merge(AetheryteHelper.settingsJob,job)
+	end
+  end
+
+  if FileExists(AetheryteHelper.winset) then
+	local Window = persistence.load(AetheryteHelper.winset)
+	if (ValidTable(window)) then
+	  table.merge(kinokoProject.Windows,Window)
+	end
+  end
+  if FileExists(AetheryteHelper.Dutyfile) then
+	local dutys = persistence.load(AetheryteHelper.Dutyfile)
+	if (ValidTable(dutys)) then
+	  table.merge(AetheryteHelper.DutyPlay,dutys)
+	end
+  end
+  if FileExists(AetheryteHelper.Radarfile) then
+	local Radar = persistence.load(AetheryteHelper.Radarfile)
+	if (ValidTable(Radar)) then
+	  table.merge(AetheryteHelper.RadarSettings,Radar)
+	end
+  end
+  if FileExists(AetheryteHelper.huntlistfile) then
+	local list = persistence.load(AetheryteHelper.huntlistfile)
+	if (ValidTable(list)) then
+	  table.merge(AetheryteHelper.RadarCustomList,list)
+	end
+  end
+  if FileExists(AetheryteHelper.RCfile) then
+	local RC = persistence.load(AetheryteHelper.RCfile)
+	if (ValidTable(RC)) then
+	  table.merge(AetheryteHelper.RadarColor,RC)
+	end
+  end
+  if FileExists(AetheryteHelper.ATfile) then
+	local AT = persistence.load(AetheryteHelper.ATfile)
+	if (ValidTable(AT)) then
+	  table.merge(AetheryteHelper.ATuse,AT)
+	end
+  end
+  if FileExists(AetheryteHelper.userfunc) then
+	local userfunc = persistence.load(AetheryteHelper.userfunc)
+	if (ValidTable(userfunc)) then
+	  table.merge(AetheryteHelper.userCustomfunc,userfunc)
+	end
+  end
+  if FileExists(AetheryteHelper.language) then
+	local userlanguage = persistence.load(AetheryteHelper.language)
+	if (ValidTable(userlanguage)) then
+	  table.merge(AetheryteHelper.language,userlanguage)
+	end
+  end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--save fanction
+AetheryteHelper.LoadSettings()
+function AetheryteHelper.SaveSettings()
+  persistence.store(AetheryteHelper.settingfile, AetheryteHelper.settingsSET)
+  persistence.store(AetheryteHelper.jobfile, AetheryteHelper.settingsJob)
+  persistence.store(AetheryteHelper.filterfile, AetheryteHelper.settingsFilter)
+  persistence.store(AetheryteHelper.winset, kinokoProject.Windows)
+  persistence.store(AetheryteHelper.Dutyfile, AetheryteHelper.DutyPlay)
+  persistence.store(AetheryteHelper.Radarfile, AetheryteHelper.RadarSettings)
+  persistence.store(AetheryteHelper.huntlistfile, AetheryteHelper.RadarCustomList)
+  persistence.store(AetheryteHelper.RCfile, AetheryteHelper.RadarColor)
+  persistence.store(AetheryteHelper.ATfile, AetheryteHelper.ATuse)
+  persistence.store(AetheryteHelper.userfunc, AetheryteHelper.userCustomfunc)
+  persistence.store(AetheryteHelper.language, AetheryteHelper.mushAHlanguage)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- api
@@ -2576,133 +2729,21 @@ function AHCustomButtonAutoON(name,bool)
 return tostring(name),bool
 end
 
-
-
----------------------------------------------------------------------------------------------------------------------------------------------------
--- tab setting
-
-function AetheryteHelper.DrawTabs()
-  local tabs = AetheryteHelper.GUI.tabs
-  local tabstyle = AetheryteHelper.GUI.tabstyle
-		GUI:BeginGroup()
-	if (ValidTable(tabs)) then
-		GUI:PushStyleColor(GUI.Col_Button,0,0,0,0)
-		GUI:PushStyleColor(GUI.Col_ButtonHovered,0,0,0,0)
-		GUI:PushStyleColor(GUI.Col_ButtonActive,0,0,0,0)
-		for i, tab in spairs(tabs) do
-		  if (i == 2) then
-			  GUI:SameLine()
-		  elseif (i == 3) then
-			  GUI:SameLine()
-		  elseif (i == 4) then
-			  GUI:SameLine()
-		  elseif (i == 5) then
-			  GUI:Spacing(10)
-		  elseif (i == 6) then
-			  GUI:SameLine()
-		  end
-			tab.order = i
-		   if tab.isselected then
-			  GUI:PushStyleColor(GUI.Col_Text, tabstyle.selected.r, tabstyle.selected.g, tabstyle.selected.b, tabstyle.selected.a)
-			  elseif tab.ishovered then
-			  GUI:PushStyleColor(GUI.Col_Text, tabstyle.hovered.r, tabstyle.hovered.g, tabstyle.hovered.b, tabstyle.hovered.a)
-			  else
-			  GUI:PushStyleColor(GUI.Col_Text, tabstyle.normal.r, tabstyle.normal.g, tabstyle.normal.b, tabstyle.normal.a)
-			  end
-			  if (GUI:Button(tab.name,nil,70)) then
-			  for k,v in pairs(tabs) do v.isselected = false end
-			  tab.isselected = true
-			  end
-			  if GUI:IsItemHovered() then
-			  tab.ishovered = true
-			  else
-			  tab.ishovered = false
-			  end
-
-	   GUI:PopStyleColor()
-	   GUI:SameLine()
-	   --GUI:Spacing()
-	   end
-	   GUI:PopStyleColor(3)
-	   GUI:InvisibleButton(" ") -- break SameLine()
-	   GUI:EndGroup()
-	end
+function AHButtonSwitchDrow(name)
+   for k,v in pairs(AetheryteHelper.userCustomfunc) do
+			if v[2] == name then
+				 if v[1] == 0 then
+					v[1] = 1
+					AetheryteHelper.SaveSettings()
+				 elseif v[1] == 1 then
+					v[1] = 0
+					AetheryteHelper.SaveSettings()
+				 end
+	  	end
+    end
+return tostring(name)
 end
 
-
----------------------------------------------------------------------------------------------------------------------------------------------------
---load fanction
-function AetheryteHelper.LoadSettings()
-  if FileExists(AetheryteHelper.savefile) then
-	local save = persistence.load(AetheryteHelper.savefile)
-	if (ValidTable(save)) then
-	  table.merge(AetheryteHelper.settings,save)
-	end
-  end
-  if FileExists(AetheryteHelper.settingfile) then
-	local settings = persistence.load(AetheryteHelper.settingfile)
-	if (ValidTable(settings)) then
-	  table.merge(kinokoProject.Windows,settings)
-	end
-  end
-  if FileExists(AetheryteHelper.Dutyfile) then
-	local dutys = persistence.load(AetheryteHelper.Dutyfile)
-	if (ValidTable(dutys)) then
-	  table.merge(AetheryteHelper.DutyPlay,dutys)
-	end
-  end
-  if FileExists(AetheryteHelper.Radarfile) then
-	local Radar = persistence.load(AetheryteHelper.Radarfile)
-	if (ValidTable(Radar)) then
-	  table.merge(AetheryteHelper.RadarSettings,Radar)
-	end
-  end
-  if FileExists(AetheryteHelper.huntlistfile) then
-	local list = persistence.load(AetheryteHelper.huntlistfile)
-	if (ValidTable(list)) then
-	  table.merge(AetheryteHelper.RadarCustomList,list)
-	end
-  end
-  if FileExists(AetheryteHelper.RCfile) then
-	local RC = persistence.load(AetheryteHelper.RCfile)
-	if (ValidTable(RC)) then
-	  table.merge(AetheryteHelper.RadarColor,RC)
-	end
-  end
-  if FileExists(AetheryteHelper.ATfile) then
-	local AT = persistence.load(AetheryteHelper.ATfile)
-	if (ValidTable(AT)) then
-	  table.merge(AetheryteHelper.ATuse,AT)
-	end
-  end
-  if FileExists(AetheryteHelper.userfunc) then
-	local userfunc = persistence.load(AetheryteHelper.userfunc)
-	if (ValidTable(userfunc)) then
-	  table.merge(AetheryteHelper.userCustomfunc,userfunc)
-	end
-  end
-  if FileExists(AetheryteHelper.language) then
-	local userlanguage = persistence.load(AetheryteHelper.language)
-	if (ValidTable(userlanguage)) then
-	  table.merge(AetheryteHelper.language,userlanguage)
-	end
-  end
-end
----------------------------------------------------------------------------------------------------------------------------------------------------
---save fanction
-AetheryteHelper.LoadSettings()
-function AetheryteHelper.SaveSettings()
-  persistence.store(AetheryteHelper.savefile, AetheryteHelper.settings)
-  persistence.store(AetheryteHelper.settingfile, kinokoProject.Windows)
-  persistence.store(AetheryteHelper.Dutyfile, AetheryteHelper.DutyPlay)
-  persistence.store(AetheryteHelper.Radarfile, AetheryteHelper.RadarSettings)
-  persistence.store(AetheryteHelper.huntlistfile, AetheryteHelper.RadarCustomList)
-  persistence.store(AetheryteHelper.RCfile, AetheryteHelper.RadarColor)
-  persistence.store(AetheryteHelper.ATfile, AetheryteHelper.ATuse)
-  persistence.store(AetheryteHelper.userfunc, AetheryteHelper.userCustomfunc)
-  persistence.store(AetheryteHelper.language, AetheryteHelper.mushAHlanguage)
-end
----------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local mJTp = mushtooltips.jp
 local mETp = mushtooltips.en
@@ -2771,6 +2812,90 @@ function AetheryteHelper.IssueNotice(title,J,E,D,F,C,K)
 			  ffxiv_dialog_manager.IssueNotice(title,E)
 		end
 	return title,J,E,D,F,C,K
+end
+
+function AetheryteHelper.Teleport(id,levelid)
+	  local alist = Player:GetAetheryteList()
+	  local ap = tonumber(ap) or 0
+	  for i,a in pairs(alist) do
+        if a.id == id then
+           ap = a.price
+        end
+    end
+	  local bags = {0,1,2,3}
+	  for _, e in pairs(bags) do
+		local bag = Inventory:Get(e)
+  		if (table.valid(bag)) then
+	  	local ilist = bag:GetList()
+		    if (table.valid(ilist)) then
+		       for _, item in pairs(ilist) do
+		          if item.hqid == 7569 then
+	            	if item.count > 0 then
+                   if ap > AetheryteHelper.ATuse.gil then
+      	             Player:Teleport(id,levelid,true)
+                   else
+      	             Player:Teleport(id,levelid,false)
+                   end
+                else
+    	             Player:Teleport(id,levelid,false)
+		            end
+		          end
+		       end
+		    end
+		  end
+	  end
+	return id,levelid
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- tab setting
+
+function AetheryteHelper.DrawTabs()
+  local tabs = AetheryteHelper.GUI.tabs
+  local tabstyle = AetheryteHelper.GUI.tabstyle
+		GUI:BeginGroup()
+	if (ValidTable(tabs)) then
+		GUI:PushStyleColor(GUI.Col_Button,0,0,0,0)
+		GUI:PushStyleColor(GUI.Col_ButtonHovered,0,0,0,0)
+		GUI:PushStyleColor(GUI.Col_ButtonActive,0,0,0,0)
+		for i, tab in spairs(tabs) do
+		  if (i == 2) then
+			  GUI:SameLine()
+		  elseif (i == 3) then
+			  GUI:SameLine()
+		  elseif (i == 4) then
+			  GUI:SameLine()
+		  elseif (i == 5) then
+			  GUI:Spacing(10)
+		  elseif (i == 6) then
+			  GUI:SameLine()
+		  end
+			tab.order = i
+		   if tab.isselected then
+			  GUI:PushStyleColor(GUI.Col_Text, tabstyle.selected.r, tabstyle.selected.g, tabstyle.selected.b, tabstyle.selected.a)
+			  elseif tab.ishovered then
+			  GUI:PushStyleColor(GUI.Col_Text, tabstyle.hovered.r, tabstyle.hovered.g, tabstyle.hovered.b, tabstyle.hovered.a)
+			  else
+			  GUI:PushStyleColor(GUI.Col_Text, tabstyle.normal.r, tabstyle.normal.g, tabstyle.normal.b, tabstyle.normal.a)
+			  end
+			  if (GUI:Button(tab.name,nil,70)) then
+			  for k,v in pairs(tabs) do v.isselected = false end
+			  tab.isselected = true
+			  end
+			  if GUI:IsItemHovered() then
+			  tab.ishovered = true
+			  else
+			  tab.ishovered = false
+			  end
+
+	   GUI:PopStyleColor()
+	   GUI:SameLine()
+	   --GUI:Spacing()
+	   end
+	   GUI:PopStyleColor(3)
+	   GUI:InvisibleButton(" ") -- break SameLine()
+	   GUI:EndGroup()
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3168,6 +3293,23 @@ function AetheryteHelper.accessdelay()
 			end
 		end
 	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  if AHSET.AutoLegacy == true then
+	  GUI:Image(ImageFolder..[[Al_on.png]],20,20)
+	  else
+	  GUI:Image(ImageFolder..[[Al_off.png]],20,20)
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+	  	if GUI:IsMouseClicked(0) then
+	  		AHSET.AutoLegacy = not AHSET.AutoLegacy
+	  		AetheryteHelper.SaveSettings()
+	  	end
+	  	if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip219,mETp.tip219,mDTp.tip219,mFTp.tip219,mCTp.tip219,mKTp.tip219)
+			end
+	  end
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -3224,9 +3366,10 @@ function AetheryteHelper.GLUtelepo()
 		GUI:Text("0")
 		AetheryteHelper.ATuse.ATuseEnable = false
 	  end
-	  --[[GUI:AlignFirstTextHeightToWidgets()
+	  GUI:SameLine()
+	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
-	  GUI:PushItemWidth(160)
+	  GUI:PushItemWidth(120)
 	  AetheryteHelper.ATuse.gil, changed = GUI:SliderInt("Gil",AetheryteHelper.ATuse.gil,50,1000)
 	  if changed then
 	  AetheryteHelper.ATuse.gil = AetheryteHelper.ATuse.gil
@@ -3238,7 +3381,7 @@ function AetheryteHelper.GLUtelepo()
 		   end
 		end
 	  GUI:PopItemWidth()
-	  GUI:EndGroup()]]
+	  GUI:EndGroup()
 	  GUI:Spacing()
 	  --GUI:SameLine(10)
 	  GUI:BeginGroup()
@@ -5384,7 +5527,8 @@ function AetheryteHelper.userButtonAllDrow()
   end
   local sizex = 40*btndrowA
   local sizey = 75
-  if btndrowA > 30 then sizex = 210
+  if btndrowA == 1 then sizex = 50
+  elseif btndrowA > 30 then sizex = 210
   elseif sizex > 195 then sizex = 195 end 
   if btndrowA > 25 then sizey = 230 childH = 1.35*6
   elseif btndrowA > 20 then sizey = 200 childH = 1.35*5
@@ -5652,6 +5796,95 @@ function AetheryteHelper.VlWindow()
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
+local NewVtext,tagtext,NowVtext
+local mushVC = false
+local mushVUP = false
+
+function AetheryteHelper.UpdateWindow()
+  if (AetheryteHelper.UpdateConfig.open) then
+ 	local UCflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+ 	GUI:SetNextWindowSize(180,100)
+ 	AetheryteHelper.UpdateConfig.visible, AetheryteHelper.UpdateConfig.open = GUI:Begin('AH Update Checker', AetheryteHelper.UpdateConfig.open,UCflags)
+ 	if (AetheryteHelper.UpdateConfig.visible) then
+ 	GUI:Columns(2)
+ 	GUI:SetColumnOffset(1,120)
+ 	GUI:Text("Updater Config")
+ 	GUI:AlignFirstTextHeightToWidgets()
+ 	GUI:BeginGroup()
+ 	AHSET.AutoUpdate,changed = GUI:Checkbox("AutoCheck##AutoCheck", AHSET.AutoUpdate)
+ 	if changed then
+ 		AetheryteHelper.SaveSettings()
+ 	end
+ 	if (GUI:IsItemHovered()) then
+		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip224,mETp.tip224,mDTp.tip224,mFTp.tip224,mCTp.tip224,mKTp.tip224)
+		end
+	end
+ 	GUI:EndGroup()
+ 	GUI:NextColumn()
+	   if mushVC == true and mushVUP == true then
+  	   GUI:BeginGroup()
+  	   GUI:PushStyleColor(GUI.Col_Button,.8,0,0,1)
+  	   GUI:ImageButton("###download",ImageFolder..[[download.png]], 30,30)
+ 	     GUI:PopStyleColor()
+ 	     if GUI:IsItemHovered() then
+ 		      if GUI:IsMouseClicked(0) then
+ 		      AetheryteHelper.AutoUpdate()
+ 		      mushVUP = nil
+ 		      end
+ 		      if AHSET.mushtooltips == true then
+			       AetheryteHelper.SetToolTips(mJTp.tip221,mETp.tip221,mDTp.tip221,mFTp.tip221,mCTp.tip221,mKTp.tip221)
+		      end
+ 	     end
+ 	     GUI:EndGroup()
+     elseif mushVC == false and mushVUP == false then
+       GUI:BeginGroup()
+ 	     GUI:PushStyleColor(GUI.Col_Button,0,.8,0,1)
+ 	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[CB_clear.png]], 30,30)
+ 	     GUI:PopStyleColor()
+ 	     if GUI:IsItemHovered() then
+ 		     if GUI:IsMouseClicked(0) then
+ 		     AetheryteHelper.VersionCheck()
+ 		     end
+ 		     if AHSET.mushtooltips == true then
+			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
+		     end
+ 	     end
+ 	     GUI:EndGroup()
+ 	   else
+ 	   	 GUI:BeginGroup()
+ 	     GUI:PushStyleColor(GUI.Col_Button,.5,.5,0,1)
+ 	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[loading.png]], 30,30)
+ 	     GUI:PopStyleColor()
+ 	     if GUI:IsItemHovered() then
+ 		     if AHSET.mushtooltips == true then
+			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
+		     end
+ 	     end
+ 	     GUI:EndGroup()
+ 	   end
+ 	     GUI:Columns()
+ 	     GUI:Separator()
+ 	     if mushVC == true and mushVUP == true then
+ 	     GUI:TextColored(0,.8,0,1,NewVtext.." Release")
+ 	     elseif mushVC == true and mushVUP == nil then
+ 	     GUI:TextColored(.8,0,0,1,"Processing....")
+ 	     elseif NowVtext ~= nil then
+ 	     GUI:Text(NowVtext.." is latest")
+ 	     else
+ 	     GUI:Text("Not confirmed")
+ 	     end
+  end
+  GUI:End()
+  end
+
+end
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.insSelecterWindow()
   if (AetheryteHelper.insSelectGUI.open) then
 	local insSelectGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
@@ -5665,8 +5898,50 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Dummy(20,20)
- 		if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or
-	  Player.localmapid == 959 or Player.localmapid == 960 or Player.localmapid == 961 then
+ 		if gRegion == 1 and Player.localmapid == 957 then
+	  if selectins == true then
+			  GUI:SameLine(-5,-20)
+			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
+			  if (GUI:IsItemHovered()) then
+			  if (GUI:IsMouseClicked(0)) then
+			  isins = 4
+			  selectins = not selectins
+			  if not selectins then
+			  insHistory = {
+			  isins = 4,
+			  selectins = false,
+			  autheStep = 0
+			  }
+			  end
+			  Player:ClearTarget()
+			  Player:Stop()
+			  end
+			  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
+			  end
+			  end
+	  elseif selectins == false then
+			  GUI:SameLine(-5,-20)
+			  GUI:Image(ImageFolder..[[AHoff.png]],20,20)
+			  if (GUI:IsItemHovered()) then
+			  if (GUI:IsMouseClicked(0)) then
+			  isins = 4
+			  selectins = not selectins
+			  if not selectins then
+			  insHistory = {
+			  isins = 4,
+			  selectins = false,
+			  autheStep = 0
+			  }
+			  end
+			  end
+			  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
+			  end
+			  end
+	  end
+ 		elseif gRegion == 2 and Player.localmapid == 956 or gRegion == 2 and Player.localmapid == 957 or gRegion == 2 and Player.localmapid == 958 or
+	         gRegion == 2 and Player.localmapid == 959 or gRegion == 2 and Player.localmapid == 960 or gRegion == 2 and Player.localmapid == 961 then
 	  if selectins == true then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
@@ -11345,6 +11620,33 @@ function AetheryteHelper.Inventoryfree()
 	  mushPbtotal = (Pbfree1 + Pbfree2 + Pbfree3 + Pbfree4)
 end
 
+function AetheryteHelper.AutoLegacy()
+     if Duty:IsQueued() == true then
+        if IsControlOpen("SystemMenu") then
+        UseControlAction("SystemMenu","Close")
+        end
+     end
+     local movemode = Player.settings.movemode
+     if AHSET.AutoLegacy ==  true then
+        if table.valid(ml_navigation.path) then
+           if movemode == 1 then
+           Player:SetMoveMode(0)
+           end
+        else
+           if movemode == 0 then
+           Player:SetMoveMode(1)
+           end
+        end
+     else
+        if movemode == 1 then
+           Player:SetMoveMode(0)
+        end
+     end
+end
+
+
+
+
 
 function AetheryteHelper.subtoolmateria()
 	  AetheryteHelper.Inventoryfree()
@@ -12813,7 +13115,7 @@ end
 
 function AetheryteHelper.footerkofi()
 	  GUI:BeginGroup()
-	  GUI:Image(ImageFolder..[[kofi.png]],90,25)
+	  GUI:Image(ImageFolder..[[kofi.png]],25,25)
 	  if (GUI:IsItemHovered()) then
 	  if GUI:IsItemClicked(0) then
 			io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
@@ -12823,6 +13125,47 @@ function AetheryteHelper.footerkofi()
 			  end
 	  end
 	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[patreon.png]],25,25)
+	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemClicked(0) then
+			io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mypatreon..[["]]):close()
+	  end
+	  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip96,mETp.tip96,mDTp.tip96,mFTp.tip96,mCTp.tip96,mKTp.tip96)
+			  end
+	  end
+	  GUI:EndGroup()
+
+end
+
+function AetheryteHelper.UPCKB()
+   if mushVC == false then
+     GUI:BeginGroup()
+	   GUI:Image(ImageFolder..[[CB_clear.png]],30,30)
+	   if (GUI:IsItemHovered()) then
+		  	if (GUI:IsMouseClicked(0)) then
+				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
+			  end
+			  if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(mJTp.tip220,mETp.tip220,mDTp.tip220,mFTp.tip220,mCTp.tip220,mKTp.tip220)
+			  end
+	   end
+	   GUI:EndGroup()
+	 elseif mushVC == true then
+	 	 GUI:BeginGroup()
+	   GUI:Image(ImageFolder..[[download.png]],30,30)
+	   if (GUI:IsItemHovered()) then
+		  	if (GUI:IsMouseClicked(0)) then
+				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
+			  end
+			  if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(mJTp.tip223,mETp.tip223,mDTp.tip223,mFTp.tip223,mCTp.tip223,mKTp.tip223)
+			  end
+	   end
+	   GUI:EndGroup()
+	 end
 end
 --------------------------------------------------------------------------------
 -- header & All Drowcall GUI
@@ -12831,6 +13174,7 @@ function AetheryteHelper.DrawCall()
   local Windows = kinokoProject.Windows.MainWindows
   local Addon = kinokoProject.Addon
   local minikinoko = kinokoProject.Windows.minibutton
+  local num = 230
  if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("CharaSelect") then
  if (Windows.Open) then
@@ -12860,8 +13204,19 @@ function AetheryteHelper.DrawCall()
 
 	  if (AetheryteHelper.GUI.tabs[1].isselected) and mushTrustmode == false then--main
 
-	  if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or
-	  Player.localmapid == 959 or Player.localmapid == 960 or Player.localmapid == 961 then
+	  if gRegion == 1 and Player.localmapid == 957 then
+	  GUI:Columns(3)
+	  GUI:SetColumnOffset(1, 70) GUI:SetColumnOffset(2, 200)
+	  AetheryteHelper.Drawinsselect()
+	  GUI:NextColumn()
+	  AetheryteHelper.maininsButton()
+	  GUI:NextColumn()
+	  AetheryteHelper.minitools()
+	  GUI:Columns()
+	  AetheryteHelper.homeDCinfo()
+	  AetheryteHelper.accessdelay()
+	elseif gRegion == 2 and Player.localmapid == 956 or gRegion == 2 and Player.localmapid == 957 or gRegion == 2 and Player.localmapid == 958 or
+	  gRegion == 2 and Player.localmapid == 959 or gRegion == 2 and Player.localmapid == 960 or gRegion == 2 and Player.localmapid == 961 then
 	  GUI:Columns(3)
 	  GUI:SetColumnOffset(1, 70) GUI:SetColumnOffset(2, 200)
 	  AetheryteHelper.Drawinsselect()
@@ -12905,6 +13260,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 
 	  elseif (AetheryteHelper.GUI.tabs[2].isselected) and mushTrustmode == false then--tool
 	  AetheryteHelper.subtoolmateria()
@@ -12922,6 +13279,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 
 	  elseif (AetheryteHelper.GUI.tabs[3].isselected) and mushTrustmode == false then--toys
 	  AetheryteHelper.DrawadWIP() ------button
@@ -12931,7 +13290,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
-
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 
 	  elseif (AetheryteHelper.GUI.tabs[4].isselected) and mushTrustmode == false then--jank
 	  AetheryteHelper.Drawadjank() ------button
@@ -12941,6 +13301,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 
 	  elseif (AetheryteHelper.GUI.tabs[5].isselected) or mushTrustmode == true then--GC
 	  AetheryteHelper.subtoolGC()
@@ -12951,6 +13313,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 	  if mushTrustmode == true then
 		AetheryteHelper.GUI.tabs[1].isselected = false
 		AetheryteHelper.GUI.tabs[2].isselected = false
@@ -12968,6 +13332,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 	  elseif (AetheryteHelper.GUI.tabs[7].isselected) and mushTrustmode == false then--tcmd
 	  AetheryteHelper.TCListHeader()
 	  GUI:BeginChild("##AHtcmd", 0, GUI_GetFrameHeight(4), true)
@@ -12979,6 +13345,8 @@ function AetheryteHelper.DrawCall()
 	  AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  AetheryteHelper.statuscheck()
+	  GUI:SameLine(num)
+	  AetheryteHelper.UPCKB()
 	  end
 --------------------------------------------------------------------
 --mini Button
@@ -13018,6 +13386,7 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.CBcodeEditWindows()
   AetheryteHelper.userButtonAllDrow()
   AetheryteHelper.UserLanguageSet()
+  AetheryteHelper.UpdateWindow()
   end
 end
 
@@ -13321,7 +13690,8 @@ function AetheryteHelper.movetoCOMPANYgridania()
 				  if Player.localmapid ~= 132  and (Player:GetTarget() == nil) then
 				  if(ActionList:Get(5,7):IsReady() == true) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(2,0,true)
+				  AetheryteHelper.Teleport(2,0)
+				  --Player:Teleport(2,0,true)
 				  else
 				  Player:Teleport(2,0,false)
 				  end
@@ -13343,7 +13713,8 @@ function AetheryteHelper.movetoCOMPANYuldah()
 				  if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then
 				  if(ActionList:Get(5,7):IsReady() == true) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(9,0,true)
+				  AetheryteHelper.Teleport(9,0)
+				  --Player:Teleport(9,0,true)
 				  else
 				  Player:Teleport(9,0,false)
 				  end
@@ -13374,7 +13745,8 @@ function AetheryteHelper.moveMBlimsa()
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(8,0,true)
+				  AetheryteHelper.Teleport(8,0)
+				  --Player:Teleport(8,0,true)
 				  else
 				  Player:Teleport(8,0,false)
 				  end
@@ -13390,7 +13762,8 @@ function AetheryteHelper.moveMBlimsa()
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(8,0,true)
+				  AetheryteHelper.Teleport(8,0)
+				  --Player:Teleport(8,0,true)
 				  else
 				  Player:Teleport(8,0,false)
 				  end
@@ -13496,7 +13869,8 @@ function AetheryteHelper.moveMBgridania()
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(2,0,true)
+				  AetheryteHelper.Teleport(2,0)
+				  --Player:Teleport(2,0,true)
 				  else
 				  Player:Teleport(2,0,false)
 				  end
@@ -13512,7 +13886,8 @@ function AetheryteHelper.moveMBgridania()
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(2,0,true)
+				  AetheryteHelper.Teleport(2,0)
+				  --Player:Teleport(2,0,true)
 				  else
 				  Player:Teleport(2,0,false)
 				  end
@@ -13630,7 +14005,8 @@ function AetheryteHelper.moveMBuldah()
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(9,0,true)
+				  AetheryteHelper.Teleport(9,0)
+				  --Player:Teleport(9,0,true)
 				  else
 				  Player:Teleport(9,0,false)
 				  end
@@ -13645,7 +14021,8 @@ function AetheryteHelper.moveMBuldah()
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
 				  if AetheryteHelper.ATuse.ATuseEnable == true then
-				  Player:Teleport(9,0,true)
+				  AetheryteHelper.Teleport(9,0)
+				  --Player:Teleport(9,0,true)
 				  else
 				  Player:Teleport(9,0,false)
 				  end
@@ -15968,7 +16345,7 @@ end
 -- sub function
 function AetheryteHelper.mushMaterialize()
    if (AHSET.DesynthTrust == true ) or ( mushTrustmode == true ) then
-		 if (AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:GetQueueStatus() == 4 ) then
+		 if (AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:GetQueueStatus() == 4 and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
 			if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
 			UseControlAction("MaterializeDialog","Yes")
 			return
@@ -16022,7 +16399,7 @@ end
 
 
 function AetheryteHelper.mushpotionmanual()
-	   if (Player.CurrentAction ~= 92) then
+	if (Player.CurrentAction ~= 92) then
 	   if (IsControlOpen("SalvageResult")) then
 		   UseControlAction("SalvageResult", "Close")
 	   end
@@ -16033,32 +16410,37 @@ function AetheryteHelper.mushpotionmanual()
 	  local potionid = {7059, 19885, 27960}
 	  --錬精薬　強錬精薬　極錬精薬
 	  for i = 0, 3 do
-		for _, id in pairs(potionid) do
-		local potion = Inventory:Get(i):Get(id)
-		if (potion and potion:GetAction():IsReady()) then
-		mushlooptimer = 100
-		potion:Cast()
-		return
-		end
-		end
+		   for _, id in pairs(potionid) do
+		   local potion = Inventory:Get(i):Get(id)
+		      if (potion and potion:GetAction():IsReady()) then
+		         mushlooptimer = 100
+		         potion:Cast()
+		         return
+		      end
+		   end
 	  end
+	else
+		mushlooptimer = 1000
 	end
 	if (AHSET.isMateriaEnabled and AHSET.isManualEnabled and MissingBuffs(Player,"1083")) then
 	  local manualid = {14951}
 	  --スピリットマニュアル
 	  for i = 0, 3 do
-		for _, id in pairs(manualid) do
-		local manual = Inventory:Get(i):Get(id)
-		if (manual and manual:GetAction():IsReady()) then
-		mushlooptimer = 100
-		manual:Cast()
-		return
-		end
-		end
+		   for _, id in pairs(manualid) do
+		   local manual = Inventory:Get(i):Get(id)
+		      if (manual and manual:GetAction():IsReady()) then
+		         mushlooptimer = 100
+		         manual:Cast()
+		         return
+		      end
+		   end
 	  end
+	else
+	  mushlooptimer = 1000
 	end
-   end
+
   end
+end
 
 function AetheryteHelper.mushsRemateria()
 	AetheryteHelper.Inventoryfree()
@@ -16068,7 +16450,7 @@ function AetheryteHelper.mushsRemateria()
 		if mushPbtotal < 1 then
 		Remateria = false
 		end
-		if (Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == false and not IsControlOpen("Trade")) then
+		if (Player.IsMounted == false and Player:GetTarget() == nil and Duty:IsQueued() == false and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
 		if (IsControlOpen("MateriaRetrieveDialog")) then
 		UseControlAction("MateriaRetrieveDialog"):PushButton(25,0)
 		return
@@ -16083,9 +16465,6 @@ function AetheryteHelper.mushsRemateria()
 		for _, item in pairs(ilist) do
 		materia = materia + table.size(item.materias)
 		end
-		--if materia == 0 then
-		--Remateria = false
-		--end
 		for _, item in pairs(ilist) do
 		if table.size(item.materias) > 0 and item.equipslot > 0 and item.requiredlevel > 1 then
 		  mushlooptimer = 1000
@@ -16094,9 +16473,8 @@ function AetheryteHelper.mushsRemateria()
 		  item:RetrieveMateria()
 		  return
 		  end
-		elseif table.size(item.materias) == 0 and item.equipslot > 0 and item.requiredlevel > 1 then
-		  Remateria = false
-
+		--else
+		--Remateria = false
 		end
 		end
 		end
@@ -16113,7 +16491,7 @@ function AetheryteHelper.mushsubAR()
 		   ml_global_information.ToggleRun()
 	   end
 	   local syusyuhin = 0
-	   if (AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade")) then
+	   if (AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
 		   if (IsControlOpen("PurifyResult")) then
 		   UseControlAction("PurifyResult", "Close")
 		   return
@@ -16157,7 +16535,7 @@ function AetheryteHelper.mushsubAR()
 	   end
 
 
-	if (AHSET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+	if (AHSET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
 		if (IsControlOpen("PurifyResult")) then
 		  UseControlAction("PurifyResult", "Close")
 		return
@@ -16187,7 +16565,7 @@ end
 
 function AetheryteHelper.Desynthseis()
 if (AHSET.DesynthTrust) then
-	   if (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:GetQueueStatus() == 4 ) then
+	   if (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:GetQueueStatus() == 4 and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
 	   mushlooptimer = 1000
 	   if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
 	   UseControlAction("SalvageDialog","Confirm")
@@ -16198,7 +16576,7 @@ if (AHSET.DesynthTrust) then
 		  AetheryteHelper.SalvageAll()
 	   end
 	   end
-   elseif (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+   elseif (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
 	   mushlooptimer = 1000
 	   if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
 	   UseControlAction("SalvageDialog","Confirm")
@@ -19306,20 +19684,6 @@ function AetheryteHelper.PartyCall()
 end
 
 
-
---------------------------------------------------------------
-
-function AetheryteHelper.UBDmode03func()
-	for k,v in pairs(AetheryteHelper.userCustomfunc) do
-			if v[1] == 1 and v[7] == 2 then
-				if v[10] == 1 then
-				mushlooptimer = v[13]
-    		assert(loadstring(v[14]))()
-  			end
-	  	end
-  end
-end
-
 ------------------------------------------------------------
 
 
@@ -19785,21 +20149,87 @@ function AetheryteHelper.mushTextCommands()
 	 end
 end
 
+function AetheryteHelper.AutoUpdateCheck()
+if AHSET.AutoUpdate == true then
+	  mushlooptimer = 1000
+ 		table.insert(AetheryteHelper.UpdateTimeSince,GetEorzeaTime().servertime)
+ 		if #AetheryteHelper.UpdateTimeSince > 1 then
+ 		  table.remove(AetheryteHelper.UpdateTimeSince)
+ 		end
+ 		if tonumber(AetheryteHelper.UpdateTimeSince[1]) + 7200 < GetEorzeaTime().servertime then
+ 			AetheryteHelper.VersionCheck()
+ 			d("[AH][notice]AutoUpdateCheck")
+ 			AetheryteHelper.UpdateTimeSince = {}
+ 		elseif tonumber(AetheryteHelper.UpdateTimeSince[1]) + 10 == GetEorzeaTime().servertime then
+ 			AetheryteHelper.VersionCheck()
+ 			d("[AH][notice]AutoUpdateCheck")
+ 		end 
+ 	else
+ 		AetheryteHelper.UpdateTimeSince = {}
+ 	end
+end
 
+function AetheryteHelper.AutoUpdate()
+  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].name; Invoke-WebRequest -Uri https://github.com/mushroom8009/AetheryteHelper/releases/download/$tag/AetheryteHelper_$name.zip -OutFile ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip'; Expand-Archive ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -DestinationPath ']] ..LuaPath.. [[' -Force; Remove-Item ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -Force; "Set-Content -Path ']] ..ModulePath.. [[\version_info\nowversion.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
+--io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\version_info\nowversion.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
+  local NewV = io.open(ModulePath.."version_info/version.txt")
+  local tag = io.open(ModulePath.."version_info/tag.txt")
+  local NowV = io.open(ModulePath.."version_info/nowversion.txt")
+  if NewV ~= nil then	NewVtext = NewV:read() NewV:close()	end
+  if NowV ~= nil then	NowVtext = NowV:read() NowV:close()	end
+  if tag ~= nil then tagtext = tag:read() tag:close()	end
+  if NewVtext == NowVtext then
+  	 mushVC = false
+  end
+  if mushVC == false and mushVUP == nil then
+  io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()
+     mushVUP = false
+  end
+end
 
+function AetheryteHelper.VersionCheck()
+  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\ReleaseNote.txt' -Value $json[0].body; stop-process -Id $PID"]]):close()
+  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\downloadURL.txt' -Value $json[0].assets[0].browser_download_url; stop-process -Id $PID"]]):close()
+  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\version.txt' -Value $name[0].name; stop-process -Id $PID"]]):close()
+  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json); Set-Content -Path ']] ..ModulePath.. [[\version_info\tag.txt' -Value $tag[0].tag_name; stop-process -Id $PID"]]):close()
+  local NewV = io.open(ModulePath.."version_info/version.txt")
+  local tag = io.open(ModulePath.."version_info/tag.txt")
+  local NowV = io.open(ModulePath.."version_info/nowversion.txt")
+  if NewV ~= nil then	NewVtext = NewV:read() NewV:close()	end
+  if NowV ~= nil then	NowVtext = NowV:read() NowV:close()	end
+  if tag ~= nil then tagtext = tag:read() tag:close()	end
+    if NewVtext ~= NowVtext and tonumber(tagtext) > kinokoProject.Addon.tag then
+  	 mushVC = true
+  	 mushVUP = true
+  	end
+end
 ---------------------------------------------------------------
+function AetheryteHelper.UBDmode03func()
+     for k,v in pairs(AetheryteHelper.userCustomfunc) do
+		  	if v[1] == 1 and v[7] == 2 then
+			  	if v[10] == 1 then
+  				  mushlooptimer = v[13]
+        		  assert(loadstring(v[14]))()
+  			  end
+	  	  end
+     end
+end
+---------------------------------------------------------------
+
 function AetheryteHelper.mushsubtool()
 
 	if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
 	   lastUpdatePulse = Now()
-
+  
+      AetheryteHelper.AutoUpdateCheck()
 			AetheryteHelper.UBDmode03func()
+      AetheryteHelper.undersizeIDswitch()
+			AetheryteHelper.explorerIDswitch()
 			AetheryteHelper.Exchange()
 			AetheryteHelper.mushSealstoItem()
 			AetheryteHelper.movetoGCAll()
 			AetheryteHelper.mushpotionmanual()
 			AetheryteHelper.mushEXchangeTrust()
-			AetheryteHelper.Jumbocactpothelper()
 			AetheryteHelper.moveMBlimsa()
 			AetheryteHelper.moveMBgridania()
 			AetheryteHelper.moveMBuldah()
@@ -19807,8 +20237,6 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.mushMaterialize()
 			AetheryteHelper.mushsubAR()
 			AetheryteHelper.Desynthseis()
-			AetheryteHelper.undersizeIDswitch()
-			AetheryteHelper.explorerIDswitch()
 			AetheryteHelper.mushTextCommands()
 			AetheryteHelper.nonAFK()
 			AetheryteHelper.voteMVP()
@@ -19817,10 +20245,10 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.itemSearch()
 			AetheryteHelper.itemsortRite()
 			AetheryteHelper.itemsortB()
-			
+			AetheryteHelper.Jumbocactpothelper()
 
 	 end
-AetheryteHelper.Inventoryfree()
+AetheryteHelper.AutoLegacy()
 end
 
 
