@@ -38,8 +38,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.4.3",
-	  tag = 2022041605,
+	  Version =         "1.8.5",
+	  tag = 202242011,
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -122,6 +122,10 @@ local kinokoProject = {
             "[1.8.4.1] - fix Exchange in patch 6.1",
             "[1.8.4.2] - fix retainer(item search) in patch 6.1",
             "[1.8.4.3] - fix retainer(item search) add retry function",
+            "[1.8.4.4] - few change to auto update feature",
+            "[1.8.4.5] - fix minor bug",
+            "[1.8.5] - add flag record tool",
+            --"[1.8.--] - minor corrections and add of auto use of FC Actions",
 
 					},
 
@@ -291,6 +295,12 @@ AetheryteHelper.miniRadarWindow = {
   visible = true,
   locked = false,
 }
+AetheryteHelper.FCactionWindow = {
+  name = "FCactionWindow###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
 AetheryteHelper.CreateButton = {
   name = "CBWindow###AetheryteHelper",
   open = false,
@@ -317,6 +327,12 @@ AetheryteHelper.selectlanguage = {
 }
 AetheryteHelper.UpdateConfig = {
   name = "UpdateConfig###AetheryteHelper",
+  open = false,
+  visible = true,
+  locked = false,
+}
+AetheryteHelper.flagsrecord = {
+  name = "flagsrecord###AetheryteHelper",
   open = false,
   visible = true,
   locked = false,
@@ -462,6 +478,7 @@ AetheryteHelper.DutyPlay = {
 AetheryteHelper.ATuse = {
   ATuseEnable = false,
   gil = 300,
+  FCA = false,
 }
 
 AetheryteHelper.RadarSettings = {
@@ -657,12 +674,12 @@ AetheryteHelper.mushAHlanguage = {
 	KR = false,
 }
 
-local mushtooltips = {
+mushtooltips = {
   jp = { 
   	 tip00 = "対象エリア外",
 		 tip01 = "AH オン/オフ",
 		 tip02 = "アクセス間隔を\n100msから1秒まで選べます",
-		 tip03 = "テキストコマンド[ /e <flag> ]を実行します",
+		 tip03 = "[ /e <flag> ]を実行します\n右クリックでflag記録ツール",
 		 tip04 = "冒険者居住区未解放の場合オンにしてください",
 		 tip05 = "ディレイの値を初期値に戻します",
 		 tip06 = "インスタンスの人数が見れます",
@@ -884,13 +901,32 @@ local mushtooltips = {
 		 tip222 = "更新を確認",
 		 tip223 = "新しいバージョンがリリースされています",
 		 tip224 = "自動確認(2時間ごと)",
+		 tip225 = "更新中\nしばらくお待ち下さい",
+		 tip226 = "更新完了\n変更はminionのリロード後に反映されます",
+		 tip227 = "カンパニーアクション設定",
+		 tip228 = "アクションのグレードを選択",
+		 tip229 = "アクションを選択",
+		 tip230 = "追加(最大2つまで)",
+		 tip231 = "削除",
+		 tip232 = "メモ(ターゲット名)",
+		 tip233 = "flagをセット",
+		 tip234 = "記録日時",
+		 tip235 = "場所",
+		 tip236 = "<flag>のみ",
+		 tip237 = "メモと<flag>",
+		 tip238 = "/e に送信",
+		 tip239 = "/sh に送信",
+		 tip240 = "現在アクティブなチャットに送信",
+		 tip241 = "追加",
+		 tip242 = "<flag>がありません",
+
 
   },
   en = { 
   	 tip00 = "Outside of use area",
 		 tip01 = "AH Enable/Disable",
 		 tip02 = "access delay\n100ms-1sec",
-		 tip03 = "Send TextCommand in Game>> /e <flag>",
+		 tip03 = "Send TextCommand in Game>> /e <flag>\nRight-click is flag record tool",
 		 tip04 = "didn't complete quest of residential",
 		 tip05 = "delay RESET",
 		 tip06 = "instance info",
@@ -1112,12 +1148,30 @@ local mushtooltips = {
 		 tip222 = "Check for update",
 		 tip223 = "New version released",
 		 tip224 = "Auto confirmat\n(every 2h)",
+		 tip225 = "Updating in progress\nPlease wait a moment",
+		 tip226 = "Update completed\nChanges will take effect after reloading the minion",
+		 tip227 = "Free Company Action Setting",
+		 tip228 = "Select the grade of action",
+		 tip229 = "Select Action",
+		 tip230 = "Add (up to 2)",
+		 tip231 = "delete",
+		 tip232 = "note(target name)",
+		 tip233 = "Set flag",
+		 tip234 = "Recorded Date",
+		 tip235 = "Location",
+		 tip236 = "<flag> only",
+		 tip237 = "note＆<flag>",
+		 tip238 = "post to /e",
+		 tip239 = "post to /sh",
+		 tip240 = "post to currently active chat",
+		 tip241 = "Add",
+		 tip242 = "<flag> is missing",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
 		 tip01 = "AH On/Off",
 		 tip02 = "L'intervalle d'accès peut être sélectionné\nentre 100 ms et 1 seconde",
-		 tip03 = "Exécutez la commande texte [ /e <flag> ]",
+		 tip03 = "Exécutez la commande texte [ /e <flag> ]\nclic droit est l'outil d'enregistrement des <flag>",
 		 tip04 = "Quartier résidentiel\nActivez cette option si vous n'avez pas terminé la quête",
 		 tip05 = "Réinitialiser la valeur du délai à la valeur par défaut",
 		 tip06 = "Vous pouvez voir le nombre de personnes dans l'instance",
@@ -1339,12 +1393,30 @@ local mushtooltips = {
 		 tip222 = "Vérifier les mises à jour",
 		 tip223 = "Nouvelle version publiée",
 		 tip224 = "Confirmation automatique\n(toutes les 2 heures)",
+		 tip225 = "Mise à jour en cours\nVeuillez patienter un moment",
+		 tip226 = "Mise à jour terminée\nLes changements prendront effet après le rechargement du minion",
+		 tip227 = "Paramètres du bonus la compagnie libre",
+		 tip228 = "Sélectionnez le grade de la bonus",
+		 tip229 = "Sélectionnez le bonus",
+		 tip230 = "Ajouter (jusqu'à 2)",
+		 tip231 = "supprimer",
+		 tip232 = "Mémo(nom de la cible)",
+		 tip233 = "Reflète le <flag> enregistré",
+		 tip234 = "Date d'enregistrement",
+		 tip235 = "Localisation",
+		 tip236 = "<flag> uniquement",
+		 tip237 = "Mémo & <flag>",
+		 tip238 = "Poster dans /e",
+		 tip239 = "Poster dans /sh",
+		 tip240 = "poster dans le chat actuellement actif",
+		 tip241 = "Ajouter",
+		 tip242 = "Pas de <flag>",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
 		 tip01 = "AH Aktivieren/Deaktivieren",
 		 tip02 = "Zugriffsverzögerung\n100ms-1sec",
-		 tip03 = "TextBefehl im Spiel senden>> /e <Flag>",
+		 tip03 = "TextBefehl im Spiel senden>> /e <flag>\nRechtsklick <flag> Aufnahmewerkzeuge",
 		 tip04 = "Wohnbezirk noch nicht geöffnet",
 		 tip05 = "Verzögerung RESET",
 		 tip06 = "Instanz-Information",
@@ -1566,12 +1638,30 @@ local mushtooltips = {
 		 tip222 = "Auf Aktualisierung prüfen",
 		 tip223 = "Neue Version veröffentlicht",
 		 tip224 = "Automatische Bestätigung\n(alle 2h)",
+		 tip225 = "Aktualisierung im Gange\nBitte warten Sie einen Moment",
+		 tip226 = "Aktualisierung abgeschlossen\nDie Änderungen werden nach dem erneuten Laden des MMOminion wirksam.",
+		 tip227 = "Gesellschaftskommando Einstellungen",
+		 tip228 = "einen Rang auswählen",
+		 tip229 = "einen Gesellschaftskommando auswählen",
+		 tip230 = "Hinzufügen (bis zu 2)",
+		 tip231 = "löschen",
+		 tip232 = "Notiz(Zielname)",
+		 tip233 = "<flag> setzen",
+		 tip234 = "Aufnahmedatum",
+		 tip235 = "Standort",
+		 tip236 = "Nur <flag>",
+		 tip237 = "Notiz＆<flag>",
+		 tip238 = "in /e posten",
+		 tip239 = "in /sh posten",
+		 tip240 = "Beitrag zum aktuellen Chat",
+		 tip241 = "Hinzufügen",
+		 tip242 = "Keine <flag>",
   },
   cn = {
   	 tip00 = "不在可使用区域内",
      tip01 = "AH 开启/关闭",
      tip02 = "傳送时间间隔\n可在100ms~1s之间选择",
-     tip03 = "在游戏中发送文本命令>> /e <flag>",
+     tip03 = "在游戏中发送文本命令>> /e <flag>\n右键单击是<flag>记录工具",
      tip04 = "冒险者居住区未開啟",
      tip05 = "恢复默认延迟设置",
      tip06 = "副本區-人数",
@@ -1793,12 +1883,30 @@ local mushtooltips = {
 		 tip222 = "检查更新",
 		 tip223 = "一个新的版本已经发布",
 		 tip224 = "自动确认（每2小时）",
+		 tip225 = "正在更新\n请稍等片刻",
+		 tip226 = "更新完成\n重新加载minion后，变化会得到反映。",
+		 tip227 = "部队特效设置",
+		 tip228 = "选择一个级别",
+		 tip229 = "选择一个特效",
+		 tip230 = "添加（最多 2 个）",
+		 tip231 = "删除",
+		 tip232 = "注(目标名称)",
+		 tip233 = "设置一个<flag>",
+		 tip234 = "记录的日期",
+		 tip235 = "地点",
+		 tip236 = "仅限<flag>",
+		 tip237 = "注意&<flag>",
+		 tip238 = "发布到 /e",
+		 tip239 = "发布到 /sh",
+		 tip240 = "发布到当前正在进行的聊天中",
+		 tip241 = "添加",
+		 tip242 = "没有<flag>",
   },
   kr = { 
   	 tip00 = "Outside of use area",
 		 tip01 = "AH Enable/Disable",
 		 tip02 = "access delay\n100ms-1sec",
-		 tip03 = "Send TextCommand in Game>> /e <flag>",
+		 tip03 = "Send TextCommand in Game>> /e <flag>\nRight-click is flag record tool",
 		 tip04 = "didn't complete quest of residential",
 		 tip05 = "delay RESET",
 		 tip06 = "instance info",
@@ -2020,11 +2128,29 @@ local mushtooltips = {
 		 tip222 = "Check for update",
 		 tip223 = "New version released",
 		 tip224 = "Auto confirmat\n(every 2h)",
+		 tip225 = "Updating in progress\nPlease wait a moment",
+		 tip226 = "Update completed\nChanges will take effect after reloading the minion",
+		 tip227 = "Free Company Action Setting",
+		 tip228 = "Select the grade of action",
+		 tip229 = "Select Action",
+		 tip230 = "Add (up to 2)",
+		 tip231 = "delete",
+		 tip232 = "note(target name)",
+		 tip233 = "Set flag",
+		 tip234 = "Recorded Date",
+		 tip235 = "Location",
+		 tip236 = "<flag> only",
+		 tip237 = "note＆<flag>",
+		 tip238 = "post to /e",
+		 tip239 = "post to /sh",
+		 tip240 = "post to currently active chat",
+		 tip241 = "Add",
+		 tip242 = "<flag> is missing",
   },
 
 }
 
-local AHitemsortError = {
+AHitemsortError = {
 	title01 = "AH ItemSort",
 	J01 = "例外が発生したのでソートを停止します",
 	E01 = "An error has occurred\nstop organizing items.",
@@ -2042,7 +2168,7 @@ local AHitemsortError = {
 	K02 = "오류가 발생했습니다\n항목 정리 중지",
 }
 
-local AHnormalError = {
+AHnormalError = {
 	title01 = "Create Button",
 	J01 = "ボタンは50個までしか表示できません",
 	E01 = "Only 50 buttons can be displayed",
@@ -2233,7 +2359,7 @@ local WorldID = {
 {id=2080,Name="펜리르",DC="KR"},
 
 }
-local mushPlayerGCrank = {
+mushPlayerGCrank = {
 	  {rank = 1, max = "10000"},
 	  {rank = 2, max = "15000"},
 	  {rank = 3, max = "20000"},
@@ -2246,14 +2372,14 @@ local mushPlayerGCrank = {
 	  {rank = 10, max = "80000"},
     {rank = 11, max = "90000"},
 }
-local mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
-local mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
-local mushGCEN = {"Maelst","Adders","Flames","------"}
-local mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
-local mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
-local mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
-local mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
-local mushGCKR = {"흑와단","쌍사당","불멸대","------"}
+mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
+mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
+mushGCEN = {"Maelst","Adders","Flames","------"}
+mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
+mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
+mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
+mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
+mushGCKR = {"흑와단","쌍사당","불멸대","------"}
 local GCexchangeItems = {
 		 jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンテナ(紅蓮)","転送網利用券(GC)"}, ---0
 		 En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},---1
@@ -2278,7 +2404,7 @@ local GCexchangeItems = {
 		 [6] = nil,
 		 },
 }
-
+AetheryteHelper.FCAuseingList = {}
 local FCactionName = {
 	jpG1 = {"討伐経験値アップ","採集経験値アップ","製作経験値アップ","バディ経験値アップ","対人戦績アップ","軍票アップ","ビギナーボーナス","獲得力アップ","技術力アップ","作業精度アップ","加工精度アップ","錬精度上昇量アップ","食事効果時間延長","装備品劣化低減","都市内スプリント効果時間延長","テレポ割引","MGPアップ"},
 	jpG2 = {"討伐経験値アップII ","採集経験値アップII","製作経験値アップII","バディ経験値アップII","対人戦績アップII","軍票アップII","ビギナーボーナスII","獲得力アップII","技術力アップII","作業精度アップII","加工精度アップII","錬精度上昇量アップII","食事効果時間延長II","装備品劣化低減II","都市内スプリント効果時間延長II","テレポ割引II","MGPアップII"},
@@ -2288,7 +2414,7 @@ local FCactionName = {
 	enG3 = {"The Heat of Battle III","Earth and Water III","Helping Hand III"," A Man's Best Friend III","Mark Up III"," Seal Sweetener III","Live off the Land III","What You See III","Eat from the Hand III","In Control III","That Which Binds Us III","Meat and Mead III","Proper Care III","Reduced Rates III","Jackpot III"},
 	deG1 = {"Kampfroutine-Bonus","Sammelroutine-Bonus","Syntheseroutine-Bonus","Mitstreiterroutine-Bonus","Wolfsmarken-Bonus","Staatstaler-Bonus","Startbonus","Sammelgeschick-Bonus","Wahrnehmungsbonus","Kunstfertigkeitsbonus","Kontrolle-Bonus","Bindungsbonus","Längere Nahrungseffekte","Verminderter Verschleiß","Stadtsprint-Bonus","Vergünstigter Teleport","MGP-Bonus"},
 	deG2 = {"Kampfroutine-Bonus II","Sammelroutine-Bonus II","Syntheseroutine-Bonus II","Mitstreiterroutine-Bonus II","Wolfsmarken-Bonus II","Staatstaler-Bonus II","Startbonus II","Sammelgeschick-Bonus II","Wahrnehmungsbonus II","Kunstfertigkeitsbonus II","Kontrolle-Bonus II","Bindungsbonus II","Längere Nahrungseffekte II","Verminderter Verschleiß II","Stadtsprint-Bonus II","Vergünstigter Teleport II","MGP-Bonus II"},
-	deG3 = {"Kampfroutine-Bonus","Sammelroutine-Bonus","Syntheseroutine-Bonus","Mitstreiterroutine-Bonus","Wolfsmarken-Bonus","Staatstaler-Bonus","Sammelgeschick-Bonus","Wahrnehmungsbonus","Kunstfertigkeitsbonus","Kontrolle-Bonus","Bindungsbonus","Längere Nahrungseffekte","Verminderter Verschleiß","Vergünstigter Teleport","MGP-Bonus"},
+	deG3 = {"Kampfroutine-Bonus III","Sammelroutine-Bonus III","Syntheseroutine-Bonus III","Mitstreiterroutine-Bonus III","Wolfsmarken-Bonus III","Staatstaler-Bonus III","Sammelgeschick-Bonus III","Wahrnehmungsbonus III","Kunstfertigkeitsbonus III","Kontrolle-Bonus III","Bindungsbonus III","Längere Nahrungseffekte III","Verminderter Verschleiß III","Vergünstigter Teleport III","MGP-Bonus III"},
 	frG1 = {"Feu du combat","Terre et eau","Être en bonnes mains","Meilleur ami de l'homme","Marque des vainqueurs","Solde accrue","Un nouveau monde","Vivre de la terre","Avoir le coup d'œil","La main qui nourrit","Passer maître","Union parfaite","À boire et à manger","Protections protégées","La grande forme","Prix d'ami","Gros lot"},
 	frG2 = {"Feu du combat II","Terre et eau II","Être en bonnes mains II","Meilleur ami de l'homme II","Marque des vainqueurs II","Solde accrue II","Un nouveau monde II","Vivre de la terre II","Avoir le coup d'œil II","La main qui nourrit II","Passer maître II","Union parfaite II","À boire et à manger II","Protections protégées II","La grande forme II","Prix d'ami II","Gros lot II"},
 	frG3 = {"Feu du combat III","Terre et eau III","Être en bonnes mains III","Meilleur ami de l'homme III","Marque des vainqueurs III","Solde accrue III","Vivre de la terre III","Avoir le coup d'œil III","La main qui nourrit III","Passer maître III","Union parfaite III","À boire et à manger III","Protections protégées III","Prix d'ami III","Gros lot III"},
@@ -2298,9 +2424,10 @@ local FCactionName = {
 	krG1 = {"처치 경험치 상승","채집 경험치 상승","제작 경험치 상승","버디 경험치 상승","버디 경험치 상승","군표 증가","초보자 지원","획득력 상승","감별력 상승","작업 숙련도 상승","가공 숙련도 상승","결속도 증가량 향상","식사 지속시간 연장","장비 소모 절감","쇠약 시간 단축","텔레포 할인","MGP 증가"},
 	krG2 = {"처치 경험치 상승 2","채집 경험치 상승 2","제작 경험치 상승 2","버디 경험치 상승 2","버디 경험치 상승 2","군표 증가 2","초보자 지원 2","획득력 상승 2","감별력 상승 2","작업 숙련도 상승 2","가공 숙련도 상승 2","결속도 증가량 향상 2","식사 지속시간 연장 2","장비 소모 절감 2","쇠약 시간 단축 2","텔레포 할인 2","MGP 증가 2"},
 	krG3 = {"처치 경험치 상승 3","채집 경험치 상승 3","제작 경험치 상승 3","버디 경험치 상승 3","버디 경험치 상승 3","군표 증가 3","획득력 상승 3","감별력 상승 3","작업 숙련도 상승 3","가공 숙련도 상승 3","결속도 증가량 향상 3","식사 지속시간 연장 3","장비 소모 절감 3","쇠약 시간 단축 3","텔레포 할인 3","MGP 증가 3"},
---365 367 368 366 413 414 353 354 355 356 357 361 360 362 2932 364 902
+  id = {365, 367, 368, 366, 413, 414, 353, 354, 355, 356, 357, 361, 360, 362, 2932, 364, 902},
+  idG3 = {365, 367, 368, 366, 413, 414, 354, 355, 356, 357, 361, 360, 362, 364, 902},
 }
-
+AetheryteHelper.FlagList = {}
 
 local MoveServer = { 132, 129, 130 }
 local ploc = { 956, 957, 958, 959, 960, 961 }
@@ -2317,6 +2444,8 @@ AetheryteHelper.RCfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSe
 AetheryteHelper.ATfile = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'AetheryteTicket.lua'
 AetheryteHelper.userfunc = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'userCustomfunction.lua'
 AetheryteHelper.language = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'Customlanguage.lua'
+AetheryteHelper.FCA = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'FCActionuseingList.lua'
+AetheryteHelper.flags = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'FlagsList.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -2365,23 +2494,23 @@ local GCStep = 0
 local limMBStep = 0
 local griMBStep = 0
 local uldMBStep = 0
-local mushtruninGCitem = nil
-local mushtruninGCseals = nil
+mushtruninGCitem = nil
+mushtruninGCseals = nil
 local sealstoitem = false
-local mushadjustoff = false
-local mushJumbocactpothelper = false
-local mushJumbocactpotrandom1 = false
-local mushJumbocactpotrandom2 = false
-local mushJumbocactpotrandom3 = false
-local mushGSjcpstep = 0
+mushadjustoff = false
+mushJumbocactpothelper = false
+mushJumbocactpotrandom1 = false
+mushJumbocactpotrandom2 = false
+mushJumbocactpotrandom3 = false
+mushGSjcpstep = 0
 local Remateria = false
-local mushTrustmode = false
+mushTrustmode = false
 local Dawncloser = nil
 local times = os.time()
-local mushlooptimer = mushlooptimer or 1000
+mushlooptimer = mushlooptimer or 1000
 local GCexchangeT = false
 local sealstoitemT = false
-local mushMBinterat = false
+mushMBinterat = false
 local IDUSstep = 0
 local IDexstep = 0
 local MIPstep = 0
@@ -2402,15 +2531,20 @@ local itemcount = 0
 local itemmax = 0
 local syojisu = 0
 local itemunique = nil
-local mushiS_rite = true
-local mushiS_tori = false
-local mushiS_FC = false
-local mushaccelerator = true
-local mushRitekazu = 0
+mushiS_rite = true
+mushiS_tori = false
+mushiS_FC = false
+mushaccelerator = true
+mushRitekazu = 0
 local AuL = AetheryteHelper.mushAHlanguage
 local AHSET = AetheryteHelper.settingsSET
 local eqFilter = AetheryteHelper.settingsFilter
 local AHeqjob = AetheryteHelper.settingsJob
+local selectFCA1 = 1
+local selectFCA2 = 1
+local selectFCA3 = 1
+local selectFCAname = ""
+local selectFCAid = 0
 ------------------
 --Radar
 local Rcid = ""
@@ -2435,6 +2569,21 @@ local AHRadarBlockList = false
 local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
 local Rwroldname = ""
+mushAHflag = {}
+mushAHtempflags = {}
+mushAHAlltime = {}
+mushAHflagsnote = ""
+mushAHyear = ""
+mushAHmonth = ""
+mushAHday = ""
+mushAHhour = ""
+mushAHmin = ""
+mushAHsec = ""
+mushAHmid = ""
+mushAHlmid = ""
+mushAHx = ""
+mushAHz = ""
+mushAHflagsnote = ""
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- add Menu MMOMinion
@@ -2490,6 +2639,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --load fanction
 function AetheryteHelper.LoadSettings()
+if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
+	GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("CharaSelect") then
   if FileExists(AetheryteHelper.settingfile) then
 	local setting = persistence.load(AetheryteHelper.settingfile)
 	if (ValidTable(setting)) then
@@ -2556,14 +2707,29 @@ function AetheryteHelper.LoadSettings()
   if FileExists(AetheryteHelper.language) then
 	local userlanguage = persistence.load(AetheryteHelper.language)
 	if (ValidTable(userlanguage)) then
-	  table.merge(AetheryteHelper.language,userlanguage)
+	  table.merge(AetheryteHelper.mushAHlanguage,userlanguage)
 	end
   end
+  if FileExists(AetheryteHelper.FCA) then
+	local FCAuse = persistence.load(AetheryteHelper.FCA)
+	if (ValidTable(FCAuse)) then
+	  table.merge(AetheryteHelper.FCAuseingList,FCAuse)
+	end
+  end
+  if FileExists(AetheryteHelper.flags) then
+	local fl = persistence.load(AetheryteHelper.flags)
+	if (ValidTable(fl)) then
+	  table.merge(AetheryteHelper.FlagList,fl)
+	end
+  end
+end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
 AetheryteHelper.LoadSettings()
 function AetheryteHelper.SaveSettings()
+if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
+	GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("CharaSelect") then
   persistence.store(AetheryteHelper.settingfile, AetheryteHelper.settingsSET)
   persistence.store(AetheryteHelper.jobfile, AetheryteHelper.settingsJob)
   persistence.store(AetheryteHelper.filterfile, AetheryteHelper.settingsFilter)
@@ -2575,6 +2741,9 @@ function AetheryteHelper.SaveSettings()
   persistence.store(AetheryteHelper.ATfile, AetheryteHelper.ATuse)
   persistence.store(AetheryteHelper.userfunc, AetheryteHelper.userCustomfunc)
   persistence.store(AetheryteHelper.language, AetheryteHelper.mushAHlanguage)
+  persistence.store(AetheryteHelper.FCA, AetheryteHelper.FCAuseingList)
+  persistence.store(AetheryteHelper.flags, AetheryteHelper.FlagList)
+end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2746,6 +2915,17 @@ function AHButtonSwitchDrow(name)
 	  	end
     end
 return tostring(name)
+end
+
+local AHtimeset = Now()
+function AHTimeSince(ms)
+      if AHtimeset + tonumber(ms) < Now() then
+      AHtimeset = Now()
+      return true
+      else
+      return false
+      end
+  return ms
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3616,6 +3796,18 @@ function AetheryteHelper.DrawadWIP()
 			end
 	  end
 	  GUI:EndGroup()
+	  --GUI:SameLine()
+	  --GUI:BeginGroup()
+	  --GUI:Image(ImageFolder..[[fc.png]],30,30)
+	  --if (GUI:IsItemHovered()) then
+		--	if (GUI:IsMouseClicked(0)) then
+		--	AetheryteHelper.FCactionWindow.open = not AetheryteHelper.FCactionWindow.open
+		--	end
+		--	if AHSET.mushtooltips == true then
+		--	  AetheryteHelper.SetToolTips(mJTp.tip227,mETp.tip227,mDTp.tip227,mFTp.tip227,mCTp.tip227,mKTp.tip227)
+		--	end
+	  --end
+	  --GUI:EndGroup()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[CustomButton.png]],30,30)
@@ -3631,7 +3823,6 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:Spacing()
 
 end
-
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- jank
 
@@ -4544,6 +4735,726 @@ function AetheryteHelper.minimush()
    end
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
+local FCAG1select = true
+local FCAG2select = false
+local FCAG3select = false
+local tempFCA = {}
+function AetheryteHelper.FCAwindow()
+   if (AetheryteHelper.FCactionWindow.open) then
+   local FCAflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+	 GUI:SetNextWindowSize(280,180)
+	  AetheryteHelper.FCactionWindow.visible, AetheryteHelper.FCactionWindow.open = GUI:Begin('FC Action Selector', AetheryteHelper.FCactionWindow.open,FCAflags)
+	  if (AetheryteHelper.FCactionWindow.visible) then
+	  	GUI:BeginGroup()
+	  	GUI:Checkbox("Enable",AetheryteHelper.ATuse.FCA)
+	  	if GUI:IsItemHovered() then
+	  		if GUI:IsMouseClicked(0) then
+	  			AetheryteHelper.ATuse.FCA = not AetheryteHelper.ATuse.FCA
+	  			FCAstep = 0
+	  			AetheryteHelper.SaveSettings()
+	  		end
+	  		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip114,mETp.tip114,mDTp.tip114,mFTp.tip114,mCTp.tip114,mKTp.tip114)
+	   		end
+	  	end
+	  	GUI:EndGroup()
+	  	GUI:BeginGroup()
+	  	GUI:RadioButton("G1",FCAG1select)
+	  	if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  			FCAG1select = true
+          FCAG2select = false
+          FCAG3select = false
+	  		end
+	  	end
+	  	GUI:SameLine()
+	  	GUI:RadioButton("G2",FCAG2select)
+	  	if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  			FCAG1select = false
+          FCAG2select = true
+          FCAG3select = false
+	  		end
+	  	end
+	  	GUI:SameLine()
+	  	GUI:RadioButton("G3",FCAG3select)
+	  	if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  			FCAG1select = false
+          FCAG2select = false
+          FCAG3select = true
+	  		end
+	  	end
+	  	GUI:EndGroup()
+	  	if GUI:IsItemHovered() then
+	  		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip228,mETp.tip228,mDTp.tip228,mFTp.tip228,mCTp.tip228,mKTp.tip228)
+	   		end
+	  	end
+	  	GUI:PushItemWidth(230)
+	  	GUI:BeginGroup()
+	  	if FCAG1select == true then
+	  		if AuL.JP == true then
+			  selectFCA1 = GUI:Combo( "###FCAJ1",selectFCA1,FCactionName.jpG1,height or 20)
+		    elseif AuL.EN == true then
+			  selectFCA1 = GUI:Combo( "###FCAE1",selectFCA1,FCactionName.enG1,height or 20)
+		    elseif AuL.DE == true then
+			  selectFCA1 = GUI:Combo( "###FCAD1",selectFCA1,FCactionName.deG1,height or 20)
+		    elseif AuL.FR == true then
+			  selectFCA1 = GUI:Combo( "###FCAF1",selectFCA1,FCactionName.frG1,height or 20)
+		    elseif AuL.CN == true then
+			  selectFCA1 = GUI:Combo( "###FCAC1",selectFCA1,FCactionName.cnG1,height or 20)
+		    elseif AuL.KR == true then
+			  selectFCA1 = GUI:Combo( "###FCAK1",selectFCA1,FCactionName.krG1,height or 20)
+	  	  elseif language == 0 and gRegion == 1 then
+			  selectFCA1 = GUI:Combo( "###FCAJ1",selectFCA1,FCactionName.jpG1,height or 20)
+		    elseif language == 1 and gRegion == 1 then
+			  selectFCA1 = GUI:Combo( "###FCAE1",selectFCA1,FCactionName.enG1,height or 20)
+		    elseif language == 2 and gRegion == 1 then
+			  selectFCA1 = GUI:Combo( "###FCAD1",selectFCA1,FCactionName.deG1,height or 20)
+		    elseif language == 3 and gRegion == 1 then
+			  selectFCA1 = GUI:Combo( "###FCAF1",selectFCA1,FCactionName.frG1,height or 20)
+	      elseif gRegion == 2 then
+			  selectFCA1 = GUI:Combo( "###FCAC1",selectFCA1,FCactionName.cnG1,height or 20)
+	      elseif gRegion == 3 then
+			  selectFCA1 = GUI:Combo( "###FCAK1",selectFCA1,FCactionName.krG1,height or 20)
+			  end
+	    elseif FCAG2select == true then
+	    	if AuL.JP == true then
+			  selectFCA2 = GUI:Combo( "###FCAJ2",selectFCA2,FCactionName.jpG2,height or 20)
+		    elseif AuL.EN == true then
+			  selectFCA2 = GUI:Combo( "###FCAE2",selectFCA2,FCactionName.enG2,height or 20)
+		    elseif AuL.DE == true then
+			  selectFCA2 = GUI:Combo( "###FCAD2",selectFCA2,FCactionName.deG2,height or 20)
+		    elseif AuL.FR == true then
+			  selectFCA2 = GUI:Combo( "###FCAF2",selectFCA2,FCactionName.frG2,height or 20)
+		    elseif AuL.CN == true then
+			  selectFCA2 = GUI:Combo( "###FCAC2",selectFCA2,FCactionName.cnG2,height or 20)
+		    elseif AuL.KR == true then
+			  selectFCA2 = GUI:Combo( "###FCAK2",selectFCA2,FCactionName.krG2,height or 20)
+	  	  elseif language == 0 and gRegion == 1 then
+			  selectFCA2 = GUI:Combo( "###FCAJ2",selectFCA2,FCactionName.jpG2,height or 20)
+		    elseif language == 1 and gRegion == 1 then
+			  selectFCA2 = GUI:Combo( "###FCAE2",selectFCA2,FCactionName.enG2,height or 20)
+		    elseif language == 2 and gRegion == 1 then
+			  selectFCA2 = GUI:Combo( "###FCAD2",selectFCA2,FCactionName.deG2,height or 20)
+		    elseif language == 3 and gRegion == 1 then
+			  selectFCA2 = GUI:Combo( "###FCAF2",selectFCA2,FCactionName.frG2,height or 20)
+	      elseif gRegion == 2 then
+			  selectFCA2 = GUI:Combo( "###FCAC2",selectFCA2,FCactionName.cnG2,height or 20)
+	      elseif gRegion == 3 then
+			  selectFCA2 = GUI:Combo( "###FCAK2",selectFCA2,FCactionName.krG2,height or 20)
+			  end
+	    elseif FCAG3select == true then
+	    	if AuL.JP == true then
+			  selectFCA3 = GUI:Combo( "###FCAJ3",selectFCA3,FCactionName.jpG3,height or 20)
+		    elseif AuL.EN == true then
+			  selectFCA3 = GUI:Combo( "###FCAE3",selectFCA3,FCactionName.enG3,height or 20)
+		    elseif AuL.DE == true then
+			  selectFCA3 = GUI:Combo( "###FCAD3",selectFCA3,FCactionName.deG3,height or 20)
+		    elseif AuL.FR == true then
+			  selectFCA3 = GUI:Combo( "###FCAF3",selectFCA3,FCactionName.frG3,height or 20)
+		    elseif AuL.CN == true then
+			  selectFCA3 = GUI:Combo( "###FCAC3",selectFCA3,FCactionName.cnG3,height or 20)
+		    elseif AuL.KR == true then
+			  selectFCA3 = GUI:Combo( "###FCAK3",selectFCA3,FCactionName.krG3,height or 20)
+	  	  elseif language == 0 and gRegion == 1 then
+			  selectFCA3 = GUI:Combo( "###FCAJ3",selectFCA3,FCactionName.jpG3,height or 20)
+		    elseif language == 1 and gRegion == 1 then
+			  selectFCA3 = GUI:Combo( "###FCAE3",selectFCA3,FCactionName.enG3,height or 20)
+		    elseif language == 2 and gRegion == 1 then
+			  selectFCA3 = GUI:Combo( "###FCAD3",selectFCA3,FCactionName.deG3,height or 20)
+		    elseif language == 3 and gRegion == 1 then
+			  selectFCA3 = GUI:Combo( "###FCAF3",selectFCA3,FCactionName.frG3,height or 20)
+	      elseif gRegion == 2 then
+			  selectFCA3 = GUI:Combo( "###FCAC3",selectFCA3,FCactionName.cnG3,height or 20)
+	      elseif gRegion == 3 then
+			  selectFCA3 = GUI:Combo( "###FCAK3",selectFCA3,FCactionName.krG3,height or 20)
+			  end
+	  	end
+	  	GUI:EndGroup()
+	    if (GUI:IsItemHovered()) then
+		 		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip229,mETp.tip229,mDTp.tip229,mFTp.tip229,mCTp.tip229,mKTp.tip229)
+	   		end
+	  	end	
+	    GUI:SameLine()
+	    GUI:BeginGroup()
+      GUI:ImageButton("##FCAadd",ImageFolder..[[R_add.png]], 15,15)
+      if GUI:IsItemHovered() then
+	  		if GUI:IsItemClicked(0) then
+	  			if FCAG1select == true then
+	  				 table.insert(tempFCA,"G1")
+	  				 table.insert(tempFCA,selectFCA1)
+	  				if language == 0 and gRegion == 1 then
+			         for k,v in pairs(FCactionName.jpG1) do
+			            if selectFCA1 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 1 and gRegion == 1 then
+		        	for k,v in pairs(FCactionName.enG1) do
+			            if selectFCA1 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 2 and gRegion == 1 then
+		        	 for k,v in pairs(FCactionName.deG1) do
+			            if selectFCA1 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 3 and gRegion == 1 then
+			         for k,v in pairs(FCactionName.frG1) do
+			            if selectFCA1 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+	          elseif gRegion == 2 then
+			         for k,v in pairs(FCactionName.cnG1) do
+			            if selectFCA1 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+	          elseif gRegion == 3 then
+	          	 for k,v in pairs(FCactionName.krG1) do
+			            if selectFCA1 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+			      end
+			      for k,v in pairs(FCactionName.id) do
+			         if selectFCA1 == k then
+			           	d(v)
+			           	selectFCAid = v
+			         end
+			      end
+          elseif FCAG2select == true then
+          	table.insert(tempFCA,"G2")
+          	table.insert(tempFCA,selectFCA2)
+          	if language == 0 and gRegion == 1 then
+			         for k,v in pairs(FCactionName.jpG2) do
+			            if selectFCA2 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 1 and gRegion == 1 then
+		        	for k,v in pairs(FCactionName.enG2) do
+			            if selectFCA2 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 2 and gRegion == 1 then
+		        	 for k,v in pairs(FCactionName.deG2) do
+			            if selectFCA2 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 3 and gRegion == 1 then
+			         for k,v in pairs(FCactionName.frG2) do
+			            if selectFCA2 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+	          elseif gRegion == 2 then
+			         for k,v in pairs(FCactionName.cnG2) do
+			            if selectFCA2 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+	          elseif gRegion == 3 then
+	          	 for k,v in pairs(FCactionName.krG2) do
+			            if selectFCA2 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+			      end
+			      for k,v in pairs(FCactionName.id) do
+			         if selectFCA2 == k then
+			           	d(v)
+			           	selectFCAid = v
+			         end
+			      end
+          elseif FCAG3select == true then
+          	table.insert(tempFCA,"G3")
+          	table.insert(tempFCA,selectFCA3)
+          	if language == 0 and gRegion == 1 then
+			         for k,v in pairs(FCactionName.jpG3) do
+			            if selectFCA3 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 1 and gRegion == 1 then
+		        	for k,v in pairs(FCactionName.enG3) do
+			            if selectFCA3 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 2 and gRegion == 1 then
+		        	 for k,v in pairs(FCactionName.deG3) do
+			            if selectFCA3 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+		        elseif language == 3 and gRegion == 1 then
+			         for k,v in pairs(FCactionName.frG3) do
+			            if selectFCA3 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+	          elseif gRegion == 2 then
+			         for k,v in pairs(FCactionName.cnG3) do
+			            if selectFCA3 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+	          elseif gRegion == 3 then
+	          	 for k,v in pairs(FCactionName.krG3) do
+			            if selectFCA3 == k then
+			            	d(v)
+			            	selectFCAname = v
+			            end
+			         end
+			      end
+			      for k,v in pairs(FCactionName.idG3) do
+			         if selectFCA3 == k then
+			           	d(v)
+			           	selectFCAid = v
+			         end
+			      end
+          end
+          table.insert(tempFCA,selectFCAname)
+          table.insert(tempFCA,selectFCAid)
+          table.insert(tempFCA,0)--Reserve
+          table.insert(tempFCA,0)--Reserve
+              for k,v in pairs(tempFCA) do
+                	for key,val in pairs(AetheryteHelper.FCAuseingList) do
+                	    if v == val[4] then
+               	    	table.remove(AetheryteHelper.FCAuseingList,key)
+                	    end
+                	end
+              end          
+              if #AetheryteHelper.FCAuseingList < 2 then 
+                table.insert(AetheryteHelper.FCAuseingList,1,tempFCA)
+                tempFCA = {}
+                AetheryteHelper.SaveSettings()
+              elseif #AetheryteHelper.FCAuseingList > 1 then
+                table.remove(AetheryteHelper.FCAuseingList)
+                table.insert(AetheryteHelper.FCAuseingList,1,tempFCA)
+                tempFCA = {}
+                AetheryteHelper.SaveSettings()
+              end
+	  		end
+	  	end
+	  	GUI:EndGroup()
+	  	if (GUI:IsItemHovered()) then
+		 		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip230,mETp.tip230,mDTp.tip230,mFTp.tip230,mCTp.tip230,mKTp.tip230)
+	   		end
+	  	end
+	  	GUI:Spacing()
+	  	GUI:Separator()
+	  	GUI:Spacing()
+	  	for k,v in pairs(AetheryteHelper.FCAuseingList) do
+	  	GUI:Columns(3)
+	  	GUI:SetColumnOffset(1,35)
+	  	GUI:SetColumnOffset(2,240)
+	  	GUI:BeginGroup()
+	  	if v[1] == "G1" then
+	  		if v[2] == 1 then
+	  	  GUI:Image(ImageFolder..[[fc_battle1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[1],FCactionName.enG1[1],FCactionName.deG1[1],FCactionName.frG1[1],FCactionName.cnG1[1],FCactionName.krG1[1])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 2 then
+	  	  GUI:Image(ImageFolder..[[fc_gather1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[2],FCactionName.enG1[2],FCactionName.deG1[2],FCactionName.frG1[2],FCactionName.cnG1[2],FCactionName.krG1[2])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 3 then
+	  	  GUI:Image(ImageFolder..[[fc_craft1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[3],FCactionName.enG1[3],FCactionName.deG1[3],FCactionName.frG1[3],FCactionName.cnG1[3],FCactionName.krG1[3])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 4 then
+	  	  GUI:Image(ImageFolder..[[fc_tori1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[4],FCactionName.enG1[4],FCactionName.deG1[4],FCactionName.frG1[4],FCactionName.cnG1[4],FCactionName.krG1[4])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 5 then
+	  	  GUI:Image(ImageFolder..[[fc_pvp1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[5],FCactionName.enG1[5],FCactionName.deG1[5],FCactionName.frG1[5],FCactionName.cnG1[5],FCactionName.krG1[5])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 6 then
+	  	  GUI:Image(ImageFolder..[[fc_seal1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[6],FCactionName.enG1[6],FCactionName.deG1[6],FCactionName.frG1[6],FCactionName.cnG1[6],FCactionName.krG1[6])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 7 then
+	  	  GUI:Image(ImageFolder..[[fc_nn1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[7],FCactionName.enG1[7],FCactionName.deG1[7],FCactionName.frG1[7],FCactionName.cnG1[7],FCactionName.krG1[7])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 8 then
+	  	  GUI:Image(ImageFolder..[[fc_kakutoku1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[8],FCactionName.enG1[8],FCactionName.deG1[8],FCactionName.frG1[8],FCactionName.cnG1[8],FCactionName.krG1[8])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 9 then
+	  	  GUI:Image(ImageFolder..[[fc_gijutsu1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[9],FCactionName.enG1[9],FCactionName.deG1[9],FCactionName.frG1[9],FCactionName.cnG1[9],FCactionName.krG1[9])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 10 then
+	  	  GUI:Image(ImageFolder..[[fc_sagyou1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[10],FCactionName.enG1[10],FCactionName.deG1[10],FCactionName.frG1[10],FCactionName.cnG1[10],FCactionName.krG1[10])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 11 then
+	  	  GUI:Image(ImageFolder..[[fc_kakou1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[11],FCactionName.enG1[11],FCactionName.deG1[11],FCactionName.frG1[11],FCactionName.cnG1[11],FCactionName.krG1[11])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 12 then
+	  	  GUI:Image(ImageFolder..[[fc_rensei1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[12],FCactionName.enG1[12],FCactionName.deG1[12],FCactionName.frG1[12],FCactionName.cnG1[12],FCactionName.krG1[12])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 13 then
+	  	  GUI:Image(ImageFolder..[[fc_food1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[13],FCactionName.enG1[13],FCactionName.deG1[13],FCactionName.frG1[13],FCactionName.cnG1[13],FCactionName.krG1[13])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 14 then
+	  	  GUI:Image(ImageFolder..[[fc_soubi1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[14],FCactionName.enG1[14],FCactionName.deG1[14],FCactionName.frG1[14],FCactionName.cnG1[14],FCactionName.krG1[14])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 15 then
+	  	  GUI:Image(ImageFolder..[[fc_sptint1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[15],FCactionName.enG1[15],FCactionName.deG1[15],FCactionName.frG1[15],FCactionName.cnG1[15],FCactionName.krG1[15])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 16 then
+	  	  GUI:Image(ImageFolder..[[fc_telepo1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[16],FCactionName.enG1[16],FCactionName.deG1[16],FCactionName.frG1[16],FCactionName.cnG1[16],FCactionName.krG1[16])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 17 then
+	  	  GUI:Image(ImageFolder..[[fc_mgp1.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG1[17],FCactionName.enG1[17],FCactionName.deG1[17],FCactionName.frG1[17],FCactionName.cnG1[17],FCactionName.krG1[17])
+	   		   end
+	   		   end
+	  	  end
+	  	elseif v[1] == "G2" then
+	  		if v[2] == 1 then
+	  	  GUI:Image(ImageFolder..[[fc_battle2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[1],FCactionName.enG2[1],FCactionName.deG2[1],FCactionName.frG2[1],FCactionName.cnG2[1],FCactionName.krG2[1])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 2 then
+	  	  GUI:Image(ImageFolder..[[fc_gather2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[2],FCactionName.enG2[2],FCactionName.deG2[2],FCactionName.frG2[2],FCactionName.cnG2[2],FCactionName.krG2[2])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 3 then
+	  	  GUI:Image(ImageFolder..[[fc_craft2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[3],FCactionName.enG2[3],FCactionName.deG2[3],FCactionName.frG2[3],FCactionName.cnG2[3],FCactionName.krG2[3])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 4 then
+	  	  GUI:Image(ImageFolder..[[fc_tori2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[4],FCactionName.enG2[4],FCactionName.deG2[4],FCactionName.frG2[4],FCactionName.cnG2[4],FCactionName.krG2[4])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 5 then
+	  	  GUI:Image(ImageFolder..[[fc_pvp2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[5],FCactionName.enG2[5],FCactionName.deG2[5],FCactionName.frG2[5],FCactionName.cnG2[5],FCactionName.krG2[5])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 6 then
+	  	  GUI:Image(ImageFolder..[[fc_seal2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[6],FCactionName.enG2[6],FCactionName.deG2[6],FCactionName.frG2[6],FCactionName.cnG2[6],FCactionName.krG2[6])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 7 then
+	  	  GUI:Image(ImageFolder..[[fc_nn2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[7],FCactionName.enG2[7],FCactionName.deG2[7],FCactionName.frG2[7],FCactionName.cnG2[7],FCactionName.krG2[7])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 8 then
+	  	  GUI:Image(ImageFolder..[[fc_kakutoku2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[8],FCactionName.enG2[8],FCactionName.deG2[8],FCactionName.frG2[8],FCactionName.cnG2[8],FCactionName.krG2[8])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 9 then
+	  	  GUI:Image(ImageFolder..[[fc_gijutsu2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[9],FCactionName.enG2[9],FCactionName.deG2[9],FCactionName.frG2[9],FCactionName.cnG2[9],FCactionName.krG2[9])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 10 then
+	  	  GUI:Image(ImageFolder..[[fc_sagyou2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[10],FCactionName.enG2[10],FCactionName.deG2[10],FCactionName.frG2[10],FCactionName.cnG2[10],FCactionName.krG2[10])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 11 then
+	  	  GUI:Image(ImageFolder..[[fc_kakou2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[11],FCactionName.enG2[11],FCactionName.deG2[11],FCactionName.frG2[11],FCactionName.cnG2[11],FCactionName.krG2[11])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 12 then
+	  	  GUI:Image(ImageFolder..[[fc_rensei2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[12],FCactionName.enG2[12],FCactionName.deG2[12],FCactionName.frG2[12],FCactionName.cnG2[12],FCactionName.krG2[12])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 13 then
+	  	  GUI:Image(ImageFolder..[[fc_food2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[13],FCactionName.enG2[13],FCactionName.deG2[13],FCactionName.frG2[13],FCactionName.cnG2[13],FCactionName.krG2[13])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 14 then
+	  	  GUI:Image(ImageFolder..[[fc_soubi2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[14],FCactionName.enG2[14],FCactionName.deG2[14],FCactionName.frG2[14],FCactionName.cnG2[14],FCactionName.krG2[14])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 15 then
+	  	  GUI:Image(ImageFolder..[[fc_sptint2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[15],FCactionName.enG2[15],FCactionName.deG2[15],FCactionName.frG2[15],FCactionName.cnG2[15],FCactionName.krG2[15])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 16 then
+	  	  GUI:Image(ImageFolder..[[fc_telepo2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[16],FCactionName.enG2[16],FCactionName.deG2[16],FCactionName.frG2[16],FCactionName.cnG2[16],FCactionName.krG2[16])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 17 then
+	  	  GUI:Image(ImageFolder..[[fc_mgp2.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG2[17],FCactionName.enG2[17],FCactionName.deG2[17],FCactionName.frG2[17],FCactionName.cnG2[17],FCactionName.krG2[17])
+	   		   end
+	   		   end
+	  	  end
+	  	elseif v[1] == "G3" then
+	  		if v[2] == 1 then
+	  	  GUI:Image(ImageFolder..[[fc_battle3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[1],FCactionName.enG3[1],FCactionName.deG3[1],FCactionName.frG3[1],FCactionName.cnG3[1],FCactionName.krG3[1])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 2 then
+	  	  GUI:Image(ImageFolder..[[fc_gather3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[2],FCactionName.enG3[2],FCactionName.deG3[2],FCactionName.frG3[2],FCactionName.cnG3[2],FCactionName.krG3[2])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 3 then
+	  	  GUI:Image(ImageFolder..[[fc_craft3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[3],FCactionName.enG3[3],FCactionName.deG3[3],FCactionName.frG3[3],FCactionName.cnG3[3],FCactionName.krG3[3])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 4 then
+	  	  GUI:Image(ImageFolder..[[fc_tori3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[4],FCactionName.enG3[4],FCactionName.deG3[4],FCactionName.frG3[4],FCactionName.cnG3[4],FCactionName.krG3[4])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 5 then
+	  	  GUI:Image(ImageFolder..[[fc_pvp3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[5],FCactionName.enG3[5],FCactionName.deG3[5],FCactionName.frG3[5],FCactionName.cnG3[5],FCactionName.krG3[5])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 6 then
+	  	  GUI:Image(ImageFolder..[[fc_seal3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[6],FCactionName.enG3[6],FCactionName.deG3[6],FCactionName.frG3[6],FCactionName.cnG3[6],FCactionName.krG3[6])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 7 then
+	  	  GUI:Image(ImageFolder..[[fc_kakutoku3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[7],FCactionName.enG3[7],FCactionName.deG3[7],FCactionName.frG3[7],FCactionName.cnG3[7],FCactionName.krG3[7])	   		   end
+	   		   end
+	  	  elseif v[2] == 8 then
+	  	  GUI:Image(ImageFolder..[[fc_gijutsu3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[8],FCactionName.enG3[8],FCactionName.deG3[8],FCactionName.frG3[8],FCactionName.cnG3[8],FCactionName.krG3[8])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 9 then
+	  	  GUI:Image(ImageFolder..[[fc_sagyou3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[9],FCactionName.enG3[9],FCactionName.deG3[9],FCactionName.frG3[9],FCactionName.cnG3[9],FCactionName.krG3[9])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 10 then
+	  	  GUI:Image(ImageFolder..[[fc_kakou3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[10],FCactionName.enG3[10],FCactionName.deG3[10],FCactionName.frG3[10],FCactionName.cnG3[10],FCactionName.krG3[10])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 11 then
+	  	  GUI:Image(ImageFolder..[[fc_rensei3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[11],FCactionName.enG3[11],FCactionName.deG3[11],FCactionName.frG3[11],FCactionName.cnG3[11],FCactionName.krG3[11])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 12 then
+	  	  GUI:Image(ImageFolder..[[fc_food3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[12],FCactionName.enG3[12],FCactionName.deG3[12],FCactionName.frG3[12],FCactionName.cnG3[12],FCactionName.krG3[12])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 13 then
+	  	  GUI:Image(ImageFolder..[[fc_soubi3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[13],FCactionName.enG3[13],FCactionName.deG3[13],FCactionName.frG3[13],FCactionName.cnG3[13],FCactionName.krG3[13])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 14 then
+	  	  GUI:Image(ImageFolder..[[fc_telepo3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[14],FCactionName.enG3[14],FCactionName.deG3[14],FCactionName.frG3[14],FCactionName.cnG3[14],FCactionName.krG3[14])
+	   		   end
+	   		   end
+	  	  elseif v[2] == 15 then
+	  	  GUI:Image(ImageFolder..[[fc_mgp3.png]],20,20)
+	  	     if GUI:IsItemHovered() then
+	  	     if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[15],FCactionName.enG3[15],FCactionName.deG3[15],FCactionName.frG3[15],FCactionName.cnG3[15],FCactionName.krG3[15])
+	   		   end
+	   		   end
+	  	  end
+	  	end
+	  	GUI:EndGroup()
+	  	
+	  	GUI:NextColumn()
+	  	GUI:BeginGroup()
+	  	GUI:Text(v[3])
+	  	GUI:EndGroup()
+
+	  	GUI:NextColumn()
+	  	GUI:BeginGroup()
+	  	GUI:ImageButton("##FCAadd",ImageFolder..[[R_trash.png]], 15,15)
+	  	GUI:EndGroup()
+   	  	if (GUI:IsItemHovered()) then
+	   	 		if GUI:IsItemClicked(0) then
+		  		table.remove(AetheryteHelper.FCAuseingList,k)	
+		 	  	AetheryteHelper.SaveSettings()
+		 	  	end
+		 		  if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip231,mETp.tip231,mDTp.tip231,mFTp.tip231,mCTp.tip231,mKTp.tip231)
+	   		  end
+	  	  end
+	  	GUI:Columns()
+	  	GUI:Spacing()
+	  	end
+	  	
+
+	  end
+	  GUI:End()
+   end
+end
 
 
 
@@ -4949,7 +5860,7 @@ function AetheryteHelper.SubWindow()
 	  GUI:Button("X",20,20)
 	  GUI:EndGroup()
 	  if (GUI:IsItemHovered()) then
-		if GUI:IsMouseDown(0) then
+		if GUI:IsItemClicked(0) then
 		AetheryteHelper.miniGUI.open = false
 		end
 	  if AHSET.mushtooltips == true then
@@ -5786,7 +6697,7 @@ function AetheryteHelper.VlWindow()
 	  GUI:BeginGroup()
 	  GUI:Button("Close",60,20)
 	  if (GUI:IsItemHovered()) then
-		if GUI:IsMouseDown(0) then
+		if GUI:IsItemClicked(0) then
 		AetheryteHelper.VersionList.open = false
 		end
 		if AHSET.mushtooltips == true then
@@ -5798,11 +6709,306 @@ function AetheryteHelper.VlWindow()
 	GUI:End()
   end
 end
---------------------------------------------------------------------------------------------------------------------------------------------------
 
-local NewVtext,tagtext,NowVtext
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.FLGsWindow()
+  if (AetheryteHelper.flagsrecord.open) then
+	local FLGsf = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+	GUI:SetNextWindowSize(280,500)
+	 AetheryteHelper.flagsrecord.visible, AetheryteHelper.flagsrecord.open = GUI:Begin('AH Flags Recorder', AetheryteHelper.flagsrecord.open,FLGsf)
+	if (AetheryteHelper.flagsrecord.visible) then
+	  GUI:Spacing()
+	  GUI:BeginGroup()
+	  GUI:TextColored(0,1,0,1,"Please use it with flag on map")
+	  GUI:EndGroup()
+	  GUI:Separator()
+	  GUI:Spacing()
+	  GUI:PushItemWidth(200)
+	  GUI:BeginGroup()
+	  if Player:GetTarget() ~= nil then
+	  mushAHflagsnote = Player:GetTarget().name
+	  mushAHflagsnote = GUI:InputText("##flagnote01",mushAHflagsnote)
+	  else
+	  mushAHflagsnote = ""
+	  mushAHflagsnote = GUI:InputText("##flagnote02",mushAHflagsnote)
+	  end
+	  GUI:EndGroup()
+	      if (GUI:IsItemHovered()) then 	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip232,mETp.tip232,mDTp.tip232,mFTp.tip232,mCTp.tip232,mKTp.tip232)
+		      end
+	      end
+	  GUI:SameLine()
+	  if GetMapFlagPosition() == false then
+	    GUI:BeginGroup()
+	    GUI:ImageButton("###getflag",ImageFolder..[[close.png]], 15,15)
+	    if (GUI:IsItemHovered()) then
+		    if GUI:IsItemClicked(0) then
+		    SendTextCommand("/e <flag>")
+		    end
+		    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip242,mETp.tip242,mDTp.tip242,mFTp.tip242,mCTp.tip242,mKTp.tip242)
+		    end
+		  end
+	    GUI:EndGroup()
+	  else
+	    GUI:BeginGroup()
+	    GUI:ImageButton("###getflag",ImageFolder..[[addflag.png]], 15,15)
+	    if (GUI:IsItemHovered()) then
+		    if GUI:IsItemClicked(0) then
+		    	AetheryteHelper.flagssave()
+		    end	  	
+		    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip241,mETp.tip241,mDTp.tip241,mFTp.tip241,mCTp.tip241,mKTp.tip241)
+		    end
+	    end
+	    GUI:EndGroup()
+	  end
+	  GUI:Spacing()
+	  GUI:Separator()
+	  if #AetheryteHelper.FlagList == 0 then
+	    GUI:BeginGroup()
+	    GUI:Text("No flag recorded")
+	    GUI:EndGroup()
+	  else
+	    GUI:BeginChild("##AHflaglist", 0, GUI_GetFrameHeight(17), true)
+	    AetheryteHelper.AHflaglist()
+	    GUI:EndChild()
+	  end
+	
+	end
+	GUI:End()
+  end
+end
+
+
+
+function AetheryteHelper.AHflaglist()
+   for k,v in pairs(AetheryteHelper.FlagList) do
+	 GUI:BeginGroup()
+	 GUI:Text("Data:"..v[6].."/"..v[7].."/"..v[8].." "..string.format("%02d",v[9])..":"..string.format("%02d",v[10])..":"..string.format("%02d",v[11]))
+	    	if (GUI:IsItemHovered()) then	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip234,mETp.tip234,mDTp.tip234,mFTp.tip234,mCTp.tip234,mKTp.tip234)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:BeginGroup()
+	 mushworldposx = WorldToMapCoords(v[2],v[4],0,0)
+	 mushworldposz = WorldToMapCoords(v[2],v[5],0,0)
+	 GUI:Text(GetMapName(v[2]).."("..string.format("%02.1f",mushworldposx)..","..string.format("%02.1f",mushworldposz)..")")
+	     if (GUI:IsItemHovered()) then 	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip235,mETp.tip235,mDTp.tip235,mFTp.tip235,mCTp.tip235,mKTp.tip235)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:BeginGroup()
+	    	v[1],changed = GUI:InputText("##flagnote"..k,v[1])
+	    	if changed then
+	    	AetheryteHelper.SaveSettings()
+	      end
+	    	if (GUI:IsItemHovered()) then 	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip195,mETp.tip195,mDTp.tip195,mFTp.tip195,mCTp.tip195,mKTp.tip195)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+	 GUI:BeginGroup()
+	 GUI:ImageButton("###setflag",ImageFolder..[[flag.png]], 15,15)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	SetMapFlagPosition(v[3],v[2],v[4],v[5])
+		      end	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip233,mETp.tip233,mDTp.tip233,mFTp.tip233,mCTp.tip233,mKTp.tip233)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+	 GUI:BeginGroup()
+	 GUI:ImageButton("###delflag",ImageFolder..[[R_trash.png]], 15,15)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	table.remove(AetheryteHelper.FlagList,k)
+		      end	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip231,mETp.tip231,mDTp.tip231,mFTp.tip231,mCTp.tip231,mKTp.tip231)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:BeginGroup()
+	 if v[12] == 0 then
+	 GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1) 
+	 GUI:Button("WithNote##AHflagnote",65,20)
+	 GUI:PopStyleColor(1)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	      v[12] = 1
+		    		    AetheryteHelper.SaveSettings() 
+		      end
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip237,mETp.tip237,mDTp.tip237,mFTp.tip237,mCTp.tip237,mKTp.tip237)
+		      end
+	      end
+	 elseif v[12] == 1 then
+	 GUI:PushStyleColor(GUI.Col_Button,.5,0,0,1)
+	 GUI:Button("FlagOnly##AHflagnote",65,20)
+	 GUI:PopStyleColor(1)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	      v[12] = 0
+		    		    AetheryteHelper.SaveSettings() 
+		      end
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip236,mETp.tip236,mDTp.tip236,mFTp.tip236,mCTp.tip236,mKTp.tip236)
+		      end
+	      end
+	 end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+	 GUI:BeginGroup()
+	 GUI:Button("/e##AHecho",30,20)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	   if v[12] == 0 then
+		    	   SendTextCommand("/e "..v[1].."<flag>")
+		    	   elseif v[12] == 1 then
+		    	   SendTextCommand("/e <flag>")
+		    	   end
+		      end	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip238,mETp.tip238,mDTp.tip238,mFTp.tip238,mCTp.tip238,mKTp.tip238)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+	 GUI:BeginGroup()
+	 GUI:Button("/sh##AHshout",30,20)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	   if v[12] == 0 then
+		    	   SendTextCommand("/sh "..v[1].."<flag>")
+		    	   elseif v[12] == 1 then
+		    	   SendTextCommand("/sh <flag>")
+		    	   end
+		      end	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip239,mETp.tip239,mDTp.tip239,mFTp.tip239,mCTp.tip239,mKTp.tip239)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+	 GUI:BeginGroup()
+	 GUI:ImageButton("###nowchat",ImageFolder..[[free_chat.png]],15,15)
+	    	if (GUI:IsItemHovered()) then
+		      if GUI:IsItemClicked(0) then
+		    	   if v[12] == 0 then
+		    	   SendTextCommand(v[1].."<flag>")
+		    	   elseif v[12] == 1 then
+		    	   SendTextCommand("<flag>")
+		    	   end
+		      end	  	
+		      if AHSET.mushtooltips == true then
+			    AetheryteHelper.SetToolTips(mJTp.tip240,mETp.tip240,mDTp.tip240,mFTp.tip240,mCTp.tip240,mKTp.tip240)
+		      end
+	      end
+	 GUI:EndGroup()
+	 GUI:Separator()
+	 end
+
+end
+
+
+function AetheryteHelper.flagsinitialize()
+mushAHflag = {}
+mushAHtempflags = {}
+mushAHAlltime = {}
+mushAHflagsnote = ""
+mushAHyear = ""
+mushAHmonth = ""
+mushAHday = ""
+mushAHhour = ""
+mushAHmin = ""
+mushAHsec = ""
+mushAHmid = ""
+mushAHlmid = ""
+mushAHx = ""
+mushAHz = ""
+mushAHflagsnote = ""
+Player:ClearTarget()
+end
+
+
+function AetheryteHelper.flagssave()
+	if GetMapFlagPosition() ~= false then
+	   mushAHflag = GetMapFlagPosition()
+           for k,v in pairs(mushAHflag) do
+              if k == "mapid" then
+  	          mushAHmid = v
+              end
+              if k == "localmapid" then
+  	          mushAHlmid = v
+              end
+              if k == "x" then
+  	          mushAHx = v
+              end
+              if k == "z" then
+  	          mushAHz = v
+              end
+           end
+        mushAHAlltime = os.date("*t")
+        for k,v in pairs(mushAHAlltime) do
+  	       if k == "year" then
+  	       mushAHyear = v
+           end
+           if k == "month" then
+  	       mushAHmonth = v
+           end
+           if k == "day" then
+  	       mushAHday = v
+           end
+           if k == "hour" then
+  	       mushAHhour = v
+           end
+           if k == "min" then
+  	       mushAHmin = v
+           end
+           if k == "sec" then
+  	       mushAHsec = v
+           end
+        end
+        if mushAHyear ~= "" and mushAHmid ~= "" then
+  	    table.insert(mushAHtempflags,mushAHflagsnote)--1
+  	    table.insert(mushAHtempflags,mushAHmid)--2
+  	    table.insert(mushAHtempflags,mushAHlmid)--3
+  	    table.insert(mushAHtempflags,mushAHx)--4
+  	    table.insert(mushAHtempflags,mushAHz)--5
+  	    table.insert(mushAHtempflags,mushAHyear)--6
+  	    table.insert(mushAHtempflags,mushAHmonth)--7
+  	    table.insert(mushAHtempflags,mushAHday)--8
+  	    table.insert(mushAHtempflags,mushAHhour)--9
+  	    table.insert(mushAHtempflags,mushAHmin)--10
+  	    table.insert(mushAHtempflags,mushAHsec)--11
+  	    table.insert(mushAHtempflags,0)--note 12
+  	    table.insert(mushAHtempflags,0)--Reserve
+  	    table.insert(mushAHtempflags,0)--Reserve
+  	    table.insert(mushAHtempflags,0)--Reserve
+  	    table.insert(AetheryteHelper.FlagList,mushAHtempflags)
+  	    AetheryteHelper.flagsinitialize()
+  	    AetheryteHelper.SaveSettings()
+        end
+  end
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+local NewVtext,tagtext,NowVtext,ziptext
 local mushVC = false
 local mushVUP = false
+local mushReload = false
 
 function AetheryteHelper.UpdateWindow()
   if (AetheryteHelper.UpdateConfig.open) then
@@ -5834,6 +7040,7 @@ function AetheryteHelper.UpdateWindow()
  	     if GUI:IsItemHovered() then
  		      if GUI:IsMouseClicked(0) then
  		      AetheryteHelper.AutoUpdate()
+ 		      mushVC = nil
  		      mushVUP = nil
  		      end
  		      if AHSET.mushtooltips == true then
@@ -5849,35 +7056,35 @@ function AetheryteHelper.UpdateWindow()
  	     if GUI:IsItemHovered() then
  		     if GUI:IsMouseClicked(0) then
  		     AetheryteHelper.VersionCheck()
+ 		     d("[AH][notice]ManualUpdateCheck")
  		     end
  		     if AHSET.mushtooltips == true then
 			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
 		     end
  	     end
  	     GUI:EndGroup()
- 	   elseif mushVUP == nil then
+ 	   elseif mushVC == nil and mushVUP == nil then
  	   	 GUI:BeginGroup()
  	     GUI:PushStyleColor(GUI.Col_Button,.5,.5,0,1)
- 	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[loading.png]], 30,30)
+ 	     GUI:ImageButton("###loading",ImageFolder..[[loading.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
  		     if AHSET.mushtooltips == true then
-			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
+			      AetheryteHelper.SetToolTips(mJTp.tip224,mETp.tip224,mDTp.tip224,mFTp.tip224,mCTp.tip224,mKTp.tip224)
 		     end
  	     end
  	     GUI:EndGroup()
- 	   else
+ 	   elseif mushVC == nil and mushVUP == true then
        GUI:BeginGroup()
- 	     GUI:PushStyleColor(GUI.Col_Button,0,.8,0,1)
- 	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[CB_clear.png]], 30,30)
+ 	     GUI:PushStyleColor(GUI.Col_Button,.8,0,0,1)
+ 	     GUI:ImageButton("###luaReload",ImageFolder..[[CB_clear.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
  		     if GUI:IsMouseClicked(0) then
- 		     AetheryteHelper.VersionCheck()
- 		     end
  		     if AHSET.mushtooltips == true then
-			      AetheryteHelper.SetToolTips(mJTp.tip222,mETp.tip222,mDTp.tip222,mFTp.tip222,mCTp.tip222,mKTp.tip222)
+			      AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
 		     end
+ 	       end
  	     end
  	     GUI:EndGroup()
  	   end
@@ -5885,8 +7092,10 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:Separator()
  	     if mushVC == true and mushVUP == true then
  	     GUI:TextColored(0,.8,0,1,NewVtext.." Release")
- 	     elseif mushVC == true and mushVUP == nil then
+ 	     elseif mushVC == nil and mushVUP == nil then
  	     GUI:TextColored(.8,0,0,1,"Processing....")
+ 	     elseif mushVC == nil and mushVUP == true then
+ 	     GUI:TextColored(0,.8,0,1,"Please Reload lua")
  	     elseif NowVtext ~= nil then
  	     GUI:Text(NowVtext.." is latest")
  	     else
@@ -6090,7 +7299,7 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[close.png]],20,20)
 	  if (GUI:IsItemHovered()) then
-		  if GUI:IsMouseDown(0) then
+		  if GUI:IsItemClicked(0) then
 		  AetheryteHelper.insSelectGUI.open = false
 		  end
 		  if AHSET.mushtooltips == true then
@@ -12933,7 +14142,7 @@ function AetheryteHelper.SVRSelectermini()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[close.png]],20,20)
 	  if (GUI:IsItemHovered()) then
-		  if GUI:IsMouseDown(0) then
+		  if GUI:IsItemClicked(0) then
 		  AetheryteHelper.miniWV.open = false
 		  end
 		  if AHSET.mushtooltips == true then
@@ -13090,6 +14299,9 @@ function AetheryteHelper.minitools()
 			  if (GUI:IsMouseClicked(0)) then
 			  SendTextCommand("/e <flag>")
 			  end
+			  if (GUI:IsMouseClicked(1)) then
+			  AetheryteHelper.flagsrecord.open = not AetheryteHelper.flagsrecord.open
+			  end
 			  if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip03,mETp.tip03,mDTp.tip03,mFTp.tip03,mCTp.tip03,mKTp.tip03)
 			  end
@@ -13183,8 +14395,23 @@ function AetheryteHelper.UPCKB()
 			  end
 	   end
 	   GUI:EndGroup()
+	 elseif mushVC == nil then
+	 	 GUI:BeginGroup()
+	   GUI:Image(ImageFolder..[[loading.png]],30,30)
+	   if (GUI:IsItemHovered()) then
+		  	if (GUI:IsMouseClicked(0)) then
+				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
+			  end
+			  if AHSET.mushtooltips == true then
+			     AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
+			  end
+	   end
+	   GUI:EndGroup()
 	 end
 end
+
+
+
 --------------------------------------------------------------------------------
 -- header & All Drowcall GUI
 
@@ -13405,6 +14632,8 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.userButtonAllDrow()
   AetheryteHelper.UserLanguageSet()
   AetheryteHelper.UpdateWindow()
+  AetheryteHelper.FCAwindow()
+  AetheryteHelper.FLGsWindow()
   end
 end
 
@@ -13488,7 +14717,7 @@ function AetheryteHelper.insselect()
 			  if autheStep == 4 then
 						Player:Stop()
 						GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
-					 if (isServer < 2) then selectins = not selectins end
+					 if isServer == nil or isServer < 2 then selectins = not selectins end
 						UseControlAction("SelectYesno")
 					 if IsControlOpen("SelectYesno") then
 						UseControlAction("SelectYesno","Yes")
@@ -16357,6 +17586,170 @@ function AetheryteHelper.nonAFK()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+local FCAstep = 0
+function AetheryteHelper.FreeCompanyActionUse()
+   local fcaname01 = ""
+   local fcaname02 = ""
+   local fcaid01 = 0
+   local fcaid02 = 0
+
+   if AetheryteHelper.ATuse.FCA == true and Player.currentworld == Player.homeworld and Player:GetTarget() == nil and
+      Duty:IsQueued() == false and not IsControlOpen("Tooltop") and not IsControlOpen("Inventory") and not IsControlOpen("OperationGuide") and
+      not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") then
+   	       	if FCAstep == 0 then
+   	       		 if #AetheryteHelper.FCAuseingList == 0 then
+				    		  AetheryteHelper.ATuse.FCA = false
+				    	 elseif #AetheryteHelper.FCAuseingList == 1 then
+				    	    for k,v in pairs(AetheryteHelper.FCAuseingList) do
+				    	        fcaname01 =	v[3]
+				    	        fcaid01 = v[4]
+				    	    end
+	  			    	 	FCAstep = 1
+				    	 elseif #AetheryteHelper.FCAuseingList == 2 then
+				    	 	for k,v in pairs(AetheryteHelper.FCAuseingList) do
+				    	       if k == 1 then
+				    	       fcaname01 = v[3]
+				    	       fcaid01 = v[4]
+				    	       end
+				    	       if k == 2 then
+				    	       fcaname02 = v[3]
+				    	       fcaid02 = v[4]
+				    	       end
+				    	    end
+  				    	 	FCAstep = 1
+				    	 end
+				    end
+				    if FCAstep == 1 then
+				       if Player.Buffs[2].id == nil or Player.Buffs[1].id == nil then
+				       	  mushlooptimer = 200
+                  if ActionList:Get(10,27).usable == true then
+				          ActionList:Get(10,27):Cast()
+                  end
+				          if IsControlOpen("FreeCompany") then
+				       	  FCAstep = 2
+				          else
+				       	  FCAstep = 1
+				          end
+				       else
+				        	FCAstep = 0
+				       end
+				    end
+
+				    if FCAstep == 2 then
+				    	if IsControlOpen("FreeCompanyAction") then
+				    		FCAstep = 3
+				    	else
+				    		GetControl("FreeCompany"):PushButton(25,5)
+				    		FCAstep = 2
+				    	end
+				    end
+
+				    if FCAstep == 3 then
+			    	local used = GetControl("FreeCompanyAction"):GetStrings()[7]
+				    	 if used == "0/2" then
+				    	 FCAstep = 4
+				    	 elseif used == "1/2" then
+				    	 FCAstep = 5
+				    	 else
+				    	 FCAstep = 99
+				    	 end
+				    end
+
+				    if FCAstep == 4 then
+				    	 PressKey(96)--0
+				    	 FCAstep = 6
+				    end
+				    if FCAstep == 5 then
+				    	 PressKey(98)--2
+				    	 FCAstep = 6
+				    end
+				    if FCAstep == 6 then
+				    	 if IsControlOpen("ActionDetail") then
+	             local Action = GetControl("ActionDetail"):GetStrings()[5]
+				    	    if Action:match(fcaname01) or Action:match(fcaname02) then
+				    	    FCAstep = 7
+				    	    else
+				    	    FCAstep = 9
+				    	    end
+				    	 end
+				    end
+				    if FCAstep == 7 then
+				    	 PressKey(96)--0
+				    	 FCAstep = 5
+				    end
+				    if FCAstep == 7 then
+				    	 if IsControlOpen("ContextMenu") then
+				    	    if GetControl("ContextMenu"):GetRawData()[1].value == 1 then
+  				           FCAstep = 9
+  				        elseif GetControl("ContextMenu"):GetRawData()[1].value == 2 then
+  				    	     FCAstep = 10
+  				        end
+  				     end 
+				    end
+				    if FCAstep == 9 then
+				    	 PressKey(110)--6
+				    	 FCAstep = 5
+				    end
+				    if FCAstep == 10 then
+				    	 PressKey(102)--.
+				    	 FCAstep = 5
+				    end
+				    if FCAstep == 11 then
+				    	 PressKey(96)--0
+				    	 FCAstep = 12
+				    end
+
+				    if FCAstep == 12 then
+				    	 if IsControlOpen("SelectYesno") then
+				    	 UseControlAction("SelectYesno","Yes")
+				    	 FCAstep = 13
+				    	 end
+				    end
+
+				    if FCAstep == 13 then
+				    	 if Player.Buffs[1].id == fcaid01 and Player.Buffs[2].id == fcaid02 then
+				    	 FCAstep = 99
+				    	 else
+				    	 FCAstep = 14
+				    	 end
+				    end
+				    if FCAstep == 14 then
+				    	 if Player.Buffs[1].id == fcaid02 and Player.Buffs[2].id == fcaid01 then
+				    	 FCAstep = 99
+				    	 else
+				    	 FCAstep = 15
+				    	 end
+				    end
+				    if FCAstep == 15 then
+				    	 if Player.Buffs[1].id == fcaid02 or Player.Buffs[2].id == fcaid01 then
+				    	 FCAstep = 99
+				    	 else
+				    	 FCAstep = 16
+				    	 end
+				    end
+				    if FCAstep == 16 then
+				    	 if Player.Buffs[1].id == fcaid01 or Player.Buffs[2].id == fcaid02 then
+				    	 FCAstep = 99
+				    	 else
+				    	 FCAstep = 3
+				    	 end
+				    end
+
+				    if FCAstep == 99 then
+				    	if IsControlOpen("FreeCompany") then
+				    	ActionList:Get(10,27):Cast()
+				      end
+				      fcaname01 = ""
+              fcaname02 = ""
+              fcaid01 = 0
+              fcaid02 = 0
+              FCAstep = 0
+				    end
+
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 -- sub function
 function AetheryteHelper.mushMaterialize()
    if (AHSET.DesynthTrust == true ) or ( mushTrustmode == true ) then
@@ -16818,7 +18211,6 @@ function AetheryteHelper.itemSearch()
 		else
 			mushlooptimer = 1000
 		end
-d(ISstep)
    if ISstep == 0 then
 		for _, e in pairs(bags) do
 		local bag = Inventory:Get(e)
@@ -20180,7 +21572,7 @@ function AetheryteHelper.mushTextCommands()
 		  	if isServer == 1 then
       	SendTextCommand("/e \x02\x13\x06\xfe\xff\x99\x11\x11 [AH][WV]:not found or Now World")
       	elseif isServer > 1 then
-		  	SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV]:move to "..worldname)
+		  	SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV]:move to "..worldname.."\x02\x13\x02\xec")
 		  	end
 		  mushtextstep = 113
 			else
@@ -20225,20 +21617,35 @@ if AHSET.AutoUpdate == true then
 end
 
 function AetheryteHelper.AutoUpdate()
-  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].name; Invoke-WebRequest -Uri https://github.com/mushroom8009/AetheryteHelper/releases/download/$tag/AetheryteHelper_$name.zip -OutFile ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip'; Expand-Archive ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -DestinationPath ']] ..LuaPath.. [[' -Force; Remove-Item ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -Force; "Set-Content -Path ']] ..ModulePath.. [[\version_info\nowversion.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
+	local step = 0
+	mushlooptimer = 1000
+	AetheryteHelper.UpdateTimeSince = {}
+	io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value 'Progress'; stop-process -Id $PID"]]):close()
+  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].name; Invoke-WebRequest -Uri https://github.com/mushroom8009/AetheryteHelper/releases/download/$tag/AetheryteHelper_$name.zip -OutFile ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip'; Expand-Archive ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -DestinationPath ']] ..LuaPath.. [[' -Force; Remove-Item ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -Force; "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value 'success'; stop-process -Id $PID"]]):close()
 --io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\version_info\nowversion.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
-  local NewV = io.open(ModulePath.."version_info/version.txt")
-  local tag = io.open(ModulePath.."version_info/tag.txt")
-  local NowV = io.open(ModulePath.."version_info/nowversion.txt")
-  if NewV ~= nil then	NewVtext = NewV:read() NewV:close()	end
-  if NowV ~= nil then	NowVtext = NowV:read() NowV:close()	end
-  if tag ~= nil then tagtext = tag:read() tag:close()	end
-  if NewVtext == NowVtext then
-  	 mushVC = false
-  end
-  if mushVC == false and mushVUP == nil then
-  io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()
-     mushVUP = false
+  table.insert(AetheryteHelper.UpdateTimeSince,GetEorzeaTime().servertime)
+ 	if #AetheryteHelper.UpdateTimeSince > 1 then
+ 		  table.remove(AetheryteHelper.UpdateTimeSince)
+ 	end
+ 	if tonumber(AetheryteHelper.UpdateTimeSince[1]) + 30 < GetEorzeaTime().servertime then
+ 	  if step == 0 then
+ 	  local zip = io.open(ModulePath.."cash/cash.txt")
+ 	    if zip ~= nil then
+ 	        ziptext = zip:read() zip:close()
+ 	        if ziptext == "Progress" then
+ 	  	    step = 0
+ 	        else
+ 	        step = 1
+ 	        end
+ 	    end
+ 	  end
+ 	  if step == 1 then
+ 	    if ziptext == "success" and mushVC == nil and mushVUP == nil then
+      io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()
+      mushVUP = true
+      AetheryteHelper.UpdateTimeSince = {}
+      end
+    end
   end
 end
 
@@ -20261,14 +21668,14 @@ function AetheryteHelper.VersionCheck()
 end
 ---------------------------------------------------------------
 function AetheryteHelper.UBDmode03func()
-     for k,v in pairs(AetheryteHelper.userCustomfunc) do
-		  	if v[1] == 1 and v[7] == 2 then
-			  	if v[10] == 1 then
-  				  mushlooptimer = v[13]
-        		  assert(loadstring(v[14]))()
-  			  end
-	  	  end
-     end
+   for k,v in pairs(AetheryteHelper.userCustomfunc) do
+    	if v[1] == 1 and v[7] == 2 then
+		  	if v[10] == 1 then
+		  		mushlooptimer = v[13]
+       		assert(loadstring(v[14]))()
+     	  end
+      end
+   end
 end
 ---------------------------------------------------------------
 
@@ -20276,9 +21683,9 @@ function AetheryteHelper.mushsubtool()
 
 	if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
 	   lastUpdatePulse = Now()
-  
+	 if not IsControlOpen("Title") or not IsControlOpen("CharaSelect") then
       AetheryteHelper.AutoUpdateCheck()
-			AetheryteHelper.UBDmode03func()
+		  AetheryteHelper.UBDmode03func()
       AetheryteHelper.undersizeIDswitch()
 			AetheryteHelper.explorerIDswitch()
 			AetheryteHelper.Exchange()
@@ -20294,6 +21701,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.mushsubAR()
 			AetheryteHelper.Desynthseis()
 			AetheryteHelper.mushTextCommands()
+			--AetheryteHelper.FreeCompanyActionUse()
 			AetheryteHelper.nonAFK()
 			AetheryteHelper.voteMVP()
 			AetheryteHelper.PartyCall()
@@ -20301,10 +21709,11 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.itemSearch()
 			AetheryteHelper.itemsortRite()
 			AetheryteHelper.itemsortB()
+			AetheryteHelper.AutoLegacy()
 			AetheryteHelper.Jumbocactpothelper()
 
+		end
 	 end
-AetheryteHelper.AutoLegacy()
 end
 
 
@@ -20318,5 +21727,6 @@ RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit,"AetheryteHel
 RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall,"AetheryteHelper.DrawCall")
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.mushMaintool,"AetheryteHelper.mushMaintool")
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.mushsubtool,"AetheryteHelper.mushsubtool")
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
