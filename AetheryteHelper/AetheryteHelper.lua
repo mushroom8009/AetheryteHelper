@@ -38,8 +38,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.6",
-	  tag = 2022042322,--y0000m00d00h00
+	  Version =         "1.8.6.1",
+	  tag = 2022042404,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -126,6 +126,7 @@ local kinokoProject = {
             "[1.8.4.5] - fix minor bug",
             "[1.8.5] - add flag record tool",
             "[1.8.6] - minor corrections and add Treasure Assist",
+            "[1.8.6.1] - minor corrections",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -910,7 +911,7 @@ mushtooltips = {
 		 tip242 = "<flag>がありません",
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
-		 tip245 = "場所が違う・地図の追加要望など\n宝箱をターゲットした状態で、これをクリックすると必要な情報をコピーします。\nそれをDiscordに貼り付けてください",
+		 tip245 = "場所が違う・地図の追加要望など\n宝箱をターゲットした状態で、クリックすると情報をDiscordに送信します",
 
 
   },
@@ -1160,7 +1161,7 @@ mushtooltips = {
 		 tip242 = "<flag> is missing",
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
-		 tip245 = "Wrong location,request for additional map, etc\nWith treasure chest targeted, click on this to copy the necessary information\nPlease paste it into Discord",
+		 tip245 = "Wrong location,request for additional map, etc\nWith the treasure chest targeted, click to post information to Discord",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1408,7 +1409,7 @@ mushtooltips = {
 		 tip242 = "Pas de <flag>",
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
-		 tip245 = "Si l'emplacement est incorrect ou si vous demandez l'ajout d'une carte\nAvec le coffre à trésor ciblé, cliquez sur ceci pour copier l'information nécessaire\nVeuillez le coller dans le Discord",
+		 tip245 = "Si l'emplacement est incorrect ou si vous demandez l'ajout d'une carte\nUne fois le coffre à trésor ciblé, cliquez pour envoyer les informations sur Discord",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1656,7 +1657,7 @@ mushtooltips = {
 		 tip242 = "Keine <flag>",
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
-		 tip245 = "Standortfehler, Anfragen nach zusätzlichen Karten usw\nKlicken Sie auf die anvisierte Schatztruhe, um die erforderlichen Informationen zu kopieren\nFügen Sie sie in Discord ein",
+		 tip245 = "Standortfehler, Anfragen nach zusätzlichen Karten usw\nWenn du die Schatztruhe anvisiert hast, klicke darauf, um Informationen an Discord zu senden",
   },
   cn = {
   	 tip00 = "不在可使用区域内",
@@ -1904,7 +1905,7 @@ mushtooltips = {
 		 tip242 = "没有<flag>",
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
-		 tip245 = "错误的位置，要求提供额外的地图，等等\n以宝箱为目标，点击这个来复制必要的信息\n请将其粘贴到Discord中",
+		 tip245 = "错误的位置，要求提供额外的地图，等等\n锁定宝箱后，点击发布信息到Discord",
   },
   kr = { 
   	 tip00 = "Outside of use area",
@@ -2152,7 +2153,7 @@ mushtooltips = {
 		 tip242 = "<flag> is missing",
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
-		 tip245 = "Wrong location,request for additional map,etc\nWith treasure chest targeted, click on this to copy the necessary information\nPlease paste it into Discord",
+		 tip245 = "Wrong location,request for additional map,etc\nWith the treasure chest targeted, click to post information to Discord",
   },
 
 }
@@ -14489,7 +14490,14 @@ function AetheryteHelper.TMAPSupport()
 	    end
 	    GUI:Spacing(20)
 	    GUI:BeginGroup()
-	    GUI:Image(ImageFolder..[[TMR.png]], 30,30)
+	    GUI:Dummy(30,30)
+	    if GUI:IsItemHovered() then
+	    GUI:SameLine(-1,0)
+	    GUI:Image(ImageFolder..[[TMR.png]], 35,35)
+	    else
+	    GUI:SameLine(-1,0)
+	    GUI:Image(ImageFolder..[[TMR_non.png]], 35,35)
+	    end
 	    GUI:EndGroup()
 	    if GUI:IsItemHovered() then
 		    if GUI:IsItemClicked(0) then
@@ -14511,9 +14519,8 @@ function AetheryteHelper.TMAPSupport()
 			  mushAH_TMty = "non"
 			  mushAH_TMtz = "non"
 			  end
-			  GUI:SetClipboardText("mapID:"..mushAH_TMareaid.."\nArea Name:"..mushAH_TMarea.."\nmember:"..mushAH_TMnop.."\nMapType:"..mushAH_TMtype.."\nTex:"..mushAH_TMtex.."\nside:"..mushAH_TMyoko.."\nvertical:"..mushAH_TMtate.."\nTarget:"..mushAH_TMname.."\nPosX:"..mushAH_TMtx.."\nPosY:"..mushAH_TMty.."\nPosZ:"..mushAH_TMtz)
-			  io.popen([[cmd /c start "" "https://discord.com/channels/961235833124450374/967198619168022528"]]):close()
-			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]copied in clip board \x02\x13\x02\xec\x03")
+			  AetheryteHelper.mapreport(mushAH_TMareaid,mushAH_TMarea,mushAH_TMnop,mushAH_TMtype,mushAH_TMtex,mushAH_TMyoko,mushAH_TMtate,mushAH_TMname,mushAH_TMtx,mushAH_TMty,mushAH_TMtz,true)
+			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Send Report <se.3> \x02\x13\x02\xec\x03")
 		    end
 		    if AHSET.mushtooltips == true then
 		      AetheryteHelper.SetToolTips(mJTp.tip245,mETp.tip245,mDTp.tip245,mFTp.tip245,mCTp.tip245,mKTp.tip245)
@@ -14523,7 +14530,14 @@ function AetheryteHelper.TMAPSupport()
 	  end
 	  else
 	  	GUI:BeginGroup()
-	    GUI:Image(ImageFolder..[[TMR.png]], 30,30)
+	  	GUI:Dummy(30,30)
+	    if GUI:IsItemHovered() then
+	    GUI:SameLine(-1,0)
+	    GUI:Image(ImageFolder..[[TMR.png]], 35,35)
+	    else
+	    GUI:SameLine(-1,0)
+	    GUI:Image(ImageFolder..[[TMR_non.png]], 35,35)
+	    end
 	    GUI:EndGroup()
 	    if GUI:IsItemHovered() then
 		    if GUI:IsItemClicked(0) then
@@ -14545,10 +14559,9 @@ function AetheryteHelper.TMAPSupport()
 			  mushAH_TMty = "non"
 			  mushAH_TMtz = "non"
 			  end
-			  GUI:SetClipboardText("mapID:"..mushAH_TMareaid.."\nArea Name:"..mushAH_TMarea.."\nmember:"..mushAH_TMnop.."\nMapType:"..mushAH_TMtype.."\nTex:"..mushAH_TMtex.."\nside:"..mushAH_TMyoko.."\nvertical:"..mushAH_TMtate.."\nTarget:"..mushAH_TMname.."\nPosX:"..mushAH_TMtx.."\nPosY:"..mushAH_TMty.."\nPosZ:"..mushAH_TMtz)
-			  io.popen([[cmd /c start "" "https://discord.com/channels/961235833124450374/967198619168022528"]]):close()
-			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]copied in clip board \x02\x13\x02\xec\x03")
-		    end
+			  AetheryteHelper.mapreport(mushAH_TMareaid,mushAH_TMarea,mushAH_TMnop,mushAH_TMtype,mushAH_TMtex,mushAH_TMyoko,mushAH_TMtate,mushAH_TMname,mushAH_TMtx,mushAH_TMty,mushAH_TMtz,false)
+			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Send Request <se.3> \x02\x13\x02\xec\x03")
+			  end
 		    if AHSET.mushtooltips == true then
 		      AetheryteHelper.SetToolTips(mJTp.tip245,mETp.tip245,mDTp.tip245,mFTp.tip245,mCTp.tip245,mKTp.tip245)
 		    end
@@ -14560,6 +14573,90 @@ function AetheryteHelper.TMAPSupport()
   end
 end
 
+
+function AetheryteHelper.mapreport(areaid,area,nop,type,tex,yoko,tate,name,tx,ty,tz,bool)
+	mushAHmG = ""
+	local bags = {2004}
+	for _, e in pairs(bags) do
+	local bag = Inventory:Get(e)
+	if (table.valid(bag)) then
+	local mlist = bag:GetList()
+	if (table.valid(mlist)) then
+	for _, item in pairs(mlist) do
+	  if item.id == 2003246 then
+		mushAHmG = "G14"
+	  elseif item.id == 2003245 then
+		mushAHmG = "G13"
+	  elseif item.id == 2002664 or item.id == 2003075 then
+		mushAHmG = "G12"
+	  elseif item.id == 2002663 then
+		mushAHmG = "G11"
+	  elseif item.id == 2002210 then
+		mushAHmG = "G10"
+	  elseif item.id == 2002209 then
+		mushAHmG = "G9"
+	  elseif item.id == 2001764 then
+		mushAHmG = "G8"
+	  elseif item.id == 2001763 then
+		mushAHmG = "G7"
+	  elseif item.id == 2001762 then
+		mushAHmG = "G6"
+	  elseif item.id == 2001091 then
+		mushAHmG = "G5"
+	  elseif item.id == 2001090 then
+		mushAHmG = "G4"
+	  elseif item.id == 2001089 then
+		mushAHmG = "G3"
+	  elseif item.id == 2001088 then
+		mushAHmG = "G2"
+	  elseif item.id == 2001087 then
+		mushAHmG = "G1"
+	  elseif item.id == 2001352 then
+		mushAHmG = "HG1"
+	  elseif item.id == 2001223 then
+		mushAHmG = "Relic"
+	  elseif item.UICategory == 153 then
+	  mushAHmG = "other"
+	  end
+	end
+  end
+  end
+  end
+if bool == true then
+mushAHparams = {
+   host = "discord.com",
+   path = "/api/webhooks//967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
+   port = 443,
+   method = "POST", -- "GET","POST","PUT","DELETE"
+   https = true,
+   onsuccess = success,
+   onfailure = failed,
+   getheaders = true, 
+   body = [[ {"username":" map reporter ","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Report : TreasureMap ]]..mushAHmG..[["} ]],
+   headers = {
+   ["Content-Type"] = "application/json",
+   }
+   }
+ HttpRequest(mushAHparams)
+ elseif bool == false then
+ 	mushAHparams = {
+   host = "discord.com",
+   path = "/api/webhooks//967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
+   port = 443,
+   method = "POST", -- "GET","POST","PUT","DELETE"
+   https = true,
+   onsuccess = success,
+   onfailure = failed,
+   getheaders = true, 
+   body = [[ {"username":" map reporter ","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Request : TreasureMap ]]..mushAHmG..[["} ]],
+   headers = {
+   ["Content-Type"] = "application/json",
+   }
+   }
+ HttpRequest(mushAHparams)
+ end
+   return areaid,area,nop,type,tex,yoko,tate,name,tx,ty,tz,bool
+end
 
 --------------------------------------------------------------------------------
 -- header & All Drowcall GUI
