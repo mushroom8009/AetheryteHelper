@@ -38,8 +38,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.5",
-	  tag = 202242011,
+	  Version =         "1.8.6",
+	  tag = 2022042322,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -125,7 +125,8 @@ local kinokoProject = {
             "[1.8.4.4] - few change to auto update feature",
             "[1.8.4.5] - fix minor bug",
             "[1.8.5] - add flag record tool",
-            --"[1.8.--] - minor corrections and add of auto use of FC Actions",
+            "[1.8.6] - minor corrections and add Treasure Assist",
+            --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
 
@@ -229,114 +230,102 @@ AetheryteHelper.GUI = {
 		normal = {r = 1, g = 1, b = 1, a = 1},
   },
 }
+
 AetheryteHelper.miniGUI = {
-  name = "miniinfo###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.insSelectGUI = {
-  name = "insselecter###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.miniWV = {
-  name = "miniWV###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.Jumbocactpot = {
-  name = "jumbocactpot assist###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.subtoolDesOP = {
-  name = "Desynthesis option###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.VersionList = {
-  name = "VersionList###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.TCList = {
-  name = "TCList###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.mip = {
-  name = "MIP###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.yoro_otu = {
-  name = "yoro_otu###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.RadarWindow = {
-  name = "RadarWindow###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.miniRadarWindow = {
-  name = "miniRadarWindow###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.FCactionWindow = {
-  name = "FCactionWindow###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.CreateButton = {
-  name = "CBWindow###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.CBcodeEditor = {
-  name = "CBcodeEditorWindow###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.userbutton = {
-	  name = "userfunc###AetheryteHelper",
 	  open =  false,
 	  visible = true,
-	  locked = false,
 }
+
 AetheryteHelper.selectlanguage = {
-  name = "selectlanguage###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.UpdateConfig = {
-  name = "UpdateConfig###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
 AetheryteHelper.flagsrecord = {
-  name = "flagsrecord###AetheryteHelper",
   open = false,
   visible = true,
-  locked = false,
 }
+
+AetheryteHelper.TRmapSupport = {
+  open = false,
+  visible = true,
+}
+
 AetheryteHelper.settingsSET = {
   delay = 200,
 	isMateriaEnabled = false,
@@ -823,7 +812,7 @@ mushtooltips = {
 		 tip144 = "プレイヤー",
 		 tip145 = "モンスター",
 		 tip146 = "NPC",
-		 tip147 = "宝箱",
+		 tip147 = "宝箱\n地図解読アシスト(G14)",
 		 tip148 = "F.A.T.E",
 		 tip149 = "家具",
 		 tip150 = "エーテライト",
@@ -919,6 +908,9 @@ mushtooltips = {
 		 tip240 = "現在アクティブなチャットに送信",
 		 tip241 = "追加",
 		 tip242 = "<flag>がありません",
+		 tip243 = "/e <flag>",
+		 tip244 = "/p <flag>",
+		 tip245 = "場所が違う・地図の追加要望など\n宝箱をターゲットした状態で、これをクリックすると必要な情報をコピーします。\nそれをDiscordに貼り付けてください",
 
 
   },
@@ -1070,7 +1062,7 @@ mushtooltips = {
 		 tip144 = "Player",
 		 tip145 = "Monster",
 		 tip146 = "NPC",
-		 tip147 = "chest",
+		 tip147 = "chest\nAssist to Decipher(G14)",
 		 tip148 = "F.A.T.E",
 		 tip149 = "furniture",
 		 tip150 = "Aetheryte",
@@ -1166,6 +1158,9 @@ mushtooltips = {
 		 tip240 = "post to currently active chat",
 		 tip241 = "Add",
 		 tip242 = "<flag> is missing",
+		 tip243 = "/e <flag>",
+		 tip244 = "/p <flag>",
+		 tip245 = "Wrong location,request for additional map, etc\nWith treasure chest targeted, click on this to copy the necessary information\nPlease paste it into Discord",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1315,7 +1310,7 @@ mushtooltips = {
 		 tip144 = "Joueur",
 		 tip145 = "Ennemis",
 		 tip146 = "PNJ",
-		 tip147 = "Coffre au trésor",
+		 tip147 = "Coffre au trésor\nAide à 'Déchiffrage'(G14)",
 		 tip148 = "ALÉA",
 		 tip149 = "meubles",
 		 tip150 = "Vents éthérite",
@@ -1411,6 +1406,9 @@ mushtooltips = {
 		 tip240 = "poster dans le chat actuellement actif",
 		 tip241 = "Ajouter",
 		 tip242 = "Pas de <flag>",
+		 tip243 = "/e <flag>",
+		 tip244 = "/p <flag>",
+		 tip245 = "Si l'emplacement est incorrect ou si vous demandez l'ajout d'une carte\nAvec le coffre à trésor ciblé, cliquez sur ceci pour copier l'information nécessaire\nVeuillez le coller dans le Discord",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1560,7 +1558,7 @@ mushtooltips = {
 		 tip144 = "PCs",
 		 tip145 = "Feinde",
 		 tip146 = "NPCs",
-		 tip147 = "Schatztruhe",
+		 tip147 = "Schatztruhe\n Assistierte „Entziffern“(G14)",
 		 tip148 = "FATE",
 		 tip149 = "Möbel",
 		 tip150 = "Ätheryt",
@@ -1656,6 +1654,9 @@ mushtooltips = {
 		 tip240 = "Beitrag zum aktuellen Chat",
 		 tip241 = "Hinzufügen",
 		 tip242 = "Keine <flag>",
+		 tip243 = "/e <flag>",
+		 tip244 = "/p <flag>",
+		 tip245 = "Standortfehler, Anfragen nach zusätzlichen Karten usw\nKlicken Sie auf die anvisierte Schatztruhe, um die erforderlichen Informationen zu kopieren\nFügen Sie sie in Discord ein",
   },
   cn = {
   	 tip00 = "不在可使用区域内",
@@ -1805,7 +1806,7 @@ mushtooltips = {
   	 tip144 = "玩家",
   	 tip145 = "怪物",
   	 tip146 = "NPC",
-  	 tip147 = "宝箱",
+  	 tip147 = "宝箱\n有助于「解读」(G14)",
   	 tip148 = "F.A.T.E",
   	 tip149 = "家具",
   	 tip150 = "风脉點",
@@ -1901,6 +1902,9 @@ mushtooltips = {
 		 tip240 = "发布到当前正在进行的聊天中",
 		 tip241 = "添加",
 		 tip242 = "没有<flag>",
+		 tip243 = "/e <flag>",
+		 tip244 = "/p <flag>",
+		 tip245 = "错误的位置，要求提供额外的地图，等等\n以宝箱为目标，点击这个来复制必要的信息\n请将其粘贴到Discord中",
   },
   kr = { 
   	 tip00 = "Outside of use area",
@@ -2050,7 +2054,7 @@ mushtooltips = {
 		 tip144 = "Player",
 		 tip145 = "Monster",
 		 tip146 = "NPC",
-		 tip147 = "chest",
+		 tip147 = "chest\nAssist to Decipher(G14)",
 		 tip148 = "F.A.T.E",
 		 tip149 = "furniture",
 		 tip150 = "Aetheryte",
@@ -2146,6 +2150,9 @@ mushtooltips = {
 		 tip240 = "post to currently active chat",
 		 tip241 = "Add",
 		 tip242 = "<flag> is missing",
+		 tip243 = "/e <flag>",
+		 tip244 = "/p <flag>",
+		 tip245 = "Wrong location,request for additional map,etc\nWith treasure chest targeted, click on this to copy the necessary information\nPlease paste it into Discord",
   },
 
 }
@@ -2780,6 +2787,9 @@ function AHSwitchOpen(mado)
   	if mado == "call" then
   	AetheryteHelper.yoro_otu.open = not AetheryteHelper.yoro_otu.open
   	end
+  	if mado == "flag" then
+  	AetheryteHelper.flagsrecord.open = not AetheryteHelper.flagsrecord.open
+  	end
   	if mado == nil then
   	io.popen([[cmd /c start "" "https://discord.com/channels/961235833124450374/961251151737679972"]]):close()
   	end
@@ -3320,7 +3330,7 @@ function AetheryteHelper.omikuji()
 		   if GUI:IsMouseClicked(0) then
 		   AHSET.minionclick = AHSET.minionclick + 1
 		   if AHSET.minionclick == 9999 then
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 Congratulations! <se.6>")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 Congratulations! <se.6> \x02\x13\x02\xec\x03")
 		   end
 		   AetheryteHelper.SaveSettings()
 		   end
@@ -4109,10 +4119,10 @@ function AetheryteHelper.DrawadItems()
 			   AHitemsortR = not AHitemsortR
 			   if IsControlOpen("InventoryRetainer") == false and IsControlOpen("InventoryRetainerLarge") == false then
 				if language == 0 then
-				SendTextCommand("/e [AH][notice]: \x02\x13\x06\xfe\xff\xff\x11\x11 ソートしたいリテイナーのカバンを開いて下さい")
+				SendTextCommand("/e [AH][notice]: \x02\x13\x06\xfe\xff\xff\x11\x11 ソートしたいリテイナーのカバンを開いて下さい \x02\x13\x02\xec\x03")
 				AHitemsortR = false
 				else
-				SendTextCommand("/e [AH][notice]: \x02\x13\x06\xfe\xff\xff\x11\x11 Please open a retainer bag that need sort.")
+				SendTextCommand("/e [AH][notice]: \x02\x13\x06\xfe\xff\xff\x11\x11 Please open a retainer bag that need sort. \x02\x13\x02\xec\x03")
 				AHitemsortR = false
 				end
 			   end
@@ -5366,7 +5376,8 @@ function AetheryteHelper.FCAwindow()
 	  	  GUI:Image(ImageFolder..[[fc_kakutoku3.png]],20,20)
 	  	     if GUI:IsItemHovered() then
 	  	     if AHSET.mushtooltips == true then
-			     AetheryteHelper.SetToolTips(FCactionName.jpG3[7],FCactionName.enG3[7],FCactionName.deG3[7],FCactionName.frG3[7],FCactionName.cnG3[7],FCactionName.krG3[7])	   		   end
+			     AetheryteHelper.SetToolTips(FCactionName.jpG3[7],FCactionName.enG3[7],FCactionName.deG3[7],FCactionName.frG3[7],FCactionName.cnG3[7],FCactionName.krG3[7])
+			     end
 	   		   end
 	  	  elseif v[2] == 8 then
 	  	  GUI:Image(ImageFolder..[[fc_gijutsu3.png]],20,20)
@@ -5522,9 +5533,9 @@ function AetheryteHelper.TCListHeader()
 		if GUI:IsMouseClicked(0) then
 		  GUI:SetClipboardText("H4sIAAAAAAAACqWTUWuDMBCA/0q47FFcorF1easyWsrKoIP6MPogNWyBRovawij977uMrUSwYywPIbnPy3cHOc9w138cFEhQEEAXgTxfCUYB1HiQkvOI0tkC4x4kx8QnkK+jmRMmkphSXXeIdojuFZktTFMpwrlApp/xKgtZgGuL4RqkjWD3csAPaSC2l+A3c7FxxcWGGF1rP28ymVK6ylzvKiN7bbrSV5yOiN9aXZW19nY/jLiP+6p89xInjAlK57krnufENCfl6Z1ySrOl682WpD4aH61IIzsTSj2Wrpj8EJ9pszOve2VI17T9wG7pN/x3Ac4FY9i7Hd+mHuivyKP7r1e0onVZle3gX3TgHwpYfCurABnbPQeZDLuCE5aLwjjERLh8AqF5j4BmBAAA")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		end
 			  if AHSET.mushtooltips == true then
@@ -5557,9 +5568,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHmode 114")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		 end
 		if AHSET.mushtooltips == true then
@@ -5582,9 +5593,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHWV mini")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		 end
 		if AHSET.mushtooltips == true then
@@ -5607,9 +5618,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHWV:")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		 end
 		if AHSET.mushtooltips == true then
@@ -5632,9 +5643,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHMB limsa")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5657,9 +5668,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHMB gridania")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		end
 		if AHSET.mushtooltips == true then
@@ -5682,9 +5693,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHMB uldah")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5707,9 +5718,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHGC move")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5732,9 +5743,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHBJ num")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5757,9 +5768,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AH WeeEa")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5782,9 +5793,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AH itemsort")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5807,9 +5818,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AHminiRadar")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5832,9 +5843,9 @@ function AetheryteHelper.TCListwindow()
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AH minion")
 		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text was copied in clip board")
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
 		  end
 		  end
 		if AHSET.mushtooltips == true then
@@ -5887,15 +5898,15 @@ function AetheryteHelper.SubWindow()
 	  GUI:EndGroup()
 	  else
 	  GUI:BeginGroup()
-	  GUI:TextColored(0,1,1,1,"ins1:"..mushins[9].value)
+	  GUI:TextColored(0,1,1,1,"ins1:"..mushins[11].value)
 	  GUI:EndGroup()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
-	  GUI:TextColored(0,1,1,1,"ins2:"..mushins[10].value)
+	  GUI:TextColored(0,1,1,1,"ins2:"..mushins[12].value)
 	  GUI:EndGroup()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
-	  GUI:TextColored(0,1,1,1,"ins3:"..mushins[11].value)
+	  GUI:TextColored(0,1,1,1,"ins3:"..mushins[13].value)
 	  GUI:EndGroup()
 	  end
 	end
@@ -5976,7 +5987,7 @@ function AetheryteHelper.CBcodeEditWindows()
 	  if GUI:IsItemHovered() then
 	  	if GUI:IsItemClicked(1) then
 	  	GUI:SetClipboardText(AHuserfuncCode01)
-	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied")
+	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied \x02\x13\x02\xec\x03")
 	  	end
 		if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip211,mETp.tip211,mDTp.tip211,mFTp.tip211,mCTp.tip211,mKTp.tip211)
@@ -5995,7 +6006,7 @@ function AetheryteHelper.CBcodeEditWindows()
 	  if GUI:IsItemHovered() then
 	  	if GUI:IsItemClicked(1) then
 	  	GUI:SetClipboardText(AHuserfuncCode02)
-	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied")
+	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied \x02\x13\x02\xec\x03")
 	  	end
 		if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip212,mETp.tip212,mDTp.tip212,mFTp.tip212,mCTp.tip212,mKTp.tip212)
@@ -6013,7 +6024,7 @@ function AetheryteHelper.CBcodeEditWindows()
 	  if GUI:IsItemHovered() then
 	  	if GUI:IsItemClicked(1) then
 	  	GUI:SetClipboardText(AHuserfuncCode03)
-	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied")
+	  	SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]text copied \x02\x13\x02\xec\x03")
 	  	end
 		if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip214,mETp.tip214,mDTp.tip214,mFTp.tip214,mCTp.tip214,mKTp.tip214)
@@ -6714,6 +6725,7 @@ end
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.FLGsWindow()
   if (AetheryteHelper.flagsrecord.open) then
+  	if IsControlOpen("TreasureMap") then AetheryteHelper.flagsrecord.open = false end
 	local FLGsf = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
 	GUI:SetNextWindowSize(280,500)
 	 AetheryteHelper.flagsrecord.visible, AetheryteHelper.flagsrecord.open = GUI:Begin('AH Flags Recorder', AetheryteHelper.flagsrecord.open,FLGsf)
@@ -6833,6 +6845,7 @@ function AetheryteHelper.AHflaglist()
 	    	if (GUI:IsItemHovered()) then
 		      if GUI:IsItemClicked(0) then
 		    	table.remove(AetheryteHelper.FlagList,k)
+		    	AetheryteHelper.SaveSettings()
 		      end	  	
 		      if AHSET.mushtooltips == true then
 			    AetheryteHelper.SetToolTips(mJTp.tip231,mETp.tip231,mDTp.tip231,mFTp.tip231,mCTp.tip231,mKTp.tip231)
@@ -6847,7 +6860,7 @@ function AetheryteHelper.AHflaglist()
 	    	if (GUI:IsItemHovered()) then
 		      if GUI:IsItemClicked(0) then
 		    	      v[12] = 1
-		    		    AetheryteHelper.SaveSettings() 
+		    		    AetheryteHelper.SaveSettings()
 		      end
 		      if AHSET.mushtooltips == true then
 			    AetheryteHelper.SetToolTips(mJTp.tip237,mETp.tip237,mDTp.tip237,mFTp.tip237,mCTp.tip237,mKTp.tip237)
@@ -14312,7 +14325,7 @@ function AetheryteHelper.minitools()
 	  GUI:ImageButton("###pos",ImageFolder..[[P_pos.png]], 20,20)
 			if (GUI:IsItemHovered()) then
 			  if (GUI:IsMouseClicked(0)) then
-			  SendTextCommand("/e [AH]Now Instance: \x02\x13\x06\xfe\xff\xff\xff\x11 <pos>")
+			  SendTextCommand("/e [AH]Now Instance: \x02\x13\x06\xfe\xff\xff\xff\x11 <pos> \x02\x13\x02\xec\x03")
 			  end
 			  if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip117,mETp.tip117,mDTp.tip117,mFTp.tip117,mCTp.tip117,mKTp.tip117)
@@ -14410,6 +14423,142 @@ function AetheryteHelper.UPCKB()
 	 end
 end
 
+
+function AetheryteHelper.TMAPSupport()
+	if IsControlOpen("TreasureMap") and Rset.chest == true then
+		mushAHTMAPx,mushAHTMAPy = GetControl("TreasureMap"):GetXY()
+		AetheryteHelper.TRmapSupport.open = true
+	else
+		AetheryteHelper.TRmapSupport.open = false
+	end
+	if AetheryteHelper.TRmapSupport.open then
+	GUI:PushStyleColor(GUI.Col_WindowBg,0,0,0,0)
+	local tmapf = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+  GUI:SetNextWindowPos(mushAHTMAPx-30,mushAHTMAPy+10)
+	GUI:SetNextWindowSize(45,180)
+	 AetheryteHelper.TRmapSupport.visible, AetheryteHelper.TRmapSupport.open = GUI:Begin('TMAPSupport', AetheryteHelper.TRmapSupport.open,tmapf)
+	if (AetheryteHelper.TRmapSupport.visible) then
+
+	if GetControl("TreasureMap"):GetRawData()[2].value == 8 then
+		if GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/k5f1/00/k5f100_s.tex" or
+			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/m5f1/00/m5f100_s.tex" or
+			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/m5f2/00/m5f200_s.tex" or
+			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/u5f1/00/u5f100_s.tex" or
+			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/u5f2/00/u5f200_s.tex" then
+	     GUI:PushStyleColor(GUI.Col_Button,0,0,0,1)
+	     GUI:PushStyleColor(GUI.Col_ButtonHovered,.4,.4,.4,1)
+	     GUI:PushStyleColor(GUI.Col_ButtonActive,.8,.8,.8,1)
+	     GUI:BeginGroup()
+	     GUI:ImageButton("###TMflag",ImageFolder..[[flag.png]], 25,25)
+	     GUI:EndGroup()
+	     if GUI:IsItemHovered() then
+		     if GUI:IsItemClicked(0) then
+			   SendTextCommand("/e <flag>")
+			   UseControlAction("TreasureMap","Close")
+			   AetheryteHelper.flagsrecord.open = true
+		     end
+		     if AHSET.mushtooltips == true then
+		      AetheryteHelper.SetToolTips(mJTp.tip243,mETp.tip243,mDTp.tip243,mFTp.tip243,mCTp.tip243,mKTp.tip243)
+		     end
+	     end
+	     GUI:BeginGroup()
+	     GUI:ImageButton("###TMParty",ImageFolder..[[Pchat.png]], 25,25)
+       GUI:EndGroup()
+	     if GUI:IsItemHovered() then
+		     if GUI:IsItemClicked(0) then
+			   SendTextCommand("/p <flag>")
+			   UseControlAction("TreasureMap","Close")
+			   AetheryteHelper.flagsrecord.open = true
+		     end
+		     if AHSET.mushtooltips == true then
+		      AetheryteHelper.SetToolTips(mJTp.tip244,mETp.tip244,mDTp.tip244,mFTp.tip244,mCTp.tip244,mKTp.tip244)
+		     end
+	    end
+	    GUI:BeginGroup()
+	    GUI:ImageButton("###TMcurrent",ImageFolder..[[free_chat.png]], 25,25)
+	    GUI:EndGroup()
+	    if GUI:IsItemHovered() then
+		    if GUI:IsItemClicked(0) then
+			  SendTextCommand("<flag>")
+			  UseControlAction("TreasureMap","Close")
+			   AetheryteHelper.flagsrecord.open = true
+		    end
+		    if AHSET.mushtooltips == true then
+		      AetheryteHelper.SetToolTips(mJTp.tip240,mETp.tip240,mDTp.tip240,mFTp.tip240,mCTp.tip240,mKTp.tip240)
+		    end
+	    end
+	    GUI:Spacing(20)
+	    GUI:BeginGroup()
+	    GUI:Image(ImageFolder..[[TMR.png]], 30,30)
+	    GUI:EndGroup()
+	    if GUI:IsItemHovered() then
+		    if GUI:IsItemClicked(0) then
+			  mushAH_TMareaid = Player.localmapid
+			  mushAH_TMarea = GetControl("TreasureMap"):GetRawData()[1].value
+			  mushAH_TMnop = GetControl("TreasureMap"):GetRawData()[2].value
+			  mushAH_TMtype = GetControl("TreasureMap"):GetRawData()[3].value
+			  mushAH_TMtex = GetControl("TreasureMap"):GetRawData()[4].value
+			  mushAH_TMyoko = GetControl("TreasureMap"):GetRawData()[6].value
+			  mushAH_TMtate = GetControl("TreasureMap"):GetRawData()[7].value
+			  if Player:GetTarget() ~= nil then
+			  mushAH_TMname = Player:GetTarget().name
+			  mushAH_TMtx = Player:GetTarget().pos.x
+			  mushAH_TMty = Player:GetTarget().pos.y
+			  mushAH_TMtz = Player:GetTarget().pos.z
+			  else
+			  mushAH_TMname = "non"
+			  mushAH_TMtx = "non"
+			  mushAH_TMty = "non"
+			  mushAH_TMtz = "non"
+			  end
+			  GUI:SetClipboardText("mapID:"..mushAH_TMareaid.."\nArea Name:"..mushAH_TMarea.."\nmember:"..mushAH_TMnop.."\nMapType:"..mushAH_TMtype.."\nTex:"..mushAH_TMtex.."\nside:"..mushAH_TMyoko.."\nvertical:"..mushAH_TMtate.."\nTarget:"..mushAH_TMname.."\nPosX:"..mushAH_TMtx.."\nPosY:"..mushAH_TMty.."\nPosZ:"..mushAH_TMtz)
+			  io.popen([[cmd /c start "" "https://discord.com/channels/961235833124450374/967198619168022528"]]):close()
+			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]copied in clip board \x02\x13\x02\xec\x03")
+		    end
+		    if AHSET.mushtooltips == true then
+		      AetheryteHelper.SetToolTips(mJTp.tip245,mETp.tip245,mDTp.tip245,mFTp.tip245,mCTp.tip245,mKTp.tip245)
+		    end
+	    end
+	    GUI:PopStyleColor(3)
+	  end
+	  else
+	  	GUI:BeginGroup()
+	    GUI:Image(ImageFolder..[[TMR.png]], 30,30)
+	    GUI:EndGroup()
+	    if GUI:IsItemHovered() then
+		    if GUI:IsItemClicked(0) then
+			  mushAH_TMareaid = Player.localmapid
+			  mushAH_TMarea = GetControl("TreasureMap"):GetRawData()[1].value
+			  mushAH_TMnop = GetControl("TreasureMap"):GetRawData()[2].value
+			  mushAH_TMtype = GetControl("TreasureMap"):GetRawData()[3].value
+			  mushAH_TMtex = GetControl("TreasureMap"):GetRawData()[4].value
+			  mushAH_TMyoko = GetControl("TreasureMap"):GetRawData()[6].value
+			  mushAH_TMtate = GetControl("TreasureMap"):GetRawData()[7].value
+			  if Player:GetTarget() ~= nil then
+			  mushAH_TMname = Player:GetTarget().name
+			  mushAH_TMtx = Player:GetTarget().pos.x
+			  mushAH_TMty = Player:GetTarget().pos.y
+			  mushAH_TMtz = Player:GetTarget().pos.z
+			  else
+			  mushAH_TMname = "non"
+			  mushAH_TMtx = "non"
+			  mushAH_TMty = "non"
+			  mushAH_TMtz = "non"
+			  end
+			  GUI:SetClipboardText("mapID:"..mushAH_TMareaid.."\nArea Name:"..mushAH_TMarea.."\nmember:"..mushAH_TMnop.."\nMapType:"..mushAH_TMtype.."\nTex:"..mushAH_TMtex.."\nside:"..mushAH_TMyoko.."\nvertical:"..mushAH_TMtate.."\nTarget:"..mushAH_TMname.."\nPosX:"..mushAH_TMtx.."\nPosY:"..mushAH_TMty.."\nPosZ:"..mushAH_TMtz)
+			  io.popen([[cmd /c start "" "https://discord.com/channels/961235833124450374/967198619168022528"]]):close()
+			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]copied in clip board \x02\x13\x02\xec\x03")
+		    end
+		    if AHSET.mushtooltips == true then
+		      AetheryteHelper.SetToolTips(mJTp.tip245,mETp.tip245,mDTp.tip245,mFTp.tip245,mCTp.tip245,mKTp.tip245)
+		    end
+	    end
+	end
+	end
+	GUI:End()
+	GUI:PopStyleColor(1)
+  end
+end
 
 
 --------------------------------------------------------------------------------
@@ -14615,6 +14764,7 @@ function AetheryteHelper.DrawCall()
 	end
 	GUI:End()
   end
+  AetheryteHelper.TMAPSupport()
   AetheryteHelper.SubWindow()
   AetheryteHelper.jumboWindow()
   AetheryteHelper.minimush()
@@ -17620,7 +17770,7 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    	 end
 				    end
 				    if FCAstep == 1 then
-				       if Player.Buffs[2].id == nil or Player.Buffs[1].id == nil then
+				       if Player.Buffs[2] == nil or Player.Buffs[1] == nil then
 				       	  mushlooptimer = 200
                   if ActionList:Get(10,27).usable == true then
 				          ActionList:Get(10,27):Cast()
@@ -17707,32 +17857,40 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    end
 
 				    if FCAstep == 13 then
+				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
 				    	 if Player.Buffs[1].id == fcaid01 and Player.Buffs[2].id == fcaid02 then
 				    	 FCAstep = 99
 				    	 else
 				    	 FCAstep = 14
 				    	 end
+				    	end
 				    end
 				    if FCAstep == 14 then
+				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
 				    	 if Player.Buffs[1].id == fcaid02 and Player.Buffs[2].id == fcaid01 then
 				    	 FCAstep = 99
 				    	 else
 				    	 FCAstep = 15
 				    	 end
+				    	end
 				    end
 				    if FCAstep == 15 then
+				    	if Player.Buffs[1] ~= nil then
 				    	 if Player.Buffs[1].id == fcaid02 or Player.Buffs[2].id == fcaid01 then
 				    	 FCAstep = 99
 				    	 else
 				    	 FCAstep = 16
 				    	 end
+				    	end
 				    end
 				    if FCAstep == 16 then
+				    	if Player.Buffs[1] ~= nil then
 				    	 if Player.Buffs[1].id == fcaid01 or Player.Buffs[2].id == fcaid02 then
 				    	 FCAstep = 99
 				    	 else
 				    	 FCAstep = 3
 				    	 end
+				    	end
 				    end
 
 				    if FCAstep == 99 then
@@ -21044,6 +21202,111 @@ function AetheryteHelper.voteMVP()
    end
 end
 
+--------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.TreasureMapAssist()
+   if IsControlOpen("TreasureMap") and Rset.chest == true then
+   	mushlooptimer = 200
+   	mushAH_TrmapAx = tonumber(GetControl("TreasureMap"):GetRawData()[6].value)
+   	mushAH_TrmapAz = tonumber(GetControl("TreasureMap"):GetRawData()[7].value)
+		
+		if GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/k5f1/00/k5f100_s.tex" then--Labyrinthos
+		   if mushAH_TrmapAx > 126 and mushAH_TrmapAx < 164 and mushAH_TrmapAz > 479 and mushAH_TrmapAz < 516 then
+		   	  SetMapFlagPosition(695, 956, -730.88500976563, -27.786001205444)
+		   elseif mushAH_TrmapAx > 166 and mushAH_TrmapAx < 205 and mushAH_TrmapAz > 715 and mushAH_TrmapAz < 752 then
+		   	  SetMapFlagPosition(695, 956, -652.88305664063, 448.12902832031)
+		   elseif mushAH_TrmapAx > 421 and mushAH_TrmapAx < 460 and mushAH_TrmapAz > 408 and mushAH_TrmapAz < 447 then
+		   	  SetMapFlagPosition(695, 956, -139.42001342773, -166.29901123047)
+		   elseif mushAH_TrmapAx > 503 and mushAH_TrmapAx < 542 and mushAH_TrmapAz > 895 and mushAH_TrmapAz < 934 then
+		   	  SetMapFlagPosition(695, 956, 18.54700088501, 803.46606445313)
+		   elseif mushAH_TrmapAx > 561 and mushAH_TrmapAx < 600 and mushAH_TrmapAz > 224 and mushAH_TrmapAz < 263 then
+		   	  SetMapFlagPosition(695, 956, 137.90200805664, -528.80200195313)
+		   elseif mushAH_TrmapAx > 580 and mushAH_TrmapAx < 619 and mushAH_TrmapAz > 500 and mushAH_TrmapAz < 539 then
+		   	  SetMapFlagPosition(695, 956, 173.88000488281, 20.680000305176)
+		   elseif mushAH_TrmapAx > 574 and mushAH_TrmapAx < 613 and mushAH_TrmapAz > 695 and mushAH_TrmapAz < 736 then
+		   	  SetMapFlagPosition(695, 956, 161.69500732422, 408.58602905273)
+		   elseif mushAH_TrmapAx > 752 and mushAH_TrmapAx < 791 and mushAH_TrmapAz > 316 and mushAH_TrmapAz < 353 then
+		   	  SetMapFlagPosition(695, 956, 517.84301757813, -351.78302001953)
+		   end
+		elseif GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/m5f1/00/m5f100_s.tex" then--Thavnair
+		   if mushAH_TrmapAx > 322 and mushAH_TrmapAx < 362 and mushAH_TrmapAz > 152 and mushAH_TrmapAz < 191 then
+		   	  SetMapFlagPosition(696,957, -336.89401245117, -676.07501220703)
+		   elseif mushAH_TrmapAx > 324 and mushAH_TrmapAx < 364 and mushAH_TrmapAz > 621 and mushAH_TrmapAz < 659 then
+		   	  SetMapFlagPosition(696,957, -330.11102294922, 260.85302734375)
+		   elseif mushAH_TrmapAx > 445 and mushAH_TrmapAx < 483 and mushAH_TrmapAz > 310 and mushAH_TrmapAz < 349 then
+		   	  SetMapFlagPosition(696,957, -97.934005737305, -359.09503173828)
+		   elseif mushAH_TrmapAx > 504 and mushAH_TrmapAx < 543 and mushAH_TrmapAz > 481 and mushAH_TrmapAz < 520 then
+		   	  SetMapFlagPosition(696,957, 24.465002059937, -21.507001876831)
+		   elseif mushAH_TrmapAx > 481 and mushAH_TrmapAx < 520 and mushAH_TrmapAz > 637 and mushAH_TrmapAz < 676 then
+		   	  SetMapFlagPosition(696,957, -20.552000045776, 287.85900878906)
+		   elseif mushAH_TrmapAx > 635 and mushAH_TrmapAx < 674 and mushAH_TrmapAz > 177 and mushAH_TrmapAz < 216 then
+		   	  SetMapFlagPosition(696,957, 284.60501098633, -624.82904052734)
+		   elseif mushAH_TrmapAx > 627 and mushAH_TrmapAx < 666 and mushAH_TrmapAz > 677 and mushAH_TrmapAz < 718 then
+		   	  SetMapFlagPosition(696,957, 270.62200927734, 371.16101074219)
+		   elseif mushAH_TrmapAx > 764 and mushAH_TrmapAx < 803 and mushAH_TrmapAz > 316 and mushAH_TrmapAz < 355 then
+		   	  SetMapFlagPosition(696,957, 537.52301025391, -352.17001342773)
+		   end
+		elseif GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/m5f2/00/m5f200_s.tex" then--Garlemald
+		   if mushAH_TrmapAx > 251 and mushAH_TrmapAx < 289 and mushAH_TrmapAz > 597 and mushAH_TrmapAz < 636 then
+		   	  SetMapFlagPosition(697, 958, -483.82403564453, 215.18000793457)
+		   elseif mushAH_TrmapAx > 372 and mushAH_TrmapAx < 411 and mushAH_TrmapAz > 253 and mushAH_TrmapAz < 292 then
+		   	  SetMapFlagPosition(697, 958, -240.88000488281, -477.61001586914)
+		   elseif mushAH_TrmapAx > 359 and mushAH_TrmapAx < 398 and mushAH_TrmapAz > 401 and mushAH_TrmapAz < 440 then
+		   	  SetMapFlagPosition(697, 958, -266.90902709961, -181.82301330566)
+		   elseif mushAH_TrmapAx > 590 and mushAH_TrmapAx < 629 and mushAH_TrmapAz > 266 and mushAH_TrmapAz < 305 then
+		   	  SetMapFlagPosition(697, 958, 194.80401611328, -451.99700927734)
+		   elseif mushAH_TrmapAx > 659 and mushAH_TrmapAx < 698 and mushAH_TrmapAz > 615 and mushAH_TrmapAz < 656 then
+		   	  SetMapFlagPosition(697, 958, 334.92901611328, 247.79200744629)
+		   elseif mushAH_TrmapAx > 688 and mushAH_TrmapAx < 727 and mushAH_TrmapAz > 842 and mushAH_TrmapAz < 881 then
+		   	  SetMapFlagPosition(697, 958, 392.41302490234, 698.16802978516)
+		   elseif mushAH_TrmapAx > 812 and mushAH_TrmapAx < 851 and mushAH_TrmapAz > 204 and mushAH_TrmapAz < 241 then
+		   	  SetMapFlagPosition(697, 958, 639.16802978516, -578.60601806641)
+		   elseif mushAH_TrmapAx > 817 and mushAH_TrmapAx < 856 and mushAH_TrmapAz > 388 and mushAH_TrmapAz < 427 then
+		   	  SetMapFlagPosition(697, 958, 646.248046875, -208.04501342773)
+		   end
+		elseif GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/u5f1/00/u5f100_s.tex" then--Mare Lamentorum
+		   if mushAH_TrmapAx > 260 and mushAH_TrmapAx < 299 and mushAH_TrmapAz > 621 and mushAH_TrmapAz < 660 then
+		   	  SetMapFlagPosition(698, 959, -460.90902709961, 257.37899780273)
+		   elseif mushAH_TrmapAx > 384 and mushAH_TrmapAx < 423 and mushAH_TrmapAz > 440 and mushAH_TrmapAz < 479 then
+		   	  SetMapFlagPosition(698, 959, -216.97601318359, -99.61100769043)
+		   elseif mushAH_TrmapAx > 352 and mushAH_TrmapAx < 391 and mushAH_TrmapAz > 816 and mushAH_TrmapAz < 855 then
+		   	  SetMapFlagPosition(698, 959, -276.41500854492, 648.04205322266)
+		   elseif mushAH_TrmapAx > 424 and mushAH_TrmapAx < 463 and mushAH_TrmapAz > 598 and mushAH_TrmapAz < 637 then
+		   	  SetMapFlagPosition(698, 959, -137.33100891113, 215.2380065918)
+		   elseif mushAH_TrmapAx > 526 and mushAH_TrmapAx < 565 and mushAH_TrmapAz > 862 and mushAH_TrmapAz < 901 then
+		   	  SetMapFlagPosition(698, 959, 66.625, 742.52301025391)
+		   elseif mushAH_TrmapAx > 597 and mushAH_TrmapAx < 636 and mushAH_TrmapAz > 789 and mushAH_TrmapAz < 828 then
+		   	  SetMapFlagPosition(698, 959, 207.36201477051, 592.85003662109)
+		   elseif mushAH_TrmapAx > 718 and mushAH_TrmapAx < 757 and mushAH_TrmapAz > 579 and mushAH_TrmapAz < 618 then
+		   	  SetMapFlagPosition(698, 959, 452.71203613281, 171.47801208496)
+		   elseif mushAH_TrmapAx > 826 and mushAH_TrmapAx < 866 and mushAH_TrmapAz > 703 and mushAH_TrmapAz < 742 then
+		   	  SetMapFlagPosition(698, 959, 668.40301513672, 422.36401367188)
+		   end
+		elseif GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/u5f2/00/u5f200_s.tex" then--Ultima Thule
+		   if mushAH_TrmapAx > 110 and mushAH_TrmapAx < 149 and mushAH_TrmapAz > 432 and mushAH_TrmapAz < 471 then
+		   	  SetMapFlagPosition(699, 960, -765.31604003906, -119.80600738525)
+		   elseif mushAH_TrmapAx > 160 and mushAH_TrmapAx < 199 and mushAH_TrmapAz > 723 and mushAH_TrmapAz < 762 then
+		   	  SetMapFlagPosition(699, 960, -664.35900878906, 461.38302612305)
+		   elseif mushAH_TrmapAx > 273 and mushAH_TrmapAx < 312 and mushAH_TrmapAz > 289 and mushAH_TrmapAz < 328 then
+		   	  SetMapFlagPosition(699, 960, -436.44802856445, -401.67001342773)
+		   elseif mushAH_TrmapAx > 403 and mushAH_TrmapAx < 442 and mushAH_TrmapAz > 631 and mushAH_TrmapAz < 670 then
+		   	  SetMapFlagPosition(699, 960, -176.24501037598, 278.24502563477)
+		   elseif mushAH_TrmapAx > 492 and mushAH_TrmapAx < 531 and mushAH_TrmapAz > 863 and mushAH_TrmapAz < 902 then
+		   	  SetMapFlagPosition(699, 960, -2.7990000247955, 743.57702636719)
+		   elseif mushAH_TrmapAx > 625 and mushAH_TrmapAx < 664 and mushAH_TrmapAz > 842 and mushAH_TrmapAz < 881 then
+		   	  SetMapFlagPosition(699, 960, 264.42300415039, 704.51605224609)
+		   elseif mushAH_TrmapAx > 600 and mushAH_TrmapAx < 639 and mushAH_TrmapAz > 386 and mushAH_TrmapAz < 425 then
+		   	  SetMapFlagPosition(699, 960, 214.49900817871, -211.70300292969)
+		   elseif mushAH_TrmapAx > 697 and mushAH_TrmapAx < 736 and mushAH_TrmapAz > 190 and mushAH_TrmapAz < 229 then
+		   	  SetMapFlagPosition(699, 960, 410.1120300293, -602.63800048828)
+		   end
+		 end
+   
+   end
+end
+
+--------------------------------------------------------------------------------------------------------------
+
+
 local PScallstep = 0
 local PEcallstep = 0
 function AetheryteHelper.PartyCall()
@@ -21232,7 +21495,7 @@ function AetheryteHelper.mushTextCommands()
 		   AetheryteHelper.insSelectGUI.open = true
 		   AHSET.delay = 150
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][insSelecter Mini]:open \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 10 then
@@ -21258,7 +21521,7 @@ function AetheryteHelper.mushTextCommands()
 		   AHSET.mushmovetoMB = true
 		   mushMBlim = true
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Limsa]:ON")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Limsa]:ON \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 20 then
@@ -21284,7 +21547,7 @@ function AetheryteHelper.mushTextCommands()
 		   AHSET.mushmovetoMB = true
 		   mushMBgri = true
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Gridania]:ON")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Gridania]:ON \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 30 then
@@ -21310,7 +21573,7 @@ function AetheryteHelper.mushTextCommands()
 		   AHSET.mushmovetoMB = true
 		   mushMBul = true
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Ul'dah]:ON")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MB][Ul'dah]:ON \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 40 then
@@ -21335,7 +21598,7 @@ function AetheryteHelper.mushTextCommands()
 	 if mushtextstep == 42 then
 		   AutoMoveGC = true
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][GC]:ON")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][GC]:ON \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	if mushtextstep == 50 then
@@ -21353,10 +21616,10 @@ function AetheryteHelper.mushTextCommands()
 		  local jemcount = Inventory:GetCurrencyCountByID(26807)
 		  d("[AH][textcommand]:success")
 		  if language == 0 then
-		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 バイカラージェム："..jemcount.."個"))
+		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 バイカラージェム："..jemcount.."個 \x02\x13\x02\xec\x03"))
 		   mushtextstep = 99
 		   else
-		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 bicolor gemstone："..jemcount))
+		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\x99\x11\x99 bicolor gemstone："..jemcount.." \x02\x13\x02\xec\x03"))
 		   mushtextstep = 99
 		  end
 	 end
@@ -21380,7 +21643,7 @@ function AetheryteHelper.mushTextCommands()
 			  end
 		  end
 		  d("[AH][textcommand]:success")
-		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH]WeeEa(within 30ylm)："..WeeEa))
+		   SendTextCommand(tostring("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH]WeeEa(within 30ylm)："..WeeEa.." \x02\x13\x02\xec\x03"))
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 70 then
@@ -21406,7 +21669,7 @@ function AetheryteHelper.mushTextCommands()
 		   AetheryteHelper.miniWV.open = true
 		   AHSET.delay = 150
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV Mini]:open")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV Mini]:open \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 80 then
@@ -21431,7 +21694,7 @@ function AetheryteHelper.mushTextCommands()
 	  if mushtextstep == 82 then
 		   AHitemsort = true
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][Itemsort]:sort")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][Itemsort]:sort \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 90 then
@@ -21454,7 +21717,7 @@ function AetheryteHelper.mushTextCommands()
 	 end
 	 if mushtextstep == 92 then
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][minion]:OFF")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][minion]:OFF \x02\x13\x02\xec\x03")
 		   ml_global_information.ToggleRun()
 		   mushtextstep = 99
 	 end
@@ -21471,7 +21734,7 @@ function AetheryteHelper.mushTextCommands()
 	 end
 	 if mushtextstep == 94 then
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][minion]:ON")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][minion]:ON \x02\x13\x02\xec\x03")
 		   ml_global_information.ToggleRun()
 		   mushtextstep = 99
 	 end
@@ -21497,7 +21760,7 @@ function AetheryteHelper.mushTextCommands()
 	 if mushtextstep == 102 then
 		   AetheryteHelper.miniRadarWindow.open = true
 		   d("[AH][textcommand]:success")
-		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MiniRadar]:open")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][MiniRadar]:open \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 110 then
@@ -21570,9 +21833,9 @@ function AetheryteHelper.mushTextCommands()
       selectins = true
 		  d("[AH][textcommand]:success")
 		  	if isServer == 1 then
-      	SendTextCommand("/e \x02\x13\x06\xfe\xff\x99\x11\x11 [AH][WV]:not found or Now World")
+      	SendTextCommand("/e \x02\x13\x06\xfe\xff\x99\x11\x11 [AH][WV]:not found or Now World \x02\x13\x02\xec\x03")
       	elseif isServer > 1 then
-		  	SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV]:move to "..worldname.."\x02\x13\x02\xec")
+		  	SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][WV]:move to "..worldname.." \x02\x13\x02\xec\x03")
 		  	end
 		  mushtextstep = 113
 			else
@@ -21619,7 +21882,6 @@ end
 function AetheryteHelper.AutoUpdate()
 	local step = 0
 	mushlooptimer = 1000
-	AetheryteHelper.UpdateTimeSince = {}
 	io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value 'Progress'; stop-process -Id $PID"]]):close()
   io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].name; Invoke-WebRequest -Uri https://github.com/mushroom8009/AetheryteHelper/releases/download/$tag/AetheryteHelper_$name.zip -OutFile ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip'; Expand-Archive ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -DestinationPath ']] ..LuaPath.. [[' -Force; Remove-Item ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -Force; "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value 'success'; stop-process -Id $PID"]]):close()
 --io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\version_info\nowversion.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
@@ -21661,7 +21923,7 @@ function AetheryteHelper.VersionCheck()
   if NewV ~= nil then	NewVtext = NewV:read() NewV:close()	end
   if NowV ~= nil then	NowVtext = NowV:read() NowV:close()	end
   if tag ~= nil then tagtext = tag:read() tag:close()	end
-    if NewVtext ~= NowVtext and tonumber(tagtext) ~= kinokoProject.Addon.tag then
+    if NewVtext ~= NowVtext and tonumber(tagtext) > kinokoProject.Addon.tag then
   	 mushVC = true
   	 mushVUP = true
   	end
@@ -21710,6 +21972,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.itemsortRite()
 			AetheryteHelper.itemsortB()
 			AetheryteHelper.AutoLegacy()
+			AetheryteHelper.TreasureMapAssist()
 			AetheryteHelper.Jumbocactpothelper()
 
 		end
