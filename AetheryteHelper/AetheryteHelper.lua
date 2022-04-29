@@ -38,8 +38,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.6.1",
-	  tag = 2022042404,--y0000m00d00h00
+	  Version =         "1.8.6.2",
+	  tag = 2022042911,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -127,6 +127,7 @@ local kinokoProject = {
             "[1.8.5] - add flag record tool",
             "[1.8.6] - minor corrections and add Treasure Assist",
             "[1.8.6.1] - minor corrections",
+            "[1.8.6.2] - fine tuning"
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -2577,6 +2578,7 @@ local AHRadarBlockList = false
 local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
 local Rwroldname = ""
+local FCAstep = 0
 mushAHflag = {}
 mushAHtempflags = {}
 mushAHAlltime = {}
@@ -10739,11 +10741,12 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	 end
   end
   end
+  if Rset.RadarEnable == true and Rset.TPline == true then
+	 AHRadarRecetveline("type=1",R.ColorTPline.U32,Rset.TPlinethick)
+  end
   if Rset.RadarEnable == true and Rset.TMline == true then
 	 AHRadarRecetveline("type=2,alive,",R.ColorTMline.U32,Rset.TMlinethick)
-  end
-  if Rset.RadarEnable == true and Rset.TPline == true then
-	AHRadarRecetveline("type=1",R.ColorTPline.U32,Rset.TPlinethick)
+	 AHRadarRecetveline("type=1,alive,attackable",R.ColorTMline.U32,Rset.TMlinethick)
   end
   if Rset.RadarEnable == true and Rset.mydot == true then
 		if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screenppos ~= nil then
@@ -14625,14 +14628,14 @@ function AetheryteHelper.mapreport(areaid,area,nop,type,tex,yoko,tate,name,tx,ty
 if bool == true then
 mushAHparams = {
    host = "discord.com",
-   path = "/api/webhooks//967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
+   path = "/api/webhooks/967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
    port = 443,
    method = "POST", -- "GET","POST","PUT","DELETE"
    https = true,
    onsuccess = success,
    onfailure = failed,
    getheaders = true, 
-   body = [[ {"username":" map reporter ","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Report : TreasureMap ]]..mushAHmG..[["} ]],
+   body = [[ {"username":"map reporter","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Report : TreasureMap ]]..mushAHmG..[["} ]],
    headers = {
    ["Content-Type"] = "application/json",
    }
@@ -14641,14 +14644,14 @@ mushAHparams = {
  elseif bool == false then
  	mushAHparams = {
    host = "discord.com",
-   path = "/api/webhooks//967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
+   path = "/api/webhooks/967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
    port = 443,
    method = "POST", -- "GET","POST","PUT","DELETE"
    https = true,
    onsuccess = success,
    onfailure = failed,
    getheaders = true, 
-   body = [[ {"username":" map reporter ","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Request : TreasureMap ]]..mushAHmG..[["} ]],
+   body = [[ {"username":"map reporter","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Request : TreasureMap ]]..mushAHmG..[["} ]],
    headers = {
    ["Content-Type"] = "application/json",
    }
@@ -17833,7 +17836,6 @@ function AetheryteHelper.nonAFK()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-local FCAstep = 0
 function AetheryteHelper.FreeCompanyActionUse()
    local fcaname01 = ""
    local fcaname02 = ""
@@ -17843,6 +17845,7 @@ function AetheryteHelper.FreeCompanyActionUse()
    if AetheryteHelper.ATuse.FCA == true and Player.currentworld == Player.homeworld and Player:GetTarget() == nil and
       Duty:IsQueued() == false and not IsControlOpen("Tooltop") and not IsControlOpen("Inventory") and not IsControlOpen("OperationGuide") and
       not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") then
+   	       	d(FCAstep)
    	       	if FCAstep == 0 then
    	       		 if #AetheryteHelper.FCAuseingList == 0 then
 				    		  AetheryteHelper.ATuse.FCA = false
@@ -17869,14 +17872,14 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    if FCAstep == 1 then
 				       if Player.Buffs[2] == nil or Player.Buffs[1] == nil then
 				       	  mushlooptimer = 200
-                  if ActionList:Get(10,27).usable == true then
-				          ActionList:Get(10,27):Cast()
-                  end
-				          if IsControlOpen("FreeCompany") then
+                  if IsControlOpen("FreeCompany") then
 				       	  FCAstep = 2
 				          else
-				       	  FCAstep = 1
-				          end
+				       	   if ActionList:Get(10,27).usable == true then
+				           ActionList:Get(10,27):Cast()
+                   FCAstep = 1
+                   end
+				       	  end
 				       else
 				        	FCAstep = 0
 				       end
@@ -17896,7 +17899,7 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    	 if used == "0/2" then
 				    	 FCAstep = 4
 				    	 elseif used == "1/2" then
-				    	 FCAstep = 5
+				    	 FCAstep = 4
 				    	 else
 				    	 FCAstep = 99
 				    	 end
@@ -17904,76 +17907,79 @@ function AetheryteHelper.FreeCompanyActionUse()
 
 				    if FCAstep == 4 then
 				    	 PressKey(96)--0
-				    	 FCAstep = 6
+				    	 FCAstep = 5
 				    end
 				    if FCAstep == 5 then
 				    	 PressKey(98)--2
 				    	 FCAstep = 6
 				    end
 				    if FCAstep == 6 then
+				    	 PressKey(98)--2
+				    	 if IsControlOpen("ActionDetail") then
+				    	 FCAstep = 7
+				    	 else
+				    	 FCAstep = 5
+				    	 end
+				    end
+				    if FCAstep == 7 then
 				    	 if IsControlOpen("ActionDetail") then
 	             local Action = GetControl("ActionDetail"):GetStrings()[5]
 				    	    if Action:match(fcaname01) or Action:match(fcaname02) then
-				    	    FCAstep = 7
+				    	    FCAstep = 8
 				    	    else
-				    	    FCAstep = 9
+				    	    FCAstep = 10
 				    	    end
 				    	 end
 				    end
-				    if FCAstep == 7 then
+				    if FCAstep == 8 then
 				    	 PressKey(96)--0
-				    	 FCAstep = 5
+				    	 FCAstep = 9
 				    end
-				    if FCAstep == 7 then
+				    if FCAstep == 9 then
 				    	 if IsControlOpen("ContextMenu") then
 				    	    if GetControl("ContextMenu"):GetRawData()[1].value == 1 then
-  				           FCAstep = 9
+  				           FCAstep = 11
   				        elseif GetControl("ContextMenu"):GetRawData()[1].value == 2 then
-  				    	     FCAstep = 10
+  				    	     FCAstep = 12
+  				    	  else
+  				    	  	 FCAstep = 8
   				        end
   				     end 
 				    end
-				    if FCAstep == 9 then
+				    if FCAstep == 10 then
 				    	 PressKey(110)--6
 				    	 FCAstep = 5
 				    end
-				    if FCAstep == 10 then
+				    if FCAstep == 11 then
 				    	 PressKey(102)--.
 				    	 FCAstep = 5
 				    end
-				    if FCAstep == 11 then
-				    	 PressKey(96)--0
-				    	 FCAstep = 12
-				    end
-
 				    if FCAstep == 12 then
-				    	 if IsControlOpen("SelectYesno") then
-				    	 UseControlAction("SelectYesno","Yes")
+				    	 PressKey(96)--0
 				    	 FCAstep = 13
-				    	 end
 				    end
 
 				    if FCAstep == 13 then
+				    	 if IsControlOpen("SelectYesno") then
+				    	 UseControlAction("SelectYesno","Yes")
+				    	 FCAstep = 14
+				    	 end
+				    end
+
+				    if FCAstep == 14 then
 				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
 				    	 if Player.Buffs[1].id == fcaid01 and Player.Buffs[2].id == fcaid02 then
 				    	 FCAstep = 99
 				    	 else
-				    	 FCAstep = 14
-				    	 end
-				    	end
-				    end
-				    if FCAstep == 14 then
-				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
-				    	 if Player.Buffs[1].id == fcaid02 and Player.Buffs[2].id == fcaid01 then
-				    	 FCAstep = 99
-				    	 else
 				    	 FCAstep = 15
 				    	 end
+				    	else
+				    	 FCAstep = 16	
 				    	end
 				    end
 				    if FCAstep == 15 then
-				    	if Player.Buffs[1] ~= nil then
-				    	 if Player.Buffs[1].id == fcaid02 or Player.Buffs[2].id == fcaid01 then
+				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
+				    	 if Player.Buffs[1].id == fcaid02 and Player.Buffs[2].id == fcaid01 then
 				    	 FCAstep = 99
 				    	 else
 				    	 FCAstep = 16
@@ -17981,6 +17987,15 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    	end
 				    end
 				    if FCAstep == 16 then
+				    	if Player.Buffs[1] ~= nil then
+				    	 if Player.Buffs[1].id == fcaid02 or Player.Buffs[2].id == fcaid01 then
+				    	 FCAstep = 99
+				    	 else
+				    	 FCAstep = 17
+				    	 end
+				    	end
+				    end
+				    if FCAstep == 17 then
 				    	if Player.Buffs[1] ~= nil then
 				    	 if Player.Buffs[1].id == fcaid01 or Player.Buffs[2].id == fcaid02 then
 				    	 FCAstep = 99
