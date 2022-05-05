@@ -22,6 +22,7 @@ denvo#5217
 some functions were created by kali#3326
 
 Chinese translation was done by 长院张#1544
+Deutsch translation was done by Thisnoob#2897
 
 I am so grateful to them!
 
@@ -38,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.6.2",
-	  tag = 2022042911,--y0000m00d00h00
+	  Version =         "1.8.6.3",
+	  tag = 2022050514,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -127,7 +128,8 @@ local kinokoProject = {
             "[1.8.5] - add flag record tool",
             "[1.8.6] - minor corrections and add Treasure Assist",
             "[1.8.6.1] - minor corrections",
-            "[1.8.6.2] - fine tuning"
+            "[1.8.6.2] - fine tuning",
+            "[1.8.6.3] - add PvPAssistTool",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -470,6 +472,14 @@ AetheryteHelper.ATuse = {
   ATuseEnable = false,
   gil = 300,
   FCA = false,
+}
+AetheryteHelper.PvPAssist = {
+  GUARD = false,
+  MP = false,
+  tline = false,
+  iconsize = 20,
+  iconoffsettate = 0,
+  iconoffsetyoko = 0,
 }
 
 AetheryteHelper.RadarSettings = {
@@ -913,7 +923,13 @@ mushtooltips = {
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
 		 tip245 = "場所が違う・地図の追加要望など\n宝箱をターゲットした状態で、クリックすると情報をDiscordに送信します",
-
+		 tip246 = "PvPアシスト",
+		 tip247 = "対戦相手の情報\nクリスタルコンフリクトのみ対応",
+		 tip248 = "防御のリキャストを表示",
+		 tip249 = "MPゲージを表示",
+		 tip250 = "位置オフセット：垂直方向",
+		 tip251 = "位置オフセット：水平方向",
+		 tip252 = "アイコンサイズ変更",
 
   },
   en = { 
@@ -1163,6 +1179,13 @@ mushtooltips = {
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
 		 tip245 = "Wrong location,request for additional map, etc\nWith the treasure chest targeted, click to post information to Discord",
+		 tip246 = "PvPassist",
+		 tip247 = "Support for Crystalline Conflict Only",
+		 tip248 = "Display Recast time for Guard",
+		 tip249 = "Display MP Bar",
+		 tip250 = "Position offset : Vertical",
+		 tip251 = "Position offset : Horizontal",
+		 tip252 = "Icon size change",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1411,42 +1434,49 @@ mushtooltips = {
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
 		 tip245 = "Si l'emplacement est incorrect ou si vous demandez l'ajout d'une carte\nUne fois le coffre à trésor ciblé, cliquez pour envoyer les informations sur Discord",
+		 tip246 = "JcJ assiste",
+		 tip247 = "Support pour le [Cristalline Conflict] uniquement",
+		 tip248 = "Afficher les temps de refonte pour Garde",
+		 tip249 = "Afficher les barres PM",
+		 tip250 = "Décalage de la position : vertical",
+		 tip251 = "Décalage de la position : horizontal",
+		 tip252 = "Redimensionnement des icônes",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
 		 tip01 = "AH Aktivieren/Deaktivieren",
-		 tip02 = "Zugriffsverzögerung\n100ms-1sec",
-		 tip03 = "TextBefehl im Spiel senden>> /e <flag>\nRechtsklick <flag> Aufnahmewerkzeuge",
-		 tip04 = "Wohnbezirk noch nicht geöffnet",
+		 tip02 = "Eingabeverzögerung\n100ms-1sec",
+		 tip03 = "TextBefehl im Spiel senden>> /e <Flag>",
+		 tip04 = "Wohnbezirk noch nicht freigeschaltet",
 		 tip05 = "Verzögerung RESET",
 		 tip06 = "Instanz-Information",
 		 tip07 = "zur Instanz 1 gehen",
 		 tip08 = "zur Instanz 2 gehen",
 		 tip09 = "zur Instanz 3 gehen",
-		 tip10 = "Teleport to Gridania",
-		 tip11 = "Zu Marktbrett in Gridania gehen",
-		 tip12 = "Teleport to Limsa",
-		 tip13 = "Zu Marktbrett in Limsa gehen",
-		 tip14 = "Teleport to Uldah",
-		 tip15 = "Zu Marktbrett in Uldah gehen",
-		 tip16 = "Vermittlung Marktbrett/Teleport",
-		 tip17 = "Jumbo-Glückskaktor helfen",
-		 tip18 = "Umschalten keine beschränkungen",
+		 tip10 = "Teleport nach Gridania",
+		 tip11 = "Zum Marktbrett in Gridania gehen",
+		 tip12 = "Teleport nach Limsa",
+		 tip13 = "Zum Marktbrett in Limsa gehen",
+		 tip14 = "Teleport nach Uldah",
+		 tip15 = "Zum Marktbrett in Uldah gehen",
+		 tip16 = "Wechseln Marktbrett/Teleport",
+		 tip17 = "Jumbo-Glückskaktor Helfer",
+		 tip18 = "Umschalten Teilgruppen möglich",
 		 tip19 = "Umschalten Erkundungsmodus",
 		 tip20 = "Einführung in AH",
-		 tip21 = "offene AH\nDoppelklick",
+		 tip21 = "öffne AH\nDoppelklick",
 		 tip22 = "schließen",
 		 tip23 = "Zufällig",
-		 tip24 = "Wenn es nicht gut funktioniert,\nmelden Sie es bitte",
-		 tip25 = "Sie brauchen einen Handwerker,\num Reparaturen selbst durchzuführen.",
-		 tip26 = "Verwenden Sie den Trust-Zusatz zum Austausch\nAktivieren/Deaktivieren\n\nDie Registerkarte wechselt von selbst zu [GC]",
-		 tip27 = "Klicken Sie hier, um Materialverwertung ein/auszuschalten\nRechtsklick zum Ein- und Ausschalten des Filters",
+		 tip24 = "Wenn es nicht funktioniert,\nmelde es bitte",
+		 tip25 = "Du brauchst einen Handwerkerjob,\num Reparaturen selbst durchzuführen.",
+		 tip26 = "Verwende den Trust-Zusatz zum Austausch\nAktivieren/Deaktivieren\n\nDie Registerkarte wechselt von selbst zu [GC]",
+		 tip27 = "Klicke hier, um Materialverwertung ein/auszuschalten\nRechtsklick zum Ein- und Ausschalten des Filters",
 		 tip28 = "Automatisch ausschalten in Handwerker für Materialverwertung",
-		 tip29 = "Materialverwertung & Materia Extrahieren nur in ssuche",
-		 tip30 = "Gegenstabdsstufe1-1000\nMaterialverwertung Gegenstabdsstufe-Geräte größer als diese Zahl",
-		 tip31 = "Einstellung Gegenstabdsstufe Reset",
-		 tip32 = "Gegenstabdsstufe5-1000\nMaterialverwertung beliebige Gegenstabdsstufe-Ausrüstung\nweniger als dies, außer Gegenstabdsstufe1",
-		 tip33 = "Auswahl wird Materialverwertung sein\nWertvolle Ausrüstung\nbefindet sich in der Arsenal",
+		 tip29 = "Materialverwertung & Materia Extrahieren nur in suche",
+		 tip30 = "Gegenstandsstufe1-1000\nMaterialverwertung Gegenstandsstufe größer als diese Zahl",
+		 tip31 = "Einstellung Gegenstandsstufe Reset",
+		 tip32 = "Gegenstandsstufe5-1000\nMaterialverwertung beliebige Gegenstandsstufe\nniedriger als ausgewählt, außer Gegenstandsstufe1",
+		 tip33 = "Auswahl wird Materialverwertung sein\nWertvolle Ausrüstung\nbefindet sich im Arsenal",
 		 tip34 = "Haupthhand",
 		 tip35 = "Nebenhand",
 		 tip36 = "Kopf",
@@ -1493,13 +1523,13 @@ mushtooltips = {
 		 tip77 = "Geldbetrag für den Beginn des Umtauschs",
 		 tip78 = "0 eingeben, um den Maximalwert zu erhalten",
 		 tip79 = "Benötigte Menge (automatische Anpassung)",
-		 tip80 = "Beachten Sie, dass Sie,\nwenn Sie den GC-Rang nicht erreichen,\nAutomatisch ausgeschaltet",
+		 tip80 = "Beachte,wenn du den GC-Rang nicht erreichst,\nautomatisch ausgeschaltet wird",
 		 tip81 = "Anzahl der erforderlichen Staatstaler\nAnzahl der derzeit im Besitz befindlichen Staatstaler",
-		 tip82 = "Verwenden Sie den automatischen Trank der Bindung.\nKlicken Sie mit der rechten Maustaste,\num den Minion-Link ein- oder auszuschalten",
-		 tip83 = "Verwenden Sie den automatischen Gesellschafts-Leitfaden „Materialeinsatz“\nKlicken Sie mit der rechten Maustaste,\num den Minion-Link ein- oder auszuschalten.",
-		 tip84 = "Ihr GC\nautomatisch auswählen",
-		 tip85 = "Materia-Extrakition",
-		 tip86 = "Materialverwertung aller Geräte in Ihrem Invebtar\nKlicken Sie mit der rechten Maustaste,\num die Optionen ein- und auszuschalten.",
+		 tip82 = "Verwende den automatischen Trank der Bindung.\nKlicke mit der rechten Maustaste,\num den Minion-Link ein- oder auszuschalten",
+		 tip83 = "Verwende den automatischen Gesellschafts-Leitfaden „Materialeinsatz“\nKlicke mit der rechten Maustaste,\num den Minion-Link ein- oder auszuschalten.",
+		 tip84 = "Deine GC\nautomatisch auswählen",
+		 tip85 = "Materia-Extraktion",
+		 tip86 = "Materialverwertung aller Geräte in deinem Inventar\nKlicke mit der rechten Maustaste,\num die Optionen ein- und auszuschalten.",
 		 tip87 = "Experteneinsätza",
 		 tip88 = "Automatische Übertragung an GC",
 		 tip89 = "Nicht mehr bewegen",
@@ -1509,8 +1539,8 @@ mushtooltips = {
 		 tip93 = "Automatische Auswahl Datenzentrums",
 		 tip94 = "Automatischer Umzug nach Marktbrett",
 		 tip95 = "Welt wählen",
-		 tip96 = "Bitte unterstützen Sie uns,\ndamit es gut wird.\n\nFür meine Katze...",
-		 tip97 = "Bitte senden Sie mir ein DM,\nwenn Sie irgendwelche Probleme oder Wünsche haben.\nBitte fördern Sie auch die",
+		 tip96 = "Bitte unterstützt mich,\ndamit es besser wird.\n\nFür meine Katze...",
+		 tip97 = "Bitte sende mir eine DM,\nwenn irgendwelche Probleme auftreten oder Wünsche hast.\nBitte werbt mein Addon",
 		 tip98 = "Github-Link,\nLinks klicken: Home\nRechtsklick: Loslassen",
 		 tip99 = "Erhalte Fähigkeiten durch das Lösen von Quests!",
 		 tip100 = "[MEx]=Materia-Extrakition\n[SbP]=Trank der Bindung\n[SbM]=Gesellschafts-Leitfaden „Materialeinsatz“",
@@ -1520,7 +1550,7 @@ mushtooltips = {
 		 tip104 = "Hauptwaffe der Gladiatoren/Schild",
 		 tip105 = "・・・Ich brauche mehr Zeit",
 		 tip106 = "Bitte stupsen Sie mich nicht an...",
-		 tip107 = "Kaufen Sie drei Tickets",
+		 tip107 = "Kaufe drei Tickets",
 		 tip108 = "Materialverwertung Options",
 		 tip109 = "Tooltip ein-/ausblenden\nRechtsklick zur Auswahl der Sprache",
 		 tip110 = "Rechtsklick zum Kopieren",
@@ -1535,11 +1565,11 @@ mushtooltips = {
 		 tip119 = "Inventar organisieren\nstapelbare Gegenstände zusammenstellen.",
 		 tip120 = "Jetzt arbeiten...",
 		 tip121 = "Dies ist die Freigabe-Schaltfläche für das XIVQuickLauncher-Addon, QoLBar\nZum Kopieren und Importieren in QoLBar anklicken",
-		 tip122 = "GegenständeSuche\nEIN/AUS\n\nAutomatische Suche\n[Im Inbentar shchen]\n[Nach Rezept mit diesem Material suchen]",
+		 tip122 = "GegenständeSuche\nEIN/AUS\n\nAutomatische Suche\n[Im Inventar suchen]\n[Nach Rezept mit diesem Material suchen]",
 		 tip123 = "Gehilfen",
 		 tip124 = "Chocobo-Satteltasche",
 		 tip125 = "Gesellschaftstruhe",
-		 tip126 = "Qualitat mindern(inventar)\nSie wird ausgeführt, sobald Sie Inventar organisieren.",
+		 tip126 = "Qualität mindern(inventar)\n wird ausgeführt, sobald das Inventar aufgeräumt ist.",
 		 tip127 = "Zutat",
 		 tip128 = "Baustein",
 		 tip129 = "Metall",
@@ -1550,17 +1580,17 @@ mushtooltips = {
 		 tip134 = "Reagenz",
 		 tip135 = "Vom Gehilfen erhalten",
 		 tip136 = "Kaution an Gehilfen",
-		 tip137 = "Organisieren Gehilfe Inventar\nFassen Sie zusammen, was gestapelt werden kann.",
+		 tip137 = "Organisieren Gehilfe Inventar\nFasst zusammen, was gestapelt werden kann.",
 		 tip138 = "Vom Chocobo-Satteltasche erhalten",
 		 tip139 = "Kaution an Chocobo-Satteltasche",
-		 tip140 = "Organisieren Chocobo-Satteltasche\nFassen Sie zusammen, was gestapelt werden kann.",
+		 tip140 = "Organisieren Chocobo-Satteltasche\nFasst zusammen, was gestapelt werden kann.",
 		 tip141 = "Vom Gesellschaftstruhe erhalten",
 		 tip142 = "Kaution an Gesellschaftstruhe",
-		 tip143 = "AH-Radar\nLinksklick zum Öffnen des Standardfensters\nKlicken Sie mit der rechten Maustaste,\num ein Minifenster zu öffnen",
+		 tip143 = "AH-Radar\nLinksklick zum Öffnen des Standardfensters\nKlicke mit der rechten Maustaste,\num ein Minifenster zu öffnen",
 		 tip144 = "PCs",
 		 tip145 = "Feinde",
 		 tip146 = "NPCs",
-		 tip147 = "Schatztruhe\n Assistierte „Entziffern“(G14)",
+		 tip147 = "Schatztruhe",
 		 tip148 = "FATE",
 		 tip149 = "Möbel",
 		 tip150 = "Ätheryt",
@@ -1571,16 +1601,16 @@ mushtooltips = {
 		 tip155 = "Sammelstelle",
 		 tip156 = "Begleiter",
 		 tip157 = "Radar ein/aus",
-		 tip158 = "Zeigen Sie die Punkte zu Ihren Füßen an",
+		 tip158 = "Zeigt die Punkte zu Ihren Füßen an",
 		 tip159 = "Andere Punkte anzeigen",
 		 tip160 = "Zeile anzeigen",
-		 tip161 = "Zeigen Sie eine Linie an, wenn Sie von anderen PCs beobachtet werden",
+		 tip161 = "Zeigt eine Linie an, wenn du von anderen PCs beobachtet werden",
 		 tip162 = "Eine Linie anzeigen, wenn der Feinde angreift",
 		 tip163 = "Wird während der Zwischensequenzen nicht angezeigt",
 		 tip164 = "Wird während der Gruppenfotos nicht angezeigt",
 		 tip165 = "Wird in Dungeons nicht gezeigt",
 		 tip166 = "Farbwechsel",
-		 tip167 = "Ändern Sie ihre Punktgröße und Farbe.",
+		 tip167 = "Ändern der Punktgröße und Farbe.",
 		 tip168 = "Andere Punktgrößen",
 		 tip169 = "Linienstärke",
 		 tip170 = "Hochwild",
@@ -1593,19 +1623,19 @@ mushtooltips = {
 		 tip177 = "A Rank",
 		 tip178 = "S/SS Rank",
 		 tip179 = "FATEs",
-		 tip180 = "Informieren Sie sich",
+		 tip180 = "Erhalte Zielinformation",
 		 tip181 = "Zur benutzerdefinierten Liste hinzufügen",
-		 tip182 = "Aus der benutzerdefinierten Liste entfernt",
+		 tip182 = "Aus der benutzerdefinierten Liste entfernen",
 		 tip183 = "ContentID eingeben (erforderlich)",
-		 tip184 = "Namen ein (erforderlich)",
+		 tip184 = "Namen eingeben (erforderlich)",
 		 tip185 = "Benutzerdefinierte Listenanzeige",
 		 tip186 = "Hochwild einrichten",
 		 tip187 = "Allgemeine Einstellungen",
 		 tip188 = "Windätherquellen",
 		 tip189 = "Linksklick zum Hinzufügen zur benutzerdefinierten Liste\nRechtsklick zum Abbrechen",
 		 tip190 = "AH Radar\nStandardfenster",
-		 tip191 = "Verwenden Sie Teleport-Ticket",
-		 tip192 = "Einrichten eines Gil",
+		 tip191 = "Verwende Teleport-Ticket",
+		 tip192 = "Mengeneinstellung",
 		 tip193 = "ContentID",
 		 tip194 = "Name",
 		 tip195 = "Memo-Box",
@@ -1620,7 +1650,7 @@ mushtooltips = {
 		 tip204 = "Schaltfläche Hinzufügen",
 		 tip205 = "Einträge zurücksetzen.",
 		 tip206 = "Name der Schaltfläche (erforderlich)",
-		 tip207 = "Bild, das für die Schaltfläche verwendet werden soll\nAetheryteHelper\\CustomImage\\Geben Sie den Namen der Datei im Ordner ein",
+		 tip207 = "Bild, das für die Schaltfläche verwendet werden soll\nAetheryteHelper\\CustomImage\\Gebe den Namen der Datei im Ordner ein",
 		 tip208 = "Tooltip",
 		 tip209 = "Befehle beim Klicken mit der linken Maustaste",
 		 tip210 = "Befehle beim Klicken mit der rechten Maustaste",
@@ -1629,16 +1659,16 @@ mushtooltips = {
 		 tip213 = "Impulszeit des Codes\n0-3000\n\nAHPulse wird mit anderen Funktionen geteilt und ist betroffen,\nwenn sie gleichzeitig ausgeführt werden",
 		 tip214 = "Ausführungscode, wenn die Taste eingeschaltet ist.\nZum Kopieren mit der rechten Maustaste klicken",
 		 tip215 = "Schaltfläche Löschen",
-		 tip216 = "Aktualisieren Sie den Inhalt der Schaltfläche",
+		 tip216 = "Aktualisiere den Inhalt der Schaltfläche",
 		 tip217 = "Einstellungen der Schaltfläche laden",
 		 tip218 = "Schaltflächen ein-/ausblenden",
-		 tip219 = "Bewegungsstruerung\nLegacy/Standard",
+		 tip219 = "Bewegungssteuerung\nLegacy/Standard",
 		 tip220 = "Aktualisierung des Moduls",
 		 tip221 = "Herunterladen",
 		 tip222 = "Auf Aktualisierung prüfen",
 		 tip223 = "Neue Version veröffentlicht",
 		 tip224 = "Automatische Bestätigung\n(alle 2h)",
-		 tip225 = "Aktualisierung im Gange\nBitte warten Sie einen Moment",
+		 tip225 = "Aktualisierung im Gange\nBitte warte einen Moment",
 		 tip226 = "Aktualisierung abgeschlossen\nDie Änderungen werden nach dem erneuten Laden des MMOminion wirksam.",
 		 tip227 = "Gesellschaftskommando Einstellungen",
 		 tip228 = "einen Rang auswählen",
@@ -1659,6 +1689,14 @@ mushtooltips = {
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
 		 tip245 = "Standortfehler, Anfragen nach zusätzlichen Karten usw\nWenn du die Schatztruhe anvisiert hast, klicke darauf, um Informationen an Discord zu senden",
+		 tip246 = "PvP-Werkzeuge",
+		 tip247 = "Nur Unterstützung für Crystalline Conflict",
+		 tip248 = "Anzeige Reaktivierungs-zeit Wehr",
+		 tip249 = "Anzeige MP-Leiste",
+		 tip250 = "Positionsversatz : Vertikal",
+		 tip251 = "Positionsversatz : Horizontalität",
+		 tip252 = "Änderung der Icongröße",
+  
   },
   cn = {
   	 tip00 = "不在可使用区域内",
@@ -1907,6 +1945,14 @@ mushtooltips = {
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
 		 tip245 = "错误的位置，要求提供额外的地图，等等\n锁定宝箱后，点击发布信息到Discord",
+		 tip246 = "PvP援助",
+		 tip247 = "仅支持水晶冲突",
+		 tip248 = "显示[Guard]复唱时间",
+		 tip249 = "显示魔力栏",
+		 tip250 = "位置偏移：垂直",
+		 tip251 = "位置偏移：水平",
+		 tip252 = "图标大小的调整",
+  
   },
   kr = { 
   	 tip00 = "Outside of use area",
@@ -2155,6 +2201,14 @@ mushtooltips = {
 		 tip243 = "/e <flag>",
 		 tip244 = "/p <flag>",
 		 tip245 = "Wrong location,request for additional map,etc\nWith the treasure chest targeted, click to post information to Discord",
+		 tip246 = "PvPassist",
+		 tip247 = "Support for Crystalline Conflict Only",
+		 tip248 = "Display Recast time for Guard",
+		 tip249 = "Display MP Bar",
+		 tip250 = "Position offset : Vertical",
+		 tip251 = "Position offset : Horizontal",
+		 tip252 = "Icon size change",
+  
   },
 
 }
@@ -2455,6 +2509,7 @@ AetheryteHelper.userfunc = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\User
 AetheryteHelper.language = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'Customlanguage.lua'
 AetheryteHelper.FCA = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'FCActionuseingList.lua'
 AetheryteHelper.flags = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'FlagsList.lua'
+AetheryteHelper.PvP = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'AHpvpModeConfig.lua'
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
 local gRegion = GetGameRegion()
@@ -2574,6 +2629,7 @@ local tempCustomlist = {}
 local AHRadarGeneral = false
 local AHRadarhunt = false
 local AHRadarCustomList = true
+local AHRadarPvPmode = false
 local AHRadarBlockList = false
 local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
@@ -2732,6 +2788,12 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	  table.merge(AetheryteHelper.FlagList,fl)
 	end
   end
+  if FileExists(AetheryteHelper.flags) then
+	local pvp = persistence.load(AetheryteHelper.PvP)
+	if (ValidTable(pvp)) then
+	  table.merge(AetheryteHelper.PvPAssist,pvp)
+	end
+  end
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2753,6 +2815,7 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
   persistence.store(AetheryteHelper.language, AetheryteHelper.mushAHlanguage)
   persistence.store(AetheryteHelper.FCA, AetheryteHelper.FCAuseingList)
   persistence.store(AetheryteHelper.flags, AetheryteHelper.FlagList)
+  persistence.store(AetheryteHelper.PvP, AetheryteHelper.PvPAssist)
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3809,18 +3872,18 @@ function AetheryteHelper.DrawadWIP()
 			end
 	  end
 	  GUI:EndGroup()
-	  --GUI:SameLine()
-	  --GUI:BeginGroup()
-	  --GUI:Image(ImageFolder..[[fc.png]],30,30)
-	  --if (GUI:IsItemHovered()) then
-		--	if (GUI:IsMouseClicked(0)) then
-		--	AetheryteHelper.FCactionWindow.open = not AetheryteHelper.FCactionWindow.open
-		--	end
-		--	if AHSET.mushtooltips == true then
-		--	  AetheryteHelper.SetToolTips(mJTp.tip227,mETp.tip227,mDTp.tip227,mFTp.tip227,mCTp.tip227,mKTp.tip227)
-		--	end
-	  --end
-	  --GUI:EndGroup()
+--	  GUI:SameLine()
+--	  GUI:BeginGroup()
+--	  GUI:Image(ImageFolder..[[fc.png]],30,30)
+--	  if (GUI:IsItemHovered()) then
+--			if (GUI:IsMouseClicked(0)) then
+--			AetheryteHelper.FCactionWindow.open = not AetheryteHelper.FCactionWindow.open
+--			end
+--			if AHSET.mushtooltips == true then
+--			  AetheryteHelper.SetToolTips(mJTp.tip227,mETp.tip227,mDTp.tip227,mFTp.tip227,mCTp.tip227,mKTp.tip227)
+--			end
+--	  end
+--	  GUI:EndGroup()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[CustomButton.png]],30,30)
@@ -9236,6 +9299,426 @@ function AetheryteHelper.RadarCustomListDrow()
 end
 
 
+
+function AetheryteHelper.PvPAssistWindow()
+  GUI:Spacing()
+  GUI:BeginGroup()
+  GUI:TextColored(.8,0,0,1,"Opponent Information")
+  GUI:TextColored(0,.8,0,1,"[[ Support for Crystalline Conflict Only ]]")
+  GUI:EndGroup()
+  if GUI:IsItemHovered() then
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip247,mETp.tip247,mDTp.tip247,mFTp.tip247,mCTp.tip247,mKTp.tip247)
+		 end
+	end
+  GUI:Spacing()
+  GUI:BeginGroup()
+	GUI:Checkbox("GUARD ReCast",AetheryteHelper.PvPAssist.GUARD)
+	if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
+		 AetheryteHelper.PvPAssist.GUARD = not AetheryteHelper.PvPAssist.GUARD
+		 AetheryteHelper.SaveSettings()
+		 end
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip248,mETp.tip248,mDTp.tip248,mFTp.tip248,mCTp.tip248,mKTp.tip248)
+		end
+	  end
+	GUI:EndGroup()
+	GUI:BeginGroup()
+	GUI:Checkbox("MP Gauge",AetheryteHelper.PvPAssist.MP)
+	if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
+		 AetheryteHelper.PvPAssist.MP = not AetheryteHelper.PvPAssist.MP
+		 AetheryteHelper.SaveSettings()
+		 end
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip249,mETp.tip249,mDTp.tip249,mFTp.tip249,mCTp.tip249,mKTp.tip249)
+		end
+	  end
+	GUI:EndGroup()
+	GUI:BeginGroup()
+	GUI:PushItemWidth(120)
+	AetheryteHelper.PvPAssist.iconoffsettate, changed = GUI:SliderInt("Position offset:Vertical",AetheryteHelper.PvPAssist.iconoffsettate,10,-150)
+	if changed then
+	AetheryteHelper.SaveSettings()
+	end
+	if GUI:IsItemHovered() then
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip250,mETp.tip250,mDTp.tip250,mFTp.tip250,mCTp.tip250,mKTp.tip250)
+	   end
+	end
+	GUI:EndGroup()
+	GUI:BeginGroup()
+	GUI:PushItemWidth(120)
+	AetheryteHelper.PvPAssist.iconoffsetyoko, changed = GUI:SliderInt("Position offset:Horizontal",AetheryteHelper.PvPAssist.iconoffsetyoko,-50,50)
+	if changed then
+	AetheryteHelper.SaveSettings()
+	end
+	if GUI:IsItemHovered() then
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip251,mETp.tip251,mDTp.tip251,mFTp.tip251,mCTp.tip251,mKTp.tip251)
+	   end
+	end
+	GUI:EndGroup()
+	GUI:BeginGroup()
+	GUI:PushItemWidth(80)
+	AetheryteHelper.PvPAssist.iconsize, changed = GUI:InputInt("Icon size",AetheryteHelper.PvPAssist.iconsize,1,1)
+	if changed then
+	AetheryteHelper.SaveSettings()
+	end
+	if AetheryteHelper.PvPAssist.iconsize < 10 then AetheryteHelper.PvPAssist.iconsize = 10 end
+	if AetheryteHelper.PvPAssist.iconsize > 40 then AetheryteHelper.PvPAssist.iconsize = 40 end
+	if GUI:IsItemHovered() then
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip252,mETp.tip252,mDTp.tip252,mFTp.tip252,mCTp.tip252,mKTp.tip252)
+	   end
+	end
+	GUI:EndGroup()
+
+end
+
+
+
+
+
+mushAH_pvp_GandMP = {}
+muahAH_RecastG = os.time()
+muahAH_RecastG1 = os.time()
+muahAH_RecastG2 = os.time()
+muahAH_RecastG3 = os.time()
+muahAH_RecastG4 = os.time()
+muahAH_RecastG5 = os.time()  	       
+function AetheryteHelper.PVPGandMPDrow(event, ticks)
+PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
+--local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+--local screenppos = RenderManager:WorldToScreen(ppos)
+--	      if HasBuff(Player.id,3054,0,5) then
+-- 	         muahAH_RecastG = os.time() + 30
+--  	       elseif Player.hp == 0 then
+-- 	     	   muahAH_RecastG = os.time()
+--  	    end
+--	      GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
+--        GUI:SetNextWindowPos(screenppos.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, screenppos.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+--        GUI:SetNextWindowSize(200,80,GUI.SetCond_Always)
+--        GUI:Begin("PvPAssistp", true, PvPflags)
+--        GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2) 
+--  	    GUI:BeginGroup()
+--  	     if muahAH_RecastG > os.time() then
+--  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+--  	     	GUI:SameLine(1,1)
+--  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG - os.time()))
+--  	     elseif muahAH_RecastG <= os.time() then
+--  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+--  	     end
+--		    GUI:EndGroup()
+--		    if AetheryteHelper.PvPAssist.MP then
+--		    GUI:SameLine()
+--		    GUI:BeginGroup()
+--		    local Rectangle = {
+--   						x1 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize,0),
+--							y1 = math.round(screenppos.y + 10,0),
+--							x2 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+--							y2 = math.round(screenppos.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+--	    				}
+--				local Rectangle2 = {
+--							x1 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize,0),
+--							y1 = math.round(screenppos.y + 10,0),
+--							x2 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize + (40 * (Player.mp.percent/100)),0),
+--							y2 = math.round(screenppos.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+--							}
+--				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+--			  if Player.mp.percent >= 50 then
+--				   mpBar = GUI:ColorConvertFloat4ToU32(2-((Player.mp.percent/100)*2),1,0,1)
+--				else
+--					 mpBar = GUI:ColorConvertFloat4ToU32(1,((Player.mp.percent*2)/100),0,1)
+--				end
+--				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+--			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+-- 	    GUI:EndGroup()
+--		    end
+--		    GUI:End()
+--        GUI:PopStyleColor()
+
+    if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true then
+       if Player.localmapid ~= 1032 or Player.localmapid ~= 1033 or Player.localmapid ~= 1034 or Player.localmapid ~= 250 then
+	     mushAH_pvp_GandMP = {}	
+	     end
+       local el = MEntityList("type=1,attackable")  
+	     if table.valid(el) then
+	     for k,e in pairs(el) do
+	     	table.insert(mushAH_pvp_GandMP,e)
+	     end
+	     end
+	     	 for key,en in pairs(mushAH_pvp_GandMP) do
+	     	 if #mushAH_pvp_GandMP > 0 and key == 1 then
+	  	     mushAH_Gtpos1 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
+	         mushAH_screentpos1 = RenderManager:WorldToScreen(mushAH_Gtpos1)
+ 	         mushAH_enMP1 = en.mp.percent
+ 	         if HasBuff(en.id,3054,0,5) then
+ 	         muahAH_RecastG1 = os.time() + 30
+  	       elseif en.hp == 0 then
+ 	     	   muahAH_RecastG1 = os.time()
+  	       end
+  	      end
+
+  	      if #mushAH_pvp_GandMP > 1 and key == 2 then
+	  	     mushAH_Gtpos2 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
+	         mushAH_screentpos2 = RenderManager:WorldToScreen(mushAH_Gtpos2)
+ 	         mushAH_enMP2 = en.mp.percent
+ 	         if HasBuff(en.id,3054,0,5) then
+ 	         muahAH_RecastG2 = os.time() + 30
+  	       elseif en.hp == 0 then
+ 	     	   muahAH_RecastG2 = os.time()
+ 	     	   end
+  	      end
+
+  	      if #mushAH_pvp_GandMP > 2 and key == 3 then
+	  	     mushAH_Gtpos3 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
+	         mushAH_screentpos3 = RenderManager:WorldToScreen(mushAH_Gtpos3)
+ 	         mushAH_enMP3 = en.mp.percent
+ 	         if HasBuff(en.id,3054,0,5) then
+ 	         muahAH_RecastG3 = os.time() + 30
+  	       elseif en.hp == 0 then
+ 	     	   muahAH_RecastG3 = os.time()
+ 	     	   end
+  	      end
+
+  	      if #mushAH_pvp_GandMP > 3 and key == 4 then
+	  	     mushAH_Gtpos4 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
+	         mushAH_screentpos4 = RenderManager:WorldToScreen(mushAH_Gtpos4)
+ 	         mushAH_enMP4 = en.mp.percent
+ 	         if HasBuff(en.id,3054,0,5) then
+ 	         muahAH_RecastG4 = os.time() + 30
+  	       elseif en.hp == 0 then
+ 	     	   muahAH_RecastG4 = os.time()
+ 	     	   end
+  	      end
+  	      
+  	      if #mushAH_pvp_GandMP > 4 and key == 5 then
+	  	     mushAH_Gtpos5 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
+	         mushAH_screentpos5 = RenderManager:WorldToScreen(mushAH_Gtpos5)
+ 	         mushAH_enMP5 = en.mp.percent
+ 	         if HasBuff(en.id,3054,0,5) then
+ 	         muahAH_RecastG5 = os.time() + 30
+  	       elseif en.hp == 0 then
+ 	     	   muahAH_RecastG5 = os.time()
+ 	     	   end
+  	    end
+	    end
+	    if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and mushAH_screentpos1 ~= nil then
+	    	if Player.onlinestatus ~= 15 then
+	    	if #mushAH_pvp_GandMP > 0 and mushAH_screentpos1 ~= nil then
+        GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
+        GUI:SetNextWindowPos(mushAH_screentpos1.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos1.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+        GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
+        GUI:Begin("PvPAssist1", true, PvPflags)
+        GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2) 
+  	    GUI:BeginGroup()
+  	     if muahAH_RecastG1 > os.time() then
+  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     	GUI:SameLine(1,1)
+  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG1 - os.time()))
+  	     elseif muahAH_RecastG1 <= os.time() then
+  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     end
+		    GUI:EndGroup()
+		     if AetheryteHelper.PvPAssist.MP then
+		    GUI:SameLine()
+		    GUI:BeginGroup()
+		    local Rectangle = {
+   						x1 = math.round(mushAH_screentpos1.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos1.y + 10,0),
+							x2 = math.round(mushAH_screentpos1.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+							y2 = math.round(mushAH_screentpos1.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+	    				}
+				local Rectangle2 = {
+							x1 = math.round(mushAH_screentpos1.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos1.y + 10,0),
+							x2 = math.round(mushAH_screentpos1.x + AetheryteHelper.PvPAssist.iconsize + (40 * (mushAH_enMP1/100)),0),
+							y2 = math.round(mushAH_screentpos1.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+							}
+				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+			  if mushAH_enMP1 >= 50 then
+				   mpBar = GUI:ColorConvertFloat4ToU32(2-((mushAH_enMP1/100)*2),1,0,1)
+				else
+					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP1*2)/100),0,1)
+				end
+				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+		    GUI:EndGroup()
+		    end
+		    GUI:End()
+		    end
+        if #mushAH_pvp_GandMP > 1 and mushAH_screentpos2 ~= nil then
+        GUI:SetNextWindowPos(mushAH_screentpos2.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos2.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+        GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
+        GUI:Begin("PvPAssist2", true, PvPflags)   
+  	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    GUI:BeginGroup()
+  	     if muahAH_RecastG2 > os.time() then
+  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     	GUI:SameLine(1,1)
+  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG2 - os.time()))
+  	     elseif muahAH_RecastG2 <= os.time() then
+  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     end
+		    GUI:EndGroup()
+		     if AetheryteHelper.PvPAssist.MP then
+		    GUI:SameLine()
+		    GUI:BeginGroup()
+		    local Rectangle = {
+   						x1 = math.round(mushAH_screentpos2.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos2.y + 10,0),
+							x2 = math.round(mushAH_screentpos2.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+							y2 = math.round(mushAH_screentpos2.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+	    				}
+				local Rectangle2 = {
+							x1 = math.round(mushAH_screentpos2.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos2.y + 10,0),
+							x2 = math.round(mushAH_screentpos2.x + AetheryteHelper.PvPAssist.iconsize + (40 * (mushAH_enMP2/100)),0),
+							y2 = math.round(mushAH_screentpos2.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+							}
+				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+			  if mushAH_enMP2 >= 50 then
+				   mpBar = GUI:ColorConvertFloat4ToU32(2-((mushAH_enMP2/100)*2),1,0,1)
+				else
+					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP2*2)/100),0,1)
+				end
+				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+		    GUI:EndGroup()
+		    end
+		    GUI:End()
+		    end
+        if #mushAH_pvp_GandMP > 2 and mushAH_screentpos3 ~= nil then
+        GUI:SetNextWindowPos(mushAH_screentpos3.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos3.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+        GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
+        GUI:Begin("PvPAssist3", true, PvPflags)   
+  	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    GUI:BeginGroup()
+  	     if muahAH_RecastG3 > os.time() then
+  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     	GUI:SameLine(1,1)
+  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG3 - os.time()))
+  	     elseif muahAH_RecastG3 <= os.time() then
+  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     end
+		    GUI:EndGroup()
+		     if AetheryteHelper.PvPAssist.MP then
+		    GUI:SameLine()
+		    GUI:BeginGroup()
+		    local Rectangle = {
+   						x1 = math.round(mushAH_screentpos3.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos3.y + 10,0),
+							x2 = math.round(mushAH_screentpos3.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+							y2 = math.round(mushAH_screentpos3.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+	    				}
+				local Rectangle2 = {
+							x1 = math.round(mushAH_screentpos3.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos3.y + 10,0),
+							x2 = math.round(mushAH_screentpos3.x + AetheryteHelper.PvPAssist.iconsize + (40 * (mushAH_enMP3/100)),0),
+							y2 = math.round(mushAH_screentpos3.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+							}
+				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+			  if mushAH_enMP3 >= 50 then
+				   mpBar = GUI:ColorConvertFloat4ToU32(2-((mushAH_enMP3/100)*2),1,0,1)
+				else
+					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP3*2)/100),0,1)
+				end
+				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+		    GUI:EndGroup()
+		    end
+		    GUI:End()
+		    end
+		    if #mushAH_pvp_GandMP > 3 and mushAH_screentpos4 ~= nil then
+        GUI:SetNextWindowPos(mushAH_screentpos4.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos4.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+        GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
+        GUI:Begin("PvPAssist4", true, PvPflags)   
+  	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    GUI:BeginGroup()
+  	     if muahAH_RecastG4 > os.time() then
+  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     	GUI:SameLine(1,1)
+  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG4 - os.time()))
+  	     elseif muahAH_RecastG4 <= os.time() then
+  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     end
+		    GUI:EndGroup()
+		     if AetheryteHelper.PvPAssist.MP then
+		    GUI:SameLine()
+		    GUI:BeginGroup()
+		    local Rectangle = {
+   						x1 = math.round(mushAH_screentpos4.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos4.y + 10,0),
+							x2 = math.round(mushAH_screentpos4.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+							y2 = math.round(mushAH_screentpos4.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+	    				}
+				local Rectangle2 = {
+							x1 = math.round(mushAH_screentpos4.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos4.y + 10,0),
+							x2 = math.round(mushAH_screentpos4.x + AetheryteHelper.PvPAssist.iconsize + (40 * (mushAH_enMP4/100)),0),
+							y2 = math.round(mushAH_screentpos4.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+							}
+				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+			  if mushAH_enMP5 >= 50 then
+				   mpBar = GUI:ColorConvertFloat4ToU32(2-((mushAH_enMP5/100)*2),1,0,1)
+				else
+					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP5*2)/100),0,1)
+				end
+				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+		    GUI:EndGroup()
+		    end
+		    GUI:End()
+		    end
+		    if #mushAH_pvp_GandMP > 4 and mushAH_screentpos5 ~= nil then
+        GUI:SetNextWindowPos(mushAH_screentpos5.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos5.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+        GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
+        GUI:Begin("PvPAssist5", true, PvPflags)   
+  	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    GUI:BeginGroup() 
+  	     if muahAH_RecastG5 > os.time() then
+  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     	GUI:SameLine(1,1)
+  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG5 - os.time()))
+  	     elseif muahAH_RecastG5 <= os.time() then
+  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     end
+  	    GUI:EndGroup()
+  	    if AetheryteHelper.PvPAssist.MP then
+		    GUI:SameLine()
+		    GUI:BeginGroup()
+		    local Rectangle = {
+   						x1 = math.round(mushAH_screentpos5.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos5.y + 10,0),
+							x2 = math.round(mushAH_screentpos5.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+							y2 = math.round(mushAH_screentpos5.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+	    				}
+				local Rectangle2 = {
+							x1 = math.round(mushAH_screentpos5.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(mushAH_screentpos5.y + 10,0),
+							x2 = math.round(mushAH_screentpos5.x + AetheryteHelper.PvPAssist.iconsize + (40 * (mushAH_enMP5/100)),0),
+							y2 = math.round(mushAH_screentpos5.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+							}
+				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+			  if mushAH_enMP5 >= 50 then
+				   mpBar = GUI:ColorConvertFloat4ToU32(2-((mushAH_enMP5/100)*2),1,0,1)
+				else
+					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP5*2)/100),0,1)
+				end
+				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+		    GUI:EndGroup()
+		    end
+		    GUI:End()
+		    end
+        GUI:PopStyleColor()
+		  end
+	    end
+
+	  end
+end
 --------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.miniRadar()
   if (AetheryteHelper.miniRadarWindow.open) then
@@ -9897,6 +10380,7 @@ function AetheryteHelper.Radar()
 		  AHRadarGeneral = true
 		  AHRadarhunt = false
 		  AHRadarCustomList = false
+		  AHRadarPvPmode = false
 		end
 	  end
 	  end
@@ -9922,6 +10406,7 @@ function AetheryteHelper.Radar()
 		  AHRadarGeneral = false
 		  AHRadarhunt = true
 		  AHRadarCustomList = false
+		  AHRadarPvPmode = false
 		end
 	  end
 	  end
@@ -9947,6 +10432,7 @@ function AetheryteHelper.Radar()
 		  AHRadarGeneral = false
 		  AHRadarhunt = false
 		  AHRadarCustomList = true
+		  AHRadarPvPmode = false
 		end
 	  end
 	  end
@@ -9954,6 +10440,32 @@ function AetheryteHelper.Radar()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip185,mETp.tip185,mDTp.tip185,mFTp.tip185,mCTp.tip185,mKTp.tip185)
+		end
+	  end
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  if AHRadarPvPmode == true then
+	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
+	  GUI:Button("PvP Assist",80,20)
+	  GUI:PopStyleColor(2)
+	  else
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
+	  GUI:Button("PvP Assist",80,20)
+	  GUI:PopStyleColor()
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		  AHRadarGeneral = false
+		  AHRadarhunt = false
+		  AHRadarCustomList = false
+		  AHRadarPvPmode = true
+		end
+	  end
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip246,mETp.tip246,mDTp.tip246,mFTp.tip246,mCTp.tip246,mKTp.tip246)
 		end
 	  end
 
@@ -9968,6 +10480,9 @@ function AetheryteHelper.Radar()
 	  end
 	  if AHRadarCustomList == true then
 	  AetheryteHelper.RadarCustomListDrow()
+	  end
+	  if AHRadarPvPmode == true then
+	  AetheryteHelper.PvPAssistWindow()
 	  end
 	end
 	GUI:End()
@@ -14884,6 +15399,7 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.UpdateWindow()
   AetheryteHelper.FCAwindow()
   AetheryteHelper.FLGsWindow()
+  AetheryteHelper.PVPGandMPDrow()
   end
 end
 
