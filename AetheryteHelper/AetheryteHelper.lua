@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.6.3",
-	  tag = 2022050514,--y0000m00d00h00
+	  Version =         "1.8.7",
+	  tag = 2022051021,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -130,6 +130,9 @@ local kinokoProject = {
             "[1.8.6.1] - minor corrections",
             "[1.8.6.2] - fine tuning",
             "[1.8.6.3] - add PvPAssistTool",
+            "[1.8.6.4] - bug fix",
+            "[1.8.7] - Updater Improvements",
+            "          add sound notification in Radar",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -530,6 +533,22 @@ AetheryteHelper.RadarSettings = {
 	   EWA = true,
 	   EWS = true,
 	   EWFate = true,
+	   Bmobnotice = false,
+	   Amobnotice = false,
+	   Smobnotice = false,
+	   Fmobnotice = false,
+	   Pnotice = false,
+	   BSE = "",
+	   ASE = "",
+	   SSE = "",
+	   FSE = "",
+	   PSE = "",
+	   Bdis = 100,
+	   Adis = 100,
+	   Sdis = 100,
+	   Fdis = 100,
+	   interval = 10,   
+	   Pnoticetime = 10,
 }
 
 AetheryteHelper.RadarColor = {
@@ -930,6 +949,18 @@ mushtooltips = {
 		 tip250 = "位置オフセット：垂直方向",
 		 tip251 = "位置オフセット：水平方向",
 		 tip252 = "アイコンサイズ変更",
+		 tip253 = "自分に表示(確認用)",
+		 tip254 = "wavの読み込み",
+		 tip255 = "wavを選択",
+		 tip256 = "試聴\n右クリックで音を30秒再生\nwindowsのサウンドミキサー起動",
+		 tip257 = "音を設定(上書き可能)",
+		 tip258 = "設定をリセット",
+		 tip259 = "通知のオン/オフ",
+		 tip260 = "通知する距離",
+		 tip261 = "他のプレイヤーに見られている時の通知",
+		 tip262 = "通知音の再生周期(秒)",
+		 tip263 = "通知音設定",
+		 tip264 = "左のボタンでwavを読み込んでください",
 
   },
   en = { 
@@ -1133,7 +1164,7 @@ mushtooltips = {
 		 tip197 = "Color Change for Target Lines from mob",
 		 tip198 = "Normal/Hazard",
 		 tip199 = "Stops BOT move if target player is within this distance,\nrecommended for use with gatherer",
-		 tip200 = "Creat Buttons",
+		 tip200 = "Create Buttons",
 		 tip201 = "Text Command Button",
 		 tip202 = "Click Button(Custom Function)",
 		 tip203 = "ON/OFF Button(Custom Function)",
@@ -1186,6 +1217,18 @@ mushtooltips = {
 		 tip250 = "Position offset : Vertical",
 		 tip251 = "Position offset : Horizontal",
 		 tip252 = "Icon size change",
+		 tip253 = "Display to self(for confirmation)",
+		 tip254 = "Loading wav",
+		 tip255 = "Select wav",
+		 tip256 = "audition\nRight click to play sound for 30sec\nwindows Sound mixer open",
+		 tip257 = "Set sound (can be overridden)",
+		 tip258 = "Reset Settings for Sound",
+		 tip259 = "Notification on/off",
+		 tip260 = "Start notification from this distance",
+		 tip261 = "Notify you when other players are watching you",
+		 tip262 = "Notification sound playback cycle(sec)",
+		 tip263 = "Notification sound setting",
+		 tip264 = "Please load the wav",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1441,6 +1484,18 @@ mushtooltips = {
 		 tip250 = "Décalage de la position : vertical",
 		 tip251 = "Décalage de la position : horizontal",
 		 tip252 = "Redimensionnement des icônes",
+		 tip253 = "Afficher à soi-même(pour confirmation)",
+		 tip254 = "Chargement du wav",
+		 tip255 = "Sélectionnez wav",
+		 tip256 = "Jouez le son\nClic droit pour jouer le son pendant 30sec\nOuvrez le mélangeur de son des Windows",
+		 tip257 = "Paramètres sonores (peuvent être remplacés)",
+		 tip258 = "Réinitialiser les paramètres du son",
+		 tip259 = "Activation/désactivation de la notification",
+		 tip260 = "Commencez la notification à cette distance",
+		 tip261 = "Vous avertir lorsque d'autres joueurs vous observent",
+		 tip262 = "Cycle de lecture du son de notification(sec)",
+		 tip263 = "Réglage du son de la notification",
+		 tip264 = "Chargez le wav en utilisant les boutons sur la gauche",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1696,6 +1751,18 @@ mushtooltips = {
 		 tip250 = "Positionsversatz : Vertikal",
 		 tip251 = "Positionsversatz : Horizontalität",
 		 tip252 = "Änderung der Icongröße",
+		 tip253 = "Anzeige an sich selbst(zur Bestätigung)",
+		 tip254 = "wav laden",
+		 tip255 = "Wählen Sie wav",
+		 tip256 = "Ton abspielen\nKlicken Sie mit der rechten Maustaste, um den Ton 30 Sekunden lang abzuspielen\nStarten Sie den Windows-Soundmixer",
+		 tip257 = "Ton einstellen (kann außer Kraft gesetzt werden)",
+		 tip258 = "Einstellungen zurücksetzen",
+		 tip259 = "Benachrichtigung ein/aus",
+		 tip260 = "Entfernung, in der die Benachrichtigung eingeleitet wird",
+		 tip261 = "Benachrichtigung, wenn Sie von anderen Spielern beobachtet werden",
+		 tip262 = "Wiedergabezyklus des Benachrichtigungstons(Sekunden)",
+		 tip263 = "Einstellungen für Benachrichtigungstöne",
+		 tip264 = "Laden Sie die wav-Datei mit den Schaltflächen auf der linken Seite",
   
   },
   cn = {
@@ -1952,6 +2019,18 @@ mushtooltips = {
 		 tip250 = "位置偏移：垂直",
 		 tip251 = "位置偏移：水平",
 		 tip252 = "图标大小的调整",
+		 tip253 = "显示自己(以供确认)",
+		 tip254 = "加载wav",
+		 tip255 = "选择wav",
+		 tip256 = "放声音\n右键单击可播放30秒的声音\nWindows混音器的启动",
+		 tip257 = "设置声音（可以被覆盖）",
+		 tip258 = "重置设置",
+		 tip259 = "通知开/关",
+		 tip260 = "发起通知的距离",
+		 tip261 = "当其他玩家在监视你时，你会被通知",
+		 tip262 = "通知声音播放周期（秒）",
+		 tip263 = "通知声音设置",
+		 tip264 = "请加载wav文件",
   
   },
   kr = { 
@@ -2155,7 +2234,7 @@ mushtooltips = {
 		 tip197 = "Color Change for Target Lines from mob",
 		 tip198 = "Normal/Hazard",
 		 tip199 = "Stops BOT move if target player is within this distance,\nrecommended for use with gatherer",
-		 tip200 = "Creat Buttons",
+		 tip200 = "Create Buttons",
 		 tip201 = "Text Command Button",
 		 tip202 = "Click Button(Custom Function)",
 		 tip203 = "ON/OFF Button(Custom Function)",
@@ -2208,6 +2287,18 @@ mushtooltips = {
 		 tip250 = "Position offset : Vertical",
 		 tip251 = "Position offset : Horizontal",
 		 tip252 = "Icon size change",
+		 tip253 = "Display to self(for confirmation)",
+		 tip254 = "Loading wav",
+     tip255 = "Select wav",
+     tip256 = "audition\nRight click to play sound for 30sec\nwindows Sound mixer open",
+     tip257 = "Set sound (can be overridden)",
+     tip258 = "Reset Settings for Sound",
+     tip259 = "Notification on/off",
+     tip260 = "Start notification from this distance",
+     tip261 = "Notify you when other players are watching you",
+     tip262 = "Notification sound playback cycle(sec)",
+     tip263 = "Notification sound setting",
+     tip264 = "Please load the wav",
   
   },
 
@@ -2630,6 +2721,7 @@ local AHRadarGeneral = false
 local AHRadarhunt = false
 local AHRadarCustomList = true
 local AHRadarPvPmode = false
+local AHRadarSound = false
 local AHRadarBlockList = false
 local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
@@ -2650,7 +2742,9 @@ mushAHlmid = ""
 mushAHx = ""
 mushAHz = ""
 mushAHflagsnote = ""
-
+mushAH_AutoUPdatestep = 0
+mushAH_AutoUPdatetimer = os.time()
+mushAH_wavsList = {}
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- add Menu MMOMinion
 
@@ -7088,6 +7182,7 @@ local NewVtext,tagtext,NowVtext,ziptext
 local mushVC = false
 local mushVUP = false
 local mushReload = false
+mushAH_AutoUPdatefunc = false
 
 function AetheryteHelper.UpdateWindow()
   if (AetheryteHelper.UpdateConfig.open) then
@@ -7118,9 +7213,9 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
  		      if GUI:IsMouseClicked(0) then
- 		      AetheryteHelper.AutoUpdate()
  		      mushVC = nil
  		      mushVUP = nil
+ 		      mushAH_AutoUPdatefunc = true
  		      end
  		      if AHSET.mushtooltips == true then
 			       AetheryteHelper.SetToolTips(mJTp.tip221,mETp.tip221,mDTp.tip221,mFTp.tip221,mCTp.tip221,mKTp.tip221)
@@ -7148,8 +7243,11 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:ImageButton("###loading",ImageFolder..[[loading.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
+ 	     	 if GUI:IsMouseClicked(0) then 
+ 	     	 SendTextCommand("/e \x02\x13\x06\xfe\xff\x99\x99\x11 [AH]<mushroom> Please wait <se.6> \x02\x13\x02\xec\x03")	
+ 	     	 end
  		     if AHSET.mushtooltips == true then
-			      AetheryteHelper.SetToolTips(mJTp.tip224,mETp.tip224,mDTp.tip224,mFTp.tip224,mCTp.tip224,mKTp.tip224)
+			      AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
 		     end
  	     end
  	     GUI:EndGroup()
@@ -7159,10 +7257,11 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:ImageButton("###luaReload",ImageFolder..[[CB_clear.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
- 		     if GUI:IsMouseClicked(0) then
+ 	     	 if GUI:IsMouseClicked(0) then
+ 	     	 Reload()
+ 	     	 end
  		     if AHSET.mushtooltips == true then
-			      AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
-		     end
+			      AetheryteHelper.SetToolTips(mJTp.tip226,mETp.tip226,mDTp.tip226,mFTp.tip226,mCTp.tip226,mKTp.tip226)
  	       end
  	     end
  	     GUI:EndGroup()
@@ -7173,6 +7272,8 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:TextColored(0,.8,0,1,NewVtext.." Release")
  	     elseif mushVC == nil and mushVUP == nil then
  	     GUI:TextColored(.8,0,0,1,"Processing....")
+ 	     GUI:SameLine()
+ 	     GUI:Text(string.format("%02d",mushAH_AutoUPdatetimer - os.time()))
  	     elseif mushVC == nil and mushVUP == true then
  	     GUI:TextColored(0,.8,0,1,"Please Reload lua")
  	     elseif NowVtext ~= nil then
@@ -7978,8 +8079,15 @@ function AetheryteHelper.Radaradd()
 		  table.insert(tempCustomlist,Rnote)--14
 		  table.insert(tempCustomlist,Rattack)--15
 		  table.insert(tempCustomlist,Rfate)--16
-		  table.insert(tempCustomlist,0)--17Reserve
-		  table.insert(tempCustomlist,0)--18Reserve
+		  table.insert(tempCustomlist,0)--17 nomal/hazard
+		  table.insert(tempCustomlist,0)--18 range
+		  table.insert(tempCustomlist,0)--19 se 
+		  table.insert(tempCustomlist,0)--20 bellonoff
+		  table.insert(tempCustomlist,0)--21 distance
+		  table.insert(tempCustomlist,0)--22 initerval
+		  table.insert(tempCustomlist,0)--23 Reserve
+		  table.insert(tempCustomlist,0)--24 Reserve
+		  table.insert(tempCustomlist,0)--25 Reserve
 		  table.insert(AetheryteHelper.RadarCustomList,1,tempCustomlist)
 		  AetheryteHelper.SaveSettings()
 		  AetheryteHelper.Radarinitialize()
@@ -9299,7 +9407,7 @@ function AetheryteHelper.RadarCustomListDrow()
 end
 
 
-
+mushAH_PVP_drow_self = false
 function AetheryteHelper.PvPAssistWindow()
   GUI:Spacing()
   GUI:BeginGroup()
@@ -9374,6 +9482,18 @@ function AetheryteHelper.PvPAssistWindow()
 	   end
 	end
 	GUI:EndGroup()
+	GUI:Spacing()
+	GUI:BeginGroup()
+	GUI:Checkbox("Self(for confirmation)",mushAH_PVP_drow_self)
+	if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
+		 mushAH_PVP_drow_self = not mushAH_PVP_drow_self
+		 end
+		 if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip253,mETp.tip253,mDTp.tip253,mFTp.tip253,mCTp.tip253,mKTp.tip253)
+		end
+	  end
+	GUI:EndGroup()
 
 end
 
@@ -9387,60 +9507,82 @@ muahAH_RecastG1 = os.time()
 muahAH_RecastG2 = os.time()
 muahAH_RecastG3 = os.time()
 muahAH_RecastG4 = os.time()
-muahAH_RecastG5 = os.time()  	       
-function AetheryteHelper.PVPGandMPDrow(event, ticks)
+muahAH_RecastG5 = os.time()
+mushAH_fullpotion1 = false
+mushAH_fullpotion2 = false
+mushAH_fullpotion3 = false
+mushAH_fullpotion4 = false
+mushAH_fullpotion5 = false
+
+function AetheryteHelper.PVPGandMPDrow()
 PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
---local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
---local screenppos = RenderManager:WorldToScreen(ppos)
---	      if HasBuff(Player.id,3054,0,5) then
--- 	         muahAH_RecastG = os.time() + 30
---  	       elseif Player.hp == 0 then
--- 	     	   muahAH_RecastG = os.time()
---  	    end
---	      GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
---        GUI:SetNextWindowPos(screenppos.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, screenppos.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
---        GUI:SetNextWindowSize(200,80,GUI.SetCond_Always)
---        GUI:Begin("PvPAssistp", true, PvPflags)
---        GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2) 
---  	    GUI:BeginGroup()
---  	     if muahAH_RecastG > os.time() then
---  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
---  	     	GUI:SameLine(1,1)
---  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG - os.time()))
---  	     elseif muahAH_RecastG <= os.time() then
---  	     	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
---  	     end
---		    GUI:EndGroup()
---		    if AetheryteHelper.PvPAssist.MP then
---		    GUI:SameLine()
---		    GUI:BeginGroup()
---		    local Rectangle = {
---   						x1 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize,0),
---							y1 = math.round(screenppos.y + 10,0),
---							x2 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
---							y2 = math.round(screenppos.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
---	    				}
---				local Rectangle2 = {
---							x1 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize,0),
---							y1 = math.round(screenppos.y + 10,0),
---							x2 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize + (40 * (Player.mp.percent/100)),0),
---							y2 = math.round(screenppos.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
---							}
---				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
---			  if Player.mp.percent >= 50 then
---				   mpBar = GUI:ColorConvertFloat4ToU32(2-((Player.mp.percent/100)*2),1,0,1)
---				else
---					 mpBar = GUI:ColorConvertFloat4ToU32(1,((Player.mp.percent*2)/100),0,1)
---				end
---				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
---			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
--- 	    GUI:EndGroup()
---		    end
---		    GUI:End()
---        GUI:PopStyleColor()
+local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+local screenppos = RenderManager:WorldToScreen(ppos)
+	    if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true and mushAH_PVP_drow_self == true then
+	    	if Player.localmapid == 250 then
+	    	if Player.onlinestatus ~= 15 then
+	      if HasBuff(Player.id,3054,0,5) then
+ 	         muahAH_RecastG = os.time() + 30
+  	       elseif Player.hp == 0 then
+ 	     	   muahAH_RecastG = os.time()
+  	    end
+	      GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
+        GUI:SetNextWindowPos(screenppos.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, screenppos.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
+        GUI:SetNextWindowSize(200,80,GUI.SetCond_Always)
+        GUI:Begin("PvPAssistp", true, PvPflags)
+        GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2) 
+  	    GUI:BeginGroup()
+  	     if muahAH_RecastG > os.time() then
+  	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     	GUI:SameLine(1,1)
+  	      GUI:TextColored(1,0,0,1,string.format("%02d",muahAH_RecastG - os.time()))
+  	     elseif muahAH_RecastG <= os.time() then
+        	GUI:Image(ImageFolder..[[guard.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
+  	     end
+		    GUI:EndGroup()
+	    if AetheryteHelper.PvPAssist.MP then
+		    GUI:SameLine()
+		    GUI:BeginGroup()
+		    local Rectangle = {
+   						x1 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(screenppos.y + 10,0),
+							x2 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize + 40,0),
+							y2 = math.round(screenppos.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20,0),
+	    				}
+				local Rectangle2 = {
+							x1 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize,0),
+							y1 = math.round(screenppos.y + 10,0),
+							x2 = math.round(screenppos.x + AetheryteHelper.PvPAssist.iconsize + (40 * (Player.mp.percent/100)),0),
+							y2 = math.round(screenppos.y + 20 + 5*AetheryteHelper.PvPAssist.iconsize/20 ,0),
+							}
+				local mpBar = GUI:ColorConvertFloat4ToU32(0,1,0,1)
+			  if Player.mp.percent >= 50 then
+				   mpBar = GUI:ColorConvertFloat4ToU32(2-((Player.mp.percent/100)*2),1,0,1)
+				else
+					 mpBar = GUI:ColorConvertFloat4ToU32(1,((Player.mp.percent*2)/100),0,1)
+				end
+				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
+			if Player.castinginfo.channelingid == 29055 then
+			GUI:AddRectFilled(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(0,1,0,.3),3)
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			GUI:AddRect(Rectangle.x1-1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1-1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+1+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			else
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+	    end
+	    GUI:EndGroup()
+		    end
+		    GUI:End()
+        GUI:PopStyleColor()
+      end
+      end
+    end
 
     if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true then
-       if Player.localmapid ~= 1032 or Player.localmapid ~= 1033 or Player.localmapid ~= 1034 or Player.localmapid ~= 250 then
+       if IsControlOpen("MKSRecord") then
+       --AetheryteHelper.PvPAssist.GUARD = false
+       --AetheryteHelper.PvPAssist.MP = false
+       mushAH_pvp_GandMP = {}
+       elseif Player.localmapid ~= 1032 or Player.localmapid ~= 1033 or Player.localmapid ~= 1034 then
 	     mushAH_pvp_GandMP = {}	
 	     end
        local el = MEntityList("type=1,attackable")  
@@ -9459,6 +9601,11 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
   	       elseif en.hp == 0 then
  	     	   muahAH_RecastG1 = os.time()
   	       end
+  	       if en.castinginfo.channelingid == 29055 then
+  	       mushAH_fullpotion1 = true
+  	       else
+  	       mushAH_fullpotion1 = false
+  	       end
   	      end
 
   	      if #mushAH_pvp_GandMP > 1 and key == 2 then
@@ -9470,6 +9617,11 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
   	       elseif en.hp == 0 then
  	     	   muahAH_RecastG2 = os.time()
  	     	   end
+ 	     	   if en.castinginfo.channelingid == 29055 then
+  	       mushAH_fullpotion2 = true
+  	       else
+  	       mushAH_fullpotion2 = false
+  	       end
   	      end
 
   	      if #mushAH_pvp_GandMP > 2 and key == 3 then
@@ -9481,6 +9633,11 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
   	       elseif en.hp == 0 then
  	     	   muahAH_RecastG3 = os.time()
  	     	   end
+ 	     	   if en.castinginfo.channelingid == 29055 then
+  	       mushAH_fullpotion3 = true
+  	       else
+  	       mushAH_fullpotion3 = false
+  	       end
   	      end
 
   	      if #mushAH_pvp_GandMP > 3 and key == 4 then
@@ -9492,6 +9649,11 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
   	       elseif en.hp == 0 then
  	     	   muahAH_RecastG4 = os.time()
  	     	   end
+ 	     	   if en.castinginfo.channelingid == 29055 then
+  	       mushAH_fullpotion4 = true
+  	       else
+  	       mushAH_fullpotion4 = false
+  	       end
   	      end
   	      
   	      if #mushAH_pvp_GandMP > 4 and key == 5 then
@@ -9503,9 +9665,16 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
   	       elseif en.hp == 0 then
  	     	   muahAH_RecastG5 = os.time()
  	     	   end
+ 	     	   if en.castinginfo.channelingid == 29055 then
+  	       mushAH_fullpotion5 = true
+  	       else
+  	       mushAH_fullpotion5 = false
+  	       end
   	    end
 	    end
+
 	    if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and mushAH_screentpos1 ~= nil then
+	    	if Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 then
 	    	if Player.onlinestatus ~= 15 then
 	    	if #mushAH_pvp_GandMP > 0 and mushAH_screentpos1 ~= nil then
         GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
@@ -9544,7 +9713,13 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
 					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP1*2)/100),0,1)
 				end
 				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
-				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+			if mushAH_fullpotion1 == true then
+			GUI:AddRectFilled(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(0,1,0,.3),3)
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			GUI:AddRect(Rectangle.x1-1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1-1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+1+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			else
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+	    end
 		    GUI:EndGroup()
 		    end
 		    GUI:End()
@@ -9585,7 +9760,13 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
 					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP2*2)/100),0,1)
 				end
 				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
-				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+			if mushAH_fullpotion2 == true then
+			GUI:AddRectFilled(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(0,1,0,.3),3)
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			GUI:AddRect(Rectangle.x1-1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1-1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+1+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			else
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+	    end
 		    GUI:EndGroup()
 		    end
 		    GUI:End()
@@ -9626,7 +9807,13 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
 					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP3*2)/100),0,1)
 				end
 				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
-				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+			if mushAH_fullpotion3 == true then
+			GUI:AddRectFilled(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(0,1,0,.3),3)
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			GUI:AddRect(Rectangle.x1-1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1-1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+1+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			else
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+	    end
 		    GUI:EndGroup()
 		    end
 		    GUI:End()
@@ -9667,7 +9854,13 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
 					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP5*2)/100),0,1)
 				end
 				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
-				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+			if mushAH_fullpotion4 == true then
+			GUI:AddRectFilled(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(0,1,0,.3),3)
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			GUI:AddRect(Rectangle.x1-1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1-1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+1+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			else
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+	    end
 		    GUI:EndGroup()
 		    end
 		    GUI:End()
@@ -9708,7 +9901,13 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
 					 mpBar = GUI:ColorConvertFloat4ToU32(1,((mushAH_enMP5*2)/100),0,1)
 				end
 				GUI:AddRectFilled(Rectangle2.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle2.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle2.y2+AetheryteHelper.PvPAssist.iconoffsettate, mpBar,3)
-				GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+			if mushAH_fullpotion5 == true then
+			GUI:AddRectFilled(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(0,1,0,.3),3)
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			GUI:AddRect(Rectangle.x1-1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1-1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+1+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,0,0,1),3)
+			else
+			GUI:AddRect(Rectangle.x1+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y1+AetheryteHelper.PvPAssist.iconoffsettate, Rectangle.x2+AetheryteHelper.PvPAssist.iconoffsetyoko, Rectangle.y2+AetheryteHelper.PvPAssist.iconoffsettate, GUI:ColorConvertFloat4ToU32(1,1,1,1),3)
+	    end
 		    GUI:EndGroup()
 		    end
 		    GUI:End()
@@ -9716,8 +9915,527 @@ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + G
         GUI:PopStyleColor()
 		  end
 	    end
+	    end
 
 	  end
+end
+--------------------------------------------------------------------------------------------------------------------
+mushAH_selectSEhunt = 1
+mushAH_SE_setting_B = false
+mushAH_SE_setting_A = false
+mushAH_SE_setting_S = false
+mushAH_SE_setting_F = false
+mushAH_SE_setting_P = true 
+function AetheryteHelper.RadarSoundDrow()
+	 GUI:Spacing()
+	 GUI:TextColored(0,1,0,1,"select a sound & object")
+	 GUI:Spacing()
+	 GUI:Separator()
+	 GUI:Spacing()
+	 GUI:BeginGroup()
+	 if mushAH_SE_setting_P == true then
+	 GUI:Image(ImageFolder..[[R_TP_on.png]],30,30)
+	 else
+	 GUI:Image(ImageFolder..[[R_TP_off.png]],30,30)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    mushAH_SE_setting_B = false
+      mushAH_SE_setting_A = false
+      mushAH_SE_setting_S = false
+      mushAH_SE_setting_F = false
+      mushAH_SE_setting_P = true
+	    end
+		  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip261,mETp.tip261,mDTp.tip261,mFTp.tip261,mCTp.tip261,mKTp.tip261)
+		  end
+	 end
+	 GUI:SameLine()
+   GUI:BeginGroup()
+	 if mushAH_SE_setting_B == true then
+	 GUI:Image(ImageFolder..[[R_mobB_on.png]],30,30)
+	 else
+	 GUI:Image(ImageFolder..[[R_mobB_off.png]],30,30)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    mushAH_SE_setting_B = true
+      mushAH_SE_setting_A = false
+      mushAH_SE_setting_S = false
+      mushAH_SE_setting_F = false
+      mushAH_SE_setting_P = false
+	    end
+	    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip176,mETp.tip176,mDTp.tip176,mFTp.tip176,mCTp.tip176,mKTp.tip176)
+		  end
+	 end
+	 GUI:SameLine()
+   GUI:BeginGroup()
+	 if mushAH_SE_setting_A == true then
+	 GUI:Image(ImageFolder..[[R_mobA_on.png]],30,30)
+	 else
+	 GUI:Image(ImageFolder..[[R_mobA_off.png]],30,30)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    mushAH_SE_setting_B = false
+      mushAH_SE_setting_A = true
+      mushAH_SE_setting_S = false
+      mushAH_SE_setting_F = false
+      mushAH_SE_setting_P = false
+	    end
+	    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip177,mETp.tip177,mDTp.tip177,mFTp.tip177,mCTp.tip177,mKTp.tip177)
+		  end
+	 end
+	 GUI:SameLine()
+   GUI:BeginGroup()
+	 if mushAH_SE_setting_S == true then
+	 GUI:Image(ImageFolder..[[R_mobS_on.png]],30,30)
+	 else
+	 GUI:Image(ImageFolder..[[R_mobS_off.png]],30,30)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    mushAH_SE_setting_B = false
+      mushAH_SE_setting_A = false
+      mushAH_SE_setting_S = true
+      mushAH_SE_setting_F = false
+      mushAH_SE_setting_P = false
+	    end
+	    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip178,mETp.tip178,mDTp.tip178,mFTp.tip178,mCTp.tip178,mKTp.tip178)
+		  end
+	 end
+	 GUI:SameLine()
+   GUI:BeginGroup()
+	 if mushAH_SE_setting_F == true then
+	 GUI:Image(ImageFolder..[[R_mobF_on.png]],30,30)
+	 else
+	 GUI:Image(ImageFolder..[[R_mobF_off.png]],30,30)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    mushAH_SE_setting_B = false
+      mushAH_SE_setting_A = false
+      mushAH_SE_setting_S = false
+      mushAH_SE_setting_F = true
+      mushAH_SE_setting_P = false
+	    end
+	    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip179,mETp.tip179,mDTp.tip179,mFTp.tip179,mCTp.tip179,mKTp.tip179)
+		  end
+	 end
+
+   GUI:BeginGroup()
+   GUI:ImageButton("###SEReload",ImageFolder..[[CB_clear.png]], 15,15)
+   if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    	 mushAH_RSEReloadprosess = io.open(ModulePath.."/cash/AHSEReloadProcess.txt")
+	       if mushAH_RSEReloadprosess ~= nil then
+ 	       mushAH_RSEReloadprosessNum = mushAH_RSEReloadprosess:read() mushAH_RSEReloadprosess:close()
+	       io.popen([[start /b powershell -Command "Stop-Process -ID ]]..mushAH_RSEReloadprosessNum..[[; stop-process -Id $PID"]]):close()
+	       end
+	       io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\AHSEReloadProcess.txt' -Value $PID; $files = Get-ChildItem ]]..ModulePath..[[\AHwavFiles -Recurse -Name -File -Filter *.wav; Set-Content -Path ']] ..ModulePath.. [[\cash\wavlist.txt' -Value $files; stop-process -Id $PID"]]):close()
+         mushAH_wavs = io.open(ModulePath.."/cash/wavlist.txt","r")
+         mushAH_wavsList = {}
+         for mushAH_wavtextline in mushAH_wavs:lines() do   
+         table.insert(mushAH_wavsList,mushAH_wavtextline)
+         end
+         mushAH_wavs:close()
+	    end
+	    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip254,mETp.tip254,mDTp.tip254,mFTp.tip254,mCTp.tip254,mKTp.tip254)
+		  end
+	 end
+   GUI:EndGroup()
+   GUI:SameLine()
+   GUI:BeginGroup()
+   GUI:PushItemWidth(150)
+   mushAH_selectSEhunt,changed = GUI:Combo("",mushAH_selectSEhunt,mushAH_wavsList,5)
+   if changed then
+   	  for k,v in pairs(mushAH_wavsList) do
+	      	if mushAH_selectSEhunt == k then
+	           mushAH_selectSEhuntname = v
+	      	end
+	    end 
+   end
+   GUI:PopItemWidth()
+   GUI:EndGroup()
+   if GUI:IsItemHovered() then
+   	  if AHSET.mushtooltips == true then
+			  if #mushAH_wavsList > 0 then
+			  AetheryteHelper.SetToolTips(mJTp.tip255,mETp.tip255,mDTp.tip255,mFTp.tip255,mCTp.tip255,mKTp.tip255)
+			  else
+			  AetheryteHelper.SetToolTips(mJTp.tip264,mETp.tip264,mDTp.tip264,mFTp.tip264,mCTp.tip264,mKTp.tip264)
+			  end
+		  end
+   end
+   GUI:SameLine()
+   GUI:BeginGroup()
+	 GUI:ImageButton("###audition",ImageFolder..[[audition.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    	if #mushAH_wavsList ~= 0 then
+	      for k,v in pairs(mushAH_wavsList) do
+	      	if mushAH_selectSEhunt == k then
+	      		mushAH_selectSEhuntname = v
+	      	end
+	      end
+	      mushAH_RSEprosess = io.open(ModulePath.."/cash/PSSEProcess.txt")
+	      if mushAH_RSEprosess ~= nil then
+ 	      mushAH_RSEprosessNum = mushAH_RSEprosess:read() mushAH_RSEprosess:close()
+	      io.popen([[start /b powershell -Command "Stop-Process -ID ]]..mushAH_RSEprosessNum..[[; stop-process -Id $PID"]]):close()
+	      end
+	      io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\PSSEProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..mushAH_selectSEhuntname..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	      end
+	    end
+	    if GUI:IsItemClicked(1) then
+	    	if #mushAH_wavsList ~= 0 then
+	      for k,v in pairs(mushAH_wavsList) do
+	      	if mushAH_selectSEhunt == k then
+	      		mushAH_selectSEhuntname = v
+	      	end
+	      end
+	      mushAH_RSEprosess = io.open(ModulePath.."/cash/PSSEProcess.txt")
+	      if mushAH_RSEprosess ~= nil then
+ 	      mushAH_RSEprosessNum = mushAH_RSEprosess:read() mushAH_RSEprosess:close()
+	      io.popen([[start /b powershell -Command "Stop-Process -ID ]]..mushAH_RSEprosessNum..[[; stop-process -Id $PID"]]):close()
+	      end
+	    io.popen([[start /b powershell -Command "Get-ControlPanelItem -CanonicalName Microsoft.Sound; sndvol; stop-process -Id $PID"]]):close()
+	   	io.popen([[start /b powershell -Command " $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..mushAH_selectSEhuntname..[['; $player.Load(); $player.PlayLooping(); Start-Sleep -Seconds 30; $player.Stop(); stop-process -Id $PID"]]):close()
+	      end
+	    end
+	    if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip256,mETp.tip256,mDTp.tip256,mFTp.tip256,mCTp.tip256,mKTp.tip256)
+		  end
+	 end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+   GUI:BeginGroup()
+	 GUI:ImageButton("###SEaddmob",ImageFolder..[[R_se_add.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    	if mushAH_selectSEhuntname ~= nil then
+	         if mushAH_SE_setting_P == true then 
+	            Rset.PSE = mushAH_selectSEhuntname
+	         elseif mushAH_SE_setting_B == true then
+	         	  Rset.BSE = mushAH_selectSEhuntname
+	      	 elseif mushAH_SE_setting_A == true then
+	         	  Rset.ASE = mushAH_selectSEhuntname
+	         elseif mushAH_SE_setting_S == true then
+	         	  Rset.SSE = mushAH_selectSEhuntname
+	         elseif mushAH_SE_setting_F == true then
+	         	  Rset.FSE = mushAH_selectSEhuntname
+	         end
+           AetheryteHelper.SaveSettings()
+        end
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip257,mETp.tip257,mDTp.tip257,mFTp.tip257,mCTp.tip257,mKTp.tip257)
+		  end
+ 	 end
+ 	 GUI:EndGroup()
+ 	 GUI:BeginGroup()
+	 GUI:Text("check interval")
+	 GUI:SameLine()
+ 	 GUI:PushItemWidth(75)
+	 Rset.interval, changed = GUI:InputInt("##checktime",Rset.interval,1,10)
+	 if changed then
+	 	Rset.interval = Rset.interval
+	  AetheryteHelper.SaveSettings()
+	 end
+	 if Rset.interval > 60 then Rset.interval = 60 end
+	 if Rset.interval < 3 then Rset.interval = 3 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	 	  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip262,mETp.tip262,mDTp.tip262,mFTp.tip262,mCTp.tip262,mKTp.tip262)
+		  end
+	 end
+	 GUI:Spacing()
+	 GUI:Separator()
+	 GUI:Spacing()
+	 GUI:BeginGroup()
+	 GUI:Image(ImageFolder..[[R_TP_on.png]],25,25)
+	 GUI:EndGroup()
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEdelP",ImageFolder..[[R_trash.png]], 20,20)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    Rset.PSE = ""
+	    Rset.Pnotice = false
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip258,mETp.tip258,mDTp.tip258,mFTp.tip258,mCTp.tip258,mKTp.tip258)
+		  end
+ 	 end
+ 	 GUI:EndGroup()
+   GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 if Rset.Pnotice == false or Rset.PSE == "" then
+	 GUI:ImageButton("###PSEoff",ImageFolder..[[R_alarm_non.png]], 20,20)
+	 elseif Rset.Pnotice == true and Rset.PSE ~= "" then
+	 GUI:ImageButton("###PSEon",ImageFolder..[[R_alarm.png]], 20,20)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     Rset.Pnotice = not Rset.Pnotice
+       AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+		  end
+ 	 end
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 GUI:PushItemWidth(280)
+	 if Rset.PSE == "" then
+	 GUI:InputText("##PSE","No setting sound",GUI.InputTextFlags_ReadOnly)
+	 else
+	 GUI:InputText("##PSE",Rset.PSE,GUI.InputTextFlags_ReadOnly)
+ 	 end
+ 	 GUI:PopItemWidth()
+ 	 GUI:EndGroup()
+
+ 	 GUI:BeginGroup()
+	 GUI:Image(ImageFolder..[[R_mobB_on.png]],25,25)
+	 GUI:EndGroup()
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEdelB",ImageFolder..[[R_trash.png]], 20,20)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    Rset.BSE = ""
+	    Rset.Bmobnotice = false
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip258,mETp.tip258,mDTp.tip258,mFTp.tip258,mCTp.tip258,mKTp.tip258)
+		  end
+ 	 end
+ 	 GUI:EndGroup()
+   GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 if Rset.Bmobnotice == false or Rset.BSE == "" then
+	 GUI:ImageButton("###BSEoff",ImageFolder..[[R_alarm_non.png]], 20,20)
+	 elseif Rset.Bmobnotice == true and Rset.BSE ~= "" then
+	 GUI:ImageButton("###BSEon",ImageFolder..[[R_alarm.png]], 20,20)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     Rset.Bmobnotice = not Rset.Bmobnotice
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+		  end
+ 	 end
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 GUI:PushItemWidth(280)
+	 if Rset.BSE == "" then
+	 GUI:InputText("##BSE","No setting sound",GUI.InputTextFlags_ReadOnly)
+	 else
+	 GUI:InputText("##BSE",Rset.BSE,GUI.InputTextFlags_ReadOnly)
+ 	 end
+ 	 GUI:PopItemWidth()
+ 	 GUI:EndGroup()
+ 	 GUI:BeginGroup()
+ 	 GUI:Text("B Rank Distance")
+ 	 GUI:PushItemWidth(120)
+	 Rset.Bdis, changed = GUI:SliderInt("##B_3D"..tostring(k),Rset.Bdis,0,250)
+	 if changed then
+	 AetheryteHelper.SaveSettings()
+	 end
+	 GUI:PopItemWidth()
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	 	  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip260,mETp.tip260,mDTp.tip260,mFTp.tip260,mCTp.tip260,mKTp.tip260)
+		  end
+	 end
+
+	 GUI:BeginGroup()
+	 GUI:Image(ImageFolder..[[R_mobA_on.png]],25,25)
+	 GUI:EndGroup()
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEdelA",ImageFolder..[[R_trash.png]], 20,20)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    Rset.ASE = ""
+	    Rset.Amobnotice = false
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip258,mETp.tip258,mDTp.tip258,mFTp.tip258,mCTp.tip258,mKTp.tip258)
+		  end
+ 	 end
+ 	 GUI:EndGroup()
+   GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 if Rset.Amobnotice == false or Rset.ASE == "" then
+	 GUI:ImageButton("###ASEoff",ImageFolder..[[R_alarm_non.png]], 20,20)
+	 elseif Rset.Amobnotice == true and Rset.ASE ~= "" then
+	 GUI:ImageButton("###ASEon",ImageFolder..[[R_alarm.png]], 20,20)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     Rset.Amobnotice = not Rset.Amobnotice
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+		  end
+ 	 end
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 GUI:PushItemWidth(280)
+	 if Rset.ASE == "" then
+	 GUI:InputText("##ASE","No setting sound",GUI.InputTextFlags_ReadOnly)
+	 else
+	 GUI:InputText("##ASE",Rset.ASE,GUI.InputTextFlags_ReadOnly)
+ 	 end
+ 	 GUI:PopItemWidth()
+ 	 GUI:EndGroup()
+ 	 GUI:BeginGroup()
+ 	 GUI:Text("A Rank Distance")
+ 	 GUI:PushItemWidth(120)
+	 Rset.Adis, changed = GUI:SliderInt("##A_3D"..tostring(k),Rset.Adis,0,250)
+	 if changed then
+	 AetheryteHelper.SaveSettings()
+	 end
+	 GUI:PopItemWidth()
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	 	  if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip260,mETp.tip260,mDTp.tip260,mFTp.tip260,mCTp.tip260,mKTp.tip260)
+		  end
+	 end
+
+	 GUI:BeginGroup()
+	 GUI:Image(ImageFolder..[[R_mobS_on.png]],25,25)
+	 GUI:EndGroup()
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEdelS",ImageFolder..[[R_trash.png]], 20,20)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    Rset.ASE = ""
+	    Rset.Amobnotice = false
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip258,mETp.tip258,mDTp.tip258,mFTp.tip258,mCTp.tip258,mKTp.tip258)
+		  end
+ 	 end
+ 	 GUI:EndGroup()
+   GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 if Rset.Smobnotice == false or Rset.SSE == "" then
+	 GUI:ImageButton("###SSEoff",ImageFolder..[[R_alarm_non.png]], 20,20)
+	 elseif Rset.Smobnotice == true and Rset.SSE ~= "" then
+	 GUI:ImageButton("###SSEon",ImageFolder..[[R_alarm.png]], 20,20)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     Rset.Smobnotice = not Rset.Smobnotice
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+		  end
+ 	 end
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 GUI:PushItemWidth(280)
+	 if Rset.SSE == "" then
+	 GUI:InputText("##SSE","No setting sound",GUI.InputTextFlags_ReadOnly)
+	 else
+	 GUI:InputText("##SSE",Rset.ASE,GUI.InputTextFlags_ReadOnly)
+ 	 end
+ 	 GUI:PopItemWidth()
+ 	 GUI:EndGroup()
+	 
+	 GUI:BeginGroup()
+	 GUI:Image(ImageFolder..[[R_mobF_on.png]],25,25)
+	 GUI:EndGroup()
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEdelF",ImageFolder..[[R_trash.png]], 20,20)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    Rset.FSE = ""
+	    Rset.Fmobnotice = false
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip258,mETp.tip258,mDTp.tip258,mFTp.tip258,mCTp.tip258,mKTp.tip258)
+		  end
+ 	 end
+ 	 GUI:EndGroup()
+   GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 if Rset.Fmobnotice == false or Rset.FSE == "" then
+	 GUI:ImageButton("###FSEoff",ImageFolder..[[R_alarm_non.png]], 20,20)
+	 elseif Rset.Fmobnotice == true and Rset.FSE ~= "" then
+	 GUI:ImageButton("###FSEon",ImageFolder..[[R_alarm.png]], 20,20)
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     Rset.Fmobnotice = not Rset.Fmobnotice
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+		  end
+ 	 end
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 GUI:PushItemWidth(280)
+	 if Rset.FSE == "" then
+	 GUI:InputText("##FSE","No setting sound",GUI.InputTextFlags_ReadOnly)
+	 else
+	 GUI:InputText("##FSE",Rset.ASE,GUI.InputTextFlags_ReadOnly)
+ 	 end
+ 	 GUI:PopItemWidth()
+ 	 GUI:EndGroup()
+
+
+
+--[[
+Bdis = 100,
+	   Adis = 100,
+	   Sdis = 100,
+	   Fdis = 100,
+Bmobnotice = false,
+Amobnotice = false,
+Smobnotice = false,
+Fmobnotice = false,
+Pnotice = false,
+BSE = "",
+ASE = "",
+SSE = "",
+FSE = "",
+PSE = "",
+interval = 10,]]
+
+
+
+
 end
 --------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.miniRadar()
@@ -10369,11 +11087,11 @@ function AetheryteHelper.Radar()
 	  if AHRadarGeneral == true then
 	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
-	  GUI:Button("General",80,20)
+	  GUI:Button("General",60,20)
 	  GUI:PopStyleColor(2)
 	  else
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
-	  GUI:Button("General",80,20)
+	  GUI:Button("General",60,20)
 	  GUI:PopStyleColor()
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
@@ -10381,6 +11099,7 @@ function AetheryteHelper.Radar()
 		  AHRadarhunt = false
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = false
+		  AHRadarSound = false
 		end
 	  end
 	  end
@@ -10395,11 +11114,11 @@ function AetheryteHelper.Radar()
 	  if AHRadarhunt == true then
 	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
-	  GUI:Button("Hunt",80,20)
+	  GUI:Button("Hunt",60,20)
 	  GUI:PopStyleColor(2)
 	  else
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
-	  GUI:Button("Hunt",80,20)
+	  GUI:Button("Hunt",60,20)
 	  GUI:PopStyleColor()
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
@@ -10407,6 +11126,7 @@ function AetheryteHelper.Radar()
 		  AHRadarhunt = true
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = false
+		  AHRadarSound = false
 		end
 	  end
 	  end
@@ -10421,11 +11141,11 @@ function AetheryteHelper.Radar()
 	  if AHRadarCustomList == true then
 	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
-	  GUI:Button("CustomList",80,20)
+	  GUI:Button("List",60,20)
 	  GUI:PopStyleColor(2)
 	  else
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
-	  GUI:Button("CustomList",80,20)
+	  GUI:Button("List",60,20)
 	  GUI:PopStyleColor()
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
@@ -10433,6 +11153,7 @@ function AetheryteHelper.Radar()
 		  AHRadarhunt = false
 		  AHRadarCustomList = true
 		  AHRadarPvPmode = false
+		  AHRadarSound = false
 		end
 	  end
 	  end
@@ -10447,11 +11168,11 @@ function AetheryteHelper.Radar()
 	  if AHRadarPvPmode == true then
 	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
-	  GUI:Button("PvP Assist",80,20)
+	  GUI:Button("PvP",60,20)
 	  GUI:PopStyleColor(2)
 	  else
 	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
-	  GUI:Button("PvP Assist",80,20)
+	  GUI:Button("PvP",60,20)
 	  GUI:PopStyleColor()
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
@@ -10459,6 +11180,7 @@ function AetheryteHelper.Radar()
 		  AHRadarhunt = false
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = true
+		  AHRadarSound = false
 		end
 	  end
 	  end
@@ -10466,6 +11188,33 @@ function AetheryteHelper.Radar()
 	  if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip246,mETp.tip246,mDTp.tip246,mFTp.tip246,mCTp.tip246,mKTp.tip246)
+		end
+	  end
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  if AHRadarSound == true then
+	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
+	  GUI:Button("Sound",60,20)
+	  GUI:PopStyleColor(2)
+	  else
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
+	  GUI:Button("Sound",60,20)
+	  GUI:PopStyleColor()
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		  AHRadarGeneral = false
+		  AHRadarhunt = false
+		  AHRadarCustomList = false
+		  AHRadarPvPmode = false
+		  AHRadarSound = true
+		end
+	  end
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip263,mETp.tip263,mDTp.tip263,mFTp.tip263,mCTp.tip263,mKTp.tip263)
 		end
 	  end
 
@@ -10483,6 +11232,9 @@ function AetheryteHelper.Radar()
 	  end
 	  if AHRadarPvPmode == true then
 	  AetheryteHelper.PvPAssistWindow()
+	  end
+	  if AHRadarSound == true then
+	  AetheryteHelper.RadarSoundDrow()
 	  end
 	end
 	GUI:End()
@@ -10860,6 +11612,9 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	if Rset.chest == true then
 	AHRadarline("type=4,",R.Colorchest.U32,Rset.linethick)
 	end
+	if Rset.Attackable == true then
+	AHRadarline("type=2,attackable,alive,",R.ColorAttackable.U32,Rset.linethick)
+	end
 	if Rset.NPC == true then
 	AHRadarlineNPC("type=2,alive,",R.ColorNPC.U32,Rset.linethick)
 	AHRadarlineNPC("type=3,",R.ColorNPC.U32,Rset.linethick)
@@ -10869,9 +11624,6 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	end
 	if Rset.tori == true then
 	AHRadarlineNPC("type=2,alive,contentID=952",R.Colortori.U32,Rset.linethick)
-	end
-	if Rset.Attackable == true then
-	AHRadarline("type=2,alive,",R.ColorAttackable.U32,Rset.linethick)
 	end
 	if Rset.Player == true then
 	AHRadarline("type=1",R.ColorPlayer.U32,Rset.linethick)
@@ -11059,6 +11811,9 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	if Rset.chest == true then
 	AHRadardot("type=4,",R.Colorchest.U32,Rset.dotsize)
 	end
+	if Rset.Attackable == true then
+	AHRadardot("type=2,attackable,alive,",R.ColorAttackable.U32,Rset.dotsize)
+	end
 	if Rset.NPC == true then
 	AHRadardotNPC("type=2,alive,",R.ColorNPC.U32,Rset.dotsize)
 	AHRadardotNPC("type=3,",R.ColorNPC.U32,Rset.dotsize)
@@ -11068,9 +11823,6 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	end
 	if Rset.tori == true then
 	AHRadardotNPC("type=2,alive,contentID=952",R.Colortori.U32,Rset.dotsize)
-	end
-	if Rset.Attackable == true then
-	AHRadardot("type=2,attackable,alive,",R.ColorAttackable.U32,Rset.dotsize)
 	end
 	if Rset.Player == true then
 	AHRadardot("type=1",R.ColorPlayer.U32,Rset.dotsize)
@@ -11304,14 +12056,23 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 end
 
 --------------------------------------------------------------------------------------------------------------------
-
+mushAH_selectSE = 1
 function AetheryteHelper.Radarlist()
 if #AetheryteHelper.RadarCustomList ~= 0 then
   for k,v in pairs(AetheryteHelper.RadarCustomList) do
    GUI:Columns(3) GUI:SetColumnOffset(1, 50) GUI:SetColumnOffset(2, 350)
-   if v[5] == 1 then
+   if v[5] == 1 and v[17] == 0 then
    GUI:BeginGroup()
    GUI:Image(ImageFolder..[[R_Player.png]],30,30)
+   if GUI:IsItemHovered() then
+		if AHSET.mushtooltips == true then
+			  AetheryteHelper.SetToolTips(mJTp.tip144,mETp.tip144,mDTp.tip144,mFTp.tip144,mCTp.tip144,mKTp.tip144)
+		end
+	  end
+   GUI:EndGroup()
+   elseif v[5] == 1 and v[17] == 1 then
+   GUI:BeginGroup()
+   GUI:Image(ImageFolder..[[R_Player_H.png]],30,30)
    if GUI:IsItemHovered() then
 		if AHSET.mushtooltips == true then
 			  AetheryteHelper.SetToolTips(mJTp.tip144,mETp.tip144,mDTp.tip144,mFTp.tip144,mCTp.tip144,mKTp.tip144)
@@ -11558,10 +12319,12 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
 		 end
 	  end
    if v[1] == 0 then
+   GUI:PushStyleColor(GUI.Col_Header,.2,.2,1,1)
+   if	GUI:CollapsingHeader("Player settings##RPset"..k) then
    GUI:BeginGroup()
    if v[17] == 0 then
    GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1)
-   GUI:Button("Normal",80,20)
+   GUI:Button("Normal",60,20)
    GUI:PopStyleColor()
    if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
@@ -11571,7 +12334,7 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    end
    elseif v[17] == 1 then
    GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
-   GUI:Button("Hazard",80,20)
+   GUI:Button("Hazard",60,20)
    GUI:PopStyleColor()
    if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
@@ -11589,8 +12352,13 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    if v[17] == 1 then
    GUI:SameLine()
    GUI:BeginGroup()
-   GUI:PushItemWidth(120)
-	 v[18], changed = GUI:SliderInt("##ylm"..tostring(k),v[18],10,150)
+   GUI:PushItemWidth(100)
+	 v[18], changed = GUI:SliderInt("##ylm"..tostring(k),v[18],0,100)
+	 if changed then
+	 	v[18] = v[18]
+	 	AetheryteHelper.SaveSettings()
+	 end
+	 GUI:PopItemWidth()
 	 GUI:SameLine()
 	 GUI:Text("ylm")
    GUI:EndGroup()
@@ -11601,6 +12369,171 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
 	  end
    if v[11] == 1 then AetheryteHelper.HazardPlayer(v[18],v[3]) end
    end
+   GUI:BeginGroup()
+   GUI:ImageButton("###SEReload",ImageFolder..[[CB_clear.png]], 15,15)
+   if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    	 mushAH_RSEReloadprosess = io.open(ModulePath.."/cash/AHSEReloadProcess.txt")
+	       if mushAH_RSEReloadprosess ~= nil then
+ 	       mushAH_RSEReloadprosessNum = mushAH_RSEReloadprosess:read() mushAH_RSEReloadprosess:close()
+	       io.popen([[start /b powershell -Command "Stop-Process -ID ]]..mushAH_RSEReloadprosessNum..[[; stop-process -Id $PID"]]):close()
+	       end
+	       io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\AHSEReloadProcess.txt' -Value $PID; $files = Get-ChildItem ]]..ModulePath..[[\AHwavFiles -Recurse -Name -File -Filter *.wav; Set-Content -Path ']] ..ModulePath.. [[\cash\wavlist.txt' -Value $files; stop-process -Id $PID"]]):close()
+         mushAH_wavs = io.open(ModulePath.."/cash/wavlist.txt","r")
+         mushAH_wavsList = {}
+         for mushAH_wavtextline in mushAH_wavs:lines() do   
+         table.insert(mushAH_wavsList,mushAH_wavtextline)
+         end
+         mushAH_wavs:close()
+	    end
+	    if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip254,mETp.tip254,mDTp.tip254,mFTp.tip254,mCTp.tip254,mKTp.tip254)
+			end
+	 end
+   GUI:EndGroup()
+   GUI:SameLine()
+   GUI:BeginGroup()
+   GUI:PushItemWidth(150)
+   mushAH_selectSE,changed = GUI:Combo("",mushAH_selectSE,mushAH_wavsList,5)
+   if changed then
+   	  for k,v in pairs(mushAH_wavsList) do
+	      	if mushAH_selectSE == k then
+	           mushAH_selectSEname = v
+	      	end
+	    end 
+   end
+   GUI:PopItemWidth()
+   GUI:EndGroup()
+   if GUI:IsItemHovered() then
+   	  if AHSET.mushtooltips == true then
+			   if #mushAH_wavsList > 0 then
+			   AetheryteHelper.SetToolTips(mJTp.tip255,mETp.tip255,mDTp.tip255,mFTp.tip255,mCTp.tip255,mKTp.tip255)
+			   else
+			   AetheryteHelper.SetToolTips(mJTp.tip264,mETp.tip264,mDTp.tip264,mFTp.tip264,mCTp.tip264,mKTp.tip264)
+			   end
+			end
+   end
+   GUI:SameLine()
+   GUI:BeginGroup()
+	 GUI:ImageButton("###audition",ImageFolder..[[audition.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    	if #mushAH_wavsList ~= 0 then
+	      for k,v in pairs(mushAH_wavsList) do
+	      	if mushAH_selectSE == k then
+	      		mushAH_selectSEname = v
+	      	end
+	      end
+	      mushAH_RSEprosess = io.open(ModulePath.."/cash/PSSEProcess.txt")
+	      if mushAH_RSEprosess ~= nil then
+ 	      mushAH_RSEprosessNum = mushAH_RSEprosess:read() mushAH_RSEprosess:close()
+	      io.popen([[start /b powershell -Command "Stop-Process -ID ]]..mushAH_RSEprosessNum..[[; stop-process -Id $PID"]]):close()
+	      end
+	      io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\PSSEProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..mushAH_selectSEname..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	      end
+	    end
+	    if GUI:IsItemClicked(1) then
+	    	if #mushAH_wavsList ~= 0 then
+	      for k,v in pairs(mushAH_wavsList) do
+	      	if mushAH_selectSE == k then
+	      		mushAH_selectSEname = v
+	      	end
+	      end
+	      mushAH_RSEprosess = io.open(ModulePath.."/cash/PSSEProcess.txt")
+	      if mushAH_RSEprosess ~= nil then
+ 	      mushAH_RSEprosessNum = mushAH_RSEprosess:read() mushAH_RSEprosess:close()
+	      io.popen([[start /b powershell -Command "Stop-Process -ID ]]..mushAH_RSEprosessNum..[[; stop-process -Id $PID"]]):close()
+	      end
+	    io.popen([[start /b powershell -Command "Get-ControlPanelItem -CanonicalName Microsoft.Sound; sndvol; stop-process -Id $PID"]]):close()
+	   	io.popen([[start /b powershell -Command " $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..mushAH_selectSEname..[['; $player.Load(); $player.PlayLooping(); Start-Sleep -Seconds 30; $player.Stop(); stop-process -Id $PID"]]):close()
+	      end
+	    end
+	    if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip256,mETp.tip256,mDTp.tip256,mFTp.tip256,mCTp.tip256,mKTp.tip256)
+			end
+	 end
+	 GUI:EndGroup()
+	 GUI:SameLine()
+   GUI:BeginGroup()
+	 GUI:ImageButton("###SEadd",ImageFolder..[[R_se_add.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	    	if mushAH_selectSEname ~= nil then
+	      v[19] = mushAH_selectSEname
+        AetheryteHelper.SaveSettings()
+        end
+      end
+      if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip257,mETp.tip257,mDTp.tip257,mFTp.tip257,mCTp.tip257,mKTp.tip257)
+			end
+ 	 end
+ 	 GUI:EndGroup()
+ 	 GUI:SameLine()
+   GUI:BeginGroup()
+	 GUI:ImageButton("###SEdel",ImageFolder..[[R_trash.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     v[19] = 0
+	     v[20] = 0
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip258,mETp.tip258,mDTp.tip258,mFTp.tip258,mCTp.tip258,mKTp.tip258)
+			end
+ 	 end
+ 	 GUI:EndGroup()
+ 	 if v[20] == 0 or v[19] == 0 then
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEoff",ImageFolder..[[R_alarm_non.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     v[20] = 1
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+			end
+ 	 end
+ 	 GUI:EndGroup()
+ 	 elseif v[20] == 1 and v[19] ~= 0 then
+ 	 GUI:BeginGroup()
+	 GUI:ImageButton("###SEon",ImageFolder..[[R_alarm.png]], 15,15)
+	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+	     v[20] = 0
+      AetheryteHelper.SaveSettings()
+      end
+      if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip259,mETp.tip259,mDTp.tip259,mFTp.tip259,mCTp.tip259,mKTp.tip259)
+			end
+ 	 end
+ 	 GUI:EndGroup()
+ 	 end
+ 	 GUI:SameLine()
+ 	 GUI:BeginGroup()
+ 	 if v[19] == 0 then
+	 GUI:Text("No setting sound")
+	 else
+	 GUI:Text(v[19])
+ 	 end
+ 	 GUI:EndGroup()
+ 	 GUI:BeginGroup()
+ 	 GUI:Text("Distance")
+ 	 GUI:SameLine()
+ 	 GUI:PushItemWidth(100)
+	 v[21], changed = GUI:SliderInt("##distanceP"..tostring(k),v[21],0,250)
+	 if changed then
+	 	v[21] = v[21]
+	 	AetheryteHelper.SaveSettings()
+	 end
+	 GUI:PopItemWidth()
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+	 	  if AHSET.mushtooltips == true then
+			   AetheryteHelper.SetToolTips(mJTp.tip260,mETp.tip260,mDTp.tip260,mFTp.tip260,mCTp.tip260,mKTp.tip260)
+			end
+	 end
+	 end
    end
    GUI:NextColumn()
    GUI:BeginGroup()
@@ -11619,6 +12552,14 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:BeginGroup()
    GUI:Text("No,"..k)
    GUI:EndGroup()
+   if v[19] ~= 0 and v[20] == 1 then
+   GUI:Dummy(1,1)
+   GUI:SameLine(15)
+   GUI:BeginGroup()
+   GUI:Image(ImageFolder..[[R_alarm.png]], 20,20)
+   GUI:EndGroup()
+   end
+   GUI:PopStyleColor(1)
    GUI:Columns()
    GUI:Separator()
    end
@@ -13380,6 +14321,7 @@ function AetheryteHelper.Inventoryfree()
 end
 
 function AetheryteHelper.AutoLegacy()
+  if FFXIV_Common_BotRunning == false then
      if Duty:IsQueued() == true then
         if IsControlOpen("SystemMenu") then
         UseControlAction("SystemMenu","Close")
@@ -13401,6 +14343,7 @@ function AetheryteHelper.AutoLegacy()
            Player:SetMoveMode(0)
         end
      end
+  end
 end
 
 
@@ -17306,6 +18249,8 @@ if (mushJumbocactpothelper) then
 		 elseif IsControlOpen("SelectString") then
 		 mushlooptimer = 100
 		 mushGSjcpstep = 39
+		 elseif IsControlOpen("Talk") then
+		 mushGSjcpstep = 40	
 		 end
 		--d("mushGSjcpstep"..mushGSjcpstep)
 	 end
@@ -17320,13 +18265,12 @@ if (mushJumbocactpothelper) then
 		  if IsControlOpen("SelectString") then
 			 UseControlAction("SelectString", "SelectIndex",4)
 			 mushGSjcpstep = 40
-
 		  end
 		  --d("mushGSjcpstep"..mushGSjcpstep)
 	 end
 	 if mushGSjcpstep == 40 then
 		  if IsControlOpen("Talk") then
-			 UseControlAction("Talk", "Click")
+			 UseControlAction("Talk", "Close")
 			 mushGSjcpstep = 40
 		  else
 			 mushlooptimer = 1000
@@ -22021,9 +22965,262 @@ function AetheryteHelper.PartyCall()
    end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.R_SE_notification()
 
-------------------------------------------------------------
+	if Rset.RadarEnable == true then
+		
+		if Rset.Pnotice == true and Duty:GetQueueStatus() < 4 then
+		AHRadarSeNoticeAPI_P("type=1,targetingme",Rset.PSE,Rset.interval)	
+		end
+	
+		for k,v in pairs(AetheryteHelper.RadarCustomList) do
+        if tonumber(v[1]) == 0 or v[5] == 1 then
+	         if v[11] == 1 and v[20] == 1 then
+	         AHRadarSeNoticeAPI_P("type=1,name="..tostring(v[3])..",".."maxdistance="..tostring(v[21]),v[19],Rset.interval)
+	         end
+	      end
+    end
+  
+	  if Rset.hunt == true then
+ 	     if Player.localmapid == 148 or Player.localmapid == 152 or Player.localmapid == 153 or Player.localmapid == 154 or
+   	      Player.localmapid == 135 or Player.localmapid == 137 or Player.localmapid == 138 or Player.localmapid == 139 or
+   	      Player.localmapid == 180 or Player.localmapid == 140 or Player.localmapid == 145 or Player.localmapid == 146 or
+   	      Player.localmapid == 147 or Player.localmapid == 155 or Player.localmapid == 156 or Player.localmapid == 141 or
+   	      Player.localmapid == 134 then 
+	        if Rset.Smobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.S) do
+		         AHRadarSeNoticeAPI_S("type=2,aggressive,alive,contentID="..tostring(v),Rset.SSE,Rset.interval)
+	           end
+	        end
+	        if Rset.Amobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.A) do
+		         AHRadarSeNoticeAPI_A("type=2,aggressive,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Adis),Rset.ASE,Rset.interval)
+	           end
+	        end
+	        if Rset.Fmobnotice == true then
+		         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=887",Rset.FSE,Rset.interval)
+		         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=655",Rset.FSE,Rset.interval)
+	        end
+	        if Rset.Bmobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.ARR.B) do
+		         AHRadarSeNoticeAPI_B("type=2,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Bdis),Rset.BSE,Rset.interval)
+	           end
+	        end
+	     end
 
+	     if Player.localmapid == 397 or Player.localmapid == 401 or Player.localmapid == 402 or Player.localmapid == 398 or
+	 	      Player.localmapid == 400 or Player.localmapid == 399 then
+	        if Rset.Smobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.HW.S) do
+		         AHRadarSeNoticeAPI_S("type=2,aggressive,alive,contentID="..tostring(v),Rset.SSE,Rset.interval)
+	           end
+	        end
+	        if Rset.Amobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.HW.A) do
+		         AHRadarSeNoticeAPI_A("type=2,aggressive,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Adis),Rset.ASE,Rset.interval)
+	           end
+	        end
+	        if Rset.Fmobnotice == true then
+	 	         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=3789",Rset.FSE,Rset.interval)
+	 	         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=3783",Rset.FSE,Rset.interval)
+	        end
+	        if Rset.Bmobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.HW.B) do
+		         AHRadarSeNoticeAPI_B("type=2,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Bdis),Rset.BSE,Rset.interval)
+	           end
+	        end
+	     end
+
+	     if Player.localmapid == 612 or Player.localmapid == 620 or Player.localmapid == 621 or Player.localmapid == 613 or
+	 	      Player.localmapid == 614 or Player.localmapid == 622 then
+	        if Rset.Smobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.StB.S) do
+		         AHRadarSeNoticeAPI_S("type=2,aggressive,alive,contentID="..tostring(v),Rset.SSE,Rset.interval)
+	           end
+	        end
+	        if Rset.Amobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.StB.A) do
+		         AHRadarSeNoticeAPI_A("type=2,aggressive,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Adis),Rset.ASE,Rset.interval)
+	           end
+	        end
+	        if Rset.Fmobnotice == true then
+	 	         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=6395",Rset.FSE,Rset.interval)
+	 	         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=6392",Rset.FSE,Rset.interval)
+	 	         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=6290",Rset.FSE,Rset.interval)
+	        end
+	        if Rset.Bmobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.StB.B) do
+		         AHRadarSeNoticeAPI_B("type=2,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Bdis),Rset.BSE,Rset.interval)
+	           end
+	        end
+	     end
+
+	     if Player.localmapid == 813 or Player.localmapid == 814 or Player.localmapid == 815 or Player.localmapid == 817 or
+	 	      Player.localmapid == 816 or Player.localmapid == 818 then
+	        if Rset.Smobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.S) do
+		         AHRadarSeNoticeAPI_S("type=2,aggressive,alive,contentID="..tostring(v),Rset.SSE,Rset.interval)
+	           end
+	        end
+	        if Rset.Amobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.A) do
+		         AHRadarSeNoticeAPI_A("type=2,aggressive,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Adis),Rset.ASE,Rset.interval)
+	           end
+	        end
+	        if Rset.Fmobnotice == true then
+		         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=8822",Rset.FSE,Rset.interval)
+		         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=8234",Rset.FSE,Rset.interval)
+	        end
+	        if Rset.Bmobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.ShB.B) do
+		         AHRadarSeNoticeAPI_B("type=2,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Bdis),Rset.BSE,Rset.interval)
+	           end
+	        end
+	     end
+
+	     if Player.localmapid == 956 or Player.localmapid == 957 or Player.localmapid == 958 or Player.localmapid == 959 or
+	 	      Player.localmapid == 961 or Player.localmapid == 960 then
+	        if Rset.EWS == true and Rset.Smobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.EW.S) do
+		         AHRadarSeNoticeAPI_S("type=2,aggressive,alive,contentID="..tostring(v),Rset.SSE,Rset.interval)
+	           end
+	        end
+	        if Rset.Amobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.EW.A) do
+		         AHRadarSeNoticeAPI_A("type=2,aggressive,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Adis),Rset.ASE,Rset.interval)
+	           end
+	        end
+	        if Rset.Fmobnotice == true then
+		         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=10269",Rset.FSE,Rset.interval)
+		         AHRadarSeNoticeAPI_F("type=2,aggressive,alive,contentID=10400",Rset.FSE,Rset.interval)
+	        end
+	        if Rset.Bmobnotice == true then
+	           for k,v in pairs(AetheryteHelper.RadarHuntList.EW.B) do
+		         AHRadarSeNoticeAPI_B("type=2,alive,contentID="..tostring(v)..",".."maxdistance="..tostring(Rset.Bdis),Rset.BSE,Rset.interval)
+	           end
+	        end
+	     end
+    end
+  end
+end
+------------------------------------------------------------------------------------------------------------------------
+mushAH_NoticeTIME_P = {}
+function AHRadarSeNoticeAPI_P(str,SE,checktime)
+	  mushAH_RSN_P = MEntityList(str)
+    if table.valid(mushAH_RSN_P) then
+	     for _,e in pairs(mushAH_RSN_P) do
+	     table.insert(mushAH_NoticeTIME_P,os.time())
+	     if #mushAH_NoticeTIME_P > 1 then
+	     table.remove(mushAH_NoticeTIME_P)
+	     end
+	     if tonumber(mushAH_NoticeTIME_P[1]) + checktime < os.time() then
+	           mushAH_NoticeProsess = io.open(ModulePath.."/cash/NoticeProcess.txt")
+	           if mushAH_NoticeProsess ~= nil then
+ 	              mushAH_NoticeProsessNum = mushAH_NoticeProsess:read() mushAH_NoticeProsess:close()
+ 	              io.popen([[start /b powershell -Command "Wait-Process -ID ]]..mushAH_NoticeProsessNum..[[; $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; stop-process -Id $PID"]]):close()
+	           elseif mushAH_NoticeProsess == nil then
+	              io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	           end
+	     mushAH_NoticeTIME_P = {}
+	     end
+	     end
+	  end
+	  return str,SE,checktime
+end
+mushAH_NoticeTIME_B = {}
+function AHRadarSeNoticeAPI_B(str,SE,checktime)
+	  mushAH_RSN_B = MEntityList(str)
+    if table.valid(mushAH_RSN_B) then
+	     for _,e in pairs(mushAH_RSN_B) do
+	     table.insert(mushAH_NoticeTIME_B,os.time())
+	     if #mushAH_NoticeTIME_B > 1 then
+	     table.remove(mushAH_NoticeTIME_B)
+	     end
+	     if tonumber(mushAH_NoticeTIME_B[1]) + checktime < os.time() then
+	  	       mushAH_NoticeProsess = io.open(ModulePath.."/cash/NoticeProcess.txt")
+	           if mushAH_NoticeProsess ~= nil then
+ 	              mushAH_NoticeProsessNum = mushAH_NoticeProsess:read() mushAH_NoticeProsess:close()
+ 	              io.popen([[start /b powershell -Command "Wait-Process -ID ]]..mushAH_NoticeProsessNum..[[; $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; stop-process -Id $PID"]]):close()
+	           elseif mushAH_NoticeProsess == nil then
+	              io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	           end
+	     mushAH_NoticeTIME_B = {}
+	     end
+	     end
+	  end
+	  return str,SE,checktime
+end
+mushAH_NoticeTIME_A = {}
+function AHRadarSeNoticeAPI_A(str,SE,checktime)
+	  mushAH_RSN_A = MEntityList(str)
+    if table.valid(mushAH_RSN_A) then
+	     for _,e in pairs(mushAH_RSN_A) do
+	     table.insert(mushAH_NoticeTIME_A,os.time())
+	     if #mushAH_NoticeTIME_A > 1 then
+	     table.remove(mushAH_NoticeTIME_A)
+	     end
+	     if tonumber(mushAH_NoticeTIME_A[1]) + checktime < os.time() then
+	  	       mushAH_NoticeProsess = io.open(ModulePath.."/cash/NoticeProcess.txt")
+	           if mushAH_NoticeProsess ~= nil then
+ 	              mushAH_NoticeProsessNum = mushAH_NoticeProsess:read() mushAH_NoticeProsess:close()
+ 	              io.popen([[start /b powershell -Command "Wait-Process -ID ]]..mushAH_NoticeProsessNum..[[; $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; stop-process -Id $PID"]]):close()
+	           elseif mushAH_NoticeProsess == nil then
+	              io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	           end
+	     mushAH_NoticeTIME_A = {}
+	     end
+	     end
+	  end
+    return str,SE,checktime
+end
+mushAH_NoticeTIME_S = {}
+function AHRadarSeNoticeAPI_S(str,SE,checktime)
+	  mushAH_RSN_S = MEntityList(str)
+    if table.valid(mushAH_RSN_S) then
+	     for _,e in pairs(mushAH_RSN_S) do
+	     table.insert(mushAH_NoticeTIME_S,os.time())
+	     if #mushAH_NoticeTIME_S > 1 then
+	     table.remove(mushAH_NoticeTIME_S)
+	     end
+	     if tonumber(mushAH_NoticeTIME_S[1]) + checktime < os.time() then
+	           mushAH_NoticeProsess = io.open(ModulePath.."/cash/NoticeProcess.txt")
+	           if mushAH_NoticeProsess ~= nil then
+ 	              mushAH_NoticeProsessNum = mushAH_NoticeProsess:read() mushAH_NoticeProsess:close()
+ 	              io.popen([[start /b powershell -Command "Wait-Process -ID ]]..mushAH_NoticeProsessNum..[[; $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; stop-process -Id $PID"]]):close()
+	           elseif mushAH_NoticeProsess == nil then
+	              io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	           end
+	     mushAH_NoticeTIME_S = {}
+	     end
+	     end
+	  end
+    return str,SE,checktime,distance
+end
+mushAH_NoticeTIME_F = {}
+function AHRadarSeNoticeAPI_F(str,SE,checktime)
+    mushAH_RSN_F = MEntityList(str)
+    if table.valid(mushAH_RSN_F) then
+	     for _,e in pairs(mushAH_RSN_F) do
+	     table.insert(mushAH_NoticeTIME_F,os.time())
+	     if #mushAH_NoticeTIME_F > 1 then
+	     table.remove(mushAH_NoticeTIME_F)
+	     end
+	     if tonumber(mushAH_NoticeTIME_F[1]) + checktime < os.time() then
+	  	       mushAH_NoticeProsess = io.open(ModulePath.."/cash/NoticeProcess.txt")
+	           if mushAH_NoticeProsess ~= nil then
+ 	              mushAH_NoticeProsessNum = mushAH_NoticeProsess:read() mushAH_NoticeProsess:close()
+ 	              io.popen([[start /b powershell -Command "Wait-Process -ID ]]..mushAH_NoticeProsessNum..[[; $player = New-Object Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; stop-process -Id $PID"]]):close()
+	           elseif mushAH_NoticeProsess == nil then
+	              io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\NoticeProcess.txt' -Value $PID; $player = New-Object System.Media.SoundPlayer; $player.SoundLocation = ']]..ModulePath..[[\AHwavFiles\]]..SE..[['; $player.Load(); $player.PlaySync(); stop-process -Id $PID"]]):close()
+	           end
+	     mushAH_NoticeTIME_F = {}
+	     end
+	     end
+	  end
+    return str,SE,checktime
+end
+------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.mushTextCommands()
 	local log = GetChatLines()
@@ -22507,36 +23704,64 @@ if AHSET.AutoUpdate == true then
  	end
 end
 
+mushAH_AutoUPdatestep = 0
+mushAH_AutoUPdatetimer = os.time()
+
 function AetheryteHelper.AutoUpdate()
-	local step = 0
 	mushlooptimer = 1000
-	io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value 'Progress'; stop-process -Id $PID"]]):close()
-  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].name; Invoke-WebRequest -Uri https://github.com/mushroom8009/AetheryteHelper/releases/download/$tag/AetheryteHelper_$name.zip -OutFile ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip'; Expand-Archive ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -DestinationPath ']] ..LuaPath.. [[' -Force; Remove-Item ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -Force; "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value 'success'; stop-process -Id $PID"]]):close()
---io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\version_info\nowversion.txt' -Value 'v]]..kinokoProject.Addon.Version..[['; stop-process -Id $PID"]]):close()
-  table.insert(AetheryteHelper.UpdateTimeSince,GetEorzeaTime().servertime)
- 	if #AetheryteHelper.UpdateTimeSince > 1 then
- 		  table.remove(AetheryteHelper.UpdateTimeSince)
- 	end
- 	if tonumber(AetheryteHelper.UpdateTimeSince[1]) + 30 < GetEorzeaTime().servertime then
- 	  if step == 0 then
- 	  local zip = io.open(ModulePath.."cash/cash.txt")
- 	    if zip ~= nil then
- 	        ziptext = zip:read() zip:close()
- 	        if ziptext == "Progress" then
- 	  	    step = 0
- 	        else
- 	        step = 1
- 	        end
- 	    end
- 	  end
- 	  if step == 1 then
- 	    if ziptext == "success" and mushVC == nil and mushVUP == nil then
-      io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()
-      mushVUP = true
-      AetheryteHelper.UpdateTimeSince = {}
-      end
-    end
+	mushAH_AutoUpdate_Status_Progress = "Progress"
+	mushAH_AutoUpdate_Status_success = "success"
+  if mushAH_AutoUPdatefunc == true then
+  if mushAH_AutoUPdatestep == 0 then
+	   io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value ']]..mushAH_AutoUpdate_Status_Progress..[['; stop-process -Id $PID"]]):close()
+	   mushAH_AutoUPdatestep = 1 
+	end
+	
+	if mushAH_AutoUPdatestep == 1 then
+	   mushAH_zip = io.open(ModulePath.."/cash/cash.txt")
+	   if mushAH_zip ~= nil then
+ 	   mushAH_ziptextP = mushAH_zip:read() mushAH_zip:close()
+ 	     if tostring(mushAH_ziptextP) == "Progress" then	
+	        mushAH_AutoUPdatestep = 2
+	     else
+	        mushAH_AutoUPdatestep = 0
+	     end
+	   end
+	end
+	
+	if mushAH_AutoUPdatestep == 2 then
+     io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $tag = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].tag_name; $name = (Invoke-WebRequest -Uri https://api.github.com/repos/mushroom8009/AetheryteHelper/releases -UseBasicParsing | ConvertFrom-Json)[0].name; Invoke-WebRequest -Uri https://github.com/mushroom8009/AetheryteHelper/releases/download/$tag/AetheryteHelper_$name.zip -OutFile ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip'; Expand-Archive ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -DestinationPath ']] ..LuaPath.. [[' -Force; Remove-Item ']] ..ModulePath.. [[cash\AetheryteHelper_$name.zip' -Force; stop-process -Id $PID"]]):close()
+     mushAH_AutoUPdatetimer = os.time() + 60
+     mushAH_AutoUPdatestep = 3
+  end     
+  
+  if mushAH_AutoUPdatestep == 3 then
+     io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value ']]..mushAH_AutoUpdate_Status_success..[['; stop-process -Id $PID"]]):close()
+     mushAH_AutoUPdatestep = 4
   end
+  
+  if mushAH_AutoUPdatestep == 4 then
+     if mushAH_AutoUPdatetimer <= os.time() then
+        mushAH_zip = io.open(ModulePath.."/cash/cash.txt")
+	   if mushAH_zip ~= nil then
+ 	      mushAH_ziptextS = mushAH_zip:read() mushAH_zip:close()
+ 	      if tostring(mushAH_ziptextS) == "success" then
+	         mushAH_AutoUPdatestep = 5
+	      else
+	         mushAH_AutoUPdatestep = 3
+	      end
+	   end
+	   end
+  end
+ 	
+ 	if mushAH_AutoUPdatestep == 5 then
+ 	   AetheryteHelper.UpdateTimeSince = {}
+     io.popen([[cmd /c start "" "]]..AHLinks.link3..[["]]):close()	        
+ 	   mushVUP = true
+ 	   mushAH_AutoUPdatefunc = false
+ 	end
+  end
+
 end
 
 function AetheryteHelper.VersionCheck()
@@ -22601,6 +23826,8 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.itemsortB()
 			AetheryteHelper.AutoLegacy()
 			AetheryteHelper.TreasureMapAssist()
+			AetheryteHelper.AutoUpdate()
+			AetheryteHelper.R_SE_notification()
 			AetheryteHelper.Jumbocactpothelper()
 
 		end
@@ -22618,6 +23845,7 @@ RegisterEventHandler("Module.Initalize",AetheryteHelper.ModuleInit,"AetheryteHel
 RegisterEventHandler("Gameloop.Draw", AetheryteHelper.DrawCall,"AetheryteHelper.DrawCall")
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.mushMaintool,"AetheryteHelper.mushMaintool")
 RegisterEventHandler("Gameloop.Update", AetheryteHelper.mushsubtool,"AetheryteHelper.mushsubtool")
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
