@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.7.5",
-	  tag = 2022051314,--y0000m00d00h00
+	  Version =         "1.8.7.6",
+	  tag = 2022051401,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -135,6 +135,7 @@ local kinokoProject = {
             "          add sound notification in Radar",
             "[1.8.7.1] - bug fix",
             "[1.8.7.5] - add TargetMe Recorder",
+            "[1.8.7.6] - bug fix & bug fix",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -1794,12 +1795,12 @@ mushtooltips = {
      tip262 = "Wiedergabezyklus des Benachrichtigungstons (Sekunden)",
      tip263 = "Einstellungen für Benachrichtigungstöne",
      tip264 = "Lade die wav-Datei mit den Schaltflächen auf der linken Seite",
-     tip265 = "Zeichnen Sie auf, wer Sie beobachtet hat",
-		 tip266 = "Innerhalb dieses Zeitraums (Minuten) wird nicht dieselbe Person nacheinander erfasst",
-		 tip267 = "Einige Informationen in Textform speichern",
-		 tip268 = "Öffnen Sie die Lodestone-Seite des Charakters\n(Die Suche dauert ein paar Sekunden)",
-		 tip269 = "Überprüfen Sie den Standort der anderen Partei",
-		 tip270 = "Gesamten Verlauf löschen\nKlicken mit der rechten Maustaste auf einen Namen, um ihn einzeln zu löschen",
+     tip265 = "Zeichne auf, wer dich beobachtet",
+     tip266 = "Innerhalb dieses Zeitraums (Minuten) wird dieselbe Person nicht nochmals erfasst",
+     tip267 = "Einige Informationen in Textform speichern",
+     tip268 = "Öffnet die Lodestone-Seite des Charakters\n(Die Suche dauert ein paar Sekunden)",
+     tip269 = "Überprüfe den Standort des anderen Spielers",
+     tip270 = "Gesamten Verlauf löschen\nKlicke mit der rechten Maustaste auf einen Namen, um ihn einzeln zu löschen",
   
   },
   cn = {
@@ -10860,8 +10861,9 @@ function AetheryteHelper.TargetMeWin()
 	   GUI:ImageButton("###log"..k,ImageFolder..[[CB_edit.png]], 25,25)
 	   if GUI:IsItemHovered() then
 	   	 if GUI:IsItemClicked(0) then
+	   	 	mushAH_TMEREC_log_name = v[1]:gsub(" ","_")
 	   	 	mushAH_TMEREC_logcontents = tostring(v[3].."---- Area:["..GetMapName(v[2]).."] Name:["..v[1].."] HomeWorld:["..mushAH_TMEREC_wroldname.."] Job:"..mushAH_TMEREC_job.." Lv:"..v[11])
-        io.popen([[start /b powershell -Command "Set-Content -Encoding UTF8 -Path ']] ..ModulePath.. [[\log\log_]]..os.date("%Y-%m-%d_%H_%M_%S")..[[.txt' -Value ']]..mushAH_TMEREC_logcontents..[['; stop-process -Id $PID"]]):close()
+        io.popen([[start /b powershell -Command "Set-Content -Encoding UTF8 -Path ']] ..ModulePath.. [[\log\log_]]..mushAH_TMEREC_log_name..os.date("--%Y-%m-%d_%H_%M_%S")..[[.txt' -Value ']]..mushAH_TMEREC_logcontents..[['; stop-process -Id $PID"]]):close()
 	   	 end
 	   	 AetheryteHelper.SetToolTips(mJTp.tip267,mETp.tip267,mDTp.tip267,mFTp.tip267,mCTp.tip267,mKTp.tip267)
 	   end
@@ -14320,12 +14322,14 @@ function AetheryteHelper.subtoolGC()
 	 		AHSET.selectGC = GUI:Combo("###GC",Player.GrandCompany,mushGCKR,1)
 	 end
 	 if Player.GrandCompany == 0 then
-	 AHSET.selectGC = GUI:Combo("###",4,mushGCEN,1) end
+	 AHSET.selectGC,changed = GUI:Combo("###",4,mushGCEN,1) end
+	 if changed then
 	 AetheryteHelper.SaveSettings()
-	 if (GUI:IsItemHovered()) then
-		  AetheryteHelper.SetToolTips(mJTp.tip84,mETp.tip84,mDTp.tip84,mFTp.tip84,mCTp.tip84,mKTp.tip84)
 	 end
 	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+		  AetheryteHelper.SetToolTips(mJTp.tip84,mETp.tip84,mDTp.tip84,mFTp.tip84,mCTp.tip84,mKTp.tip84)
+	 end
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 if AHSET.selectGC == 1 then
@@ -14345,22 +14349,22 @@ function AetheryteHelper.subtoolGC()
 	 mushGseals  = nil end
 
 	 for k,v in pairs(mushPlayerGCrank) do
-	 if (k == Player.GrandCompanyRank) then mushmaxseal = v
-	 if mushGseals == nil then
-	 GUI:SameLine()
-	 GUI:TextColored(1,1,1,.8,"0/"..mushmaxseal.max)
-	 elseif mushGseals.count == mushmaxseal.max then
-	 GUI:SameLine()
-	 GUI:TextColored(1,0,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
-	 elseif mushGseals.count < mushmaxseal.max/2 then
-	 GUI:SameLine()
-	 GUI:TextColored(0,1,1,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
-	 elseif mushGseals.count ~= mushmaxseal.max then
-	 GUI:SameLine()
-	 GUI:TextColored(1,1,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
-	 elseif Player.GrandCompany == 0 then GUI:Text("GCseals:---/---")
-	 end
-	 end
+	   if (k == Player.GrandCompanyRank) then mushmaxseal = v
+	      if mushGseals == nil then
+	      GUI:SameLine()
+	      GUI:TextColored(1,1,1,.8,"0/"..mushmaxseal.max)
+	      elseif mushGseals.count == mushmaxseal.max then
+	      GUI:SameLine()
+	      GUI:TextColored(1,0,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+	      elseif mushGseals.count < mushmaxseal.max/2 then
+	      GUI:SameLine()
+	      GUI:TextColored(0,1,1,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+	      elseif mushGseals.count ~= mushmaxseal.max then
+	      GUI:SameLine()
+	      GUI:TextColored(1,1,0,.8,tostring(mushGseals.count).."/"..mushmaxseal.max)
+	      elseif Player.GrandCompany == 0 then GUI:Text("GCseals:---/---")
+	      end
+	   end
 	 end
 	 GUI:EndGroup()
 	 GUI:Spacing()
@@ -14377,19 +14381,6 @@ function AetheryteHelper.subtoolGC()
 			  elseif AHSET.selectGC == 4 then
 			  GUI:Image(ImageFolder..[[GClock.png]],40,40)
 			  end
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  mushEXstep = 0
-			  GCexchange = not GCexchange
-			  sealstoitem = false
-			  if mushTrustmode == true then GCexchange = false end
-			  if Player.GrandCompanyRank < 6 then GCexchange = false end
-			  if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
-			  AHSET.isSalvageEnabled = false
-			  AetheryteHelper.SaveSettings()
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip87,mETp.tip87,mDTp.tip87,mFTp.tip87,mCTp.tip87,mKTp.tip87)
-			  end
 	 elseif GCexchange == false then
 			  GUI:SameLine(10,-40)
 			  if AHSET.selectGC == 1 then
@@ -14400,48 +14391,41 @@ function AetheryteHelper.subtoolGC()
 			  GUI:Image(ImageFolder..[[exchange_ulu_non.png]],40,40)
 			  elseif AHSET.selectGC == 4 then
 			  GUI:Image(ImageFolder..[[GClock.png]],40,40)
-			  end
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  mushEXstep = 0
-			  GCexchange = not GCexchange
-			  sealstoitem = false
-			  if mushTrustmode == true then GCexchange = false end
-			  if Player.GrandCompanyRank < 6 then GCexchange = false end
-			  if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
-			  AHSET.isSalvageEnabled = false
-			  AetheryteHelper.SaveSettings()
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip87,mETp.tip87,mDTp.tip87,mFTp.tip87,mCTp.tip87,mKTp.tip87)
-			  end
+			  end		  
 	 end
 	  GUI:EndGroup()
+	    if GUI:IsItemHovered() then
+			     if GUI:IsItemClicked(0) then
+			     mushEXstep = 0
+			     GCexchange = not GCexchange
+			     sealstoitem = false
+			     if mushTrustmode == true then GCexchange = false end
+			     if Player.GrandCompanyRank < 6 then GCexchange = false end
+			     if tonumber(mushGseals.count) == tonumber(mushmaxseal.max) then GCexchange = false end
+			     AHSET.isSalvageEnabled = false
+			     AetheryteHelper.SaveSettings()
+			     end
+			     AetheryteHelper.SetToolTips(mJTp.tip87,mETp.tip87,mDTp.tip87,mFTp.tip87,mCTp.tip87,mKTp.tip87)
+			end
+
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Dummy(40,40)
 	  if AutoMoveGC == true then
 		   GUI:SameLine(10,-40)
 		   GUI:Image(ImageFolder..[[moveGC.png]],40,40)
-		   if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+	  elseif AutoMoveGC == false then
+		   GUI:SameLine(10,-40)
+		   GUI:Image(ImageFolder..[[moveGC_non.png]],40,40)
+	  end
+	  GUI:EndGroup()
+	   if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AutoMoveGC = not AutoMoveGC
 			  Player:Stop()
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip88,mETp.tip88,mDTp.tip88,mFTp.tip88,mCTp.tip88,mKTp.tip88)
-		   end
-	  elseif AutoMoveGC == false then
-		   GUI:SameLine(10,-40)
-		   GUI:Image(ImageFolder..[[moveGC_non.png]],40,40)
-		   if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  AutoMoveGC = not AutoMoveGC
-			  AHSET.isSalvageEnabled = false
-			  AetheryteHelper.SaveSettings()
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip88,mETp.tip88,mDTp.tip88,mFTp.tip88,mCTp.tip88,mKTp.tip88)
-		   end
-	  end
-	  GUI:EndGroup()
+		 end
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[close.png]],20,20)
@@ -14461,46 +14445,34 @@ function AetheryteHelper.subtoolGC()
 	  if AHSET.GCexlessmax == true then
 		   GUI:SameLine(10,-40)
 		   GUI:Image(ImageFolder..[[lessmax.png]],40,40)
-		   if (GUI:IsItemHovered()) then
-		   if (GUI:IsMouseClicked(0)) then
-		   AHSET.GCexlessmax = not AHSET.GCexlessmax
-		   end
-			  AetheryteHelper.SetToolTips(mJTp.tip90,mETp.tip90,mDTp.tip90,mFTp.tip90,mCTp.tip90,mKTp.tip90)
-		   end
 	  elseif AHSET.GCexlessmax == false then
 		   GUI:SameLine(10,-40)
 		   GUI:Image(ImageFolder..[[lessmax_non.png]],40,40)
-		   if (GUI:IsItemHovered()) then
-		   if (GUI:IsMouseClicked(0)) then
-		   AHSET.GCexlessmax = not AHSET.GCexlessmax
-		   end
-			  AetheryteHelper.SetToolTips(mJTp.tip90,mETp.tip90,mDTp.tip90,mFTp.tip90,mCTp.tip90,mKTp.tip90)
-		   end
 	  end
 	  GUI:EndGroup()
+	  if (GUI:IsItemHovered()) then
+		   if (GUI:IsItemClicked(0)) then
+		   AHSET.GCexlessmax = not AHSET.GCexlessmax
+		   end
+		   AetheryteHelper.SetToolTips(mJTp.tip90,mETp.tip90,mDTp.tip90,mFTp.tip90,mCTp.tip90,mKTp.tip90)
+		end
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Dummy(40,40)
 	  if Remateria == true then
 		   GUI:SameLine(10,-40)
-		   GUI:Image(ImageFolder..[[remate.png]],40,40)
-		   if (GUI:IsItemHovered()) then
-		   if (GUI:IsMouseClicked(0)) then
-		   Remateria = not Remateria
-		   end
-			  AetheryteHelper.SetToolTips(mJTp.tip91,mETp.tip91,mDTp.tip91,mFTp.tip91,mCTp.tip91,mKTp.tip91)
-		   end
+		   GUI:Image(ImageFolder..[[remate.png]],40,40)	   
 	  elseif Remateria == false then
 		   GUI:SameLine(10,-40)
 		   GUI:Image(ImageFolder..[[remate_non.png]],40,40)
-		   if (GUI:IsItemHovered()) then
-		   if (GUI:IsMouseClicked(0)) then
-		   Remateria = not Remateria
-		   end
-			  AetheryteHelper.SetToolTips(mJTp.tip91,mETp.tip91,mDTp.tip91,mFTp.tip91,mCTp.tip91,mKTp.tip91)
-		   end
 	  end
 	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+		   if GUI:IsItemClicked(0) then
+		   Remateria = not Remateria
+		   end
+		   AetheryteHelper.SetToolTips(mJTp.tip91,mETp.tip91,mDTp.tip91,mFTp.tip91,mCTp.tip91,mKTp.tip91)
+		end
 	  GUI:Spacing()
 	  GUI:Separator()
 	  GUI:BeginGroup()
@@ -14512,7 +14484,7 @@ function AetheryteHelper.subtoolGC()
 	  GUI:SameLine()
 	  if Remateria == true then GUI:Text("[RM]:ON") else GUI:Text("[RM]:OFF") end
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip103,mETp.tip103,mDTp.tip103,mFTp.tip103,mCTp.tip103,mKTp.tip103)
 	  end
 	  GUI:Separator()
@@ -14527,99 +14499,88 @@ function AetheryteHelper.GCtrunin()
 	  GUI:Image(ImageFolder..[[repair.png]],20,20)
 	  GUI:SameLine()
 	  GUI:PushItemWidth(80)
-	  AHSET.mushrepairGear = GUI:InputInt("%",AHSET.mushrepairGear,1,1000)
+	  AHSET.mushrepairGear,changed = GUI:InputInt("%",AHSET.mushrepairGear,1,1000)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.mushrepairGear < 1 then AHSET.mushrepairGear = 99 end
 	  if AHSET.mushrepairGear > 99 then AHSET.mushrepairGear = 1 end
-	  if (GUI:IsItemHovered()) then
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip25,mETp.tip25,mDTp.tip25,mFTp.tip25,mCTp.tip25,mKTp.tip25)
-	 end
-	 GUI:EndGroup()
-	 GUI:SameLine()
-	 GUI:BeginGroup()
-	 GUI:Text("Status:")
-	 GUI:SameLine()
-	 if Dawncloser == false then
-	 GUI:Text("Que wait")
-	 elseif Dawncloser == true and GCexchangeT == true and Duty:IsQueued() == false then
-	 GUI:TextColored(0,1,0,1,"Exchange")
-	 elseif Dawncloser == true and sealstoitemT == true and Duty:IsQueued() == false then
-	 GUI:TextColored(0,1,0,1,"Trun in")
-	 elseif Dawncloser == nil then
-	 GUI:Text("standby")
-	 else
-	 GUI:Text("standby")
-	 end
-	 GUI:EndGroup()
-	 GUI:Spacing()
-	 end
-	 GUI:Separator()
-	 GUI:Columns(2)
-	 GUI:SetColumnOffset(1,80)
-	 GUI:BeginGroup()
-	 GUI:Dummy(40,40)
-	 if sealstoitem == true then
-		 GUI:SameLine(10,-40)
-		 if AHSET.selectGC == 1 then
-		 GUI:Image(ImageFolder..[[TIsealslim.png]],40,40)
-		 elseif AHSET.selectGC == 2 then
-		 GUI:Image(ImageFolder..[[TIsealsgri.png]],40,40)
-		 elseif AHSET.selectGC == 3 then
-		 GUI:Image(ImageFolder..[[TIsealsul.png]],40,40)
-		 elseif AHSET.selectGC == 4 then
-		 GUI:Image(ImageFolder..[[TIseal_non.png]],40,40)
-		 end
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
-			sealstoitem = not sealstoitem
-			GCexchange = false
-			mushtoItemstep = 0
-			end
-			  AetheryteHelper.SetToolTips(mJTp.tip75,mETp.tip75,mDTp.tip75,mFTp.tip75,mCTp.tip75,mKTp.tip75)
-		 end
+	  end
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Text("Status:")
+	  GUI:SameLine()
+	  if Dawncloser == false then
+	  GUI:Text("Que wait")
+	  elseif Dawncloser == true and GCexchangeT == true and Duty:IsQueued() == false then
+	  GUI:TextColored(0,1,0,1,"Exchange")
+	  elseif Dawncloser == true and sealstoitemT == true and Duty:IsQueued() == false then
+	  GUI:TextColored(0,1,0,1,"Trun in")
+	  elseif Dawncloser == nil then
+	  GUI:Text("standby")
+	  else
+	  GUI:Text("standby")
+	  end
+	  GUI:EndGroup()
+	  GUI:Spacing()
+	  end
+	  GUI:Separator()
+	  GUI:Columns(2)
+	  GUI:SetColumnOffset(1,80)
+	  GUI:BeginGroup()
+	  GUI:Dummy(40,40)
+	  if sealstoitem == true then
+		  GUI:SameLine(10,-40)
+		  if AHSET.selectGC == 1 then
+		  GUI:Image(ImageFolder..[[TIsealslim.png]],40,40)
+		  elseif AHSET.selectGC == 2 then
+		  GUI:Image(ImageFolder..[[TIsealsgri.png]],40,40)
+		  elseif AHSET.selectGC == 3 then
+		  GUI:Image(ImageFolder..[[TIsealsul.png]],40,40)
+		  elseif AHSET.selectGC == 4 then
+		  GUI:Image(ImageFolder..[[TIseal_non.png]],40,40)
+		  end
 	 elseif sealstoitem == false then
-		 GUI:SameLine(10,-40)
-		 GUI:Image(ImageFolder..[[TIseals_non.png]],40,40)
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
-			sealstoitem = not sealstoitem
-			GCexchange = false
-			mushtoItemstep = 0
-			end
-			  AetheryteHelper.SetToolTips(mJTp.tip75,mETp.tip75,mDTp.tip75,mFTp.tip75,mCTp.tip75,mKTp.tip75)
-		 end
+		  GUI:SameLine(10,-40)
+		  GUI:Image(ImageFolder..[[TIseals_non.png]],40,40)
 	 end
 	 if mushTrustmode == true then sealstoitem = false end
 	 GUI:EndGroup()
+	 if (GUI:IsItemHovered()) then
+			if (GUI:IsItemClicked(0)) then
+			sealstoitem = not sealstoitem
+			GCexchange = false
+			mushtoItemstep = 0
+			end
+			AetheryteHelper.SetToolTips(mJTp.tip75,mETp.tip75,mDTp.tip75,mFTp.tip75,mCTp.tip75,mKTp.tip75)
+	 end
 	 GUI:BeginGroup()
 	 GUI:Dummy(40,40)
 	 if mushTrustmode == true then
 		 GUI:SameLine(10,-40)
 		 GUI:Image(ImageFolder..[[GCtrust.png]],40,40)
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
-			mushTrustmode = not mushTrustmode
-			end
-			  AetheryteHelper.SetToolTips(mJTp.tip26,mETp.tip26,mDTp.tip26,mFTp.tip26,mCTp.tip26,mKTp.tip26)
-		 end
 	 elseif mushTrustmode == false then
 		 GUI:SameLine(10,-40)
 		 GUI:Image(ImageFolder..[[GCtrust_non.png]],40,40)
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
-			mushTrustmode = not mushTrustmode
-			end
-			  AetheryteHelper.SetToolTips(mJTp.tip26,mETp.tip26,mDTp.tip26,mFTp.tip26,mCTp.tip26,mKTp.tip26)
-		 end
 	 end
 	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
+			mushTrustmode = not mushTrustmode
+			end
+			AetheryteHelper.SetToolTips(mJTp.tip26,mETp.tip26,mDTp.tip26,mFTp.tip26,mCTp.tip26,mKTp.tip26)
+	 end
 	 GUI:NextColumn()
 	 GUI:Spacing()
 	 GUI:BeginGroup()
 	 GUI:Text("Start amount")
-	 if (GUI:IsItemHovered()) then
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip77,mETp.tip77,mDTp.tip77,mFTp.tip77,mCTp.tip77,mKTp.tip77)
 	 end
-	 GUI:EndGroup()
 	 GUI:Dummy(1,20)
 	 GUI:SameLine()
 	 GUI:BeginGroup()
@@ -14636,42 +14597,39 @@ function AetheryteHelper.GCtrunin()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(100)
-	 AHSET.syojigunpyou = GUI:InputInt("###seals",AHSET.syojigunpyou,100,10000)
+	 AHSET.syojigunpyou,changed = GUI:InputInt("###seals",AHSET.syojigunpyou,100,10000)
+	 if changed then
 	 AetheryteHelper.SaveSettings()
-	 if (GUI:IsItemHovered()) then
-			  AetheryteHelper.SetToolTips(mJTp.tip78,mETp.tip78,mDTp.tip78,mFTp.tip78,mCTp.tip78,mKTp.tip78)
 	 end
 	 for k,v in pairs(mushPlayerGCrank) do
-	 if (k == Player.GrandCompanyRank) then mushmaxseal = v
+	    if (k == Player.GrandCompanyRank) then
+	    mushmaxseal = v
+	    end
+	 end
 	 if AHSET.syojigunpyou < 1 then AHSET.syojigunpyou = tonumber(mushmaxseal.max) end
 	 if AHSET.syojigunpyou > tonumber(mushmaxseal.max) then AHSET.syojigunpyou = tonumber(mushmaxseal.max) end
 	 if mushTrustmode == true then AHSET.syojigunpyou = tonumber(mushmaxseal.max)*0.95 end
-	 end
-	 end
 	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+			AetheryteHelper.SetToolTips(mJTp.tip78,mETp.tip78,mDTp.tip78,mFTp.tip78,mCTp.tip78,mKTp.tip78)
+	 end
 	 GUI:Spacing()
 	 GUI:BeginGroup()
 	 GUI:Dummy(20,20)
 	 if mushadjustoff == true then
 	  GUI:SameLine(5,-20)
 	  GUI:Image(ImageFolder..[[LB.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			   if (GUI:IsMouseClicked(0)) then
-			   mushadjustoff = not mushadjustoff
-			   end
-			  AetheryteHelper.SetToolTips(mJTp.tip76,mETp.tip76,mDTp.tip76,mFTp.tip76,mCTp.tip76,mKTp.tip76)
-			end
 	 elseif mushadjustoff == false then
 	  GUI:SameLine(5,-20)
 	  GUI:Image(ImageFolder..[[LB_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			   if (GUI:IsMouseClicked(0)) then
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+			   if GUI:IsItemClicked(0) then
 			   mushadjustoff = not mushadjustoff
 			   end
          AetheryteHelper.SetToolTips(mJTp.tip76,mETp.tip76,mDTp.tip76,mFTp.tip76,mCTp.tip76,mKTp.tip76)
 			end
-	 end
-	 GUI:EndGroup()
 	 GUI:SameLine()
 	 GUI:AlignFirstTextHeightToWidgets()
 	 GUI:BeginGroup()
@@ -14680,55 +14638,48 @@ function AetheryteHelper.GCtrunin()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(80)
-	 AHSET.hosiikazu = GUI:InputInt("###Quantity",AHSET.hosiikazu,1,10000)
-	 AetheryteHelper.SaveSettings()
-	 if (GUI:IsItemHovered()) then
-			  AetheryteHelper.SetToolTips(mJTp.tip79,mETp.tip79,mDTp.tip79,mFTp.tip79,mCTp.tip79,mKTp.tip79)
+	 AHSET.hosiikazu,changed = GUI:InputInt("###Quantity",AHSET.hosiikazu,1,10000)
+	 if changed then
+	    AetheryteHelper.SaveSettings()
 	 end
 	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+			AetheryteHelper.SetToolTips(mJTp.tip79,mETp.tip79,mDTp.tip79,mFTp.tip79,mCTp.tip79,mKTp.tip79)
+	 end
 	 GUI:AlignFirstTextHeightToWidgets()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(170)
 	 if AuL.JP == true then 
-	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
-	 		AetheryteHelper.SaveSettings()
+	 	  AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
 	 elseif AuL.EN == true then 
-	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
-	 		AetheryteHelper.SaveSettings()
+	 	  AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
 	 elseif AuL.DE == true then 
-	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
-	 		AetheryteHelper.SaveSettings()
+	 	  AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
 	 elseif AuL.FR == true then 
-	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
-	 		AetheryteHelper.SaveSettings()
+	 	  AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
 	 elseif AuL.CN == true then 
-	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Cn,5)
-	 		AetheryteHelper.SaveSettings()
+	 	  AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Cn,5)
 	 elseif AuL.KR == true then 
-	 	  AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Kr,5)
-	 		AetheryteHelper.SaveSettings()
+	 	  AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Kr,5)
 	 elseif language == 0 and gRegion == 1 then
-	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
-	 		AetheryteHelper.SaveSettings()
+	 		AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.jp,5)
 	 elseif language == 1 and gRegion == 1 then
-	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
-	 		AetheryteHelper.SaveSettings()
+	 		AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.En,5)
 	 elseif language == 2 and gRegion == 1 then
-	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
-	 		AetheryteHelper.SaveSettings()
+	 		AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.De,5)
 	 elseif language == 3 and gRegion == 1 then
-	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
-	 		AetheryteHelper.SaveSettings()
+	 		AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Fr,5)
 	 elseif gRegion == 2 then
-	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Cn,5)
-	 		AetheryteHelper.SaveSettings()
+	 		AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Cn,5)
 	 elseif gRegion == 3 then
-	 		AHSET.koukanhin = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Kr,5)
-	 		AetheryteHelper.SaveSettings()
+	 		AHSET.koukanhin,changed = GUI:Combo("",AHSET.koukanhin,GCexchangeItems.Kr,5)
+	 end
+	 if changed then
+	    AetheryteHelper.SaveSettings()
 	 end
 	 GUI:EndGroup()
-	 if (GUI:IsItemHovered()) then
-			  AetheryteHelper.SetToolTips(mJTp.tip80,mETp.tip80,mDTp.tip80,mFTp.tip80,mCTp.tip80,mKTp.tip80)
+	 if GUI:IsItemHovered() then
+		  AetheryteHelper.SetToolTips(mJTp.tip80,mETp.tip80,mDTp.tip80,mFTp.tip80,mCTp.tip80,mKTp.tip80)
 	 end
 	 GUI:Spacing()
 	 if AHSET.koukanhin == 1 and Player.GrandCompanyRank < 1 then
@@ -14797,16 +14748,16 @@ function AetheryteHelper.GCtrunin()
 	 end
 
 
-	 GUI:BeginGroup()
-	 GUI:TextColored(1,1,0,1,"COST:"..mushcost)
-	 GUI:EndGroup()
-	 GUI:SameLine(100)
-	 GUI:BeginGroup()
-	 GUI:TextColored(1,0,0,1,mushcost * AHSET.hosiikazu.."/"..0)
-	 GUI:EndGroup()
-	 if (GUI:IsItemHovered()) then
+	    GUI:BeginGroup()
+	    GUI:TextColored(1,1,0,1,"COST:"..mushcost)
+	    GUI:EndGroup()
+	    GUI:SameLine(100)
+	    GUI:BeginGroup()
+	    GUI:TextColored(1,0,0,1,mushcost * AHSET.hosiikazu.."/"..0)
+	    GUI:EndGroup()
+	    if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip81,mETp.tip81,mDTp.tip81,mFTp.tip81,mCTp.tip81,mKTp.tip81)
-	 end
+	    end
 	 end
 	 mushitemid = GCexchangeItems.id[AHSET.koukanhin]
 	 mushhosiikazu = AHSET.hosiikazu
@@ -15000,7 +14951,6 @@ function AetheryteHelper.SVRSelectermini()
 	  GUI:NextColumn()
 	  --GUI:Text("World select")
 	  AetheryteHelper.Origin()
-			AetheryteHelper.SaveSettings()
 			MushmoveServerlist = Origin_list
 			for k, v in pairs(MushmoveServerlist) do
 				local templist = MushmoveServerlist
@@ -15063,7 +15013,6 @@ end
 
 function AetheryteHelper.DCSVselect()
 			AetheryteHelper.Origin()
-			AetheryteHelper.SaveSettings()
 			MushmoveServerlist = Origin_list
 			for k, v in pairs(MushmoveServerlist) do
 				local templist = MushmoveServerlist
@@ -15077,7 +15026,8 @@ function AetheryteHelper.DCSVselect()
 --d(tempindex)
 					if (tempindex ~= nil) then
 					table.remove(templist,tempindex)
-					else tempindex = 0
+					else
+					tempindex = 0
 					end
 					end
 					end
@@ -15086,37 +15036,28 @@ function AetheryteHelper.DCSVselect()
 	 AetheryteHelper.autoDCset()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(80)
-
-	 --if ( gRegion == 1) then
-		AHSET.selectDC = GUI:Combo( "###DC", AHSET.selectDC,FFXIVDClist,1)
-	 --end
+   AHSET.selectDC = GUI:Combo( "###DC", AHSET.selectDC,FFXIVDClist,1)
+	 GUI:EndGroup()
 	 if (GUI:IsItemHovered()) then
 			  AetheryteHelper.SetToolTips(mJTp.tip93,mETp.tip93,mDTp.tip93,mFTp.tip93,mCTp.tip93,mKTp.tip93)
 	 end
-	 GUI:EndGroup()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:Dummy(25,25)
 	 if AHSET.nohousing == true then
 			  GUI:SameLine(2.5,-25)
 			  GUI:Image(ImageFolder..[[harea_lock.png]],25,25)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  AHSET.nohousing = not AHSET.nohousing
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip04,mETp.tip04,mDTp.tip04,mFTp.tip04,mCTp.tip04,mKTp.tip04)
-			  end
 	  elseif AHSET.nohousing == false then
 			  GUI:SameLine(2.5,-25)
 			  GUI:Image(ImageFolder..[[harea_lock_non.png]],25,25)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+	 end
+	 GUI:EndGroup()
+	 if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.nohousing = not AHSET.nohousing
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip04,mETp.tip04,mDTp.tip04,mFTp.tip04,mCTp.tip04,mKTp.tip04)
-			  end
 	 end
-	 GUI:EndGroup()
 	 GUI:BeginGroup()
 	 GUI:Text("World")
 	 GUI:EndGroup()
@@ -15124,15 +15065,15 @@ function AetheryteHelper.DCSVselect()
 	 GUI:PushItemWidth(120)
 	 if (table.valid(FFXIVServerlist[AHSET.selectDC])) then
 	 selectSVR = GUI:Combo( "###server",selectSVR,MushmoveServerlist,height or 20)
+	 isServer = selectSVR
 	 else
 	 GUI:Combo( "DC",1,noDClist,1)
 	 GUI:Combo( "server",1,FFXIVServerlist[16],1)
 	 end
-	 if (GUI:IsItemHovered()) then
-			  AetheryteHelper.SetToolTips(mJTp.tip95,mETp.tip95,mDTp.tip95,mFTp.tip95,mCTp.tip95,mKTp.tip95)
-	 end
 	 GUI:EndGroup()
-	 isServer = selectSVR
+	 if GUI:IsItemHovered() then
+			AetheryteHelper.SetToolTips(mJTp.tip95,mETp.tip95,mDTp.tip95,mFTp.tip95,mCTp.tip95,mKTp.tip95)
+	 end
 
 end
 
@@ -15555,8 +15496,8 @@ function AetheryteHelper.DrawCall()
 	  GUI:Columns()
 	  AetheryteHelper.homeDCinfo()
 	  AetheryteHelper.accessdelay()
-	elseif gRegion == 2 and Player.localmapid == 956 or gRegion == 2 and Player.localmapid == 957 or gRegion == 2 and Player.localmapid == 958 or
-	  gRegion == 2 and Player.localmapid == 959 or gRegion == 2 and Player.localmapid == 960 or gRegion == 2 and Player.localmapid == 961 then
+	elseif gRegion ~= 1 and Player.localmapid == 956 or gRegion ~= 1 and Player.localmapid == 957 or gRegion ~= 1 and Player.localmapid == 958 or
+	  gRegion ~= 1 and Player.localmapid == 959 or gRegion ~= 1 and Player.localmapid == 960 or gRegion ~= 1 and Player.localmapid == 961 then
 	  GUI:Columns(3)
 	  GUI:SetColumnOffset(1, 70) GUI:SetColumnOffset(2, 200)
 	  AetheryteHelper.Drawinsselect()
@@ -15813,10 +15754,15 @@ function AetheryteHelper.insselect()
 					  end
 			  end
 			  if autheStep == 4 then
-						Player:Stop()
-						GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
-					 if isServer == nil or isServer < 2 then selectins = not selectins end
-						UseControlAction("SelectYesno")
+					 Player:Stop()
+					 if IsControlOpen("WorldTravelSelect") then
+					     if isServer == nil or isServer < 2 then
+  	         	 UseControlAction("WorldTravelSelect","Close")
+  	         	 selectins = false
+  	           else
+					     GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
+					     end
+					 end
 					 if IsControlOpen("SelectYesno") then
 						UseControlAction("SelectYesno","Yes")
 						   moveSVR = not moveSVR
@@ -15853,8 +15799,14 @@ function AetheryteHelper.insselect()
 					  end
 			  end
 			  if autheStep == 7 then
-						GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
-						UseControlAction("SelectYesno")
+			  	 if IsControlOpen("WorldTravelSelect") then
+					     if isServer == nil or isServer < 2 then
+  	         	 UseControlAction("WorldTravelSelect","Close")
+  	         	 selectins = false
+  	           else
+					     GetControl("WorldTravelSelect"):Action("SelectIndex",isServer)
+					     end
+					 end
 					 if IsControlOpen("SelectYesno") then
 						UseControlAction("SelectYesno","Yes")
 						   moveSVR = not moveSVR
@@ -22979,7 +22931,6 @@ function AetheryteHelper.mushTextCommands()
 	 end
 	 if mushtextstep == 110 then
 	 		AetheryteHelper.Origin()
-			AetheryteHelper.SaveSettings()
 			MushmoveServerlist = Origin_list
 			for k, v in pairs(MushmoveServerlist) do
 			local templist = MushmoveServerlist
