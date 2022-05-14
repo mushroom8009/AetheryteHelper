@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.7.6",
-	  tag = 2022051401,--y0000m00d00h00
+	  Version =         "1.8.7.7",
+	  tag = 2022051413,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -136,6 +136,7 @@ local kinokoProject = {
             "[1.8.7.1] - bug fix",
             "[1.8.7.5] - add TargetMe Recorder",
             "[1.8.7.6] - bug fix & bug fix",
+            "[1.8.7.7] - Rewriting of some code",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -393,6 +394,7 @@ AetheryteHelper.settingsSET = {
 	AutoLegacy = true,
 	Pcurrnt = Player.currentworld,
 	AutoUpdate = false,
+	supporters = false,
 	}
 AetheryteHelper.UpdateTimeSince = {}
 AetheryteHelper.settingsFilter = {
@@ -2947,7 +2949,7 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 
   if FileExists(AetheryteHelper.winset) then
 	local Window = persistence.load(AetheryteHelper.winset)
-	if (ValidTable(window)) then
+	if (ValidTable(Window)) then
 	  table.merge(kinokoProject.Windows,Window)
 	end
   end
@@ -3329,18 +3331,21 @@ function AetheryteHelper.Teleport(id,levelid)
 		          if item.hqid == 7569 then
 	            	if item.count > 0 then
                    if ap > AetheryteHelper.ATuse.gil then
-      	             Player:Teleport(id,levelid,true)
+                   	mushAH_ATuse_Telepo = true
                    else
-      	             Player:Teleport(id,levelid,false)
+                   	mushAH_ATuse_Telepo = false
                    end
-                else
-    	             Player:Teleport(id,levelid,false)
-		            end
-		          end
+                end
+              end
 		       end
 		    end
 		  end
 	  end
+	  if mushAH_ATuse_Telepo == true and AetheryteHelper.ATuse.ATuseEnable == true then
+	  	Player:Teleport(id,levelid,true)
+    elseif mushAH_ATuse_Telepo == false or AetheryteHelper.ATuse.ATuseEnable == false then
+    	Player:Teleport(id,levelid,false)
+    end          
 	return id,levelid
 end
 
@@ -3411,8 +3416,8 @@ function AetheryteHelper.Drawinsselect()
 	  if selectins == true then
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AHon.png]],40,60)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  if not selectins then
@@ -3430,8 +3435,8 @@ function AetheryteHelper.Drawinsselect()
 	  elseif selectins == false then
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AHoff.png]],40,60)
-			 if (GUI:IsItemHovered()) then
-			 if (GUI:IsMouseClicked(0)) then
+			 if GUI:IsItemHovered() then
+			 if GUI:IsItemClicked(0) then
 			 selectins = not selectins
 			 autheStep = 0
 			 if not selectins then
@@ -3456,8 +3461,8 @@ function AetheryteHelper.Serverselect()
 	  if selectins == true then
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AHon.png]],40,60)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  Player:ClearTarget()
@@ -3468,8 +3473,8 @@ function AetheryteHelper.Serverselect()
 	  elseif selectins == false then
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AHoff.png]],40,60)
-			 if (GUI:IsItemHovered()) then
-			 if (GUI:IsMouseClicked(0)) then
+			 if GUI:IsItemHovered() then
+			 if GUI:IsItemClicked(0) then
 			 selectins = not selectins
 			 autheStep = 0
 			 end
@@ -3486,7 +3491,7 @@ function AetheryteHelper.notuseAH()
 	  GUI:Dummy(40,60)
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AH_non.png]],40,60)
-			  if (GUI:IsItemHovered()) then
+			  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip00,mETp.tip00,mDTp.tip00,mFTp.tip00,mCTp.tip00,mKTp.tip00)
 			  end
 	  GUI:EndGroup()
@@ -3498,8 +3503,8 @@ function AetheryteHelper.maininsButton()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Button("i",20,20)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AetheryteHelper.miniGUI.open = not AetheryteHelper.miniGUI.open
 			end
 			 AetheryteHelper.SetToolTips(mJTp.tip06,mETp.tip06,mDTp.tip06,mFTp.tip06,mCTp.tip06,mKTp.tip06)
@@ -3523,8 +3528,8 @@ function AetheryteHelper.maininsButton()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:ImageButton("###flag",ImageFolder..[[0001.png]], 25,25)
-	  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			if selectins == true then
 			isins = 1
 			else
@@ -3541,8 +3546,8 @@ function AetheryteHelper.maininsButton()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:ImageButton("###flag",ImageFolder..[[0002.png]], 25,25)
-	  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 		  if selectins == true then
 			isins = 2
 			else
@@ -3559,8 +3564,8 @@ function AetheryteHelper.maininsButton()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:ImageButton("###flag",ImageFolder..[[0003.png]], 25,25)
-	  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 		  if selectins == true then
 			isins = 3
 			else
@@ -3612,7 +3617,7 @@ function AetheryteHelper.omikuji()
 	  end
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
-		   if GUI:IsMouseClicked(0) then
+		   if GUI:IsItemClicked(0) then
 		   AHSET.minionclick = AHSET.minionclick + 1
 		   if AHSET.minionclick == 9999 then
 		   SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 Congratulations! <se.6> \x02\x13\x02\xec\x03")
@@ -3751,7 +3756,7 @@ function AetheryteHelper.accessdelay()
 		if changed then
 		AetheryteHelper.SaveSettings()
 	  end
-		if (GUI:IsItemHovered()) then
+		if GUI:IsItemHovered() then
 		   AetheryteHelper.SetToolTips(mJTp.tip02,mETp.tip02,mDTp.tip02,mFTp.tip02,mCTp.tip02,mKTp.tip02)
 		end
 	  GUI:PopItemWidth()
@@ -3759,8 +3764,8 @@ function AetheryteHelper.accessdelay()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Button( "Reset",40, 20)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.delay = 200
 		  	AetheryteHelper.SaveSettings()
 		  	autheStep = 0
@@ -3777,7 +3782,7 @@ function AetheryteHelper.accessdelay()
 	  end
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
-	  	if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemClicked(0) then
 	  		AHSET.AutoLegacy = not AHSET.AutoLegacy
 	  		AetheryteHelper.SaveSettings()
 	  	end
@@ -3794,23 +3799,23 @@ function AetheryteHelper.GLUtelepo()
 	  GUI:BeginGroup()
 	  if AetheryteHelper.ATuse.ATuseEnable == true then
 	  GUI:Image(ImageFolder..[[ACon.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AetheryteHelper.ATuse.ATuseEnable = not AetheryteHelper.ATuse.ATuseEnable
 			  AetheryteHelper.SaveSettings()
 			  end
 			  end
 	  elseif AetheryteHelper.ATuse.ATuseEnable == false then
 	  GUI:Image(ImageFolder..[[ACoff.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AetheryteHelper.ATuse.ATuseEnable = not AetheryteHelper.ATuse.ATuseEnable
 			  AetheryteHelper.SaveSettings()
 			  end
 			  end
 	  end
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		   AetheryteHelper.SetToolTips(mJTp.tip191,mETp.tip191,mDTp.tip191,mFTp.tip191,mCTp.tip191,mKTp.tip191)
 	  end
 	  local mushAT = {}
@@ -3846,7 +3851,7 @@ function AetheryteHelper.GLUtelepo()
 	  AetheryteHelper.ATuse.gil = AetheryteHelper.ATuse.gil
 	  AetheryteHelper.SaveSettings()
 	  end
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		   AetheryteHelper.SetToolTips(mJTp.tip192,mETp.tip192,mDTp.tip192,mFTp.tip192,mCTp.tip192,mKTp.tip192)
 		end
 	  GUI:PopItemWidth()
@@ -3858,8 +3863,8 @@ function AetheryteHelper.GLUtelepo()
 	  if AHSET.mushmovetoMB == true then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[MB.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.mushmovetoMB = not AHSET.mushmovetoMB
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -3868,8 +3873,8 @@ function AetheryteHelper.GLUtelepo()
 	  elseif AHSET.mushmovetoMB == false then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[MB_non.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.mushmovetoMB = not AHSET.mushmovetoMB
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -3888,8 +3893,8 @@ function AetheryteHelper.GLUtelepo()
 	  if AHSET.mushmovetoMB == true then
 			GUI:SameLine(-10,-40)
 			GUI:Image(ImageFolder..[[GCMBgri.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			   Player:ClearTarget()
 			   mushMBgri = true
 			   mushMBlim = false
@@ -3901,8 +3906,8 @@ function AetheryteHelper.GLUtelepo()
 	  elseif AHSET.mushmovetoMB == false then
 			GUI:SameLine(-10,-40)
 			GUI:Image(ImageFolder..[[GCtelepogri.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  Player:ClearTarget()
 			  mushlooptimer = 0
 			  griMBStep = 0
@@ -3923,8 +3928,8 @@ function AetheryteHelper.GLUtelepo()
 	  if AHSET.mushmovetoMB == true then
 			GUI:SameLine(-10,-40)
 			GUI:Image(ImageFolder..[[GCMBlim.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			   Player:ClearTarget()
 			   mushMBgri = false
 			   mushMBlim = true
@@ -3936,8 +3941,8 @@ function AetheryteHelper.GLUtelepo()
 	  elseif AHSET.mushmovetoMB == false then
 			GUI:SameLine(-10,-40)
 			GUI:Image(ImageFolder..[[GCtelepolim.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  Player:ClearTarget()
 			  mushlooptimer = 0
 			  griMBStep = 0
@@ -3958,8 +3963,8 @@ function AetheryteHelper.GLUtelepo()
 	  if AHSET.mushmovetoMB == true then
 			GUI:SameLine(-10,-40)
 			GUI:Image(ImageFolder..[[GCMBulu.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			   Player:ClearTarget()
 			   mushMBgri = false
 			   mushMBlim = false
@@ -3971,8 +3976,8 @@ function AetheryteHelper.GLUtelepo()
 	  elseif AHSET.mushmovetoMB == false then
 			GUI:SameLine(-10,-40)
 			GUI:Image(ImageFolder..[[GCtelepoulu.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  Player:ClearTarget()
 			  mushlooptimer = 0
 			  griMBStep = 0
@@ -4006,8 +4011,8 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:Spacing(10)
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[jumbo.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AetheryteHelper.Jumbocactpot.open = not AetheryteHelper.Jumbocactpot.open
 		  end
 			  AetheryteHelper.SetToolTips(mJTp.tip17,mETp.tip17,mDTp.tip17,mFTp.tip17,mCTp.tip17,mKTp.tip17)
@@ -4016,8 +4021,8 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[undersize.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			IDUSstep = 0
 			mushundersize = true
 			end
@@ -4027,8 +4032,8 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[explo.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			IDexstep = 0
 			mushExplorer = true
 			end
@@ -4038,8 +4043,8 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[yoro.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			AetheryteHelper.yoro_otu.open = not AetheryteHelper.yoro_otu.open
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip118,mETp.tip118,mDTp.tip118,mFTp.tip118,mCTp.tip118,mKTp.tip118)
@@ -4048,8 +4053,8 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[mip.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			AetheryteHelper.mip.open = not AetheryteHelper.mip.open
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip112,mETp.tip112,mDTp.tip112,mFTp.tip112,mCTp.tip112,mKTp.tip112)
@@ -4058,8 +4063,8 @@ function AetheryteHelper.DrawadWIP()
 --	  GUI:SameLine()
 --	  GUI:BeginGroup()
 --	  GUI:Image(ImageFolder..[[fc.png]],30,30)
---	  if (GUI:IsItemHovered()) then
---			if (GUI:IsMouseClicked(0)) then
+--	  if GUI:IsItemHovered() then
+--			if GUI:IsItemClicked(0) then
 --			AetheryteHelper.FCactionWindow.open = not AetheryteHelper.FCactionWindow.open
 --			end
 --			  AetheryteHelper.SetToolTips(mJTp.tip227,mETp.tip227,mDTp.tip227,mFTp.tip227,mCTp.tip227,mKTp.tip227)
@@ -4068,8 +4073,8 @@ function AetheryteHelper.DrawadWIP()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[CustomButton.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			AetheryteHelper.CreateButton.open = not AetheryteHelper.CreateButton.open
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip200,mETp.tip200,mDTp.tip200,mFTp.tip200,mCTp.tip200,mKTp.tip200)
@@ -4087,8 +4092,8 @@ function AetheryteHelper.Drawadjank()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[tube.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			io.popen([[cmd /c start "" "]]..AHLinks.link4..[["]]):close()
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip20,mETp.tip20,mDTp.tip20,mFTp.tip20,mCTp.tip20,mKTp.tip20)
@@ -4097,7 +4102,7 @@ function AetheryteHelper.Drawadjank()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0)then
 		  AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
 		end
@@ -4125,8 +4130,8 @@ function AetheryteHelper.DrawadItems()
 	  if AHSET.mushitemSearch == true then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_inv.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			   AHSET.mushitemSearch = not AHSET.mushitemSearch
 			   AetheryteHelper.SaveSettings()
 			   itemID = 0
@@ -4171,8 +4176,8 @@ function AetheryteHelper.DrawadItems()
 	  elseif AHSET.mushitemSearch == false then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_inv_non.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.mushitemSearch = not AHSET.mushitemSearch
 			  AetheryteHelper.SaveSettings()
 			   itemID = 0
@@ -4222,8 +4227,8 @@ function AetheryteHelper.DrawadItems()
 	  if AHSET.mushitemSearch == true and mushiS_rite == true then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_r.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushiS_rite = true
 			  mushiS_tori = false
 			  mushiS_FC = false
@@ -4233,8 +4238,8 @@ function AetheryteHelper.DrawadItems()
 	  elseif AHSET.mushitemSearch == false or mushiS_rite == false then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_r_non.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushiS_rite = true
 			  mushiS_tori = false
 			  mushiS_FC = false
@@ -4249,8 +4254,8 @@ function AetheryteHelper.DrawadItems()
 	  if AHSET.mushitemSearch == true and mushiS_tori == true then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_tori.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushiS_tori = true
 			  mushiS_rite = false
 			  mushiS_FC = false
@@ -4260,8 +4265,8 @@ function AetheryteHelper.DrawadItems()
 	  elseif AHSET.mushitemSearch == false or mushiS_tori == false then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_tori_non.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushiS_tori = true
 			  mushiS_rite = false
 			  mushiS_FC = false
@@ -4276,8 +4281,8 @@ function AetheryteHelper.DrawadItems()
 	  if AHSET.mushitemSearch == true and mushiS_FC == true then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_c.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushiS_FC = true
 			  mushiS_tori = false
 			  mushiS_rite = false
@@ -4287,8 +4292,8 @@ function AetheryteHelper.DrawadItems()
 	  elseif AHSET.mushitemSearch == false or mushiS_FC == false then
 			GUI:SameLine(10,-40)
 			GUI:Image(ImageFolder..[[is_c_non.png]],40,40)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushiS_FC = true
 			  mushiS_tori = false
 			  mushiS_rite = false
@@ -4313,8 +4318,8 @@ function AetheryteHelper.DrawadItems()
 		 if mushaccelerator == true then
 		 GUI:SameLine(5,-30)
 		 GUI:Image(ImageFolder..[[is_RL.png]],30,30)
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		 if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushaccelerator = not mushaccelerator
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip135,mETp.tip135,mDTp.tip135,mFTp.tip135,mCTp.tip135,mKTp.tip135)
@@ -4322,8 +4327,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif mushaccelerator == false then
 			GUI:SameLine(5,-30)
 			GUI:Image(ImageFolder..[[is_LR.png]],30,30)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 mushaccelerator = not mushaccelerator
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip136,mETp.tip136,mDTp.tip136,mFTp.tip136,mCTp.tip136,mKTp.tip136)
@@ -4337,8 +4342,8 @@ function AetheryteHelper.DrawadItems()
 		 GUI:SameLine()
 		 GUI:BeginGroup()
 		 GUI:Image(ImageFolder..[[quantity.png]],30,30)
-		if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			   AHitemsortR = not AHitemsortR
 			   if IsControlOpen("InventoryRetainer") == false and IsControlOpen("InventoryRetainerLarge") == false then
 				if language == 0 then
@@ -4577,8 +4582,8 @@ function AetheryteHelper.DrawadItems()
 		 if mushaccelerator == true then
 		 GUI:SameLine(5,-30)
 		 GUI:Image(ImageFolder..[[is_RL.png]],30,30)
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		 if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushaccelerator = not mushaccelerator
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip138,mETp.tip138,mDTp.tip138,mFTp.tip138,mCTp.tip138,mKTp.tip138)
@@ -4586,8 +4591,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif mushaccelerator == false then
 			GUI:SameLine(5,-30)
 			GUI:Image(ImageFolder..[[is_LR.png]],30,30)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 mushaccelerator = not mushaccelerator
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip139,mETp.tip139,mDTp.tip139,mFTp.tip139,mCTp.tip139,mKTp.tip139)
@@ -4601,8 +4606,8 @@ function AetheryteHelper.DrawadItems()
 		 GUI:SameLine()
 		 GUI:BeginGroup()
 		 GUI:Image(ImageFolder..[[quantity.png]],30,30)
-		if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			   AHitemsortB = not AHitemsortB
 			   if AHitemsortB == true then
 			   SendTextCommand("/e [AH][Itemsort]:B-Inventory")
@@ -4630,8 +4635,8 @@ function AetheryteHelper.DrawadItems()
 		 if mushaccelerator == true then
 		 GUI:SameLine(5,-30)
 		 GUI:Image(ImageFolder..[[is_RL.png]],30,30)
-		 if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		 if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  mushaccelerator = not mushaccelerator
 			end
 			  AetheryteHelper.SetToolTips(mJTp.tip141,mETp.tip141,mDTp.tip141,mFTp.tip141,mCTp.tip141,mKTp.tip141)
@@ -4639,8 +4644,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif mushaccelerator == false then
 			GUI:SameLine(5,-30)
 			GUI:Image(ImageFolder..[[is_LR.png]],30,30)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 mushaccelerator = not mushaccelerator
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip142,mETp.tip142,mDTp.tip142,mFTp.tip142,mCTp.tip142,mKTp.tip142)
@@ -4660,8 +4665,8 @@ function AetheryteHelper.DrawadItems()
 	  GUI:Image(ImageFolder..[[is_p.png]],30,30)
 	  GUI:SameLine()
 	  GUI:Image(ImageFolder..[[quantity.png]],30,30)
-	  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			AHitemsort = not AHitemsort
 			   if AHitemsort == true then
 			   SendTextCommand("/e [AH][Itemsort]:Inventory")
@@ -4686,7 +4691,7 @@ function AetheryteHelper.DrawadItems()
 		GUI:SameLine()
 		GUI:Image(ImageFolder..[[is_nq.png]],15,15)
 		GUI:EndGroup()
-		if (GUI:IsItemHovered()) then
+		if GUI:IsItemHovered() then
 				AetheryteHelper.SetToolTips(mJTp.tip126,mETp.tip126,mDTp.tip126,mFTp.tip126,mCTp.tip126,mKTp.tip126)
 		end
 		GUI:Spacing()
@@ -4695,8 +4700,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.syokuzai == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_syokuzai.png]],20,20)
- 		    if (GUI:IsItemHovered()) then
-  			if (GUI:IsMouseClicked(0)) then
+ 		    if GUI:IsItemHovered() then
+  			if GUI:IsItemClicked(0) then
 			  AHSET.syokuzai = not AHSET.syokuzai
 			  AetheryteHelper.SaveSettings()
 	  		end
@@ -4705,8 +4710,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.syokuzai == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_syokuzai_non.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.syokuzai = not AHSET.syokuzai
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -4720,8 +4725,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.sekizai == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_sekizai.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.sekizai = not AHSET.sekizai
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4730,8 +4735,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.sekizai == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_sekizai_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AHSET.sekizai = not AHSET.sekizai
 			 AetheryteHelper.SaveSettings()
 			end
@@ -4745,8 +4750,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.kinzoku == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_kinzoku.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.kinzoku = not AHSET.kinzoku
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4755,8 +4760,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.kinzoku == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_kinzoku_non.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.kinzoku = not AHSET.kinzoku
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -4770,8 +4775,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.mokuzai == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_mokuzai.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.mokuzai = not AHSET.mokuzai
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4780,8 +4785,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.mokuzai == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_mokuzai_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AHSET.mokuzai = not AHSET.mokuzai
 			 AetheryteHelper.SaveSettings()
 			end
@@ -4795,8 +4800,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.nuno == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_nunozai.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.nuno = not AHSET.nuno
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4805,8 +4810,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.nuno == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_nunozai_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AHSET.nuno = not AHSET.nuno
 			 AetheryteHelper.SaveSettings()
 			end
@@ -4820,8 +4825,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.kawa == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_kawa.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.kawa = not AHSET.kawa
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4830,8 +4835,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.kawa == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_kawa_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AHSET.kawa = not AHSET.kawa
 			 AetheryteHelper.SaveSettings()
 			end
@@ -4845,8 +4850,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.hone == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_hone.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.hone = not AHSET.hone
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4855,8 +4860,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.hone == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_hone_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AHSET.hone = not AHSET.hone
 			 AetheryteHelper.SaveSettings()
 			end
@@ -4870,8 +4875,8 @@ function AetheryteHelper.DrawadItems()
 		 if AHSET.renkin == true then
 		 GUI:SameLine(5,-20)
 		 GUI:Image(ImageFolder..[[is_renkin.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			  AHSET.renkin = not AHSET.renkin
 			  AetheryteHelper.SaveSettings()
 			end
@@ -4880,8 +4885,8 @@ function AetheryteHelper.DrawadItems()
 		 elseif AHSET.renkin == false then
 			GUI:SameLine(5,-20)
 			GUI:Image(ImageFolder..[[is_renkin_non.png]],20,20)
-			if (GUI:IsItemHovered()) then
-			if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			 AHSET.renkin = not AHSET.renkin
 			 AetheryteHelper.SaveSettings()
 			end
@@ -4906,7 +4911,7 @@ function AetheryteHelper.minimush()
 	  	GUI:BeginGroup()
 	  	GUI:Image(ImageFolder..[[AetheryteHelper.png]],30,30)
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
+	  	if GUI:IsItemHovered() then
 		 		if GUI:IsMouseDoubleClicked(0) then
 		 		Windows.Open = true
 		 		minikinoko.Open = false
@@ -4931,7 +4936,7 @@ function AetheryteHelper.FCAwindow()
 	  	GUI:BeginGroup()
 	  	GUI:Checkbox("Enable",AetheryteHelper.ATuse.FCA)
 	  	if GUI:IsItemHovered() then
-	  		if GUI:IsMouseClicked(0) then
+	  		if GUI:IsItemClicked(0) then
 	  			AetheryteHelper.ATuse.FCA = not AetheryteHelper.ATuse.FCA
 	  			FCAstep = 0
 	  			AetheryteHelper.SaveSettings()
@@ -5052,7 +5057,7 @@ function AetheryteHelper.FCAwindow()
 			  end
 	  	end
 	  	GUI:EndGroup()
-	    if (GUI:IsItemHovered()) then
+	    if GUI:IsItemHovered() then
 		 		AetheryteHelper.SetToolTips(mJTp.tip229,mETp.tip229,mDTp.tip229,mFTp.tip229,mCTp.tip229,mKTp.tip229)
 	  	end	
 	    GUI:SameLine()
@@ -5241,7 +5246,7 @@ function AetheryteHelper.FCAwindow()
 	  		end
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
+	  	if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip230,mETp.tip230,mDTp.tip230,mFTp.tip230,mCTp.tip230,mKTp.tip230)
 	  	end
 	  	GUI:Spacing()
@@ -5515,7 +5520,7 @@ function AetheryteHelper.FCAwindow()
 	  	GUI:BeginGroup()
 	  	GUI:ImageButton("##FCAadd",ImageFolder..[[R_trash.png]], 15,15)
 	  	GUI:EndGroup()
-   	  	if (GUI:IsItemHovered()) then
+   	  	if GUI:IsItemHovered() then
 	   	 		if GUI:IsItemClicked(0) then
 		  		table.remove(AetheryteHelper.FCAuseingList,k)	
 		 	  	AetheryteHelper.SaveSettings()
@@ -5595,7 +5600,7 @@ function AetheryteHelper.TCListHeader()
 	  GUI:BeginGroup()
 	  GUI:Button("QoLBar",60,20)
 	  if GUI:IsItemHovered() then
-		if GUI:IsMouseClicked(0) then
+		if GUI:IsItemClicked(0) then
 		  GUI:SetClipboardText("H4sIAAAAAAAACqWTUWuDMBCA/0q47FFcorF1easyWsrKoIP6MPogNWyBRovawij977uMrUSwYywPIbnPy3cHOc9w138cFEhQEEAXgTxfCUYB1HiQkvOI0tkC4x4kx8QnkK+jmRMmkphSXXeIdojuFZktTFMpwrlApp/xKgtZgGuL4RqkjWD3csAPaSC2l+A3c7FxxcWGGF1rP28ymVK6ylzvKiN7bbrSV5yOiN9aXZW19nY/jLiP+6p89xInjAlK57krnufENCfl6Z1ySrOl682WpD4aH61IIzsTSj2Wrpj8EJ9pszOve2VI17T9wG7pN/x3Ac4FY9i7Hd+mHuivyKP7r1e0onVZle3gX3TgHwpYfCurABnbPQeZDLuCE5aLwjjERLh8AqF5j4BmBAAA")
 		  if language == 0 then
 		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
@@ -5909,7 +5914,7 @@ function AetheryteHelper.SubWindow()
 	  GUI:BeginGroup()
 	  GUI:Button("X",20,20)
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
 		AetheryteHelper.miniGUI.open = false
 		end
@@ -6698,7 +6703,7 @@ function AetheryteHelper.VlWindow()
 	  GUI:Separator()
 	  GUI:BeginGroup()
 	  GUI:Button("Close",60,20)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
 		AetheryteHelper.VersionList.open = false
 		end
@@ -6735,14 +6740,14 @@ function AetheryteHelper.FLGsWindow()
 	  mushAHflagsnote = GUI:InputText("##flagnote02",mushAHflagsnote)
 	  end
 	  GUI:EndGroup()
-	      if (GUI:IsItemHovered()) then 	  	
+	      if GUI:IsItemHovered() then 	  	
 			    AetheryteHelper.SetToolTips(mJTp.tip232,mETp.tip232,mDTp.tip232,mFTp.tip232,mCTp.tip232,mKTp.tip232)
 	      end
 	  GUI:SameLine()
 	  if GetMapFlagPosition() == false then
 	    GUI:BeginGroup()
 	    GUI:ImageButton("###getflag",ImageFolder..[[close.png]], 15,15)
-	    if (GUI:IsItemHovered()) then
+	    if GUI:IsItemHovered() then
 		    if GUI:IsItemClicked(0) then
 		    SendTextCommand("/e <flag>")
 		    end
@@ -6752,7 +6757,7 @@ function AetheryteHelper.FLGsWindow()
 	  else
 	    GUI:BeginGroup()
 	    GUI:ImageButton("###getflag",ImageFolder..[[addflag.png]], 15,15)
-	    if (GUI:IsItemHovered()) then
+	    if GUI:IsItemHovered() then
 		    if GUI:IsItemClicked(0) then
 		    	AetheryteHelper.flagssave()
 		    end	  	
@@ -6783,7 +6788,7 @@ function AetheryteHelper.AHflaglist()
    for k,v in pairs(AetheryteHelper.FlagList) do
 	 GUI:BeginGroup()
 	 GUI:Text("Data:"..v[6].."/"..v[7].."/"..v[8].." "..string.format("%02d",v[9])..":"..string.format("%02d",v[10])..":"..string.format("%02d",v[11]))
-	    	if (GUI:IsItemHovered()) then	
+	    	if GUI:IsItemHovered() then	
 			    AetheryteHelper.SetToolTips(mJTp.tip234,mETp.tip234,mDTp.tip234,mFTp.tip234,mCTp.tip234,mKTp.tip234)
 	      end
 	 GUI:EndGroup()
@@ -6791,7 +6796,7 @@ function AetheryteHelper.AHflaglist()
 	 mushworldposx = WorldToMapCoords(v[2],v[4],0,0)
 	 mushworldposz = WorldToMapCoords(v[2],v[5],0,0)
 	 GUI:Text(GetMapName(v[2]).."("..string.format("%02.1f",mushworldposx)..","..string.format("%02.1f",mushworldposz)..")")
-	     if (GUI:IsItemHovered()) then 	  	
+	     if GUI:IsItemHovered() then 	  	
 			    AetheryteHelper.SetToolTips(mJTp.tip235,mETp.tip235,mDTp.tip235,mFTp.tip235,mCTp.tip235,mKTp.tip235)
        end
 	 GUI:EndGroup()
@@ -6800,14 +6805,14 @@ function AetheryteHelper.AHflaglist()
 	    	if changed then
 	    	AetheryteHelper.SaveSettings()
 	      end
-	    	if (GUI:IsItemHovered()) then 	  	
+	    	if GUI:IsItemHovered() then 	  	
 			    AetheryteHelper.SetToolTips(mJTp.tip195,mETp.tip195,mDTp.tip195,mFTp.tip195,mCTp.tip195,mKTp.tip195)
 	      end
 	 GUI:EndGroup()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:ImageButton("###setflag",ImageFolder..[[flag.png]], 15,15)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		      end	  	
@@ -6817,7 +6822,7 @@ function AetheryteHelper.AHflaglist()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:ImageButton("###delflag",ImageFolder..[[R_trash.png]], 15,15)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	table.remove(AetheryteHelper.FlagList,k)
 		    	AetheryteHelper.SaveSettings()
@@ -6830,7 +6835,7 @@ function AetheryteHelper.AHflaglist()
 	 GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1) 
 	 GUI:Button("WithNote##AHflagnote",65,20)
 	 GUI:PopStyleColor(1)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	      v[12] = 1
 		    		    AetheryteHelper.SaveSettings()
@@ -6841,7 +6846,7 @@ function AetheryteHelper.AHflaglist()
 	 GUI:PushStyleColor(GUI.Col_Button,.5,0,0,1)
 	 GUI:Button("FlagOnly##AHflagnote",65,20)
 	 GUI:PopStyleColor(1)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	      v[12] = 0
 		    		    AetheryteHelper.SaveSettings() 
@@ -6853,7 +6858,7 @@ function AetheryteHelper.AHflaglist()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:Button("/e##AHecho",30,20)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	   if v[12] == 0 then
 		    	   SendTextCommand("/e "..v[1].."<flag>")
@@ -6867,7 +6872,7 @@ function AetheryteHelper.AHflaglist()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:Button("/sh##AHshout",30,20)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	   if v[12] == 0 then
 		    	   SendTextCommand("/sh "..v[1].."<flag>")
@@ -6881,7 +6886,7 @@ function AetheryteHelper.AHflaglist()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:ImageButton("###nowchat",ImageFolder..[[free_chat.png]],15,15)
-	    	if (GUI:IsItemHovered()) then
+	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	   if v[12] == 0 then
 		    	   SendTextCommand(v[1].."<flag>")
@@ -7002,7 +7007,7 @@ function AetheryteHelper.UpdateWindow()
  	if changed then
  		AetheryteHelper.SaveSettings()
  	end
- 	if (GUI:IsItemHovered()) then
+ 	if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip224,mETp.tip224,mDTp.tip224,mFTp.tip224,mCTp.tip224,mKTp.tip224)
 	end
  	GUI:EndGroup()
@@ -7013,7 +7018,7 @@ function AetheryteHelper.UpdateWindow()
   	   GUI:ImageButton("###download",ImageFolder..[[download.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
- 		      if GUI:IsMouseClicked(0) then
+ 		      if GUI:IsItemClicked(0) then
  		      mushVC = nil
  		      mushVUP = nil
  		      mushAH_AutoUPdatefunc = true
@@ -7027,7 +7032,7 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:ImageButton("###UpdateCheck",ImageFolder..[[CB_clear.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
- 		     if GUI:IsMouseClicked(0) then
+ 		     if GUI:IsItemClicked(0) then
  		     AetheryteHelper.VersionCheck()
  		     d("[AH][notice]ManualUpdateCheck")
  		     end
@@ -7040,7 +7045,7 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:ImageButton("###loading",ImageFolder..[[loading.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
- 	     	 if GUI:IsMouseClicked(0) then 
+ 	     	 if GUI:IsItemClicked(0) then 
  	     	 SendTextCommand("/e \x02\x13\x06\xfe\xff\x99\x99\x11 [AH]<mushroom> Please wait <se.6> \x02\x13\x02\xec\x03")	
  	     	 end
 			      AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
@@ -7052,7 +7057,7 @@ function AetheryteHelper.UpdateWindow()
  	     GUI:ImageButton("###luaReload",ImageFolder..[[CB_clear.png]], 30,30)
  	     GUI:PopStyleColor()
  	     if GUI:IsItemHovered() then
- 	     	 if GUI:IsMouseClicked(0) then
+ 	     	 if GUI:IsItemClicked(0) then
  	     	 Reload()
  	     	 end
 			      AetheryteHelper.SetToolTips(mJTp.tip226,mETp.tip226,mDTp.tip226,mFTp.tip226,mCTp.tip226,mKTp.tip226)
@@ -7102,8 +7107,8 @@ function AetheryteHelper.insSelecterWindow()
 	  if selectins == true then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  if not selectins then
@@ -7121,8 +7126,8 @@ function AetheryteHelper.insSelecterWindow()
 	  elseif selectins == false then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHoff.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  if not selectins then
@@ -7141,8 +7146,8 @@ function AetheryteHelper.insSelecterWindow()
 	  if selectins == true then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  if not selectins then
@@ -7160,8 +7165,8 @@ function AetheryteHelper.insSelecterWindow()
 	  elseif selectins == false then
 			  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AHoff.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  if not selectins then
@@ -7178,7 +7183,7 @@ function AetheryteHelper.insSelecterWindow()
 	  else
 	  	  GUI:SameLine(-5,-20)
 			  GUI:Image(ImageFolder..[[AH_non.png]],20,20)
-			  if (GUI:IsItemHovered()) then
+			  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip00,mETp.tip00,mDTp.tip00,mFTp.tip00,mCTp.tip00,mKTp.tip00)
 			  end
 	  end
@@ -7187,10 +7192,10 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:SameLine(25)
 	  GUI:BeginGroup()
 	  GUI:Dummy(20,20)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		  GUI:SameLine(-7.5,-30)
 		  GUI:Image(ImageFolder..[[ins1.png]],25,25)
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemClicked(0) then
 		  isins = 1
 		  insHistory.isins = 1
 		  autheStep = 2
@@ -7209,10 +7214,10 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Dummy(20,20)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		  GUI:SameLine(-7.5,-30)
 		  GUI:Image(ImageFolder..[[ins2.png]],25,25)
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemClicked(0) then
 		  isins = 2
 		  insHistory.isins = 2
 		  autheStep = 2
@@ -7231,10 +7236,10 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Dummy(20,20)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		  GUI:SameLine(-7.5,-30)
 		  GUI:Image(ImageFolder..[[ins3.png]],25,25)
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemClicked(0) then
 		  isins = 3
 		  insHistory.isins = 3
 		  autheStep = 2
@@ -7255,7 +7260,7 @@ function AetheryteHelper.insSelecterWindow()
 	  GUI:SameLine(15)
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[close.png]],20,20)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		  if GUI:IsItemClicked(0) then
 		  AetheryteHelper.insSelectGUI.open = false
 		  end
@@ -7277,13 +7282,12 @@ function AetheryteHelper.jumboWindow()
   if (AetheryteHelper.Jumbocactpot.open) then
 	local Jumboflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
 	GUI:SetNextWindowSize(380,320)
-	 AetheryteHelper.Jumbocactpot.visible, AetheryteHelper.Jumbocactpot.open = GUI:Begin('jumbo cactpot assist', AetheryteHelper.Jumbocactpot.open,Jumboflags)
+	 AetheryteHelper.Jumbocactpot.visible, AetheryteHelper.Jumbocactpot.open = GUI:Begin("jumbo cactpot assist", AetheryteHelper.Jumbocactpot.open,Jumboflags)
 	if (AetheryteHelper.Jumbocactpot.visible) then
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:TextColored(0,1,0,1,"Once a week! Jumbo cactpot")
 	  GUI:EndGroup()
-
 	  GUI:Separator()
 	  GUI:BeginGroup()
 	  GUI:TextColored(0,1,1,1,"Enter 4 numbers")
@@ -7311,11 +7315,12 @@ function AetheryteHelper.jumboWindow()
 	  GUI:EndGroup()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
-	  GUI:Checkbox("random",mushJumbocactpotrandom1)
+	  GUI:Checkbox("random##random1",mushJumbocactpotrandom1)
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
-		 if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
 		 mushJumbocactpotrandom1 = not mushJumbocactpotrandom1
+		 AetheryteHelper.SaveSettings()
 		 mushGSjcpstep = 0
 		 end
 			  AetheryteHelper.SetToolTips(mJTp.tip23,mETp.tip23,mDTp.tip23,mFTp.tip23,mCTp.tip23,mKTp.tip23)
@@ -7323,39 +7328,55 @@ function AetheryteHelper.jumboWindow()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo11 = GUI:InputInt("###11",AHSET.jumbo11,1,1)
+	  AHSET.jumbo11,changed = GUI:InputInt("###11",AHSET.jumbo11,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo11 < 0 then AHSET.jumbo11 = 9 end
 	  if AHSET.jumbo11 > 9 then AHSET.jumbo11 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo12 = GUI:InputInt("###12",AHSET.jumbo12,1,1)
+	  AHSET.jumbo12,changed = GUI:InputInt("###12",AHSET.jumbo12,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo12 < 0 then AHSET.jumbo12 = 9 end
 	  if AHSET.jumbo12 > 9 then AHSET.jumbo12 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo13 = GUI:InputInt("###13",AHSET.jumbo13,1,1)
+	  AHSET.jumbo13,changed = GUI:InputInt("###13",AHSET.jumbo13,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo13 < 0 then AHSET.jumbo13 = 9 end
 	  if AHSET.jumbo13 > 9 then AHSET.jumbo13 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo14 = GUI:InputInt("###14",AHSET.jumbo14,1,1)
+	  AHSET.jumbo14,changed = GUI:InputInt("###14",AHSET.jumbo14,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo14 < 0 then AHSET.jumbo14 = 9 end
 	  if AHSET.jumbo14 > 9 then AHSET.jumbo14 = 0 end
-	  AetheryteHelper.SaveSettings()
 	  GUI:EndGroup()
-
 	  GUI:Spacing()
-
 	  GUI:BeginGroup()
 	  GUI:Text("2nd--150MGP---------------------------------------")
 	  GUI:EndGroup()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
-	  GUI:Checkbox("random",mushJumbocactpotrandom2)
+	  GUI:Checkbox("random##random2",mushJumbocactpotrandom2)
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
-		 if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
 		 mushJumbocactpotrandom2 = not mushJumbocactpotrandom2
+		 AetheryteHelper.SaveSettings()
 		 mushGSjcpstep = 0
 		 end
 			  AetheryteHelper.SetToolTips(mJTp.tip23,mETp.tip23,mDTp.tip23,mFTp.tip23,mCTp.tip23,mKTp.tip23)
@@ -7363,40 +7384,55 @@ function AetheryteHelper.jumboWindow()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo21 = GUI:InputInt("###21",AHSET.jumbo21,1,1)
+	  AHSET.jumbo21,changed = GUI:InputInt("###21",AHSET.jumbo21,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo21 < 0 then AHSET.jumbo21 = 9 end
 	  if AHSET.jumbo21 > 9 then AHSET.jumbo21 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo22 = GUI:InputInt("###22",AHSET.jumbo22,1,1)
+	  AHSET.jumbo22,changed = GUI:InputInt("###22",AHSET.jumbo22,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo22 < 0 then AHSET.jumbo22 = 9 end
 	  if AHSET.jumbo22 > 9 then AHSET.jumbo22 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo23 = GUI:InputInt("###23",AHSET.jumbo23,1,1)
+	  AHSET.jumbo23,changed = GUI:InputInt("###23",AHSET.jumbo23,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo23 < 0 then AHSET.jumbo23= 9 end
 	  if AHSET.jumbo23 > 9 then AHSET.jumbo23 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo24 = GUI:InputInt("###24",AHSET.jumbo24,1,1)
+	  AHSET.jumbo24,changed = GUI:InputInt("###24",AHSET.jumbo24,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo24 < 0 then AHSET.jumbo24 = 9 end
 	  if AHSET.jumbo24 > 9 then AHSET.jumbo24 = 0 end
-	  AetheryteHelper.SaveSettings()
 	  GUI:EndGroup()
-
-
 	  GUI:Spacing()
-
 	  GUI:BeginGroup()
 	  GUI:Text("3rd--200MGP---------------------------------------")
 	  GUI:EndGroup()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
-	  GUI:Checkbox("random",mushJumbocactpotrandom3)
+	  GUI:Checkbox("random##random3",mushJumbocactpotrandom3)
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
-		 if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
 		 mushJumbocactpotrandom3 = not mushJumbocactpotrandom3
+		 AetheryteHelper.SaveSettings()
 		 mushGSjcpstep = 0
 	   end
 			  AetheryteHelper.SetToolTips(mJTp.tip23,mETp.tip23,mDTp.tip23,mFTp.tip23,mCTp.tip23,mKTp.tip23)
@@ -7404,27 +7440,43 @@ function AetheryteHelper.jumboWindow()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo31 = GUI:InputInt("###31",AHSET.jumbo31,1,1)
+	  AHSET.jumbo31,changed = GUI:InputInt("###31",AHSET.jumbo31,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo31 < 0 then AHSET.jumbo31 = 9 end
 	  if AHSET.jumbo31 > 9 then AHSET.jumbo31 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo32 = GUI:InputInt("###32",AHSET.jumbo32,1,1)
+	  AHSET.jumbo32,changed = GUI:InputInt("###32",AHSET.jumbo32,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo32 < 0 then AHSET.jumbo32 = 9 end
 	  if AHSET.jumbo32 > 9 then AHSET.jumbo32 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo33 = GUI:InputInt("###33",AHSET.jumbo33,1,1)
+	  AHSET.jumbo33,changed = GUI:InputInt("###33",AHSET.jumbo33,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo33 < 0 then AHSET.jumbo33 = 9 end
 	  if AHSET.jumbo33 > 9 then AHSET.jumbo33 = 0 end
+	  GUI:EndGroup()
 	  GUI:SameLine()
+	  GUI:BeginGroup()
 	  GUI:PushItemWidth(80)
-	  AHSET.jumbo34 = GUI:InputInt("###34",AHSET.jumbo34,1,1)
+	  AHSET.jumbo34,changed = GUI:InputInt("###34",AHSET.jumbo34,1,1)
+	  if changed then
+	  AetheryteHelper.SaveSettings()
+	  end
 	  if AHSET.jumbo34 < 0 then AHSET.jumbo34 = 9 end
 	  if AHSET.jumbo34 > 9 then AHSET.jumbo34 = 0 end
-	  AetheryteHelper.SaveSettings()
 	  GUI:EndGroup()
-
 	  GUI:Spacing()
 	  GUI:Separator()
 	  GUI:Spacing()
@@ -7432,9 +7484,10 @@ function AetheryteHelper.jumboWindow()
 	  GUI:BeginGroup()
 	  GUI:Checkbox("ticket purchases",mushJumbocactpothelper)
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
-		 if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
 		 mushJumbocactpothelper = not mushJumbocactpothelper
+		 Player:Stop()
 		 mushGSjcpstep = 0
 	   end
 			  AetheryteHelper.SetToolTips(mJTp.tip107,mETp.tip107,mDTp.tip107,mFTp.tip107,mCTp.tip107,mKTp.tip107)
@@ -7443,7 +7496,7 @@ function AetheryteHelper.jumboWindow()
 	  GUI:BeginGroup()
 	  GUI:TextColored(1,0,0,1,"[[Warning]]")
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 		 	  AetheryteHelper.SetToolTips(mJTp.tip24,mETp.tip24,mDTp.tip24,mFTp.tip24,mCTp.tip24,mKTp.tip24)
 		end
 	end
@@ -7606,8 +7659,10 @@ function AetheryteHelper.MIPselect()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:PushItemWidth(60)
-	  MIP.select = GUI:InputInt("###index",MIP.select,1,1)
+	  MIP.select,changed = GUI:InputInt("###index",MIP.select,1,1)
+	  if changed then
 	  AetheryteHelper.SaveSettings()
+	  end
 	  if (#plist) > 4 then
 		if MIP.select > 7 then MIP.select = 7 end
 		if MIP.select < 1  then MIP.select = 1 end
@@ -7727,22 +7782,26 @@ function AetheryteHelper.YoroOtu()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[Pchat.png]],20,20)
 	  GUI:SameLine()
-	  Scall.word01 = GUI:InputText("##Sword01",Scall.word01)
+	  Scall.word01,changed = GUI:InputText("##Sword01",Scall.word01)
+	  if changed then
 	  AetheryteHelper.SaveSettings()
+	  end
+	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip115,mETp.tip115,mDTp.tip115,mFTp.tip115,mCTp.tip115,mKTp.tip115)
 	  end
-	  GUI:EndGroup()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[free_chat.png]],20,20)
 	  GUI:SameLine()
-	  Scall.word02 = GUI:InputText("##Sword02",Scall.word02)
+	  Scall.word02,changed = GUI:InputText("##Sword02",Scall.word02)
+	  if changed then
 	  AetheryteHelper.SaveSettings()
+	  end
+	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip116,mETp.tip116,mDTp.tip116,mFTp.tip116,mCTp.tip116,mKTp.tip116)
 	  end
-	  GUI:EndGroup()
 	  GUI:Spacing()
 	  GUI:Separator()
 	  GUI:Spacing()
@@ -7764,22 +7823,26 @@ function AetheryteHelper.YoroOtu()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[Pchat.png]],20,20)
 	  GUI:SameLine()
-	  Ecall.word01 = GUI:InputText("##Eword01",Ecall.word01)
+	  Ecall.word01,changed = GUI:InputText("##Eword01",Ecall.word01)
+	  if changed then
 	  AetheryteHelper.SaveSettings()
+	  end
+	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip115,mETp.tip115,mDTp.tip115,mFTp.tip115,mCTp.tip115,mKTp.tip115)
 	  end
-	  GUI:EndGroup()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[free_chat.png]],20,20)
 	  GUI:SameLine()
-	  Ecall.word02 = GUI:InputText("##Eword02",Ecall.word02)
+	  Ecall.word02,changed = GUI:InputText("##Eword02",Ecall.word02)
+	  if changed then
 	  AetheryteHelper.SaveSettings()
+	  end
+	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip116,mETp.tip116,mDTp.tip116,mFTp.tip116,mCTp.tip116,mKTp.tip116)
 	  end
-	  GUI:EndGroup()
 	end
 	GUI:End()
   end
@@ -10862,8 +10925,9 @@ function AetheryteHelper.TargetMeWin()
 	   if GUI:IsItemHovered() then
 	   	 if GUI:IsItemClicked(0) then
 	   	 	mushAH_TMEREC_log_name = v[1]:gsub(" ","_")
-	   	 	mushAH_TMEREC_logcontents = tostring(v[3].."---- Area:["..GetMapName(v[2]).."] Name:["..v[1].."] HomeWorld:["..mushAH_TMEREC_wroldname.."] Job:"..mushAH_TMEREC_job.." Lv:"..v[11])
-        io.popen([[start /b powershell -Command "Set-Content -Encoding UTF8 -Path ']] ..ModulePath.. [[\log\log_]]..mushAH_TMEREC_log_name..os.date("--%Y-%m-%d_%H_%M_%S")..[[.txt' -Value ']]..mushAH_TMEREC_logcontents..[['; stop-process -Id $PID"]]):close()
+	   	 	mushAH_TMEREC_log_Area = GetMapName(v[2]):gsub("ウルティマ・トゥーレ","Ultima Thule"):gsub("ヴォルカニック・ハート","The Volcanic Heart"):gsub("・"," "):gsub("：",":")
+	   	 	mushAH_TMEREC_logcontents = tostring(v[3].."---- Area:["..mushAH_TMEREC_log_Area.."] Name:["..v[1].."] HomeWorld:["..mushAH_TMEREC_wroldname.."] Job:"..mushAH_TMEREC_job.." Lv:"..v[11])
+        io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\log\log_]]..mushAH_TMEREC_log_name..os.date("--%Y-%m-%d_%H_%M_%S")..[[.txt' -Value ']]..mushAH_TMEREC_logcontents..[['; stop-process -Id $PID"]]):close()
 	   	 end
 	   	 AetheryteHelper.SetToolTips(mJTp.tip267,mETp.tip267,mDTp.tip267,mFTp.tip267,mCTp.tip267,mKTp.tip267)
 	   end
@@ -12305,8 +12369,8 @@ function AetheryteHelper.UserLanguageSet()
 	  	GUI:Image(ImageFolder..[[l_jp_off.png]],30,30)
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
-		   		if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemHovered() then
+		   		if GUI:IsItemClicked(0) then
 		    	AuL.JP = not AuL.JP
 		    	AuL.EN = false
 		    	AuL.DE = false
@@ -12327,8 +12391,8 @@ function AetheryteHelper.UserLanguageSet()
 	  	GUI:Image(ImageFolder..[[l_en_off.png]],30,30)
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
-		  	  if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemHovered() then
+		  	  if GUI:IsItemClicked(0) then
 		    	AuL.EN = not AuL.EN
 		    	AuL.JP = false
 		    	AuL.DE = false
@@ -12349,8 +12413,8 @@ function AetheryteHelper.UserLanguageSet()
 	  	GUI:Image(ImageFolder..[[l_de_off.png]],30,30)
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
-		  	  if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemHovered() then
+		  	  if GUI:IsItemClicked(0) then
 		    	AuL.DE = not AuL.DE
 		    	AuL.JP = false
 		    	AuL.EN = false
@@ -12371,8 +12435,8 @@ function AetheryteHelper.UserLanguageSet()
 	  	GUI:Image(ImageFolder..[[l_fr_off.png]],30,30)
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
-		      if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemHovered() then
+		      if GUI:IsItemClicked(0) then
 		    	AuL.FR = not AuL.FR
 		    	AuL.JP = false
 		    	AuL.EN = false
@@ -12393,8 +12457,8 @@ function AetheryteHelper.UserLanguageSet()
 	  	GUI:Image(ImageFolder..[[l_cn_off.png]],30,30)
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
-		      if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemHovered() then
+		      if GUI:IsItemClicked(0) then
 		   	  AuL.CN = not AuL.CN
 		    	AuL.JP = false
 		    	AuL.EN = false
@@ -12415,8 +12479,8 @@ function AetheryteHelper.UserLanguageSet()
 	  	GUI:Image(ImageFolder..[[l_kr_off.png]],30,30)
 	  	end
 	  	GUI:EndGroup()
-	  	if (GUI:IsItemHovered()) then
-		  	  if GUI:IsMouseClicked(0) then
+	  	if GUI:IsItemHovered() then
+		  	  if GUI:IsItemClicked(0) then
 		    	AuL.KR = not AuL.KR
 		    	AuL.JP = false
 		    	AuL.EN = false
@@ -12500,8 +12564,8 @@ function AetheryteHelper.UserLanguageSet()
 	    GUI:Spacing()
 	    GUI:BeginGroup()
 	    GUI:TextColored(1,.2,.2,1,"[[mushroom's Room]]")
-	    if (GUI:IsItemHovered()) then
-		  	  if GUI:IsMouseClicked(0) then
+	    if GUI:IsItemHovered() then
+		  	  if GUI:IsItemClicked(0) then
 		    	io.popen([[cmd /c start "" "]]..AHLinks.link1..[["]]):close()
      			end
      			GUI:SetTooltip("Discord Link")
@@ -12529,8 +12593,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if AHSET.CrafterMode == true then
 		  GUI:SameLine(10,-40)
 		  GUI:Image(ImageFolder..[[D_Cmode.png]],40,40)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHSET.CrafterMode = not AHSET.CrafterMode
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12539,8 +12603,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif AHSET.CrafterMode == false then
 		  GUI:SameLine(10,-40)
 		  GUI:Image(ImageFolder..[[D_Cmode_non.png]],40,40)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHSET.CrafterMode = not AHSET.CrafterMode
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12554,8 +12618,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if AHSET.DesynthTrust == true then
 		  GUI:SameLine(10,-40)
 		  GUI:Image(ImageFolder..[[D_idmode.png]],40,40)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHSET.DesynthTrust = not AHSET.DesynthTrust
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12564,8 +12628,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif AHSET.DesynthTrust == false then
 		  GUI:SameLine(10,-40)
 		  GUI:Image(ImageFolder..[[D_idmode_non.png]],40,40)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHSET.DesynthTrust = not AHSET.DesynthTrust
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12580,7 +12644,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(80)
 	 AHSET.dminil = GUI:InputInt("< IL",AHSET.dminil,1,500)
-	 if (GUI:IsItemHovered()) then
+	 if GUI:IsItemHovered() then
 	 AetheryteHelper.SaveSettings()
    AetheryteHelper.SetToolTips(mJTp.tip30,mETp.tip30,mDTp.tip30,mFTp.tip30,mCTp.tip30,mKTp.tip30)
 	 end
@@ -12591,7 +12655,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if (AHSET.dmaxil < 5) then AHSET.dmaxil = 5 end
 	 if (AHSET.dmaxil > 1000) then AHSET.dmaxil = 1000 end
 	 if (AHSET.dminil > AHSET.dmaxil) then AHSET.dminil = AHSET.dmaxil end
-	 if (GUI:IsItemHovered()) then
+	 if GUI:IsItemHovered() then
 	 AetheryteHelper.SaveSettings()
    AetheryteHelper.SetToolTips(mJTp.tip32,mETp.tip32,mDTp.tip32,mFTp.tip32,mCTp.tip32,mKTp.tip32)
 	 end
@@ -12599,8 +12663,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 GUI:SameLine()
 	 GUI:BeginGroup()
 	 GUI:Button("Reset",40,20)
-	 if (GUI:IsItemHovered()) then
-		if (GUI:IsMouseClicked(0)) then
+	 if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
 			AHSET.dminil = 5
 			AHSET.dmaxil = 540
 			AetheryteHelper.SaveSettings()
@@ -12626,8 +12690,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 GUI:Spacing()
 	 GUI:BeginGroup()
 	 GUI:Button("Quick",60,20)
-	  if (GUI:IsItemHovered()) then
-		if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
 			eqFilter.Main = true
 			eqFilter.Sub = true
 			eqFilter.Head = true
@@ -12641,7 +12705,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 		   eqFilter.Ring = true
 		AetheryteHelper.SaveSettings()
 		   end
-		if (GUI:IsMouseClicked(1)) then
+		if GUI:IsItemClicked(1) then
 		   eqFilter.Main = not eqFilter.Main
 		   eqFilter.Sub = not eqFilter.Sub
 		   eqFilter.Head = not eqFilter.Head
@@ -12664,8 +12728,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Main == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_main.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Main = not eqFilter.Main
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12674,8 +12738,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Main == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_main_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Main = not eqFilter.Main
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12689,8 +12753,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Sub == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_sub.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Sub = not eqFilter.Sub
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12699,8 +12763,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Sub == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_sub_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Sub = not eqFilter.Sub
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12713,8 +12777,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Head == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_head.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Head = not eqFilter.Head
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12723,8 +12787,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Head == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_head_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Head = not eqFilter.Head
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12738,8 +12802,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Earrings == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_ear.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Earrings = not eqFilter.Earrings
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12748,8 +12812,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Earrings == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_ear_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Earrings = not eqFilter.Earrings
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12762,8 +12826,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Body == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_body.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Body = not eqFilter.Body
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12772,8 +12836,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Body == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_body_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Body = not eqFilter.Body
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12787,8 +12851,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Necklace == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_neck.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Necklace = not eqFilter.Necklace
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12797,8 +12861,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Necklace == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_neck_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Necklace = not eqFilter.Necklace
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12811,8 +12875,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Hand == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_hand.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Hand = not eqFilter.Hand
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12821,8 +12885,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Hand == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_hand_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Hand = not eqFilter.Hand
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12836,8 +12900,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Bracelets == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_brace.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Bracelets = not eqFilter.Bracelets
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12846,8 +12910,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Bracelets == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_brace_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Bracelets = not eqFilter.Bracelets
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12860,8 +12924,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Legs == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_leg.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Legs = not eqFilter.Legs
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12870,8 +12934,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Legs == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_leg_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Legs = not eqFilter.Legs
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12885,8 +12949,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Ring == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_ring.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Ring = not eqFilter.Ring
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12895,8 +12959,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Ring == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_ring_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Ring = not eqFilter.Ring
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12909,8 +12973,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 if eqFilter.Feet == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_feet.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Feet = not eqFilter.Feet
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12919,8 +12983,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	 elseif eqFilter.Feet == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_feet_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  eqFilter.Feet = not eqFilter.Feet
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12935,8 +12999,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Button("Quick",130,20)
-	  if (GUI:IsItemHovered()) then
-		if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
 		   AHeqjob.Tank = true
 		   AHeqjob.Healer = true
 		   AHeqjob.Slaying = true
@@ -12949,7 +13013,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 
 		   AetheryteHelper.SaveSettings()
 		   end
-		if (GUI:IsMouseClicked(1)) then
+		if GUI:IsItemClicked(1) then
 		   AHeqjob.Tank = not  AHeqjob.Tank
 		   AHeqjob.Healer = not  AHeqjob.Healer
 		   AHeqjob.Slaying = not  AHeqjob.Slaying
@@ -12970,8 +13034,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Tank == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jTNK.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Tank = not AHeqjob.Tank
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -12980,8 +13044,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Tank == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jTNK_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Tank = not AHeqjob.Tank
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13002,8 +13066,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Healer == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jHRR.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Healer = not AHeqjob.Healer
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13012,8 +13076,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Healer == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jHRR_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Healer = not AHeqjob.Healer
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13034,8 +13098,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Slaying == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Slaying = not AHeqjob.Slaying
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13044,8 +13108,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Slaying == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Slaying = not AHeqjob.Slaying
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13066,8 +13130,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Striking == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Striking = not AHeqjob.Striking
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13076,8 +13140,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Striking == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Striking = not AHeqjob.Striking
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13094,8 +13158,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Maiming == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Maiming = not AHeqjob.Maiming
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13104,8 +13168,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Maiming == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Maiming = not AHeqjob.Maiming
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13122,8 +13186,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Scouting == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Scouting = not AHeqjob.Scouting
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13132,8 +13196,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Scouting == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jatk_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Scouting = not AHeqjob.Scouting
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13148,8 +13212,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Aiming == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jRNG.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Aiming = not AHeqjob.Aiming
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13158,8 +13222,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Aiming == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jRNG_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Aiming = not AHeqjob.Aiming
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13178,8 +13242,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Sorcerer == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jMRNG.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Sorcerer = not AHeqjob.Sorcerer
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13188,8 +13252,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Sorcerer == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jMRNG_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Sorcerer = not AHeqjob.Sorcerer
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13208,8 +13272,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.ALL == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jall.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.ALL = not AHeqjob.ALL
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13218,8 +13282,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.ALL == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jall_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.ALL = not AHeqjob.ALL
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13234,8 +13298,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
 	  GUI:Button("Quick",60,20)
-	  if (GUI:IsItemHovered()) then
-		if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
 			AHeqjob.PLD = true
 			AHeqjob.WHM = true
 			AHeqjob.WAR = true
@@ -13257,7 +13321,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 			AHeqjob.RDM = true
 			AetheryteHelper.SaveSettings()
 		   end
-		if (GUI:IsMouseClicked(1)) then
+		if GUI:IsItemClicked(1) then
 			AHeqjob.PLD = not  AHeqjob.PLD
 			AHeqjob.WHM = not  AHeqjob.WHM
 			AHeqjob.WAR = not  AHeqjob.WAR
@@ -13288,8 +13352,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.PLD == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jPLD.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.PLD = not AHeqjob.PLD
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13298,8 +13362,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.PLD == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jPLD_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.PLD = not AHeqjob.PLD
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13313,8 +13377,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.WHM == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jWHM.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.WHM = not AHeqjob.WHM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13323,8 +13387,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.WHM == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jWHM_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.WHM = not AHeqjob.WHM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13337,8 +13401,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.WAR == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jWAR.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.WAR = not AHeqjob.WAR
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13347,8 +13411,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.WAR == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jWAR_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.WAR = not AHeqjob.WAR
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13362,8 +13426,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.SCH == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSCH.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SCH = not AHeqjob.SCH
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13372,8 +13436,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.SCH == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSCH_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SCH = not AHeqjob.SCH
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13386,8 +13450,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.DRK == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jDRK.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.DRK = not AHeqjob.DRK
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13396,8 +13460,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.DRK == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jDRK_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.DRK = not AHeqjob.DRK
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13411,8 +13475,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.AST == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jAST.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.AST = not AHeqjob.AST
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13421,8 +13485,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.AST == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jAST_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.AST = not AHeqjob.AST
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13435,8 +13499,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.GNB == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jGNB.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.GNB = not AHeqjob.GNB
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13445,8 +13509,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.GNB == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jGNB_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.GNB = not AHeqjob.GNB
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13460,8 +13524,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.SGE == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSGE.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SGE = not AHeqjob.SGE
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13470,8 +13534,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.SGE == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSGE_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SGE = not AHeqjob.SGE
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13484,8 +13548,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.MNK == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jMNK.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.MNK = not AHeqjob.MNK
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13494,8 +13558,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.MNK == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jMNK_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.MNK = not AHeqjob.MNK
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13509,8 +13573,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.BRD == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jBRD.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.BRD = not AHeqjob.BRD
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13519,8 +13583,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.BRD == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jBRD_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.BRD = not AHeqjob.BRD
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13533,8 +13597,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.DRG == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jDRG.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.DRG = not AHeqjob.DRG
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13543,8 +13607,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.DRG == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jDRG_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.DRG = not AHeqjob.DRG
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13558,8 +13622,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.MCN == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jMCN.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.MCN = not AHeqjob.MCN
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13568,8 +13632,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.MCN == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jMCN_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.MCN = not AHeqjob.MCN
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13582,8 +13646,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.NIN == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jNIN.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.NIN = not AHeqjob.NIN
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13592,8 +13656,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.NIN == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jNIN_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.NIN = not AHeqjob.NIN
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13607,8 +13671,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.DNC == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jDNC.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.DNC = not AHeqjob.DNC
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13617,8 +13681,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.DNC == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jDNC_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.DNC = not AHeqjob.DNC
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13631,8 +13695,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.SAM == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSAM.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SAM = not AHeqjob.SAM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13641,8 +13705,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.SAM == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSAM_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SAM = not AHeqjob.SAM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13656,8 +13720,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.BLM == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jBLM.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.BLM = not AHeqjob.BLM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13666,8 +13730,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.BLM == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jBLM_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.BLM = not AHeqjob.BLM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13680,8 +13744,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.RPR == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jRPR.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.RPR = not AHeqjob.RPR
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13690,8 +13754,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.RPR == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jRPR_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.RPR = not AHeqjob.RPR
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13705,8 +13769,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.SMN == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSMN.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SMN = not AHeqjob.SMN
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13715,8 +13779,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.SMN == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_jSMN_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.SMN = not AHeqjob.SMN
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13733,8 +13797,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.RDM == true then
 		  GUI:SameLine(10,-20)
 		  GUI:Image(ImageFolder..[[fil_jRDM.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.RDM = not AHeqjob.RDM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13743,8 +13807,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.RDM == false then
 		  GUI:SameLine(10,-20)
 		  GUI:Image(ImageFolder..[[fil_jRDM_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.RDM = not AHeqjob.RDM
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13765,8 +13829,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Crafter == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_craft.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Crafter = not AHeqjob.Crafter
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13775,8 +13839,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Crafter == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_craft_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Crafter = not AHeqjob.Crafter
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13805,8 +13869,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  if AHeqjob.Gatherer == true then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_gathe.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Gatherer = not AHeqjob.Gatherer
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13815,8 +13879,8 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  elseif AHeqjob.Gatherer == false then
 		  GUI:SameLine(5,-20)
 		  GUI:Image(ImageFolder..[[fil_gathe_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+		  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AHeqjob.Gatherer = not AHeqjob.Gatherer
 			  AetheryteHelper.SaveSettings()
 		  end
@@ -13895,8 +13959,8 @@ function AetheryteHelper.subtoolmateria()
 		 if AHSET.isMateriaEnabled == true then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[materia.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13905,8 +13969,8 @@ function AetheryteHelper.subtoolmateria()
 		 elseif AHSET.isMateriaEnabled == false then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[materia_non.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.isMateriaEnabled = not AHSET.isMateriaEnabled
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13916,7 +13980,7 @@ function AetheryteHelper.subtoolmateria()
 	  else
 		 GUI:SameLine(10,-40)
 		 GUI:Image(ImageFolder..[[materia_lock.png]],40,40)
-		 if (GUI:IsItemHovered()) then
+		 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip99,mETp.tip99,mDTp.tip99,mFTp.tip99,mCTp.tip99,mKTp.tip99)
 		 end
 	  end
@@ -13928,12 +13992,12 @@ function AetheryteHelper.subtoolmateria()
 		 if AHSET.isPotionEnabled == true then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_potion.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.isPotionEnabled = not AHSET.isPotionEnabled
 			  AetheryteHelper.SaveSettings()
 			  end
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusP = not AHSET.isBotStatusP
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13942,12 +14006,12 @@ function AetheryteHelper.subtoolmateria()
 		 elseif AHSET.isPotionEnabled == false then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_potion_non.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.isPotionEnabled = not AHSET.isPotionEnabled
 			  AetheryteHelper.SaveSettings()
 			  end
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusP = not AHSET.isBotStatusP
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13958,8 +14022,8 @@ function AetheryteHelper.subtoolmateria()
 		if AHSET.isPotionEnabled == true then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_potion_minion.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusP = not AHSET.isBotStatusP
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13968,8 +14032,8 @@ function AetheryteHelper.subtoolmateria()
 		 elseif AHSET.isPotionEnabled == false then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_potion_minion_non.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusP = not AHSET.isBotStatusP
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13985,12 +14049,12 @@ function AetheryteHelper.subtoolmateria()
 		 if AHSET.isManualEnabled == true then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_manual.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.isManualEnabled = not AHSET.isManualEnabled
 			  AetheryteHelper.SaveSettings()
 			  end
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusM = not AHSET.isBotStatusM
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -13999,12 +14063,12 @@ function AetheryteHelper.subtoolmateria()
 		 elseif AHSET.isManualEnabled == false then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_manual_non.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AHSET.isManualEnabled = not AHSET.isManualEnabled
 			  AetheryteHelper.SaveSettings()
 			  end
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusM = not AHSET.isBotStatusM
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -14015,8 +14079,8 @@ function AetheryteHelper.subtoolmateria()
 		if AHSET.isManualEnabled == true then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_manual_minion.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusM = not AHSET.isBotStatusM
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -14025,8 +14089,8 @@ function AetheryteHelper.subtoolmateria()
 		 elseif AHSET.isManualEnabled == false then
 			  GUI:SameLine(10,-40)
 			  GUI:Image(ImageFolder..[[SP_manual_minion_non.png]],40,40)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(1) then
 			  AHSET.isBotStatusM = not AHSET.isBotStatusM
 			  AetheryteHelper.SaveSettings()
 			  end
@@ -14061,7 +14125,7 @@ function AetheryteHelper.subtoolmateria()
 		end
 	  end
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip100,mETp.tip100,mDTp.tip100,mFTp.tip100,mCTp.tip100,mKTp.tip100)
 	  end
 
@@ -14096,13 +14160,13 @@ function AetheryteHelper.subtoolDesynth()
 			 if AHSET.isSalvageEnabled == true then
 				GUI:SameLine(10,-40)
 				GUI:Image(ImageFolder..[[desynth.png]],40,40)
-				if (GUI:IsItemHovered()) then
-				if (GUI:IsMouseClicked(0)) then
+				if GUI:IsItemHovered() then
+				if GUI:IsItemClicked(0) then
 				AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
 				GCexchange = false
 				AetheryteHelper.SaveSettings()
 				end
-				if (GUI:IsMouseClicked(1)) then
+				if GUI:IsItemClicked(1) then
 				AHSET.isReductionOption = not AHSET.isReductionOption
 				AetheryteHelper.SaveSettings()
 				end
@@ -14111,13 +14175,13 @@ function AetheryteHelper.subtoolDesynth()
 			  elseif AHSET.isSalvageEnabled == false then
 				GUI:SameLine(10,-40)
 				GUI:Image(ImageFolder..[[desynth_non.png]],40,40)
-				if (GUI:IsItemHovered()) then
-				if (GUI:IsMouseClicked(0)) then
+				if GUI:IsItemHovered() then
+				if GUI:IsItemClicked(0) then
 				AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
 				GCexchange = false
 				AetheryteHelper.SaveSettings()
 				end
-				if (GUI:IsMouseClicked(1)) then
+				if GUI:IsItemClicked(1) then
 				AHSET.isReductionOption = not AHSET.isReductionOption
 				AetheryteHelper.SaveSettings()
 				end
@@ -14128,13 +14192,13 @@ function AetheryteHelper.subtoolDesynth()
 			if AHSET.isSalvageEnabled == true then
 				GUI:SameLine(10,-40)
 				GUI:Image(ImageFolder..[[desynth_op.png]],40,40)
-				if (GUI:IsItemHovered()) then
-				if (GUI:IsMouseClicked(0)) then
+				if GUI:IsItemHovered() then
+				if GUI:IsItemClicked(0) then
 				AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
 				GCexchange = false
 				AetheryteHelper.SaveSettings()
 				end
-				if (GUI:IsMouseClicked(1)) then
+				if GUI:IsItemClicked(1) then
 				AHSET.isReductionOption = not AHSET.isReductionOption
 				AetheryteHelper.SaveSettings()
 				end
@@ -14143,13 +14207,13 @@ function AetheryteHelper.subtoolDesynth()
 			  elseif AHSET.isSalvageEnabled == false then
 				GUI:SameLine(10,-40)
 				GUI:Image(ImageFolder..[[desynth_op_non.png]],40,40)
-				if (GUI:IsItemHovered()) then
-				if (GUI:IsMouseClicked(0)) then
+				if GUI:IsItemHovered() then
+				if GUI:IsItemClicked(0) then
 				AHSET.isSalvageEnabled = not AHSET.isSalvageEnabled
 				GCexchange = false
 				AetheryteHelper.SaveSettings()
 				end
-				if (GUI:IsMouseClicked(1)) then
+				if GUI:IsItemClicked(1) then
 				AHSET.isReductionOption = not AHSET.isReductionOption
 				AetheryteHelper.SaveSettings()
 				end
@@ -14160,7 +14224,7 @@ function AetheryteHelper.subtoolDesynth()
 	  else
 	  GUI:SameLine(10,-40)
 	  GUI:Image(ImageFolder..[[desynth_lock.png]],40,40)
-		 if (GUI:IsItemHovered()) then
+		 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip99,mETp.tip99,mDTp.tip99,mFTp.tip99,mCTp.tip99,mKTp.tip99)
 		 end
 	  end
@@ -14171,8 +14235,8 @@ function AetheryteHelper.subtoolDesynth()
 	  GUI:Dummy(20,20)
 	  GUI:SameLine(5,-20)
 	  GUI:Image(ImageFolder..[[config.png]],20,20)
-	  if (GUI:IsItemHovered()) then
-		  if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  AetheryteHelper.subtoolDesOP.open = not AetheryteHelper.subtoolDesOP.open
 		  end
 			  AetheryteHelper.SetToolTips(mJTp.tip108,mETp.tip108,mDTp.tip108,mFTp.tip108,mCTp.tip108,mKTp.tip108)
@@ -14190,7 +14254,7 @@ function AetheryteHelper.subtoolDesynth()
 	  GUI:SameLine()
 	  if AHSET.DesynthTrust == true then  GUI:Text("[IDm]ON") else GUI:Text("[IDm]OFF") end
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip101,mETp.tip101,mDTp.tip101,mFTp.tip101,mCTp.tip101,mKTp.tip101)
 	  end
 
@@ -14219,13 +14283,13 @@ function AetheryteHelper.subtoolAR()
 					if AHSET.isReductionEnabled == true then
 						  GUI:SameLine(10,-40)
 						  GUI:Image(ImageFolder..[[AR.png]],40,40)
-						  if (GUI:IsItemHovered()) then
-							  if (GUI:IsMouseClicked(0)) then
+						  if GUI:IsItemHovered() then
+							  if GUI:IsItemClicked(0) then
 								  AHSET.isReductionEnabled = not AHSET.isReductionEnabled
 								  GCexchange = false
 								  AetheryteHelper.SaveSettings()
 							  end
-							  if (GUI:IsMouseClicked(1)) then
+							  if GUI:IsItemClicked(1) then
 							  AHSET.isQuestmode = not AHSET.isQuestmode
 							  AetheryteHelper.SaveSettings()
 							  end
@@ -14234,13 +14298,13 @@ function AetheryteHelper.subtoolAR()
 					elseif AHSET.isReductionEnabled == false then
 						  GUI:SameLine(10,-40)
 						  GUI:Image(ImageFolder..[[AR_non.png]],40,40)
-						  if (GUI:IsItemHovered()) then
-							  if (GUI:IsMouseClicked(0)) then
+						  if GUI:IsItemHovered() then
+							  if GUI:IsItemClicked(0) then
 								  AHSET.isReductionEnabled = not AHSET.isReductionEnabled
 								  GCexchange = false
 								  AetheryteHelper.SaveSettings()
 							  end
-							  if (GUI:IsMouseClicked(1)) then
+							  if GUI:IsItemClicked(1) then
 							  AHSET.isQuestmode = not AHSET.isQuestmode
 							  AetheryteHelper.SaveSettings()
 							  end
@@ -14251,13 +14315,13 @@ function AetheryteHelper.subtoolAR()
 			 elseif AHSET.isQuestmode == true then
 							GUI:SameLine(10,-40)
 							GUI:Image(ImageFolder..[[AR_minion.png]],40,40)
-							if (GUI:IsItemHovered()) then
-								if (GUI:IsMouseClicked(0)) then
+							if GUI:IsItemHovered() then
+								if GUI:IsItemClicked(0) then
 									AHSET.isReductionEnabled = not AHSET.isReductionEnabled
 									GCexchange = false
 									AetheryteHelper.SaveSettings()
 								end
-								if (GUI:IsMouseClicked(1)) then
+								if GUI:IsItemClicked(1) then
 									AHSET.isQuestmode = not AHSET.isQuestmode
 									AetheryteHelper.SaveSettings()
 								end
@@ -14267,7 +14331,7 @@ function AetheryteHelper.subtoolAR()
 	  else
 	  GUI:SameLine(10,-40)
 	  GUI:Image(ImageFolder..[[AR_lock.png]],40,40)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip99,mETp.tip99,mDTp.tip99,mFTp.tip99,mCTp.tip99,mKTp.tip99)
 	  end
 	  end
@@ -14277,7 +14341,7 @@ function AetheryteHelper.subtoolAR()
 	  if AHSET.isReductionEnabled == true then  GUI:Text("[AR]ON") else GUI:Text("[AR]OFF") end
 	  if AHSET.isQuestmode == true then  GUI:Text("[Link]ON") else GUI:Text("[Link]OFF") end
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip102,mETp.tip102,mDTp.tip102,mFTp.tip102,mCTp.tip102,mKTp.tip102)
 	  end
 	  GUI:BeginGroup()
@@ -14429,8 +14493,8 @@ function AetheryteHelper.subtoolGC()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[close.png]],20,20)
-	  if (GUI:IsItemHovered()) then
-		if (GUI:IsMouseClicked(0)) then
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
 		   Player:Stop()
 		   AutoMoveGC = false
 		   GCexchange = false
@@ -14450,8 +14514,8 @@ function AetheryteHelper.subtoolGC()
 		   GUI:Image(ImageFolder..[[lessmax_non.png]],40,40)
 	  end
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
-		   if (GUI:IsItemClicked(0)) then
+	  if GUI:IsItemHovered() then
+		   if GUI:IsItemClicked(0) then
 		   AHSET.GCexlessmax = not AHSET.GCexlessmax
 		   end
 		   AetheryteHelper.SetToolTips(mJTp.tip90,mETp.tip90,mDTp.tip90,mFTp.tip90,mCTp.tip90,mKTp.tip90)
@@ -14549,8 +14613,8 @@ function AetheryteHelper.GCtrunin()
 	 end
 	 if mushTrustmode == true then sealstoitem = false end
 	 GUI:EndGroup()
-	 if (GUI:IsItemHovered()) then
-			if (GUI:IsItemClicked(0)) then
+	 if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
 			sealstoitem = not sealstoitem
 			GCexchange = false
 			mushtoItemstep = 0
@@ -14724,7 +14788,7 @@ function AetheryteHelper.GCtrunin()
 	 GUI:TextColored(1,0,0,1,mushcost * AHSET.hosiikazu.."/"..mushGseals.count)
 	 else GUI:TextColored(0,1,1,1,mushcost * AHSET.hosiikazu.."/"..mushGseals.count) end
 	 GUI:EndGroup()
-	 if (GUI:IsItemHovered()) then
+	 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip81,mETp.tip81,mDTp.tip81,mFTp.tip81,mCTp.tip81,mKTp.tip81)
 	 end
 	 if AHSET.syojigunpyou <= mushGseals.count then mushtruninGCitem = true
@@ -14781,7 +14845,7 @@ function AetheryteHelper.Drawafooter()
 	  GUI:BeginGroup()
 	  GUI:TextColored( 0.8,0.2,0.2,1,"Github")
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 		 io.popen([[cmd /c start "" "]]..AHLinks.link2..[["]]):close()
 	  elseif GUI:IsItemClicked(1) then
@@ -14804,7 +14868,7 @@ function AetheryteHelper.Drawafooter()
 	  GUI:BeginGroup()
 	  GUI:TextColored( 0.2,0.8,0.8,1, "Discord")
 	  GUI:EndGroup()
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 			io.popen([[cmd /c start "" "]]..AHLinks.link1..[["]]):close()
 	  end
@@ -14879,6 +14943,24 @@ function AetheryteHelper.autoDCset()
 		 else AHSET.selectDC = 1
 	  end
 	  ]]
+	  AetheryteHelper.Origin()
+			MushmoveServerlist = Origin_list
+			MushmoveServer_templist = MushmoveServerlist
+--d(MushmoveServer_templist)
+			for k,v in pairs(WorldID) do
+					if (v.id == Player.currentworld) then
+					MushmoveServer_tempWorld = v
+					MushmoveServer_tempname = tostring(MushmoveServer_tempWorld.Name)
+--d(MushmoveServer_tempname)
+          end
+      end
+			MushmoveServer_tempindex = table.find(MushmoveServer_templist, MushmoveServer_tempname)
+--d(MushmoveServer_tempindex)
+			if (MushmoveServer_tempindex ~= nil) then
+			table.remove(MushmoveServer_templist,MushmoveServer_tempindex)
+			else
+			MushmoveServer_tempindex = 0
+			end
 end
 
 -----------------------------------------------------------
@@ -14911,66 +14993,33 @@ function AetheryteHelper.SVRSelectermini()
 	  GUI:Columns(3)
 	  GUI:SetColumnOffset(1, 40) GUI:SetColumnOffset(2, 180)
 	  GUI:Spacing()
-	  GUI:BeginGroup()
-	  GUI:Dummy(20,20)
 	  if Player.localmapid == 132 or Player.localmapid == 129 or Player.localmapid == 130 then
-	  if selectins == true then
-			  GUI:SameLine(-5,-20)
-			  GUI:Image(ImageFolder..[[AHon.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  isins = 4
-
-			  selectins = not selectins
-			  if not selectins then
-			  end
-			  Player:ClearTarget()
-			  Player:Stop()
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
-			  end
-	  elseif selectins == false then
-			  GUI:SameLine(-5,-20)
-			  GUI:Image(ImageFolder..[[AHoff.png]],20,20)
-			  if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
-			  isins = 4
-			  selectins = not selectins
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
-			  end
-	  end
+	       GUI:BeginGroup()
+	       if selectins == true then
+			     GUI:Image(ImageFolder..[[AHon.png]],20,20)
+			   elseif selectins == false then
+			     GUI:Image(ImageFolder..[[AHoff.png]],20,20)
+			   end
+			     GUI:EndGroup()
+			     if GUI:IsItemHovered() then
+			         if GUI:IsItemClicked(0) then
+			         isins = 4
+			         selectins = not selectins
+			         Player:ClearTarget()
+			         Player:Stop()
+			         end
+			         AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
+			     end
 	  else
-	  	GUI:SameLine(-5,-20)
-		  GUI:Image(ImageFolder..[[AH_non.png]],20,20)
-		  if (GUI:IsItemHovered()) then
+	  	GUI:BeginGroup()
+	  	GUI:Image(ImageFolder..[[AH_non.png]],20,20)
+		  GUI:EndGroup()
+		  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip00,mETp.tip00,mDTp.tip00,mFTp.tip00,mCTp.tip00,mKTp.tip00)
 			end
 	  end
 	  GUI:EndGroup()
 	  GUI:NextColumn()
-	  --GUI:Text("World select")
-	  AetheryteHelper.Origin()
-			MushmoveServerlist = Origin_list
-			for k, v in pairs(MushmoveServerlist) do
-				local templist = MushmoveServerlist
---d(templist)
-				for k,v in pairs(WorldID) do
-					if (v.id == Player.currentworld) then local tempWorld = v
-					tempname = tostring(tempWorld.Name)
---d(tempname)
-					for k,v in pairs(templist) do
-					local tempindex = table.find(templist, tempname)
---d(tempindex)
-					if (tempindex ~= nil) then
-					table.remove(templist,tempindex)
-					else tempindex = 0
-					end
-					end
-					end
-				 end
-			 end
-	 AetheryteHelper.autoDCset()
 	 GUI:Dummy(120,1)
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(120)
@@ -14981,22 +15030,21 @@ function AetheryteHelper.SVRSelectermini()
 	 GUI:Combo( "server",1,FFXIVServerlist[16],1)
 	 --GUI:Combo( "server",1,FFXIVServerlist[17],1)
 	 end
-	 if (GUI:IsItemHovered()) then
+	 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip95,mETp.tip95,mDTp.tip95,mFTp.tip95,mCTp.tip95,mKTp.tip95)
 	 end
 	 GUI:EndGroup()
 	 isServer = selectSVR
 	  GUI:NextColumn()
-	  GUI:SameLine(10)
 	  GUI:BeginGroup()
-	  GUI:Image(ImageFolder..[[close.png]],20,20)
-	  if (GUI:IsItemHovered()) then
+	  GUI:ImageButton("",ImageFolder..[[close.png]],20,20)
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
 		  if GUI:IsItemClicked(0) then
 		  AetheryteHelper.miniWV.open = false
 		  end
-			  AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
+			AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
 	  end
-	  GUI:EndGroup()
 	  GUI:Columns()
 	  GUI:Spacing()
 	  GUI:Separator()
@@ -15009,36 +15057,12 @@ end
 -------------------------------------------------------------------------------------------------------------
 
 
-
-
 function AetheryteHelper.DCSVselect()
-			AetheryteHelper.Origin()
-			MushmoveServerlist = Origin_list
-			for k, v in pairs(MushmoveServerlist) do
-				local templist = MushmoveServerlist
---d(templist)
-				for k,v in pairs(WorldID) do
-					if (v.id == Player.currentworld) then local tempWorld = v
-					tempname = tostring(tempWorld.Name)
---d(tempname)
-					for k,v in pairs(templist) do
-					local tempindex = table.find(templist, tempname)
---d(tempindex)
-					if (tempindex ~= nil) then
-					table.remove(templist,tempindex)
-					else
-					tempindex = 0
-					end
-					end
-					end
-				 end
-			 end
-	 AetheryteHelper.autoDCset()
 	 GUI:BeginGroup()
 	 GUI:PushItemWidth(80)
    AHSET.selectDC = GUI:Combo( "###DC", AHSET.selectDC,FFXIVDClist,1)
 	 GUI:EndGroup()
-	 if (GUI:IsItemHovered()) then
+	 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip93,mETp.tip93,mDTp.tip93,mFTp.tip93,mCTp.tip93,mKTp.tip93)
 	 end
 	 GUI:SameLine()
@@ -15083,39 +15107,29 @@ function AetheryteHelper.minitools()
 	  if AHSET.mushtooltips == true then
 			  GUI:SameLine(2.5,-25)
 			  GUI:Image(ImageFolder..[[tips.png]],25,25)
-			  if (GUI:IsItemHovered()) then
-			  	if (GUI:IsMouseClicked(0)) then
-			  	AHSET.mushtooltips = not AHSET.mushtooltips
-			  	AetheryteHelper.SaveSettings()
-			  	end
-			  	if (GUI:IsMouseClicked(1)) then
-			  	AetheryteHelper.selectlanguage.open = not AetheryteHelper.selectlanguage.open
-			  	end
-			  AetheryteHelper.SetToolTips(mJTp.tip109,mETp.tip109,mDTp.tip109,mFTp.tip109,mCTp.tip109,mKTp.tip109)
-			  end
 	  elseif AHSET.mushtooltips == false then
 			  GUI:SameLine(2.5,-25)
 			  GUI:Image(ImageFolder..[[tips_non.png]],25,25)
-			  if (GUI:IsItemHovered()) then
-			  	if (GUI:IsMouseClicked(0)) then
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+			  	if GUI:IsItemClicked(0) then
 			  	AHSET.mushtooltips = not AHSET.mushtooltips
 			  	AetheryteHelper.SaveSettings()
 			  	end
-			  	if (GUI:IsMouseClicked(1)) then
+			  	if GUI:IsItemClicked(1) then
 			  	AetheryteHelper.selectlanguage.open = not AetheryteHelper.selectlanguage.open
 			  	end
-			  AetheryteHelper.SetToolTips(mJTp.tip109,mETp.tip109,mDTp.tip109,mFTp.tip109,mCTp.tip109,mKTp.tip109)
-			  end
-	  end
-	  GUI:EndGroup()
+		AetheryteHelper.SetToolTips(mJTp.tip109,mETp.tip109,mDTp.tip109,mFTp.tip109,mCTp.tip109,mKTp.tip109)
+		end
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:ImageButton("###flag",ImageFolder..[[Radar.png]], 20,20)
-			if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  AetheryteHelper.RadarWindow.open = not AetheryteHelper.RadarWindow.open
 			  end
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemClicked(1) then
 			  AetheryteHelper.miniRadarWindow.open = not AetheryteHelper.miniRadarWindow.open
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip143,mETp.tip143,mDTp.tip143,mFTp.tip143,mCTp.tip143,mKTp.tip143)
@@ -15123,11 +15137,11 @@ function AetheryteHelper.minitools()
 	  GUI:EndGroup()
 	  GUI:BeginGroup()
 	  GUI:ImageButton("###flag",ImageFolder..[[flag.png]], 20,20)
-			if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  SendTextCommand("/e <flag>")
 			  end
-			  if (GUI:IsMouseClicked(1)) then
+			  if GUI:IsItemClicked(1) then
 			  AetheryteHelper.flagsrecord.open = not AetheryteHelper.flagsrecord.open
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip03,mETp.tip03,mDTp.tip03,mFTp.tip03,mCTp.tip03,mKTp.tip03)
@@ -15136,8 +15150,8 @@ function AetheryteHelper.minitools()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:ImageButton("###pos",ImageFolder..[[P_pos.png]], 20,20)
-			if (GUI:IsItemHovered()) then
-			  if (GUI:IsMouseClicked(0)) then
+			if GUI:IsItemHovered() then
+			  if GUI:IsItemClicked(0) then
 			  SendTextCommand("/e [AH]Now Instance: \x02\x13\x06\xfe\xff\xff\xff\x11 <pos> \x02\x13\x02\xec\x03")
 			  end
 			  AetheryteHelper.SetToolTips(mJTp.tip117,mETp.tip117,mDTp.tip117,mFTp.tip117,mCTp.tip117,mKTp.tip117)
@@ -15170,7 +15184,7 @@ end
 function AetheryteHelper.footerkofi()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[kofi.png]],25,25)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 			io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mykofi..[["]]):close()
 	  end
@@ -15180,7 +15194,7 @@ function AetheryteHelper.footerkofi()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[patreon.png]],25,25)
-	  if (GUI:IsItemHovered()) then
+	  if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 			io.popen([[cmd /c start "" "]]..kinokoProject.HELP.mypatreon..[["]]):close()
 	  end
@@ -15194,8 +15208,8 @@ function AetheryteHelper.UPCKB()
    if mushVC == false then
      GUI:BeginGroup()
 	   GUI:Image(ImageFolder..[[CB_clear.png]],30,30)
-	   if (GUI:IsItemHovered()) then
-		  	if (GUI:IsMouseClicked(0)) then
+	   if GUI:IsItemHovered() then
+		  	if GUI:IsItemClicked(0) then
 				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
 			  end
 			     AetheryteHelper.SetToolTips(mJTp.tip220,mETp.tip220,mDTp.tip220,mFTp.tip220,mCTp.tip220,mKTp.tip220)
@@ -15204,8 +15218,8 @@ function AetheryteHelper.UPCKB()
 	 elseif mushVC == true then
 	 	 GUI:BeginGroup()
 	   GUI:Image(ImageFolder..[[download.png]],30,30)
-	   if (GUI:IsItemHovered()) then
-		  	if (GUI:IsMouseClicked(0)) then
+	   if GUI:IsItemHovered() then
+		  	if GUI:IsItemClicked(0) then
 				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
 			  end
 			     AetheryteHelper.SetToolTips(mJTp.tip223,mETp.tip223,mDTp.tip223,mFTp.tip223,mCTp.tip223,mKTp.tip223)
@@ -15214,8 +15228,8 @@ function AetheryteHelper.UPCKB()
 	 elseif mushVC == nil then
 	 	 GUI:BeginGroup()
 	   GUI:Image(ImageFolder..[[loading.png]],30,30)
-	   if (GUI:IsItemHovered()) then
-		  	if (GUI:IsMouseClicked(0)) then
+	   if GUI:IsItemHovered() then
+		  	if GUI:IsItemClicked(0) then
 				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
 			  end
 			     AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
@@ -15633,13 +15647,15 @@ function AetheryteHelper.DrawCall()
 --mini Button
 	  GUI:Separator()
 	  GUI:Spacing(5)
-	  if GUI:Button("Mini##"..Windows.Name,(GUI:GetWindowSize()), 40, 20) then
-		 Windows.Open = false
-		 minikinoko.Open = true
-		 if Windows.Open == true then
-			minikinoko.Open = false
-		 end
-	  AetheryteHelper.SaveSettings()
+	  GUI:BeginGroup()
+	  GUI:Button("Mini##"..Windows.Name,(GUI:GetWindowSize()), 40, 20)
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+	  	if GUI:IsItemClicked(0) then
+		     Windows.Open = false
+		     minikinoko.Open = true
+		     AetheryteHelper.SaveSettings()
+	    end
 	  end
 	  GUI:SameLine(60)
 	  GUI:BeginGroup()
@@ -15922,12 +15938,8 @@ function AetheryteHelper.movetoCOMPANYlimsa()
 		 if( Player.localmapid == 128 ) then GCStep = 3 end
 		 if ( Player.localmapid ~= 129 )and( Player.localmapid ~= 128 ) and (Player:GetTarget() == nil) then
 			 if(ActionList:Get(5,7):IsReady() == true) then
-			  if AetheryteHelper.ATuse.ATuseEnable == true then
-			  Player:Teleport(8,0,true)
-			  else
-			  Player:Teleport(8,0,false)
-			  end
-			end
+			  AetheryteHelper.Teleport(8,0)
+			 end
 		 end
 
 			 if (GCStep == 0) then
@@ -15986,12 +15998,7 @@ function AetheryteHelper.movetoCOMPANYgridania()
 			  elseif ( Player.localmapid ~= 132 ) then
 				  if Player.localmapid ~= 132  and (Player:GetTarget() == nil) then
 				  if(ActionList:Get(5,7):IsReady() == true) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(2,0)
-				  --Player:Teleport(2,0,true)
-				  else
-				  Player:Teleport(2,0,false)
-				  end
 				  end
 				  end
 			  end
@@ -16009,12 +16016,7 @@ function AetheryteHelper.movetoCOMPANYuldah()
 			  elseif ( Player.localmapid ~= 130 ) then
 				  if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then
 				  if(ActionList:Get(5,7):IsReady() == true) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(9,0)
-				  --Player:Teleport(9,0,true)
-				  else
-				  Player:Teleport(9,0,false)
-				  end
 				  end
 				  end
 			  end
@@ -16041,12 +16043,7 @@ function AetheryteHelper.moveMBlimsa()
 			if limMBStep == 0 then
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(8,0)
-				  --Player:Teleport(8,0,true)
-				  else
-				  Player:Teleport(8,0,false)
-				  end
 				  mushlooptimer = 1000
 				  end
 				  if Player.localmapid == 129 then
@@ -16058,12 +16055,7 @@ function AetheryteHelper.moveMBlimsa()
 				  end
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(8,0)
-				  --Player:Teleport(8,0,true)
-				  else
-				  Player:Teleport(8,0,false)
-				  end
 				  end
 				  if Player.localmapid == 129 then
 				  limMBStep = 1
@@ -16165,12 +16157,7 @@ function AetheryteHelper.moveMBgridania()
 			if griMBStep == 0 then
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(2,0)
-				  --Player:Teleport(2,0,true)
-				  else
-				  Player:Teleport(2,0,false)
-				  end
 				  mushlooptimer = 1000
 				  end
 				  if Player.localmapid == 132 then
@@ -16182,12 +16169,7 @@ function AetheryteHelper.moveMBgridania()
 				  end
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(2,0)
-				  --Player:Teleport(2,0,true)
-				  else
-				  Player:Teleport(2,0,false)
-				  end
 				  end
 				  if Player.localmapid == 133 then
 				  griMBStep = 1
@@ -16301,12 +16283,7 @@ function AetheryteHelper.moveMBuldah()
 			if uldMBStep == 0 then
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(9,0)
-				  --Player:Teleport(9,0,true)
-				  else
-				  Player:Teleport(9,0,false)
-				  end
 				  end
 				  if Player.localmapid == 130 then
 				  mushlooptimer = 1000
@@ -16317,12 +16294,7 @@ function AetheryteHelper.moveMBuldah()
 				  end
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-				  if AetheryteHelper.ATuse.ATuseEnable == true then
 				  AetheryteHelper.Teleport(9,0)
-				  --Player:Teleport(9,0,true)
-				  else
-				  Player:Teleport(9,0,false)
-				  end
 				  end
 				  if Player.localmapid == 130 then
 				  uldMBStep = 10
@@ -17371,18 +17343,35 @@ function AetheryteHelper.Jumbocactpothelper()
 	local jbc32 = AHSET.jumbo32
 	local jbc33 = AHSET.jumbo33
 	local jbc34 = AHSET.jumbo34
+  
 if (mushJumbocactpothelper) then
-	 if mushGSjcpstep == 0 then
-		mushlooptimer = 100
-		Player:SetTarget(4299949120)
-		if Player:GetTarget().Distance < 6 then
-		Player:Interact(4299949120)
-		end
-		mushGSjcpstep = 1
-	   --d("mushGSjcpstep"..mushGSjcpstep)
+	 mushAH_JCPA = MEntityList("ContentID=1010446,type=3,alive")
+	 if table.valid(mushAH_JCPA) then
+	    for _,e in pairs(mushAH_JCPA) do
+	    mushAH_JCPA_NPC = e
+	    end
+	 end
+	 if mushGSjcpstep == 0 then	   
+			if mushAH_JCPA_NPC ~= nil and mushAH_JCPA_NPC.distance < 6 then
+			Player:Stop()
+			Player:SetTarget(4299949120)
+			Player:Interact(4299949120)
+		  mushGSjcpstep = 1
+			elseif Player.localmapid == 144 then
+      Player:MoveTo(120,13,-11.5,10,true,true)
+      if Player:IsMoving() then
+			   if ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+			end
+			mushGSjcpstep = 0
+		  elseif Player.localmapid ~= 144 then
+		  AetheryteHelper.Teleport(62,0)
+		  mushGSjcpstep = 0
+		  end
+	    --d("mushGSjcpstep"..mushGSjcpstep)
 	 end
 
 	 if mushGSjcpstep == 1 then
+	 	 mushlooptimer = 100
 	   if IsControlOpen("Talk") then
 		  UseControlAction("Talk", "Close")
 		  mushGSjcpstep = 2
@@ -23139,6 +23128,7 @@ function AetheryteHelper.mushsubtool()
 	if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
 	   lastUpdatePulse = Now()
 	 if not IsControlOpen("Title") or not IsControlOpen("CharaSelect") then
+	 	  AetheryteHelper.autoDCset()
       AetheryteHelper.AutoUpdateCheck()
 		  AetheryteHelper.UBDmode03func()
       AetheryteHelper.undersizeIDswitch()
