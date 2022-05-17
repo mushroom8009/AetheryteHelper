@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.7.7",
-	  tag = 2022051413,--y0000m00d00h00
+	  Version =         "1.8.7.8",
+	  tag = 2022051710,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -137,6 +137,7 @@ local kinokoProject = {
             "[1.8.7.5] - add TargetMe Recorder",
             "[1.8.7.6] - bug fix & bug fix",
             "[1.8.7.7] - Rewriting of some code",
+            "[1.8.7.8] - add take snap of screen function in TargetMeRecorder",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -318,8 +319,8 @@ AetheryteHelper.CBcodeEditor = {
 }
 
 AetheryteHelper.userbutton = {
-	  open =  false,
-	  visible = true,
+	open =  false,
+	visible = true,
 }
 
 AetheryteHelper.selectlanguage = {
@@ -338,6 +339,10 @@ AetheryteHelper.flagsrecord = {
 }
 
 AetheryteHelper.TRmapSupport = {
+  open = false,
+  visible = true,
+}
+AetheryteHelper.MyTargetPlayer = {
   open = false,
   visible = true,
 }
@@ -497,6 +502,11 @@ AetheryteHelper.PvPAssist = {
 AetheryteHelper.RecordTargetMe = {
   Enable = false,
   time = 5,
+  Snap = false,
+  Discord = false,
+  MyTarget = false,
+  webhook = "",
+  SSfolder = "",
 }
 AetheryteHelper.TargetMeList = {}
 
@@ -978,10 +988,12 @@ mushtooltips = {
 		 tip264 = "左のボタンでwavを読み込んでください",
 		 tip265 = "自分をターゲットした人を記録",
 		 tip266 = "この時間内なら同一人物からのターゲットは記録しない(分)",
-		 tip267 = "テキストで一部情報を保存",
+		 tip267 = "テキストで一部情報を保存\n右クリックでlogフォルダを開く",
 		 tip268 = "キャラのロドストページを開く\n(検索に数秒かかります)",
 		 tip269 = "相手の場所を確認",
 		 tip270 = "履歴を全て消去\n名前を右クリックで個別消去",
+		 tip271 = "スクリーンショットの撮影",
+		 tip272 = "minionから必要な情報が取得できません\nSSフォルダーのフルパスを入力してください",
 
 
   },
@@ -1253,10 +1265,12 @@ mushtooltips = {
 		 tip264 = "Please load the wav",
 		 tip265 = "Record who targeted you",
 		 tip266 = "Targets from the same person are not recorded within this time period (min)",
-		 tip267 = "Save some information in text",
+		 tip267 = "Save some information in text\nRight click to open log folder",
 		 tip268 = "Open the character's Lodestone page\n(Search takes a need few seconds)",
 		 tip269 = "Check the other player location",
 		 tip270 = "Clear all history\nRight-click on a name to clear it individually",
+		 tip271 = "Taking screenshots",
+		 tip272 = "Unable to retrieve required information from minion\nPlease enter full path of screenshots folder",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1526,10 +1540,13 @@ mushtooltips = {
 		 tip264 = "Chargez le wav en utilisant les boutons sur la gauche",
 		 tip265 = "Enregistrez qui vous a ciblé",
 		 tip266 = "Les cibles de la même personne ne sont pas enregistrées dans ce laps de temps (min)",
-		 tip267 = "Sauvegarder certaines informations dans le texte",
+		 tip267 = "Sauvegarder certaines informations dans le texte\nFaites un clic droit pour ouvrir le dossier log",
 		 tip268 = "Ouvrez la page Lodestone du personnage\n(La recherche prend quelques secondes)",
 		 tip269 = "Vérifiez l'emplacement de l'autre joueur",
 		 tip270 = "Effacer tout l'historique\nCliquez avec le bouton droit de la souris sur un nom pour l'effacer individuellement",
+		 tip271 = "Faire des captures d'écran",
+		 tip272 = "Impossible de récupérer l'information requise du minion\nSaisissez le chemin complet du dossier capture d'écran",
+
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1799,10 +1816,12 @@ mushtooltips = {
      tip264 = "Lade die wav-Datei mit den Schaltflächen auf der linken Seite",
      tip265 = "Zeichne auf, wer dich beobachtet",
      tip266 = "Innerhalb dieses Zeitraums (Minuten) wird dieselbe Person nicht nochmals erfasst",
-     tip267 = "Einige Informationen in Textform speichern",
+     tip267 = "Einige Informationen in Textform speichern\nKlicke mit der rechten Maustaste, um den Log-Ordner zu öffnen",
      tip268 = "Öffnet die Lodestone-Seite des Charakters\n(Die Suche dauert ein paar Sekunden)",
      tip269 = "Überprüfe den Standort des anderen Spielers",
      tip270 = "Gesamten Verlauf löschen\nKlicke mit der rechten Maustaste auf einen Namen, um ihn einzeln zu löschen",
+     tip271 = "Screenshot aufnehmen",
+     tip272 = "Notwendige Informationen können von Minion nicht abgerufen werden\nBitte gebe den vollständigen Pfad vom Screenshot–Ordner an", 
   
   },
   cn = {
@@ -2073,10 +2092,12 @@ mushtooltips = {
 		 tip264 = "请加载wav文件",
 		 tip265 = "记录谁针对你",
 		 tip266 = "同一人的目标在这段时间内不被记录（分钟）",
-		 tip267 = "以文本形式存储一些信息",
+		 tip267 = "以文本形式存储一些信息\n右键单击打开log文件夹",
 		 tip268 = "打开该人物的Lodestone页面\n(搜索将需要一点时间)",
 		 tip269 = "检查对方球员的位置",
 		 tip270 = "清除所有历史记录\n右键点击一个名字可以单独清除它",
+		 tip271 = "拍摄屏幕截图",
+		 tip272 = "无法从minion那里检索到所需信息\n请输入屏幕截图文件夹的完整路径",
   
   },
   kr = { 
@@ -2347,10 +2368,12 @@ mushtooltips = {
      tip264 = "Please load the wav",
      tip265 = "Record who targeted you",
 		 tip266 = "Targets from the same person are not recorded within this time period (min)",
-		 tip267 = "Save some information in text",
+		 tip267 = "Save some information in text\nRight click to open log folder",
 		 tip268 = "Open the character's Lodestone page",
 		 tip269 = "Check the other player location",
 		 tip270 = "Clear all history\nRight-click on a name to clear it individually",
+		 tip271 = "Taking screenshots",
+		 tip272 = "Unable to retrieve required information from minion\nPlease enter the full path of the SS folder",
   
   },
 
@@ -2678,6 +2701,7 @@ mushAH_ONLINE_Status = {
 	{id = 37, status = "Party Member", png = [[status_ptm.png]]},
 	{id = 38, status = "Party Leader(Cross-world)", png = [[status_cwptl.png]]},
 	{id = 39, status = "Party Member(Cross-world)", png = [[status_cwptm.png]]},
+	{id = 43, status = "In Duty(solo)", png = [[status_solo.png]]},
 }
 
 AetheryteHelper.FCAuseingList = {}
@@ -2735,6 +2759,7 @@ local language = GetGameLanguage()
 --local nowServer =
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 -- maintool local
+local changed
 local selectins = false
 local autooff = true
 local isins = 4
@@ -3416,8 +3441,13 @@ function AetheryteHelper.Drawinsselect()
 	  if selectins == true then
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AHon.png]],40,60)
-			  if GUI:IsItemHovered() then
-			  if GUI:IsItemClicked(0) then
+		elseif selectins == false then
+			  GUI:SameLine(5,-60)
+			  GUI:Image(ImageFolder..[[AHoff.png]],40,60)
+		end
+		GUI:EndGroup()
+		if GUI:IsItemHovered() then
+		  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
 			  if not selectins then
@@ -3429,28 +3459,9 @@ function AetheryteHelper.Drawinsselect()
 			  end
 			  Player:ClearTarget()
 			  Player:Stop()
-			  end
-			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
-			  end
-	  elseif selectins == false then
-			  GUI:SameLine(5,-60)
-			  GUI:Image(ImageFolder..[[AHoff.png]],40,60)
-			 if GUI:IsItemHovered() then
-			 if GUI:IsItemClicked(0) then
-			 selectins = not selectins
-			 autheStep = 0
-			 if not selectins then
-			 insHistory = {
-			 isins = 4,
-			 selectins = false,
-			 autheStep = 0
-			 }
-			 end
-			 end
-			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
-			 end
-	  end
-	  GUI:EndGroup()
+			end
+		AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
+		end	  
 end
 
 function AetheryteHelper.Serverselect()
@@ -3461,27 +3472,21 @@ function AetheryteHelper.Serverselect()
 	  if selectins == true then
 			  GUI:SameLine(5,-60)
 			  GUI:Image(ImageFolder..[[AHon.png]],40,60)
-			  if GUI:IsItemHovered() then
+		elseif selectins == false then
+			  GUI:SameLine(5,-60)
+			  GUI:Image(ImageFolder..[[AHoff.png]],40,60)
+		end
+		GUI:EndGroup()
+		if GUI:IsItemHovered() then
 			  if GUI:IsItemClicked(0) then
 			  isins = 4
 			  selectins = not selectins
+			  autheStep = 0
 			  Player:ClearTarget()
 			  Player:Stop()
 			  end
 			   AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
-			  end
-	  elseif selectins == false then
-			  GUI:SameLine(5,-60)
-			  GUI:Image(ImageFolder..[[AHoff.png]],40,60)
-			 if GUI:IsItemHovered() then
-			 if GUI:IsItemClicked(0) then
-			 selectins = not selectins
-			 autheStep = 0
-			 end
-			  AetheryteHelper.SetToolTips(mJTp.tip01,mETp.tip01,mDTp.tip01,mFTp.tip01,mCTp.tip01,mKTp.tip01)
-			 end
-	  end
-	  GUI:EndGroup()
+		end
 end
 
 function AetheryteHelper.notuseAH()
@@ -3751,7 +3756,6 @@ function AetheryteHelper.accessdelay()
 	  GUI:AlignFirstTextHeightToWidgets()
 	  GUI:BeginGroup()
 	  GUI:PushItemWidth(120)
-	  local changed
 		AHSET.delay, changed = GUI:SliderInt("ms",AHSET.delay,100,1000)
 		if changed then
 		AetheryteHelper.SaveSettings()
@@ -10812,10 +10816,40 @@ function AetheryteHelper.TargetMeWin()
 	 	 AetheryteHelper.SetToolTips(mJTp.tip270,mETp.tip270,mDTp.tip270,mFTp.tip270,mCTp.tip270,mKTp.tip270)
 	 end
 	 GUI:EndGroup()
+	 GUI:BeginGroup()
+	 GUI:Checkbox("##TakeSnapOfScreen",AetheryteHelper.RecordTargetMe.Snap)
+	 GUI:SameLine()
+	 GUI:Image()
+   GUI:Image(ImageFolder..[[ScreenShot.png]],15,15)
+	 GUI:Image()
+ 	 GUI:EndGroup()
+ 	 if GUI:IsItemHovered() then
+	    if GUI:IsItemClicked(0) then
+ 	    AetheryteHelper.RecordTargetMe.Snap = not AetheryteHelper.RecordTargetMe.Snap
+ 	    AetheryteHelper.SaveSettings()
+ 	    end
+ 	    AetheryteHelper.SetToolTips(mJTp.tip271,mETp.tip271,mDTp.tip271,mFTp.tip271,mCTp.tip271,mKTp.tip271)
+ 	 end
+	 if GetGameSettings()[100] == nil then
+	    GUI:BeginGroup()
+	    AetheryteHelper.RecordTargetMe.SSfolder ,changed = GUI:InputText("SS folder path##SSfolder",AetheryteHelper.RecordTargetMe.SSfolder)
+	    if changed then
+	 	  AetheryteHelper.SaveSettings()
+	    end
+ 	    GUI:EndGroup()
+ 	    if GUI:IsItemHovered() then   
+ 	    AetheryteHelper.SetToolTips(mJTp.tip272,mETp.tip272,mDTp.tip272,mFTp.tip272,mCTp.tip272,mKTp.tip272)
+ 	    end
+ 	 end
 	 GUI:Spacing()
 	 GUI:Separator()
 	 GUI:Spacing()
-   GUI:BeginChild("##History", 0, GUI_GetFrameHeight(13.5), true)
+	 if GetGameSettings()[100] == nil then
+   mushAH_History_Child_high = 11.5
+   else
+   mushAH_History_Child_high = 12.5
+   end
+   GUI:BeginChild("##History", 0, GUI_GetFrameHeight(mushAH_History_Child_high), true)
    if #AetheryteHelper.TargetMeList ~= 0 then
    for k,v in pairs(AetheryteHelper.TargetMeList) do
    	   for key,val in pairs(WorldID) do
@@ -10926,9 +10960,26 @@ function AetheryteHelper.TargetMeWin()
 	   	 if GUI:IsItemClicked(0) then
 	   	 	mushAH_TMEREC_log_name = v[1]:gsub(" ","_")
 	   	 	mushAH_TMEREC_log_Area = GetMapName(v[2]):gsub("ウルティマ・トゥーレ","Ultima Thule"):gsub("ヴォルカニック・ハート","The Volcanic Heart"):gsub("・"," "):gsub("：",":")
+	   	 	mushAH_TMEREC_log_time = v[3]:gsub("-",""):gsub(" ","_"):gsub(":","")
 	   	 	mushAH_TMEREC_logcontents = tostring(v[3].."---- Area:["..mushAH_TMEREC_log_Area.."] Name:["..v[1].."] HomeWorld:["..mushAH_TMEREC_wroldname.."] Job:"..mushAH_TMEREC_job.." Lv:"..v[11])
-        io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\log\log_]]..mushAH_TMEREC_log_name..os.date("--%Y-%m-%d_%H_%M_%S")..[[.txt' -Value ']]..mushAH_TMEREC_logcontents..[['; stop-process -Id $PID"]]):close()
+        io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\log\log_]]..mushAH_TMEREC_log_time..[[_]]..mushAH_TMEREC_log_name..[[.txt' -Value ']]..mushAH_TMEREC_logcontents..[['; stop-process -Id $PID"]]):close()
 	   	 end
+	   	 if GUI:IsItemClicked(1) then
+	   	 	mushAH_TMEREC_log_Pname = v[1]:gsub("'",""):gsub(" ","_")
+	   	 	mushAH_TMEREC_log_snapname = v[3]:gsub("-",""):gsub(" ","_"):gsub(":","")
+	   	 	if mushAH_TMEREC_snaptype == 0 then
+	       mushAH_TMEREC_SnapFile = io.open(ModulePath.."log/AH_"..mushAH_TMEREC_log_snapname.."_"..mushAH_TMEREC_log_Pname..".png")
+        elseif mushAH_TMEREC_snaptype == 1 then
+         mushAH_TMEREC_SnapFile = io.open(ModulePath.."log/AH_"..mushAH_TMEREC_log_snapname.."_"..mushAH_TMEREC_log_Pname..".jpg")
+        end
+         if mushAH_TMEREC_SnapFile ~= nil and mushAH_TMEREC_snaptype == 0 then
+         io.popen([[start /b powershell -Command "Invoke-Item ']]..ModulePath..[[\log'; Invoke-Item ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_log_snapname..[[_]]..mushAH_TMEREC_log_Pname..[[.png'; stop-process -Id $PID"]]):close()
+         elseif mushAH_TMEREC_SnapFile ~= nil and mushAH_TMEREC_snaptype == 1 then
+         io.popen([[start /b powershell -Command "Invoke-Item ']]..ModulePath..[[\log'; Invoke-Item ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_log_snapname..[[_]]..mushAH_TMEREC_log_Pname..[[.jpg'; stop-process -Id $PID"]]):close()
+         else
+         io.popen([[start /b powershell -Command "Invoke-Item ']]..ModulePath..[[\log'; stop-process -Id $PID"]]):close()
+         end
+       end
 	   	 AetheryteHelper.SetToolTips(mJTp.tip267,mETp.tip267,mDTp.tip267,mFTp.tip267,mCTp.tip267,mKTp.tip267)
 	   end
 	   GUI:EndGroup()
@@ -10967,15 +11018,74 @@ function AetheryteHelper.TargetMeWin()
 	 end 
 	 GUI:End()
   end
+
 end
 
 
 
+function AetheryteHelper.MyTargetPlayerInfo()
+	local  AH_myTarget = AetheryteHelper.RecordTargetMe.MyTarget
+  mushAH_myTargetlodeFlag = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+  if AH_myTarget == true and gRegion == 1 and Player:GetTarget() ~= nil and Player:GetTarget().type == 1 and IsControlOpen("_TargetInfoMainTarget") then
+  AetheryteHelper.MyTargetPlayer.open = true
+  mushAH_myTinfoX,mushAH_myTinfoY = GetControl("_TargetInfoMainTarget"):GetXY()
+  GUI:SetNextWindowPos(mushAH_myTinfoX, mushAH_myTinfoY, GUI.SetCond_Always)
+  mushAH_MyTargetName = Player:GetTarget().name:gsub("'","%%27")
+      for key,val in pairs(WorldID) do
+	        if val.id == tonumber(Player:GetTarget().homeworld) then
+	        mushAH_MyTargetWorld = val.Name
+	        end
+      end
+  else
+  AetheryteHelper.MyTargetPlayer.open = false
+  end
+  if language == 0 then
+	   	 	  mushAH_MyTargetInfo_Link = "jp" 
+  elseif language == 1 then
+          mushAH_MyTargetInfo_Link = "na"
+  elseif language == 2 then
+          mushAH_MyTargetInfo_Link = "de"
+  elseif language == 3 then
+          mushAH_MyTargetInfo_Link = "fr"
+  end
+  if AetheryteHelper.MyTargetPlayer.open == true then
+    GUI:SetNextWindowSize(40,40,GUI.SetCond_Always)
+    GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
+    AetheryteHelper.MyTargetPlayer.visible = GUI:Begin('AH My Target info', AetheryteHelper.MyTargetPlayer.visible,mushAH_myTargetlodeFlag)
+	  if (AetheryteHelper.TargetMeWindow.visible) then
+    GUI:BeginGroup()
+    GUI:ImageButton("###MyTargetInfo",ImageFolder..[[lodestone_link.png]], 20,20)
+    if GUI:IsItemHovered() then
+  	  if GUI:IsItemClicked(0) then
+  	  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_MyTargetName)..[[&server=]]..mushAH_MyTargetWorld..[[' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_MyTargetInfo_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
+      end
+      AetheryteHelper.SetToolTips(mJTp.tip268,mETp.tip268,mDTp.tip268,mFTp.tip268,mCTp.tip268,mKTp.tip268)
+    end
+    GUI:EndGroup()
+    end
+    GUI:End()
+    GUI:PopStyleColor()
+  end
+end
 
+function AH_myTarget(bool)
+  if bool == true then
+  AetheryteHelper.RecordTargetMe.MyTarget = true
+  AetheryteHelper.SaveSettings()
+  elseif bool == false then
+  AetheryteHelper.RecordTargetMe.MyTarget = false
+  AetheryteHelper.SaveSettings()
+  else
+  AetheryteHelper.RecordTargetMe.MyTarget = not AetheryteHelper.RecordTargetMe.MyTarget
+  AetheryteHelper.SaveSettings()
+  end
+  return bool
+end
 
 
 function AetheryteHelper.targetingmeRec()
-	if AetheryteHelper.RecordTargetMe.Enable == true and Duty:GetQueueStatus() < 4 then
+	if AetheryteHelper.RecordTargetMe.Enable == true and Duty:GetQueueStatus() < 4 or
+		 AetheryteHelper.RecordTargetMe.Enable == true and Duty:GetQueueStatus() == 4 and Player.localmapid == 939 then
 	   mushAH_TMEREC = MEntityList("type=1,targetingme") 
      if table.valid(mushAH_TMEREC) then
 	      for _,e in pairs(mushAH_TMEREC) do
@@ -10990,6 +11100,16 @@ function AetheryteHelper.targetingmeRec()
 	      	 	  mushAH_TMEREC_OS = e.onlinestatus
 	      	 	  mushAH_TMEREC_id = e.id
 	      end
+	   end
+	   if GetGameSettings()[100] ~= nil then
+	      mushAH_TMEREC_snapfolder = GetGameSettings()[100].value
+	   elseif GetGameSettings()[100] == nil then
+	   	mushAH_TMEREC_snapfolder = AetheryteHelper.RecordTargetMe.SSfolder:gsub("\\","\\\\")
+	   end
+	   if GetGameSettings()[70] ~= nil then
+	      mushAH_TMEREC_snaptype = GetGameSettings()[70].value
+	   elseif GetGameSettings()[70] == nil then
+	   	  mushAH_TMEREC_snaptype = 0
 	   end
 	   if #AetheryteHelper.TargetMeList == 0 and mushAH_TMEREC_name ~= nil then
 	 	   	 	   table.insert(mushAH_TMEREC_temp,mushAH_TMEREC_name)--1
@@ -11009,6 +11129,19 @@ function AetheryteHelper.targetingmeRec()
 	       	   table.insert(mushAH_TMEREC_temp,0)--15
 	    	     table.insert(AetheryteHelper.TargetMeList,mushAH_TMEREC_temp)
 	    	     AetheryteHelper.SaveSettings()
+	    	     if AetheryteHelper.RecordTargetMe.Snap == true then
+             mushAH_TMEREC_Pname = mushAH_TMEREC_temp[1]:gsub("'",""):gsub(" ","_")
+             --mushAH_TMEREC_snapname = os.date("%Y%m%d_%H%M")
+             mushAH_TMEREC_snaptime = mushAH_TMEREC_temp[3]:gsub("-",""):gsub(" ","_"):gsub(":","")
+             PressKey(44)
+               if mushAH_TMEREC_snaptype == 0 then
+     	           io.popen([[start /b powershell -Command "Start-Sleep -s 2; $SSfile = (Get-ChildItem ']]..mushAH_TMEREC_snapfolder..[[' | Sort-Object LastWriteTime -Desc)[0].FullName; Move-Item $SSfile ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.png'; stop-process -Id $PID"]]):close()
+                 --io.popen([[start /b powershell -Command "Start-Sleep -s 2; Move-Item ']]..mushAH_TMEREC_snapfolder..[[\ffxiv_]]..mushAH_TMEREC_snapname..[[*.png' ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.png'; stop-process -Id $PID"]]):close()
+               elseif mushAH_TMEREC_snaptype == 1 then
+                 io.popen([[start /b powershell -Command "Start-Sleep -s 2; $SSfile = (Get-ChildItem ']]..mushAH_TMEREC_snapfolder..[[' | Sort-Object LastWriteTime -Desc)[0].FullName; Move-Item $SSfile ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.jpg'; stop-process -Id $PID"]]):close()
+                 --io.popen([[start /b powershell -Command "Start-Sleep -s 2; Move-Item ']]..mushAH_TMEREC_snapfolder..[[\ffxiv_]]..mushAH_TMEREC_snapname..[[*.jpg' ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.jpg'; stop-process -Id $PID"]]):close()
+               end
+             end
        	     mushAH_TMEREC_temp = {}
 	   elseif #AetheryteHelper.TargetMeList ~= 0 and mushAH_TMEREC_name ~= nil then
 
@@ -11071,6 +11204,19 @@ function AetheryteHelper.targetingmeRecAddtemp()
 	table.insert(mushAH_TMEREC_temp,0)--15
   table.insert(AetheryteHelper.TargetMeList,1,mushAH_TMEREC_temp)
   AetheryteHelper.SaveSettings()
+  if AetheryteHelper.RecordTargetMe.Snap == true then
+     mushAH_TMEREC_Pname = mushAH_TMEREC_temp[1]:gsub("'",""):gsub(" ","_")
+     --mushAH_TMEREC_snapname = os.date("%Y%m%d_%H%M")
+     mushAH_TMEREC_snaptime = mushAH_TMEREC_temp[3]:gsub("-",""):gsub(" ","_"):gsub(":","")
+     PressKey(44)
+     if mushAH_TMEREC_snaptype == 0 then
+     	 io.popen([[start /b powershell -Command "Start-Sleep -s 2; $SSfile = (Get-ChildItem ']]..mushAH_TMEREC_snapfolder..[[' | Sort-Object LastWriteTime -Desc)[0].FullName; Move-Item $SSfile ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.png'; stop-process -Id $PID"]]):close()
+       --io.popen([[start /b powershell -Command "Start-Sleep -s 2; Move-Item ']]..mushAH_TMEREC_snapfolder..[[\ffxiv_]]..mushAH_TMEREC_snapname..[[*.png' ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.png'; stop-process -Id $PID"]]):close()
+     elseif mushAH_TMEREC_snaptype == 1 then
+       io.popen([[start /b powershell -Command "Start-Sleep -s 2; $SSfile = (Get-ChildItem ']]..mushAH_TMEREC_snapfolder..[[' | Sort-Object LastWriteTime -Desc)[0].FullName; Move-Item $SSfile ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.jpg'; stop-process -Id $PID"]]):close()
+       --io.popen([[start /b powershell -Command "Start-Sleep -s 2; Move-Item ']]..mushAH_TMEREC_snapfolder..[[\ffxiv_]]..mushAH_TMEREC_snapname..[[*.jpg' ']]..ModulePath..[[\log\AH_]]..mushAH_TMEREC_snaptime..[[_]]..mushAH_TMEREC_Pname..[[.jpg'; stop-process -Id $PID"]]):close()
+     end
+  end
   AetheryteHelper.targetingmeRectempReset()
 end
 function AetheryteHelper.targetingmeRectempReset()
@@ -15679,6 +15825,7 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.YoroOtu()
   AetheryteHelper.Radar()
   AetheryteHelper.TargetMeWin()
+  AetheryteHelper.MyTargetPlayerInfo()
   AetheryteHelper.DrawlineandDot()
   AetheryteHelper.miniRadar()
   AetheryteHelper.CreateButtonWindows()
@@ -18714,7 +18861,7 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    if FCAstep == 7 then
 				    	 if IsControlOpen("ActionDetail") then
 	             local Action = GetControl("ActionDetail"):GetStrings()[5]
-				    	    if Action:match(fcaname01) or Action:match(fcaname02) then
+				    	    if Action:match(fcaname02) or Action:match(fcaname01) then
 				    	    FCAstep = 8
 				    	    else
 				    	    FCAstep = 10
@@ -18757,44 +18904,15 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    end
 
 				    if FCAstep == 14 then
-				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
-				    	 if Player.Buffs[1].id == fcaid01 and Player.Buffs[2].id == fcaid02 then
+				    	if #AetheryteHelper.FCAuseingList == 1 and HasBuff(fcaid01) then
 				    	 FCAstep = 99
-				    	 else
-				    	 FCAstep = 15
-				    	 end
+				    	elseif #AetheryteHelper.FCAuseingList == 2 and HasBuffs(fcaid01,fcaid02) then
+				    	 FCAstep = 99
 				    	else
-				    	 FCAstep = 16	
+				    	 FCAstep = 5	
 				    	end
 				    end
-				    if FCAstep == 15 then
-				    	if Player.Buffs[1] ~= nil and Player.Buffs[2] ~= nil then
-				    	 if Player.Buffs[1].id == fcaid02 and Player.Buffs[2].id == fcaid01 then
-				    	 FCAstep = 99
-				    	 else
-				    	 FCAstep = 16
-				    	 end
-				    	end
-				    end
-				    if FCAstep == 16 then
-				    	if Player.Buffs[1] ~= nil then
-				    	 if Player.Buffs[1].id == fcaid02 or Player.Buffs[2].id == fcaid01 then
-				    	 FCAstep = 99
-				    	 else
-				    	 FCAstep = 17
-				    	 end
-				    	end
-				    end
-				    if FCAstep == 17 then
-				    	if Player.Buffs[1] ~= nil then
-				    	 if Player.Buffs[1].id == fcaid01 or Player.Buffs[2].id == fcaid02 then
-				    	 FCAstep = 99
-				    	 else
-				    	 FCAstep = 3
-				    	 end
-				    	end
-				    end
-
+				    
 				    if FCAstep == 99 then
 				    	if IsControlOpen("FreeCompany") then
 				    	ActionList:Get(10,27):Cast()
@@ -22624,6 +22742,11 @@ function AetheryteHelper.mushTextCommands()
 		   mushlogtime = command.timestamp
 		   mushtextstep = 110
 	  end
+	  if command.line:match("AH TMeRec") then
+		   logmatch = command.line
+		   mushlogtime = command.timestamp
+		   mushtextstep = 120
+	  end
 	end
 	end
 	end
@@ -22919,23 +23042,6 @@ function AetheryteHelper.mushTextCommands()
 		   mushtextstep = 99
 	 end
 	 if mushtextstep == 110 then
-	 		AetheryteHelper.Origin()
-			MushmoveServerlist = Origin_list
-			for k, v in pairs(MushmoveServerlist) do
-			local templist = MushmoveServerlist
-			for k,v in pairs(WorldID) do
-			if (v.id == Player.currentworld) then local tempWorld = v
-			tempname = tostring(tempWorld.Name)
-			for k,v in pairs(templist) do
-			local tempindex = table.find(templist, tempname)
-			if (tempindex ~= nil) then
-			table.remove(templist,tempindex)
-			else tempindex = 0
-			end
-			end
-			end
-			end
-			end
 			AetheryteHelper.autoDCset()
 	 		if #MushmoveServerlist == 1 then
 	 			if kinokoProject.Windows.minibutton.Open == true then
@@ -23005,6 +23111,31 @@ function AetheryteHelper.mushTextCommands()
       isServer = 1
       mushtextstep = 99
       end
+	 end
+	 if mushtextstep == 120 then
+	   if AetheryteHelper.TargetMeWindow.open == true then
+	   logmatch = nil
+	   mushtextstep = 99
+	   else
+	   mushtextstep = 121
+	   end
+	end
+	if mushtextstep == 121 then
+	   if logmatch then
+		d("[AH][text][Progress]"..(mushlogtime+logmatchtime)-ezt)
+		  if mushlogtime+logmatchtime == ezt then
+		  mushlooptimer = 1000
+		  mushtextstep = 122
+		  else
+		  mushtextstep = 99
+		  end
+	   end
+	 end
+	 if mushtextstep == 122 then
+		   AetheryteHelper.TargetMeWindow.open = true
+		   d("[AH][textcommand]:success")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][TargetMe]:open \x02\x13\x02\xec\x03")
+		   mushtextstep = 99
 	 end
 
 	 if mushtextstep == 99 then
