@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.7.8",
-	  tag = 2022051710,--y0000m00d00h00
+	  Version =         "1.8.7.9",
+	  tag = 2022051901,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -138,6 +138,7 @@ local kinokoProject = {
             "[1.8.7.6] - bug fix & bug fix",
             "[1.8.7.7] - Rewriting of some code",
             "[1.8.7.8] - add take snap of screen function in TargetMeRecorder",
+            "[1.8.7.9] - bug fix",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -3339,6 +3340,7 @@ function AetheryteHelper.IssueNotice(title,J,E,D,F,C,K)
 end
 
 function AetheryteHelper.Teleport(id,levelid)
+	  local levelid = tonumber(levelid) or 0
 	  local alist = Player:GetAetheryteList()
 	  local ap = tonumber(ap) or 0
 	  for i,a in pairs(alist) do
@@ -5882,6 +5884,29 @@ function AetheryteHelper.TCListwindow()
 	  GUI:Separator()
 	  GUI:Spacing()
 	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[TMe_Rec.png]],30,30)
+	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Text("TargetMe Recorder")
+	  GUI:PushItemWidth(180)
+	  GUI:InputText("###TMeRec","/e AH TMeRec",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(1) then
+		  GUI:SetClipboardText("/e AH TMeRec")
+		  if language == 0 then
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
+		  else
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
+		  end
+		  end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
+	  end
+	  GUI:EndGroup()
+	  GUI:Spacing()
+	  GUI:Separator()
+	  GUI:Spacing()
+	  GUI:BeginGroup()
 	  GUI:Image(GetStartupPath().."\\GUI\\UI_Textures\\minion.png",30,30)
 	  GUI:EndGroup()
 	  GUI:SameLine()
@@ -5902,6 +5927,7 @@ function AetheryteHelper.TCListwindow()
 	  end
 	  GUI:EndGroup()
 end
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.SubWindow()
@@ -9168,6 +9194,13 @@ mushAH_fullpotion2 = false
 mushAH_fullpotion3 = false
 mushAH_fullpotion4 = false
 mushAH_fullpotion5 = false
+mushAH_pvp_GandMPDrow = {
+	visible01 = false,
+	visible02 = false,
+	visible03 = false,
+	visible04 = false,
+	visible05 = false,
+}
 
 function AetheryteHelper.PVPGandMPDrow()
 PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
@@ -9234,11 +9267,19 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 
     if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true then
        if IsControlOpen("MKSRecord") then
-       --AetheryteHelper.PvPAssist.GUARD = false
-       --AetheryteHelper.PvPAssist.MP = false
        mushAH_pvp_GandMP = {}
+       mushAH_pvp_GandMPDrow.visible01 = false
+       mushAH_pvp_GandMPDrow.visible02 = false
+       mushAH_pvp_GandMPDrow.visible03 = false
+       mushAH_pvp_GandMPDrow.visible04 = false
+       mushAH_pvp_GandMPDrow.visible05 = false
        elseif Player.localmapid ~= 1032 or Player.localmapid ~= 1033 or Player.localmapid ~= 1034 then
 	     mushAH_pvp_GandMP = {}	
+	     mushAH_pvp_GandMPDrow.visible01 = false
+       mushAH_pvp_GandMPDrow.visible02 = false
+       mushAH_pvp_GandMPDrow.visible03 = false
+       mushAH_pvp_GandMPDrow.visible04 = false
+       mushAH_pvp_GandMPDrow.visible05 = false
 	     end
        local el = MEntityList("type=1,attackable")  
 	     if table.valid(el) then
@@ -9247,13 +9288,15 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 	     end
 	     end
 	     	 for key,en in pairs(mushAH_pvp_GandMP) do
-	     	 if #mushAH_pvp_GandMP > 0 and key == 1 then
+	     	  if #mushAH_pvp_GandMP > 0 and key == 1 then
+	     	   mushAH_pvp_GandMPDrow.visible01 = true
 	  	     mushAH_Gtpos1 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
 	         mushAH_screentpos1 = RenderManager:WorldToScreen(mushAH_Gtpos1)
  	         mushAH_enMP1 = en.mp.percent
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG1 = os.time() + 30
-  	       elseif en.hp == 0 then
+  	       end
+  	       if en.hp == 0 then
  	     	   muahAH_RecastG1 = os.time()
   	       end
   	       if en.castinginfo.channelingid == 29055 then
@@ -9264,12 +9307,14 @@ local screenppos = RenderManager:WorldToScreen(ppos)
   	      end
 
   	      if #mushAH_pvp_GandMP > 1 and key == 2 then
+  	       mushAH_pvp_GandMPDrow.visible02 = true
 	  	     mushAH_Gtpos2 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
 	         mushAH_screentpos2 = RenderManager:WorldToScreen(mushAH_Gtpos2)
  	         mushAH_enMP2 = en.mp.percent
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG2 = os.time() + 30
-  	       elseif en.hp == 0 then
+  	       end
+  	       if en.hp == 0 then
  	     	   muahAH_RecastG2 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9280,12 +9325,14 @@ local screenppos = RenderManager:WorldToScreen(ppos)
   	      end
 
   	      if #mushAH_pvp_GandMP > 2 and key == 3 then
+  	       mushAH_pvp_GandMPDrow.visible03 = true
 	  	     mushAH_Gtpos3 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
 	         mushAH_screentpos3 = RenderManager:WorldToScreen(mushAH_Gtpos3)
  	         mushAH_enMP3 = en.mp.percent
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG3 = os.time() + 30
-  	       elseif en.hp == 0 then
+  	       end
+  	       if en.hp == 0 then
  	     	   muahAH_RecastG3 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9296,12 +9343,14 @@ local screenppos = RenderManager:WorldToScreen(ppos)
   	      end
 
   	      if #mushAH_pvp_GandMP > 3 and key == 4 then
+  	       mushAH_pvp_GandMPDrow.visible04 = true
 	  	     mushAH_Gtpos4 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
 	         mushAH_screentpos4 = RenderManager:WorldToScreen(mushAH_Gtpos4)
  	         mushAH_enMP4 = en.mp.percent
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG4 = os.time() + 30
-  	       elseif en.hp == 0 then
+  	       end
+  	       if en.hp == 0 then
  	     	   muahAH_RecastG4 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9312,12 +9361,14 @@ local screenppos = RenderManager:WorldToScreen(ppos)
   	      end
   	      
   	      if #mushAH_pvp_GandMP > 4 and key == 5 then
+  	       mushAH_pvp_GandMPDrow.visible05 = true
 	  	     mushAH_Gtpos5 = {x = math.round(en.pos.x,2), y = math.round(en.pos.y,2), z = math.round(en.pos.z,2)}
 	         mushAH_screentpos5 = RenderManager:WorldToScreen(mushAH_Gtpos5)
  	         mushAH_enMP5 = en.mp.percent
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG5 = os.time() + 30
-  	       elseif en.hp == 0 then
+  	       end
+  	       if en.hp == 0 then
  	     	   muahAH_RecastG5 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9335,8 +9386,9 @@ local screenppos = RenderManager:WorldToScreen(ppos)
         GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
         GUI:SetNextWindowPos(mushAH_screentpos1.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos1.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
         GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
-        GUI:Begin("PvPAssist1", true, PvPflags)
+        mushAH_pvp_GandMPDrow.visible01 = GUI:Begin("###PvPAssist1", mushAH_pvp_GandMPDrow.visible01, PvPflags)
         GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2) 
+        if mushAH_pvp_GandMPDrow.visible01 then
   	    GUI:BeginGroup()
   	     if muahAH_RecastG1 > os.time() then
   	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
@@ -9377,13 +9429,17 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 	    end
 		    GUI:EndGroup()
 		    end
+		    end
 		    GUI:End()
+		    GUI:PopStyleColor()
 		    end
         if #mushAH_pvp_GandMP > 1 and mushAH_screentpos2 ~= nil then
+        GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
         GUI:SetNextWindowPos(mushAH_screentpos2.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos2.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
         GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
-        GUI:Begin("PvPAssist2", true, PvPflags)   
+        mushAH_pvp_GandMPDrow.visible02 = GUI:Begin("###PvPAssist2", mushAH_pvp_GandMPDrow.visible02, PvPflags)   
   	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    if mushAH_pvp_GandMPDrow.visible02 then
   	    GUI:BeginGroup()
   	     if muahAH_RecastG2 > os.time() then
   	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
@@ -9424,13 +9480,17 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 	    end
 		    GUI:EndGroup()
 		    end
+		    end
 		    GUI:End()
+		    GUI:PopStyleColor()
 		    end
         if #mushAH_pvp_GandMP > 2 and mushAH_screentpos3 ~= nil then
+        GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
         GUI:SetNextWindowPos(mushAH_screentpos3.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos3.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
         GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
-        GUI:Begin("PvPAssist3", true, PvPflags)   
+        mushAH_pvp_GandMPDrow.visible03 = GUI:Begin("###PvPAssist3", mushAH_pvp_GandMPDrow.visible03, PvPflags)   
   	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    if mushAH_pvp_GandMPDrow.visible03 then 
   	    GUI:BeginGroup()
   	     if muahAH_RecastG3 > os.time() then
   	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
@@ -9471,13 +9531,17 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 	    end
 		    GUI:EndGroup()
 		    end
+		    end
 		    GUI:End()
+		    GUI:PopStyleColor()
 		    end
 		    if #mushAH_pvp_GandMP > 3 and mushAH_screentpos4 ~= nil then
+		    GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
         GUI:SetNextWindowPos(mushAH_screentpos4.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos4.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
         GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
-        GUI:Begin("PvPAssist4", true, PvPflags)   
+        mushAH_pvp_GandMPDrow.visible04 = GUI:Begin("###PvPAssist4", mushAH_pvp_GandMPDrow.visible04, PvPflags)   
   	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    if mushAH_pvp_GandMPDrow.visible04 then
   	    GUI:BeginGroup()
   	     if muahAH_RecastG4 > os.time() then
   	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
@@ -9518,13 +9582,17 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 	    end
 		    GUI:EndGroup()
 		    end
+		    end
 		    GUI:End()
+		    GUI:PopStyleColor()
 		    end
 		    if #mushAH_pvp_GandMP > 4 and mushAH_screentpos5 ~= nil then
+		    GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
         GUI:SetNextWindowPos(mushAH_screentpos5.x+AetheryteHelper.PvPAssist.iconoffsetyoko-20, mushAH_screentpos5.y+AetheryteHelper.PvPAssist.iconoffsettate, GUI.SetCond_Always)
         GUI:SetNextWindowSize(150,80,GUI.SetCond_Always)
-        GUI:Begin("PvPAssist5", true, PvPflags)   
+        mushAH_pvp_GandMPDrow.visible05 = GUI:Begin("###PvPAssist5", mushAH_pvp_GandMPDrow.visible05, PvPflags)   
   	    GUI:SetWindowFontSize(AetheryteHelper.PvPAssist.iconsize/20*1.2)
+  	    if mushAH_pvp_GandMPDrow.visible05 then
   	    GUI:BeginGroup() 
   	     if muahAH_RecastG5 > os.time() then
   	     	GUI:Image(ImageFolder..[[guard_non.png]],AetheryteHelper.PvPAssist.iconsize,AetheryteHelper.PvPAssist.iconsize)
@@ -9565,9 +9633,10 @@ local screenppos = RenderManager:WorldToScreen(ppos)
 	    end
 		    GUI:EndGroup()
 		    end
-		    GUI:End()
 		    end
-        GUI:PopStyleColor()
+		    GUI:End()
+		    GUI:PopStyleColor()
+		    end
 		  end
 	    end
 	    end
