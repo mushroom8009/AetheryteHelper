@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.7.9",
-	  tag = 2022051901,--y0000m00d00h00
+	  Version =         "1.8.8.0",
+	  tag = 2022052803,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -139,6 +139,7 @@ local kinokoProject = {
             "[1.8.7.7] - Rewriting of some code",
             "[1.8.7.8] - add take snap of screen function in TargetMeRecorder",
             "[1.8.7.9] - bug fix",
+            "[1.8.8.0] - bug fix & add Camera Zoom Hacks",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -248,97 +249,78 @@ AetheryteHelper.miniGUI = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.insSelectGUI = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.miniWV = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.Jumbocactpot = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.subtoolDesOP = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.VersionList = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.TCList = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.mip = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.yoro_otu = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.RadarWindow = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.miniRadarWindow = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.TargetMeWindow = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.FCactionWindow = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.CreateButton = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.CBcodeEditor = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.userbutton = {
 	open =  false,
 	visible = true,
 }
-
 AetheryteHelper.selectlanguage = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.UpdateConfig = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.flagsrecord = {
   open = false,
   visible = true,
 }
-
 AetheryteHelper.TRmapSupport = {
   open = false,
   visible = true,
@@ -347,7 +329,10 @@ AetheryteHelper.MyTargetPlayer = {
   open = false,
   visible = true,
 }
-
+AetheryteHelper.mush_CamHack = {
+  open = false,
+  visible = true,
+}
 AetheryteHelper.settingsSET = {
   delay = 200,
 	isMateriaEnabled = false,
@@ -415,6 +400,8 @@ AetheryteHelper.settingsFilter = {
 			   Necklace = true,
 			   Bracelets = true,
 			   Ring = true,
+			   Fish = false,
+			   kagu = false,
 	}
 
 AetheryteHelper.settingsJob = {
@@ -509,8 +496,13 @@ AetheryteHelper.RecordTargetMe = {
   webhook = "",
   SSfolder = "",
 }
-AetheryteHelper.TargetMeList = {}
+AetheryteHelper.CameraHacks = {
+	Enable = true,
+  min = 1.5,
+  max = 20,
+}
 
+AetheryteHelper.TargetMeList = {}
 AetheryteHelper.RadarSettings = {
 	   RadarEnable = false,
 	   mydot = false,
@@ -995,6 +987,8 @@ mushtooltips = {
 		 tip270 = "履歴を全て消去\n名前を右クリックで個別消去",
 		 tip271 = "スクリーンショットの撮影",
 		 tip272 = "minionから必要な情報が取得できません\nSSフォルダーのフルパスを入力してください",
+		 tip273 = "カメラズーム倍率変更",
+		 tip274 = "オン/リセット",
 
 
   },
@@ -1272,6 +1266,8 @@ mushtooltips = {
 		 tip270 = "Clear all history\nRight-click on a name to clear it individually",
 		 tip271 = "Taking screenshots",
 		 tip272 = "Unable to retrieve required information from minion\nPlease enter full path of screenshots folder",
+		 tip273 = "Camera Zoom Hacks",
+		 tip274 = "On/Reset",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1547,6 +1543,8 @@ mushtooltips = {
 		 tip270 = "Effacer tout l'historique\nCliquez avec le bouton droit de la souris sur un nom pour l'effacer individuellement",
 		 tip271 = "Faire des captures d'écran",
 		 tip272 = "Impossible de récupérer l'information requise du minion\nSaisissez le chemin complet du dossier capture d'écran",
+		 tip273 = "hack du zoom de la caméra",
+		 tip274 = "On/Reset",
 
   },
   de = { 
@@ -1822,7 +1820,9 @@ mushtooltips = {
      tip269 = "Überprüfe den Standort des anderen Spielers",
      tip270 = "Gesamten Verlauf löschen\nKlicke mit der rechten Maustaste auf einen Namen, um ihn einzeln zu löschen",
      tip271 = "Screenshot aufnehmen",
-     tip272 = "Notwendige Informationen können von Minion nicht abgerufen werden\nBitte gebe den vollständigen Pfad vom Screenshot–Ordner an", 
+     tip272 = "Notwendige Informationen können von Minion nicht abgerufen werden\nBitte gebe den vollständigen Pfad vom Screenshot–Ordner an",
+     tip273 = "Kamera Zoom Hacks",
+     tip274 = "Aktivieren/Reset",
   
   },
   cn = {
@@ -2099,6 +2099,8 @@ mushtooltips = {
 		 tip270 = "清除所有历史记录\n右键点击一个名字可以单独清除它",
 		 tip271 = "拍摄屏幕截图",
 		 tip272 = "无法从minion那里检索到所需信息\n请输入屏幕截图文件夹的完整路径",
+		 tip273 = "改变相机的放大率",
+		 tip274 = "开/恢复默认设置",
   
   },
   kr = { 
@@ -2375,6 +2377,8 @@ mushtooltips = {
 		 tip270 = "Clear all history\nRight-click on a name to clear it individually",
 		 tip271 = "Taking screenshots",
 		 tip272 = "Unable to retrieve required information from minion\nPlease enter the full path of the SS folder",
+		 tip273 = "Camera Zoom Hacks",
+		 tip274 = "On/Reset",
   
   },
 
@@ -2750,6 +2754,7 @@ AetheryteHelper.flags = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSet
 AetheryteHelper.PvP = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'AHpvpModeConfig.lua'
 AetheryteHelper.TMe = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'TargetMeSetting.lua'
 AetheryteHelper.TMList = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'TargetMeList.lua'
+AetheryteHelper.CamHack = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CamHack.lua'
 
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
@@ -3051,6 +3056,12 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	  table.merge(AetheryteHelper.TargetMeList,TML)
 	end
   end
+  if FileExists(AetheryteHelper.CamHack) then
+	local CamH = persistence.load(AetheryteHelper.CamHack)
+	if (ValidTable(CamH)) then
+	  table.merge(AetheryteHelper.CameraHacks,CamH)
+	end
+  end
 end
 end
 
@@ -3076,6 +3087,7 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
   persistence.store(AetheryteHelper.PvP, AetheryteHelper.PvPAssist)
   persistence.store(AetheryteHelper.TMe, AetheryteHelper.RecordTargetMe)
   persistence.store(AetheryteHelper.TMList, AetheryteHelper.TargetMeList)
+  persistence.store(AetheryteHelper.CamHack, AetheryteHelper.CameraHacks)
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4094,7 +4106,17 @@ end
 
 function AetheryteHelper.Drawadjank()
 	  GUI:Spacing(10)
-	  GUI:Dummy(90,30)
+	  GUI:Dummy(80,30)
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[camhack.png]],30,30)
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
+			AetheryteHelper.mush_CamHack.open = not AetheryteHelper.mush_CamHack.open
+			end
+			  AetheryteHelper.SetToolTips(mJTp.tip273,mETp.tip273,mDTp.tip273,mFTp.tip273,mCTp.tip273,mKTp.tip273)
+	  end
+	  GUI:EndGroup()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[tube.png]],30,30)
@@ -5607,7 +5629,7 @@ function AetheryteHelper.TCListHeader()
 	  GUI:Button("QoLBar",60,20)
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(0) then
-		  GUI:SetClipboardText("H4sIAAAAAAAACqWTUWuDMBCA/0q47FFcorF1easyWsrKoIP6MPogNWyBRovawij977uMrUSwYywPIbnPy3cHOc9w138cFEhQEEAXgTxfCUYB1HiQkvOI0tkC4x4kx8QnkK+jmRMmkphSXXeIdojuFZktTFMpwrlApp/xKgtZgGuL4RqkjWD3csAPaSC2l+A3c7FxxcWGGF1rP28ymVK6ylzvKiN7bbrSV5yOiN9aXZW19nY/jLiP+6p89xInjAlK57krnufENCfl6Z1ySrOl682WpD4aH61IIzsTSj2Wrpj8EJ9pszOve2VI17T9wG7pN/x3Ac4FY9i7Hd+mHuivyKP7r1e0onVZle3gX3TgHwpYfCurABnbPQeZDLuCE5aLwjjERLh8AqF5j4BmBAAA")
+		  GUI:SetClipboardText("H4sIAAAAAAAACqWTXWuDMBSG/0o42aW4xGprc1fL2lImg660F6MXQYML+FHUFkbpf9/J2DoFN8ZyIXoek+cc8c0F7tq3owIBChxoPBCXG8HKgRIfhODco3S2wroFwXHhI4iXwZVj5gcjSnXZIEoQ3SsyWxVVqgjnPjL9hFuZyxy8DlhuQJgKkucjvggd/3B1fjPvd13xfkcKXWo7bzCeUBpHXW8ckVwXjbQVhwPirNapLLW1ezrgPuWpfLUSB4z5lC7nXfFyTorqrCy9E05ptO56ozUpT4WN1g89kwmlHmRXTL6ITdpM5nWrCtJUdduzG/oJ/90ATwNjOLuJb1X29DdkMf3HXzSijUxl3TuLHWjRYMoDSreyzlQbm2R8j7+N1UYltunGsCxymTUEXVWdqt43kEX+5xYG/7RqD2Jk7nMQQX8uOGMvzx25zPXg+g4I/Z4+JwUAAA==")
 		  if language == 0 then
 		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
@@ -5894,6 +5916,29 @@ function AetheryteHelper.TCListwindow()
 	  if GUI:IsItemHovered() then
 		if GUI:IsItemClicked(1) then
 		  GUI:SetClipboardText("/e AH TMeRec")
+		  if language == 0 then
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
+		  else
+		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
+		  end
+		  end
+			AetheryteHelper.SetToolTips(mJTp.tip110,mETp.tip110,mDTp.tip110,mFTp.tip110,mCTp.tip110,mKTp.tip110)
+	  end
+	  GUI:EndGroup()
+	  GUI:Spacing()
+	  GUI:Separator()
+	  GUI:Spacing()
+	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[flag.png]],30,30)
+	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Text("Flags Recorder")
+	  GUI:PushItemWidth(180)
+	  GUI:InputText("###flagRec","/e AH FlRec",GUI.InputTextFlags_ReadOnly + GUI.InputTextFlags_AutoSelectAll)
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(1) then
+		  GUI:SetClipboardText("/e AH FlRec")
 		  if language == 0 then
 		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
 		  else
@@ -6745,11 +6790,64 @@ function AetheryteHelper.VlWindow()
   end
 end
 
+function AetheryteHelper.CamHackwindow()
+  if (AetheryteHelper.mush_CamHack.open) then
+	mushAH_camhack = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+	GUI:SetNextWindowSize(200,160)
+	 AetheryteHelper.mush_CamHack.visible, AetheryteHelper.mush_CamHack.open = GUI:Begin('Camera Hacks', AetheryteHelper.mush_CamHack.open,mushAH_camhack)
+	if (AetheryteHelper.mush_CamHack.visible) then
+	  GUI:Spacing()
+	  GUI:BeginGroup()
+	  GUI:Checkbox("Enable",AetheryteHelper.CameraHacks.Enable)
+	  if GUI:IsItemHovered() then
+	  	if GUI:IsItemClicked(0) then
+	  		AetheryteHelper.CameraHacks.Enable = not AetheryteHelper.CameraHacks.Enable
+	  	end
+	  	AetheryteHelper.SetToolTips(mJTp.tip274,mETp.tip274,mDTp.tip274,mFTp.tip274,mCTp.tip274,mKTp.tip274)
+	  end
+	  if AetheryteHelper.CameraHacks.Enable == true then
+	  Hacks:SetCamMaxZoom(AetheryteHelper.CameraHacks.min,AetheryteHelper.CameraHacks.max)
+	  else
+	  Hacks:ResetCamMaxZoom()
+	  end
+	  GUI:EndGroup()
+	  GUI:Separator()
+	  GUI:Spacing()
+	  GUI:BeginGroup()
+	  GUI:Text("Min Zoom")
+	  GUI:EndGroup()
+	  GUI:BeginGroup()
+	  GUI:PushItemWidth(150)
+	  AetheryteHelper.CameraHacks.min, changed = GUI:InputFloat("###camhackmin",AetheryteHelper.CameraHacks.min,0.5,1,1)
+	   if changed then
+	   AetheryteHelper.SaveSettings()	
+	   end
+	   if AetheryteHelper.CameraHacks.min < 0.5 then AetheryteHelper.CameraHacks.min = 0.5 end
+	   if AetheryteHelper.CameraHacks.min > 240 then AetheryteHelper.CameraHacks.min = 240 end
+	  GUI:PopItemWidth()
+	  GUI:EndGroup()
+	  GUI:BeginGroup()
+	  GUI:Text("Max Zoom")
+	  GUI:EndGroup()
+	  GUI:BeginGroup()
+	  GUI:PushItemWidth(150)
+	   AetheryteHelper.CameraHacks.max, changed = GUI:InputFloat("###camhackmax",AetheryteHelper.CameraHacks.max,0.5,1,1)
+	   if changed then
+	   AetheryteHelper.SaveSettings()	
+	   end
+	   if AetheryteHelper.CameraHacks.max < 10 then AetheryteHelper.CameraHacks.max = 10 end
+	   if AetheryteHelper.CameraHacks.max > 500 then AetheryteHelper.CameraHacks.max = 500 end
+  	GUI:PopItemWidth()
+  	GUI:EndGroup()
+  end
+	GUI:End()
+  end
+end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.FLGsWindow()
   if (AetheryteHelper.flagsrecord.open) then
-  	if IsControlOpen("TreasureMap") then AetheryteHelper.flagsrecord.open = false end
+  --if IsControlOpen("TreasureMap") then AetheryteHelper.flagsrecord.open = false end
 	local FLGsf = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
 	GUI:SetNextWindowSize(280,500)
 	 AetheryteHelper.flagsrecord.visible, AetheryteHelper.flagsrecord.open = GUI:Begin('AH Flags Recorder', AetheryteHelper.flagsrecord.open,FLGsf)
@@ -15905,6 +16003,7 @@ function AetheryteHelper.DrawCall()
   AetheryteHelper.FCAwindow()
   AetheryteHelper.FLGsWindow()
   AetheryteHelper.PVPGandMPDrow()
+  AetheryteHelper.CamHackwindow()
   end
 end
 
@@ -17272,7 +17371,7 @@ function AetheryteHelper.mushEXchangeTrust(event)
 							  if IsControlOpen("GrandCompanyExchange") and GetControl("GrandCompanyExchange") then
 							  UseControlAction("GrandCompanyExchange", "SetTabIndex",0)
 							  if GetControl("GrandCompanyExchange"):GetRawData()[97].value == 2000 then
-							  step = 22
+							  step = 23
 							  else
 							  step = 21
 							  end
@@ -17561,29 +17660,71 @@ function AetheryteHelper.Jumbocactpothelper()
 	local jbc34 = AHSET.jumbo34
   
 if (mushJumbocactpothelper) then
-	 mushAH_JCPA = MEntityList("ContentID=1010446,type=3,alive")
-	 if table.valid(mushAH_JCPA) then
-	    for _,e in pairs(mushAH_JCPA) do
-	    mushAH_JCPA_NPC = e
+	 mushAH_JCPA01 = MEntityList("ContentID=1010446,type=3,alive")
+	 if table.valid(mushAH_JCPA01) then
+	    for _,e in pairs(mushAH_JCPA01) do
+	    mushAH_JCPA_NPC01 = e
+	    end
+	 end
+	 mushAH_JCPA02 = MEntityList("ContentID=1010451,type=3,alive")
+	 if table.valid(mushAH_JCPA02) then
+	    for _,e in pairs(mushAH_JCPA02) do
+	    mushAH_JCPA_NPC02 = e
 	    end
 	 end
 	 if mushGSjcpstep == 0 then	   
-			if mushAH_JCPA_NPC ~= nil and mushAH_JCPA_NPC.distance < 6 then
-			Player:Stop()
-			Player:SetTarget(4299949120)
-			Player:Interact(4299949120)
-		  mushGSjcpstep = 1
-			elseif Player.localmapid == 144 then
-      Player:MoveTo(120,13,-11.5,10,true,true)
-      if Player:IsMoving() then
-			   if ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
-			end
-			mushGSjcpstep = 0
+			if Player.localmapid == 144 then
+        Player:MoveTo(122.54,13,-15.55,10,true,true)
+	  	  mushGSjcpstep = 51
 		  elseif Player.localmapid ~= 144 then
-		  AetheryteHelper.Teleport(62,0)
-		  mushGSjcpstep = 0
+		    mushGSjcpstep = 50
 		  end
 	    --d("mushGSjcpstep"..mushGSjcpstep)
+	 end
+
+	 if mushGSjcpstep == 50 then
+	 	 if ActionList:IsReady() then
+	 	 AetheryteHelper.Teleport(62,0)
+	   end
+	   mushGSjcpstep = 0
+	 end
+	 if mushGSjcpstep == 51 then
+	   if mushAH_JCPA_NPC02 ~= nil and mushAH_JCPA_NPC02.distance <= 6 then
+			Player:Stop()
+			Player:SetTarget(mushAH_JCPA_NPC02.id)
+			Player:Interact(mushAH_JCPA_NPC02.id)
+	 	  mushGSjcpstep = 52
+	 	 elseif mushAH_JCPA_NPC02 ~= nil and mushAH_JCPA_NPC02.distance > 6 then
+			Player:MoveTo(mushAH_JCPA_NPC02.pos.x,mushAH_JCPA_NPC02.pos.y,mushAH_JCPA_NPC02.pos.z,10,true,true)
+			if ActionList:Get(1,3):IsReady() then ActionList:Get(1,3):Cast() end
+			mushGSjcpstep = 51
+		 end
+	 end
+
+	 if mushGSjcpstep == 52 then
+	 	 mushlooptimer = 100
+	   if IsControlOpen("Talk") then
+		  UseControlAction("Talk", "Close")
+      mushGSjcpstep = 52
+		 elseif IsControlOpen("SelectYesno") then
+		 UseControlAction("SelectYesno","Yes")
+		  mushGSjcpstep = 52
+	   elseif Player:GetTarget() == nil then
+	   	mushGSjcpstep = 53
+	   end
+	   --d("mushGSjcpstep"..mushGSjcpstep)
+	 end
+
+	 if mushGSjcpstep == 53 then
+	   if mushAH_JCPA_NPC01 ~= nil and mushAH_JCPA_NPC01.distance <= 6 then
+			Player:Stop()
+			Player:SetTarget(mushAH_JCPA_NPC01.id)
+			Player:Interact(mushAH_JCPA_NPC01.id)
+	 	  mushGSjcpstep = 1
+	 	 elseif mushAH_JCPA_NPC01 ~= nil and mushAH_JCPA_NPC01.distance > 6 then
+			Player:MoveTo(mushAH_JCPA_NPC01.pos.x,mushAH_JCPA_NPC01.pos.y,mushAH_JCPA_NPC01.pos.z,10,true,true)
+			mushGSjcpstep = 53
+		 end
 	 end
 
 	 if mushGSjcpstep == 1 then
@@ -22816,6 +22957,11 @@ function AetheryteHelper.mushTextCommands()
 		   mushlogtime = command.timestamp
 		   mushtextstep = 120
 	  end
+	  if command.line:match("AH FlRec") then
+		   logmatch = command.line
+		   mushlogtime = command.timestamp
+		   mushtextstep = 130
+	  end
 	end
 	end
 	end
@@ -23204,6 +23350,31 @@ function AetheryteHelper.mushTextCommands()
 		   AetheryteHelper.TargetMeWindow.open = true
 		   d("[AH][textcommand]:success")
 		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][TargetMe]:open \x02\x13\x02\xec\x03")
+		   mushtextstep = 99
+	 end
+	 if mushtextstep == 130 then
+	   if AetheryteHelper.flagsrecord.open == true then
+	   logmatch = nil
+	   mushtextstep = 99
+	   else
+	   mushtextstep = 131
+	   end
+	end
+	if mushtextstep == 131 then
+	   if logmatch then
+		d("[AH][text][Progress]"..(mushlogtime+logmatchtime)-ezt)
+		  if mushlogtime+logmatchtime == ezt then
+		  mushlooptimer = 1000
+		  mushtextstep = 132
+		  else
+		  mushtextstep = 99
+		  end
+	   end
+	 end
+	 if mushtextstep == 132 then
+		   AetheryteHelper.flagsrecord.open = true
+		   d("[AH][textcommand]:success")
+		   SendTextCommand("/e \x02\x13\x06\xfe\xff\x11\x99\x11 [AH][Flags Recorder]:open \x02\x13\x02\xec\x03")
 		   mushtextstep = 99
 	 end
 
