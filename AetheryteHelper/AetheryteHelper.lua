@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.8.0",
-	  tag = 2022052803,--y0000m00d00h00
+	  Version =         "1.8.8.3",
+	  tag = 2022053014,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -140,6 +140,9 @@ local kinokoProject = {
             "[1.8.7.8] - add take snap of screen function in TargetMeRecorder",
             "[1.8.7.9] - bug fix",
             "[1.8.8.0] - bug fix & add Camera Zoom Hacks",
+            "[1.8.8.1] - Process modification",
+            "[1.8.8.2] - bug fix",
+            "[1.8.8.3] - add auto use skill in PvP",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -486,6 +489,10 @@ AetheryteHelper.PvPAssist = {
   iconsize = 20,
   iconoffsettate = 0,
   iconoffsetyoko = 0,
+  sprint = false,
+  autoGuard = false,
+  autoGuardHP = 65,
+
 }
 AetheryteHelper.RecordTargetMe = {
   Enable = false,
@@ -989,6 +996,9 @@ mushtooltips = {
 		 tip272 = "minionから必要な情報が取得できません\nSSフォルダーのフルパスを入力してください",
 		 tip273 = "カメラズーム倍率変更",
 		 tip274 = "オン/リセット",
+		 tip275 = "オートガード",
+		 tip276 = "オートスプリント",
+		 tip277 = "ガード使用HP(％)",
 
 
   },
@@ -1268,6 +1278,9 @@ mushtooltips = {
 		 tip272 = "Unable to retrieve required information from minion\nPlease enter full path of screenshots folder",
 		 tip273 = "Camera Zoom Hacks",
 		 tip274 = "On/Reset",
+		 tip275 = "Automatically use GUARD",
+		 tip276 = "Automatically use Sprint",
+		 tip277 = "Use GUARD when HP falls below this percent",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1545,7 +1558,9 @@ mushtooltips = {
 		 tip272 = "Impossible de récupérer l'information requise du minion\nSaisissez le chemin complet du dossier capture d'écran",
 		 tip273 = "hack du zoom de la caméra",
 		 tip274 = "On/Reset",
-
+		 tip275 = "Utiliser automatiquement Garde",
+		 tip276 = "Utiliser automatiquement Sprint",
+		 tip277 = "Utilisez Garde lorsque les PV tombent en dessous de ce pourcentage",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1823,6 +1838,9 @@ mushtooltips = {
      tip272 = "Notwendige Informationen können von Minion nicht abgerufen werden\nBitte gebe den vollständigen Pfad vom Screenshot–Ordner an",
      tip273 = "Kamera Zoom Hacks",
      tip274 = "Aktivieren/Reset",
+     tip275 = "Automatisch Wehr verwenden",
+		 tip276 = "Automatisch Sprint verwenden",
+		 tip277 = "Verwenden Sie Wehr, wenn die LP unter diesen Prozentsatz fallen",
   
   },
   cn = {
@@ -2101,6 +2119,9 @@ mushtooltips = {
 		 tip272 = "无法从minion那里检索到所需信息\n请输入屏幕截图文件夹的完整路径",
 		 tip273 = "改变相机的放大率",
 		 tip274 = "开/恢复默认设置",
+		 tip275 = "自动使用[GUARD]",
+		 tip276 = "自动使用[冲刺]",
+		 tip277 = "当体力低于这个百分比时，使用[GUARD]",
   
   },
   kr = { 
@@ -2379,6 +2400,9 @@ mushtooltips = {
 		 tip272 = "Unable to retrieve required information from minion\nPlease enter the full path of the SS folder",
 		 tip273 = "Camera Zoom Hacks",
 		 tip274 = "On/Reset",
+		 tip275 = "Automatically use GUARD",
+		 tip276 = "Automatically use Sprint",
+		 tip277 = "Use GUARD when HP falls below this percent",
   
   },
 
@@ -6535,6 +6559,7 @@ function AetheryteHelper.userButtonAllDrow()
   if AetheryteHelper.userbutton.open then
 	local UBflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_AlwaysAutoResize  
 	GUI:SetNextWindowSize(sizex+10,sizey)
+	if MIsLoading() == false then
   AetheryteHelper.userbutton.visible, AetheryteHelper.userbutton.open = GUI:Begin('User Button', AetheryteHelper.userbutton.open,UBflags)
 	if (AetheryteHelper.userbutton.visible) then
 		GUI:Separator()
@@ -6615,6 +6640,7 @@ function AetheryteHelper.userButtonAllDrow()
 		GUI:Separator()
 	end
 	GUI:End()
+  end
   end
 end
 
@@ -9273,10 +9299,42 @@ function AetheryteHelper.PvPAssistWindow()
 			  AetheryteHelper.SetToolTips(mJTp.tip253,mETp.tip253,mDTp.tip253,mFTp.tip253,mCTp.tip253,mKTp.tip253)
   end
 	GUI:EndGroup()
+	GUI:Spacing()
+	GUI:Separator()
+	GUI:Spacing()
+	GUI:BeginGroup()
+	GUI:Checkbox("Auto GUARD",AetheryteHelper.PvPAssist.autoGuard)
+	if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
+		 AetheryteHelper.PvPAssist.autoGuard = not AetheryteHelper.PvPAssist.autoGuard
+		 AetheryteHelper.SaveSettings()
+		 end
+			  AetheryteHelper.SetToolTips(mJTp.tip275,mETp.tip275,mDTp.tip275,mFTp.tip275,mCTp.tip275,mKTp.tip275)
+  end
+	GUI:EndGroup()
+	GUI:SameLine()
+	GUI:BeginGroup()
+	GUI:PushItemWidth(120)
+	AetheryteHelper.PvPAssist.autoGuardHP, changed = GUI:SliderInt("Use HP %",AetheryteHelper.PvPAssist.autoGuardHP,10,100)
+	if changed then
+	AetheryteHelper.SaveSettings()
+	end
+	if GUI:IsItemHovered() then
+		  AetheryteHelper.SetToolTips(mJTp.tip277,mETp.tip277,mDTp.tip277,mFTp.tip277,mCTp.tip277,mKTp.tip277)
+	end
+	GUI:EndGroup()
+	GUI:BeginGroup()
+	GUI:Checkbox("Auto Sprint",AetheryteHelper.PvPAssist.sprint)
+	if GUI:IsItemHovered() then
+		 if GUI:IsItemClicked(0) then
+		 AetheryteHelper.PvPAssist.sprint = not AetheryteHelper.PvPAssist.sprint
+		 AetheryteHelper.SaveSettings()
+		 end
+			  AetheryteHelper.SetToolTips(mJTp.tip276,mETp.tip276,mDTp.tip276,mFTp.tip276,mCTp.tip276,mKTp.tip276)
+  end
+	GUI:EndGroup()
 
 end
-
-
 
 
 
@@ -9301,10 +9359,10 @@ mushAH_pvp_GandMPDrow = {
 }
 
 function AetheryteHelper.PVPGandMPDrow()
-PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
-	    if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true and mushAH_PVP_drow_self == true then
+ PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
+   if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true and mushAH_PVP_drow_self == true and MIsLoading() == false then
+      local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+      local screenppos = RenderManager:WorldToScreen(ppos)
 	    	if Player.localmapid == 250 then
 	    	if Player.onlinestatus ~= 15 then
 	      if HasBuff(Player.id,3054,0,5) then
@@ -9477,7 +9535,7 @@ local screenppos = RenderManager:WorldToScreen(ppos)
   	    end
 	    end
 
-	    if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and mushAH_screentpos1 ~= nil then
+	    if not IsControlOpen("HudLayout") and MIsLoading() == false and mushAH_screentpos1 ~= nil then
 	    	if Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 then
 	    	if Player.onlinestatus ~= 15 then
 	    	if #mushAH_pvp_GandMP > 0 and mushAH_screentpos1 ~= nil then
@@ -11193,7 +11251,7 @@ end
 function AetheryteHelper.MyTargetPlayerInfo()
 	local  AH_myTarget = AetheryteHelper.RecordTargetMe.MyTarget
   mushAH_myTargetlodeFlag = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_ShowBorders + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
-  if AH_myTarget == true and gRegion == 1 and Player:GetTarget() ~= nil and Player:GetTarget().type == 1 and IsControlOpen("_TargetInfoMainTarget") then
+  if AH_myTarget == true and gRegion == 1 and MIsLoading() == false and Player:GetTarget() ~= nil and Player:GetTarget().type == 1 and IsControlOpen("_TargetInfoMainTarget") then
   AetheryteHelper.MyTargetPlayer.open = true
   mushAH_myTinfoX,mushAH_myTinfoY = GetControl("_TargetInfoMainTarget"):GetXY()
   GUI:SetNextWindowPos(mushAH_myTinfoX, mushAH_myTinfoY, GUI.SetCond_Always)
@@ -11218,6 +11276,7 @@ function AetheryteHelper.MyTargetPlayerInfo()
   if AetheryteHelper.MyTargetPlayer.open == true then
     GUI:SetNextWindowSize(40,40,GUI.SetCond_Always)
     GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
+    if MIsLoading() == false then
     AetheryteHelper.MyTargetPlayer.visible = GUI:Begin('AH My Target info', AetheryteHelper.MyTargetPlayer.visible,mushAH_myTargetlodeFlag)
 	  if (AetheryteHelper.TargetMeWindow.visible) then
     GUI:BeginGroup()
@@ -11231,6 +11290,7 @@ function AetheryteHelper.MyTargetPlayerInfo()
     GUI:EndGroup()
     end
     GUI:End()
+    end
     GUI:PopStyleColor()
   end
 end
@@ -11409,7 +11469,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil and e.targetable == true then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11455,7 +11515,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11502,7 +11562,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil and e.targetable == true and e.attackable == false then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true and e.attackable == false then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11555,7 +11615,7 @@ local el = MEntityList(str)
 	  targetname = target.name
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-			if screentpos ~= nil and not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") then
+			if screentpos ~= nil and not IsControlOpen("HudLayout") and MIsLoading() == false then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11605,7 +11665,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil and e.targetable == true then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
@@ -11651,7 +11711,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
@@ -11698,7 +11758,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screentpos ~= nil and e.targetable == true and e.attackable == false then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true and e.attackable == false then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddCircleFilled(screentpos.x, screentpos.y,size,Colour)
@@ -11742,10 +11802,11 @@ end
 function AetheryteHelper.DrawlineandDot(event, ticks)
 
   local maxWidth, maxHeight = GUI:GetScreenSize()
+  flags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
+  if MIsLoading() == false then
   GUI:SetNextWindowPos(0, 0, GUI.SetCond_Always)
   GUI:SetNextWindowSize(maxWidth,maxHeight,GUI.SetCond_Always)
   GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
-  flags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
   GUI:Begin("line", true, flags)
   local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
   local screenppos = RenderManager:WorldToScreen(ppos)
@@ -12175,7 +12236,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 	 AHRadarRecetveline("type=1,targetingme,alive,attackable",R.ColorTMline.U32,Rset.TMlinethick)
   end
   if Rset.RadarEnable == true and Rset.mydot == true then
-		if not IsControlOpen("NowLoading") and not IsControlOpen("HudLayout") and screenppos ~= nil then
+		if not IsControlOpen("HudLayout") and MIsLoading() == false and screenppos ~= nil then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddCircleFilled(screenppos.x, screenppos.y,Rset.mydotsize,R.Colormydot.U32)
@@ -12209,9 +12270,9 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 			   end
 		end
   end
-
   GUI:End()
   GUI:PopStyleColor()
+  end
 end
 
 --------------------------------------------------------------------------------------------------------------------
@@ -17073,7 +17134,7 @@ end
 --
 
 function AetheryteHelper.mushEXchangeTrust(event)
-  if Player.GrandCompany == 0 or Player.GrandCompanyRank < 6 then mushTrustmode = false and IsControlOpen("NowLoading") == false end
+  if Player.GrandCompany == 0 or Player.GrandCompanyRank < 6 then mushTrustmode = false and MIsLoading() == false end
   local step = 0
   local nohinsoubi = 0
   if(mushTrustmode == true ) then
@@ -17683,7 +17744,7 @@ if (mushJumbocactpothelper) then
 	 end
 
 	 if mushGSjcpstep == 50 then
-	 	 if ActionList:IsReady() then
+	 	 if ActionList:IsReady() and MIsLoading() == false then
 	 	 AetheryteHelper.Teleport(62,0)
 	   end
 	   mushGSjcpstep = 0
@@ -17709,6 +17770,9 @@ if (mushJumbocactpothelper) then
 		 elseif IsControlOpen("SelectYesno") then
 		 UseControlAction("SelectYesno","Yes")
 		  mushGSjcpstep = 52
+		 elseif IsControlOpen("LotteryWeeklyRewardList") then
+		 UseControlAction("LotteryWeeklyRewardList", "Close")
+	    mushGSjcpstep = 52
 	   elseif Player:GetTarget() == nil then
 	   	mushGSjcpstep = 53
 	   end
@@ -18982,6 +19046,24 @@ function AetheryteHelper.nonAFK()
   end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.PvPAssistUseG_and_S()
+ if Player.localmapid == 250 or Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 then
+   if AetheryteHelper.PvPAssist.autoGuard == true then
+      if Player.hp.percent <= AetheryteHelper.PvPAssist.autoGuardHP and ActionList:Get(1,29054):IsReady() and MissingBuff(Player.id,3054) then
+   	  mushlooptimer = 0
+      ActionList:Get(1,29054):Cast()
+      end
+   end
+   if AetheryteHelper.PvPAssist.sprint == true then
+ 	    if ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,1342) and MissingBuff(Player.id,3054) then
+ 	 	  mushlooptimer = 2000
+      ActionList:Get(1,29057):Cast()
+      end
+   end
+ end
+
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.FreeCompanyActionUse()
    local fcaname01 = ""
@@ -22400,7 +22482,7 @@ end
 
 function AetheryteHelper.voteMVP()
    if (MIP.Enable) then
-	 if Player.Targetable == true and IsControlOpen("NowLoading") == false then
+	 if Player.Targetable == true and MIsLoading() == false then
 	 if MIPstep == 0 then
 		if IsControlOpen("_NotificationIcMvp") then
 		mushlooptimer = 200
@@ -22610,7 +22692,7 @@ function AetheryteHelper.PartyCall()
 		 end
 		 if PEcallstep == 20 then
 			  if Duty:IsQueued() == true and Duty:GetQueueStatus() == 4 and
-				 IsControlOpen("NowLoading") and Entity == 0 then
+				 MIsLoading() and Entity == 0 then
 			  SendTextCommand(tostring(Ecall.word02))
 			  PEcallstep = 99
 			  end
@@ -23531,6 +23613,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.R_SE_notification()
 			AetheryteHelper.targetingmeRec()
 			AetheryteHelper.Jumbocactpothelper()
+			AetheryteHelper.PvPAssistUseG_and_S()
 		end
 	 end
 end
