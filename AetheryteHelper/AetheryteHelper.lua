@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.8.3",
-	  tag = 2022053014,--y0000m00d00h00
+	  Version =         "1.8.9.0",
+	  tag = 2022060503,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -143,6 +143,7 @@ local kinokoProject = {
             "[1.8.8.1] - Process modification",
             "[1.8.8.2] - bug fix",
             "[1.8.8.3] - add auto use skill in PvP",
+            "[1.8.9.0] - add Drow Job Icon",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -507,6 +508,14 @@ AetheryteHelper.CameraHacks = {
 	Enable = true,
   min = 1.5,
   max = 20,
+}
+AetheryteHelper.JobIconSetting = {
+	Enable = false,
+	me = false,
+	Size = 12,
+	pos = 50,
+	myparty = false,
+	icontype = 1
 }
 
 AetheryteHelper.TargetMeList = {}
@@ -999,6 +1008,13 @@ mushtooltips = {
 		 tip275 = "オートガード",
 		 tip276 = "オートスプリント",
 		 tip277 = "ガード使用HP(％)",
+		 tip278 = "ジョブアイコン設定",
+		 tip279 = "プレイヤーの多いエリアで使用すると\n若干のfpsの低下が起きます",
+		 tip280 = "ジョブアイコンを表示",
+		 tip281 = "自身のジョブアイコンを表示",
+		 tip282 = "パーティーメンバーのみジョブアイコンを表示",
+		 tip283 = "アイコンサイズ",
+		 tip284 = "位置調整",
 
 
   },
@@ -1281,6 +1297,13 @@ mushtooltips = {
 		 tip275 = "Automatically use GUARD",
 		 tip276 = "Automatically use Sprint",
 		 tip277 = "Use GUARD when HP falls below this percent",
+		 tip278 = "Job Icon Setting",
+		 tip279 = "When used in areas with many players,\nthere will be a slight drop in fps",
+		 tip280 = "Show job icon",
+		 tip281 = "Show own job icon",
+		 tip282 = "Show job icons for party members only",
+		 tip283 = "Icon size",
+		 tip284 = "Change of position",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1561,6 +1584,13 @@ mushtooltips = {
 		 tip275 = "Utiliser automatiquement Garde",
 		 tip276 = "Utiliser automatiquement Sprint",
 		 tip277 = "Utilisez Garde lorsque les PV tombent en dessous de ce pourcentage",
+		 tip278 = "Réglage de l'icône jobs",
+		 tip279 = "Lorsqu'il est utilisé dans des zones où il y a beaucoup de joueurs,\nil y aura une légère baisse des fps.",
+		 tip280 = "Afficher l'icône jobs",
+		 tip281 = "Afficher l'icône de votre propre jobs",
+		 tip282 = "Afficher les icônes de jobs pour les membres du groupe uniquement",
+		 tip283 = "Taille de l'icône",
+		 tip284 = "Changement de poste",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1841,6 +1871,13 @@ mushtooltips = {
      tip275 = "Automatisch Wehr verwenden",
 		 tip276 = "Automatisch Sprint verwenden",
 		 tip277 = "Verwenden Sie Wehr, wenn die LP unter diesen Prozentsatz fallen",
+		 tip278 = "Einstellung des Job-Symbols",
+		 tip279 = "Beim Einsatz in Gebieten mit vielen Spielern kann\nein Leichter fps-Abfall kann auftreten",
+		 tip280 = "Job-Symbol anzeigen",
+		 tip281 = "Eigenes Job-Symbol anzeigen",
+		 tip282 = "Job-Symbole nur für Gruppenmitglieder anzeigen",
+		 tip283 = "Größe des Symbols",
+		 tip284 = "Änderung der Position",
   
   },
   cn = {
@@ -2122,6 +2159,13 @@ mushtooltips = {
 		 tip275 = "自动使用[GUARD]",
 		 tip276 = "自动使用[冲刺]",
 		 tip277 = "当体力低于这个百分比时，使用[GUARD]",
+		 tip278 = "职业图标设置",
+		 tip279 = "当在有很多玩家的地方使用时，帧数会有轻微下降。",
+		 tip280 = "显示职业图标",
+		 tip281 = "显示自己的职业图标",
+		 tip282 = "队伍显示职业图标",
+		 tip283 = "图标大小",
+		 tip284 = "改变立场",
   
   },
   kr = { 
@@ -2403,6 +2447,13 @@ mushtooltips = {
 		 tip275 = "Automatically use GUARD",
 		 tip276 = "Automatically use Sprint",
 		 tip277 = "Use GUARD when HP falls below this percent",
+		 tip278 = "Job Icon Setting",
+		 tip279 = "When used in areas with many players,\nthere will be a slight drop in fps",
+		 tip280 = "Show job icon",
+		 tip281 = "Show own job icon",
+		 tip282 = "Show job icons for party members only",
+		 tip283 = "Icon size",
+		 tip284 = "Change of position",
   
   },
 
@@ -2663,47 +2714,47 @@ local GCexchangeItems = {
 		 },
 }
 mushAH_JobidList = {
-	{id = 0, Job = "Unknown", png = [[howto.png]]},
-	{id = 1, Job = "GLA", png = [[icon_t01c.png]]},
-	{id = 2, Job = "PGL", png = [[icon_d01c.png]]},
-	{id = 3, Job = "MRD", png = [[icon_t02c.png]]},
-	{id = 4, Job = "LNC", png = [[icon_d02c.png]]},
-	{id = 5, Job = "ARC", png = [[icon_d03c.png]]},
-	{id = 6, Job = "CNJ", png = [[icon_h00.png]]},
-	{id = 7, Job = "THM", png = [[icon_d04c.png]]},
-	{id = 8, Job = "CRP", png = [[icon_c01.png]]},
-	{id = 9, Job = "BSM", png = [[icon_c02.png]]},
-	{id = 10, Job = "ARM", png = [[icon_c03.png]]},
-	{id = 11, Job = "GSM", png = [[icon_c04.png]]},
-	{id = 12, Job = "LTW", png = [[icon_c05.png]]},
-	{id = 13, Job = "WVR", png = [[icon_c06.png]]},
-	{id = 14, Job = "ALC", png = [[icon_c07.png]]},
-	{id = 15, Job = "CUL", png = [[icon_c08.png]]},
-	{id = 16, Job = "MIN", png = [[icon_g01.png]]},
-	{id = 17, Job = "BTN", png = [[icon_g02.png]]},
-	{id = 18, Job = "FSH", png = [[icon_g03.png]]},
-	{id = 19, Job = "PLD", png = [[icon_t01.png]]},
-	{id = 20, Job = "MNK", png = [[icon_d01.png]]},
-	{id = 21, Job = "WAR", png = [[icon_t02.png]]},
-	{id = 22, Job = "DRG", png = [[icon_d02.png]]},
-	{id = 23, Job = "BRD", png = [[icon_d03.png]]},
-	{id = 24, Job = "WHM", png = [[icon_h01.png]]},
-	{id = 25, Job = "BLM", png = [[icon_d04.png]]},
-	{id = 26, Job = "ACN", png = [[icon_d05c.png]]},
-	{id = 27, Job = "SMN", png = [[icon_d05.png]]},
-	{id = 28, Job = "SCH", png = [[icon_h02.png]]},
-	{id = 29, Job = "ROG", png = [[icon_d06c.png]]},
-	{id = 30, Job = "NIN", png = [[icon_d06.png]]},
-	{id = 31, Job = "MCH", png = [[icon_d07.png]]},
-	{id = 32, Job = "DRK", png = [[icon_t03.png]]},
-	{id = 33, Job = "AST", png = [[icon_h03.png]]},
-	{id = 34, Job = "SAM", png = [[icon_d08.png]]},
-	{id = 35, Job = "RDM", png = [[icon_d09.png]]},
-	{id = 36, Job = "BLU", png = [[icon_d00.png]]},
-	{id = 37, Job = "GNB", png = [[icon_t04.png]]},
-	{id = 38, Job = "DNC", png = [[icon_d10.png]]},
-	{id = 39, Job = "RPR", png = [[icon_d11.png]]},
-	{id = 40, Job = "SGE", png = [[icon_h04.png]]},
+	{id = 0, Job = "Unknown", png = [[howto.png]], icon1 = [[Unknown.png]], icon2 = [[Unknown.png]]},
+	{id = 1, Job = "GLA", png = [[icon_t01c.png]], icon1 = [[T_GLA.png]], icon2 = [[T_GLA02.png]]},
+	{id = 2, Job = "PGL", png = [[icon_d01c.png]], icon1 = [[D_PGL.png]], icon2 = [[D_PGL02.png]]},
+	{id = 3, Job = "MRD", png = [[icon_t02c.png]], icon1 = [[T_MRD.png]], icon2 = [[T_MRD02.png]]},
+	{id = 4, Job = "LNC", png = [[icon_d02c.png]], icon1 = [[D_LNC.png]], icon2 = [[D_LNC02.png]]},
+	{id = 5, Job = "ARC", png = [[icon_d03c.png]], icon1 = [[D_ARC.png]], icon2 = [[D_ARC02.png]]},
+	{id = 6, Job = "CNJ", png = [[icon_h00.png]], icon1 = [[H_CNJ.png]], icon2 = [[H_CNJ02.png]]},
+	{id = 7, Job = "THM", png = [[icon_d04c.png]], icon1 = [[D_THM.png]], icon2 = [[D_THM02.png]]},
+	{id = 8, Job = "CRP", png = [[icon_c01.png]], icon1 = [[C_CRP.png]], icon2 = [[C_CRP02.png]]},
+	{id = 9, Job = "BSM", png = [[icon_c02.png]], icon1 = [[C_BSM.png]], icon2 = [[C_BSM02.png]]},
+	{id = 10, Job = "ARM", png = [[icon_c03.png]], icon1 = [[C_ARM.png]], icon2 = [[C_ARM02.png]]},
+	{id = 11, Job = "GSM", png = [[icon_c04.png]], icon1 = [[C_GSM.png]], icon2 = [[C_GSM02.png]]},
+	{id = 12, Job = "LTW", png = [[icon_c05.png]], icon1 = [[C_LTW.png]], icon2 = [[C_LTW02.png]]},
+	{id = 13, Job = "WVR", png = [[icon_c06.png]], icon1 = [[C_WVR.png]], icon2 = [[C_WVR02.png]]},
+	{id = 14, Job = "ALC", png = [[icon_c07.png]], icon1 = [[C_ALC.png]], icon2 = [[C_ALC02.png]]},
+	{id = 15, Job = "CUL", png = [[icon_c08.png]], icon1 = [[C_CUL.png]], icon2 = [[C_CUL02.png]]},
+	{id = 16, Job = "MIN", png = [[icon_g01.png]], icon1 = [[G_MIN.png]], icon2 = [[G_MIN02.png]]},
+	{id = 17, Job = "BTN", png = [[icon_g02.png]], icon1 = [[G_BTN.png]], icon2 = [[G_BTN02.png]]},
+	{id = 18, Job = "FSH", png = [[icon_g03.png]], icon1 = [[G_FSH.png]], icon2 = [[G_FSH02.png]]},
+	{id = 19, Job = "PLD", png = [[icon_t01.png]], icon1 = [[T_PLD.png]], icon2 = [[T_PLD02.png]]},
+	{id = 20, Job = "MNK", png = [[icon_d01.png]], icon1 = [[D_MNK.png]], icon2 = [[D_MNK02.png]]},
+	{id = 21, Job = "WAR", png = [[icon_t02.png]], icon1 = [[T_WAR.png]], icon2 = [[T_WAR02.png]]},
+	{id = 22, Job = "DRG", png = [[icon_d02.png]], icon1 = [[D_DRG.png]], icon2 = [[D_DRG02.png]]},
+	{id = 23, Job = "BRD", png = [[icon_d03.png]], icon1 = [[D_BRD.png]], icon2 = [[D_BRD02.png]]},
+	{id = 24, Job = "WHM", png = [[icon_h01.png]], icon1 = [[H_WHM.png]], icon2 = [[H_WHM02.png]]},
+	{id = 25, Job = "BLM", png = [[icon_d04.png]], icon1 = [[D_BLM.png]], icon2 = [[D_BLM02.png]]},
+	{id = 26, Job = "ACN", png = [[icon_d05c.png]], icon1 = [[D_ACN.png]], icon2 = [[D_ACN02.png]]},
+	{id = 27, Job = "SMN", png = [[icon_d05.png]], icon1 = [[D_SMN.png]], icon2 = [[D_SMN02.png]]},
+	{id = 28, Job = "SCH", png = [[icon_h02.png]], icon1 = [[H_SCH.png]], icon2 = [[H_SCH02.png]]},
+	{id = 29, Job = "ROG", png = [[icon_d06c.png]], icon1 = [[D_ROG.png]], icon2 = [[D_ROG02.png]]},
+	{id = 30, Job = "NIN", png = [[icon_d06.png]], icon1 = [[D_NIN.png]], icon2 = [[D_NIN02.png]]},
+	{id = 31, Job = "MCH", png = [[icon_d07.png]], icon1 = [[D_MCH.png]], icon2 = [[D_MCH02.png]]},
+	{id = 32, Job = "DRK", png = [[icon_t03.png]], icon1 = [[T_DRK.png]], icon2 = [[T_DRK02.png]]},
+	{id = 33, Job = "AST", png = [[icon_h03.png]], icon1 = [[H_AST.png]], icon2 = [[H_AST02.png]]},
+	{id = 34, Job = "SAM", png = [[icon_d08.png]], icon1 = [[D_SAM.png]], icon2 = [[D_SAM02.png]]},
+	{id = 35, Job = "RDM", png = [[icon_d09.png]], icon1 = [[D_RDM.png]], icon2 = [[D_RDM02.png]]},
+	{id = 36, Job = "BLU", png = [[icon_d00.png]], icon1 = [[D_BLU.png]], icon2 = [[D_BLU02.png]]},
+	{id = 37, Job = "GNB", png = [[icon_t04.png]], icon1 = [[T_GNB.png]], icon2 = [[T_GNB02.png]]},
+	{id = 38, Job = "DNC", png = [[icon_d10.png]], icon1 = [[D_DNC.png]], icon2 = [[D_DNC02.png]]},
+	{id = 39, Job = "RPR", png = [[icon_d11.png]], icon1 = [[D_RPR.png]], icon2 = [[D_RPR02.png]]},
+	{id = 40, Job = "SGE", png = [[icon_h04.png]], icon1 = [[H_SGE.png]], icon2 = [[H_SGE02.png]]},
 }
 mushAH_ONLINE_Status = {
 	{id = 0, status = "Online", png = [[status_online.png]]},
@@ -2779,6 +2830,7 @@ AetheryteHelper.PvP = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSetti
 AetheryteHelper.TMe = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'TargetMeSetting.lua'
 AetheryteHelper.TMList = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'TargetMeList.lua'
 AetheryteHelper.CamHack = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CamHack.lua'
+AetheryteHelper.JIset = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'JobIconSettings.lua'
 
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
@@ -2824,6 +2876,7 @@ local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
 local userImage = ModulePath .. [[CustomImage\]]
+local JobIcon = ModulePath .. [[jobicon\]]
 local GCdelistep = 0
 local GCStep = 0
 local limMBStep = 0
@@ -2902,6 +2955,7 @@ local AHRadarhunt = false
 local AHRadarCustomList = true
 local AHRadarPvPmode = false
 local AHRadarSound = false
+local AHRadarJobIcon = false
 local AHRadarBlockList = false
 local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
@@ -3086,8 +3140,17 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	  table.merge(AetheryteHelper.CameraHacks,CamH)
 	end
   end
+  if FileExists(AetheryteHelper.JIset) then
+	local JI = persistence.load(AetheryteHelper.JIset)
+	if (ValidTable(JI)) then
+	  table.merge(AetheryteHelper.JobIconSetting,JI)
+	end
+  end
 end
 end
+
+
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
@@ -3112,6 +3175,7 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
   persistence.store(AetheryteHelper.TMe, AetheryteHelper.RecordTargetMe)
   persistence.store(AetheryteHelper.TMList, AetheryteHelper.TargetMeList)
   persistence.store(AetheryteHelper.CamHack, AetheryteHelper.CameraHacks)
+  persistence.store(AetheryteHelper.JIset, AetheryteHelper.JobIconSetting)
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4102,16 +4166,16 @@ function AetheryteHelper.DrawadWIP()
 			  AetheryteHelper.SetToolTips(mJTp.tip112,mETp.tip112,mDTp.tip112,mFTp.tip112,mCTp.tip112,mKTp.tip112)
 		end
 	  GUI:EndGroup()
---	  GUI:SameLine()
---	  GUI:BeginGroup()
---	  GUI:Image(ImageFolder..[[fc.png]],30,30)
---	  if GUI:IsItemHovered() then
---			if GUI:IsItemClicked(0) then
---			AetheryteHelper.FCactionWindow.open = not AetheryteHelper.FCactionWindow.open
---			end
---			  AetheryteHelper.SetToolTips(mJTp.tip227,mETp.tip227,mDTp.tip227,mFTp.tip227,mCTp.tip227,mKTp.tip227)
---	  end
---	  GUI:EndGroup()
+	  --GUI:SameLine()
+	  --GUI:BeginGroup()
+	  --GUI:Image(ImageFolder..[[fc.png]],30,30)
+	  --if GUI:IsItemHovered() then
+		--	if GUI:IsItemClicked(0) then
+		--	AetheryteHelper.FCactionWindow.open = not AetheryteHelper.FCactionWindow.open
+		--	end
+		--	  AetheryteHelper.SetToolTips(mJTp.tip227,mETp.tip227,mDTp.tip227,mFTp.tip227,mCTp.tip227,mKTp.tip227)
+	  --end
+	  --GUI:EndGroup()
 	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[CustomButton.png]],30,30)
@@ -6831,11 +6895,6 @@ function AetheryteHelper.CamHackwindow()
 	  	end
 	  	AetheryteHelper.SetToolTips(mJTp.tip274,mETp.tip274,mDTp.tip274,mFTp.tip274,mCTp.tip274,mKTp.tip274)
 	  end
-	  if AetheryteHelper.CameraHacks.Enable == true then
-	  Hacks:SetCamMaxZoom(AetheryteHelper.CameraHacks.min,AetheryteHelper.CameraHacks.max)
-	  else
-	  Hacks:ResetCamMaxZoom()
-	  end
 	  GUI:EndGroup()
 	  GUI:Separator()
 	  GUI:Spacing()
@@ -7015,8 +7074,10 @@ function AetheryteHelper.AHflaglist()
 	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	   if v[12] == 0 then
+		    	   SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		    	   SendTextCommand("/e "..v[1].."<flag>")
 		    	   elseif v[12] == 1 then
+		    	   SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		    	   SendTextCommand("/e <flag>")
 		    	   end
 		      end	  	
@@ -7029,8 +7090,10 @@ function AetheryteHelper.AHflaglist()
 	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	   if v[12] == 0 then
+		    	   SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		    	   SendTextCommand("/sh "..v[1].."<flag>")
 		    	   elseif v[12] == 1 then
+		    	   SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		    	   SendTextCommand("/sh <flag>")
 		    	   end
 		      end	  	
@@ -7043,8 +7106,10 @@ function AetheryteHelper.AHflaglist()
 	    	if GUI:IsItemHovered() then
 		      if GUI:IsItemClicked(0) then
 		    	   if v[12] == 0 then
+		    	   SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		    	   SendTextCommand(v[1].."<flag>")
 		    	   elseif v[12] == 1 then
+		    	   SetMapFlagPosition(v[3],v[2],v[4],v[5])
 		    	   SendTextCommand("<flag>")
 		    	   end
 		      end	  	
@@ -9452,7 +9517,7 @@ function AetheryteHelper.PVPGandMPDrow()
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG1 = os.time() + 30
   	       end
-  	       if en.hp == 0 then
+  	       if en.hp.percent == 0 and en.mp.percent == 0 then
  	     	   muahAH_RecastG1 = os.time()
   	       end
   	       if en.castinginfo.channelingid == 29055 then
@@ -9470,7 +9535,7 @@ function AetheryteHelper.PVPGandMPDrow()
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG2 = os.time() + 30
   	       end
-  	       if en.hp == 0 then
+  	       if en.hp.percent == 0 and en.mp.percent == 0 then
  	     	   muahAH_RecastG2 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9488,7 +9553,7 @@ function AetheryteHelper.PVPGandMPDrow()
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG3 = os.time() + 30
   	       end
-  	       if en.hp == 0 then
+  	       if en.hp.percent == 0 and en.mp.percent == 0 then
  	     	   muahAH_RecastG3 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9506,7 +9571,7 @@ function AetheryteHelper.PVPGandMPDrow()
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG4 = os.time() + 30
   	       end
-  	       if en.hp == 0 then
+  	       if en.hp.percent == 0 and en.mp.percent == 0 then
  	     	   muahAH_RecastG4 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -9524,7 +9589,7 @@ function AetheryteHelper.PVPGandMPDrow()
  	         if HasBuff(en.id,3054,0,5) then
  	         muahAH_RecastG5 = os.time() + 30
   	       end
-  	       if en.hp == 0 then
+  	       if en.hp.percent == 0 and en.mp.percent == 0 then
  	     	   muahAH_RecastG5 = os.time()
  	     	   end
  	     	   if en.castinginfo.channelingid == 29055 then
@@ -10253,6 +10318,103 @@ function AetheryteHelper.RadarSoundDrow()
 
 end
 --------------------------------------------------------------------------------------------------------------------
+mushAH_JobIcontype01 = true
+mushAH_JobIcontype02 = false
+function AetheryteHelper.JobIconDraw()
+GUI:Spacing()
+GUI:BeginGroup()
+GUI:TextColored(1,0,0,1,"[[Warning]]")
+GUI:EndGroup()
+if GUI:IsItemHovered() then
+	AetheryteHelper.SetToolTips(mJTp.tip279,mETp.tip279,mDTp.tip279,mFTp.tip279,mCTp.tip279,mKTp.tip279)
+end
+GUI:Spacing()
+GUI:BeginGroup()
+GUI:Checkbox("Drow JobIcon",AetheryteHelper.JobIconSetting.Enable)
+GUI:EndGroup()
+if GUI:IsItemHovered() then
+	if GUI:IsItemClicked(0) then
+	AetheryteHelper.JobIconSetting.Enable = not AetheryteHelper.JobIconSetting.Enable
+	AetheryteHelper.SaveSettings()
+	end
+	AetheryteHelper.SetToolTips(mJTp.tip280,mETp.tip280,mDTp.tip280,mFTp.tip280,mCTp.tip280,mKTp.tip280)
+end
+GUI:SameLine()
+GUI:BeginGroup()
+GUI:RadioButton("Type1",mushAH_JobIcontype01)
+if GUI:IsItemHovered() then
+	if GUI:IsItemClicked(0) then
+	mushAH_JobIcontype01 = true
+	mushAH_JobIcontype02 = false
+	AetheryteHelper.JobIconSetting.icontype = 1
+	end
+end
+GUI:EndGroup()
+GUI:SameLine()
+GUI:BeginGroup()
+GUI:RadioButton("Type2",mushAH_JobIcontype02)
+if GUI:IsItemHovered() then
+	if GUI:IsItemClicked(0) then
+	mushAH_JobIcontype01 = false
+	mushAH_JobIcontype02 = true
+	AetheryteHelper.JobIconSetting.icontype = 2
+	end
+end
+GUI:EndGroup()
+GUI:Dummy(10,10)
+GUI:SameLine()
+GUI:BeginGroup()
+GUI:Checkbox("Self",AetheryteHelper.JobIconSetting.me)
+GUI:EndGroup()
+if GUI:IsItemHovered() then
+	if GUI:IsItemClicked(0) then
+	AetheryteHelper.JobIconSetting.me = not AetheryteHelper.JobIconSetting.me
+	AetheryteHelper.SaveSettings()
+	end
+	AetheryteHelper.SetToolTips(mJTp.tip281,mETp.tip281,mDTp.tip281,mFTp.tip281,mCTp.tip281,mKTp.tip281)
+end
+GUI:Dummy(10,10)
+GUI:SameLine()
+GUI:BeginGroup()
+GUI:Checkbox("Party Only",AetheryteHelper.JobIconSetting.myparty)
+GUI:EndGroup()
+if GUI:IsItemHovered() then
+	if GUI:IsItemClicked(0) then
+	AetheryteHelper.JobIconSetting.myparty = not AetheryteHelper.JobIconSetting.myparty
+	AetheryteHelper.SaveSettings()
+	end
+	AetheryteHelper.SetToolTips(mJTp.tip282,mETp.tip282,mDTp.tip282,mFTp.tip282,mCTp.tip282,mKTp.tip282)
+end
+GUI:BeginGroup()
+GUI:PushItemWidth(150)
+AetheryteHelper.JobIconSetting.Size, changed = GUI:InputFloat("Icon size",AetheryteHelper.JobIconSetting.Size,0.1,1,1)
+	   if changed then
+	   AetheryteHelper.SaveSettings()	
+	   end
+	   if AetheryteHelper.JobIconSetting.Size < 10 then AetheryteHelper.JobIconSetting.Size = 10 end
+	   if AetheryteHelper.JobIconSetting.Size > 40 then AetheryteHelper.JobIconSetting.Size = 40 end
+GUI:PopItemWidth()
+GUI:EndGroup()
+if GUI:IsItemHovered() then
+	AetheryteHelper.SetToolTips(mJTp.tip283,mETp.tip283,mDTp.tip283,mFTp.tip283,mCTp.tip283,mKTp.tip283)
+end
+GUI:BeginGroup()
+GUI:PushItemWidth(150)
+AetheryteHelper.JobIconSetting.pos, changed = GUI:InputFloat("Position",AetheryteHelper.JobIconSetting.pos,0.1,1,1)
+	   if changed then
+	   AetheryteHelper.SaveSettings()	
+	   end
+	   if AetheryteHelper.JobIconSetting.pos < 0 then AetheryteHelper.JobIconSetting.pos = 0 end
+	   if AetheryteHelper.JobIconSetting.pos > 200 then AetheryteHelper.JobIconSetting.pos = 200 end
+GUI:PopItemWidth()
+GUI:EndGroup()
+if GUI:IsItemHovered() then
+	AetheryteHelper.SetToolTips(mJTp.tip284,mETp.tip284,mDTp.tip284,mFTp.tip284,mCTp.tip284,mKTp.tip284)
+end
+
+end
+
+--------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.miniRadar()
   if (AetheryteHelper.miniRadarWindow.open) then
 	local Rflags =  GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
@@ -10863,6 +11025,7 @@ function AetheryteHelper.Radar()
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = false
 		  AHRadarSound = false
+		  AHRadarJobIcon = false
 		end
 	  end
 	  end
@@ -10888,6 +11051,7 @@ function AetheryteHelper.Radar()
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = false
 		  AHRadarSound = false
+		  AHRadarJobIcon = false
 		end
 	  end
 	  end
@@ -10913,6 +11077,7 @@ function AetheryteHelper.Radar()
 		  AHRadarCustomList = true
 		  AHRadarPvPmode = false
 		  AHRadarSound = false
+		  AHRadarJobIcon = false
 		end
 	  end
 	  end
@@ -10941,6 +11106,7 @@ function AetheryteHelper.Radar()
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = true
 		  AHRadarSound = false
+		  AHRadarJobIcon = false
 		end
 	  end
 	  end
@@ -10966,12 +11132,40 @@ function AetheryteHelper.Radar()
 		  AHRadarCustomList = false
 		  AHRadarPvPmode = false
 		  AHRadarSound = true
+		  AHRadarJobIcon = false
 		end
 	  end
 	  end
 	  GUI:EndGroup()
 	  if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip263,mETp.tip263,mDTp.tip263,mFTp.tip263,mCTp.tip263,mKTp.tip263)
+	  end
+
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  if AHRadarJobIcon == true then
+	  GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0,0,1)
+	  GUI:Button("JobIcon",60,20)
+	  GUI:PopStyleColor(2)
+	  else
+	  GUI:PushStyleColor(GUI.Col_ButtonHovered,1,0.3,0,1)
+	  GUI:Button("JobIcon",60,20)
+	  GUI:PopStyleColor()
+	  if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		  AHRadarGeneral = false
+		  AHRadarhunt = false
+		  AHRadarCustomList = false
+		  AHRadarPvPmode = false
+		  AHRadarSound = false
+		  AHRadarJobIcon = true
+		end
+	  end
+	  end
+	  GUI:EndGroup()
+	  if GUI:IsItemHovered() then
+			  AetheryteHelper.SetToolTips(mJTp.tip278,mETp.tip278,mDTp.tip278,mFTp.tip278,mCTp.tip278,mKTp.tip278)
 	  end
 
 	  GUI:Spacing()
@@ -10991,6 +11185,9 @@ function AetheryteHelper.Radar()
 	  end
 	  if AHRadarSound == true then
 	  AetheryteHelper.RadarSoundDrow()
+	  end
+	  if AHRadarJobIcon == true then
+	  AetheryteHelper.JobIconDraw()
 	  end
 	end
 	GUI:End()
@@ -11469,7 +11666,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and screenppos ~= nil and e.targetable == true then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11515,7 +11712,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and screenppos ~= nil then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11562,7 +11759,7 @@ local el = MEntityList(str)
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true and e.attackable == false then
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and screenppos ~= nil and e.targetable == true and e.attackable == false then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11615,7 +11812,7 @@ local el = MEntityList(str)
 	  targetname = target.name
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
 	  local screentpos = RenderManager:WorldToScreen(tpos)
-			if screentpos ~= nil and not IsControlOpen("HudLayout") and MIsLoading() == false then
+			if screentpos ~= nil and screenppos ~= nil and not IsControlOpen("HudLayout") and MIsLoading() == false then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
 				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
 				  GUI:AddLine(screenppos.x, screenppos.y, screentpos.x, screentpos.y,Colour,thick)
@@ -11658,8 +11855,6 @@ end
 -----------------------------------------------------------------------------------------------------
 
 function AHRadardot(str,Colour,size)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
 local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
@@ -11704,8 +11899,6 @@ return str,Colour,size
 end
 
 function AHRadarEXdot(str,Colour,size)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
 local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
@@ -11751,8 +11944,6 @@ end
 ------------------------------------------------------------------------------------------
 
 function AHRadardotNPC(str,Colour,size)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
 local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
@@ -11796,6 +11987,115 @@ local el = MEntityList(str)
 return str,Colour,size
 end
 
+
+function AHRadarJobIconDrow(str,size,pos)
+local el = MEntityList(str)
+	  if table.valid(el) then
+	  for _,e in pairs(el) do
+	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
+	  local edis = math.round(e.distance/10,2)
+	  local screentpos = RenderManager:WorldToScreen(tpos)
+	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true then
+			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				    	 if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.gposeoff == true and Rset.cutoff == true then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.gposeoff == true and Rset.indutyoff == true then
+				  if Player.onlinestatus ~= 18 and Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.cutoff == true and Rset.indutyoff == true then
+				  if Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.indutyoff == true then
+				  if  Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.cutoff == true then
+				  if Player.onlinestatus ~= 15 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.gposeoff == true then
+				  if Player.onlinestatus ~= 18 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+				  end
+			   else
+				    for k,v in pairs(mushAH_JobidList) do
+				    if e.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				       GUI:AddImage(JobIcon..v.icon2, screentpos.x-size+edis, screentpos.y-size+edis-pos+edis*5, screentpos.x+size-edis, screentpos.y+size-edis-pos+edis*5)
+				       end
+				    end
+				    end
+			   end
+	  end
+	  end
+	  end
+	  return str,size,pos
+end
 
 ------------------------------------------------------------------------------------------------
 
@@ -12270,6 +12570,113 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 			   end
 		end
   end
+
+  if Rset.RadarEnable == true and AetheryteHelper.JobIconSetting.Enable == true and AetheryteHelper.JobIconSetting.myparty == false then
+  AHRadarJobIconDrow("type=1,maxdistance=50",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
+  elseif Rset.RadarEnable == true and AetheryteHelper.JobIconSetting.Enable == true and AetheryteHelper.JobIconSetting.myparty == true then
+  AHRadarJobIconDrow("type=1,maxdistance=50,myparty",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
+  AHRadarJobIconDrow("type=2,maxdistance=50,ownerid=0,chartype=9",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
+  end
+  if Rset.RadarEnable == true and AetheryteHelper.JobIconSetting.Enable == true and AetheryteHelper.JobIconSetting.me == true then
+    if not IsControlOpen("HudLayout") and MIsLoading() == false and screenppos ~= nil then
+			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				    	 if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.gposeoff == true and Rset.cutoff == true then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.gposeoff == true and Rset.indutyoff == true then
+				  if Player.onlinestatus ~= 18 and Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.cutoff == true and Rset.indutyoff == true then
+				  if Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.indutyoff == true then
+				  if  Duty:GetQueueStatus() < 4 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.cutoff == true then
+				  if Player.onlinestatus ~= 15 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   elseif Rset.gposeoff == true then
+				  if Player.onlinestatus ~= 18 then
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+				  end
+			   else
+				    for k,v in pairs(mushAH_JobidList) do
+				    if Player.job == v.id then
+				       if AetheryteHelper.JobIconSetting.icontype == 1 then
+				       GUI:AddImage(JobIcon..v.icon1, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       elseif AetheryteHelper.JobIconSetting.icontype == 2 then
+				     	 GUI:AddImage(JobIcon..v.icon2, screenppos.x-AetheryteHelper.JobIconSetting.Size, screenppos.y-AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos, screenppos.x+AetheryteHelper.JobIconSetting.Size, screenppos.y+AetheryteHelper.JobIconSetting.Size-AetheryteHelper.JobIconSetting.pos)
+				       end
+				    end
+				    end
+			   end
+	  end
+	end
+
   GUI:End()
   GUI:PopStyleColor()
   end
@@ -19099,7 +19506,7 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    	 end
 				    end
 				    if FCAstep == 1 then
-				       if Player.Buffs[2] == nil or Player.Buffs[1] == nil then
+				       if MissingBuff(Player.id,FCactionName.id) then
 				       	  mushlooptimer = 200
                   if IsControlOpen("FreeCompany") then
 				       	  FCAstep = 2
@@ -19116,6 +19523,7 @@ function AetheryteHelper.FreeCompanyActionUse()
 
 				    if FCAstep == 2 then
 				    	if IsControlOpen("FreeCompanyAction") then
+				    		GetControl("FreeCompany"):PushButton(25,5)
 				    		FCAstep = 3
 				    	else
 				    		GetControl("FreeCompany"):PushButton(25,5)
@@ -19170,9 +19578,9 @@ function AetheryteHelper.FreeCompanyActionUse()
   				           FCAstep = 11
   				        elseif GetControl("ContextMenu"):GetRawData()[1].value == 2 then
   				    	     FCAstep = 12
-  				    	  else
-  				    	  	 FCAstep = 8
   				        end
+  	           else
+  		     	  	 FCAstep = 8
   				     end 
 				    end
 				    if FCAstep == 10 then
@@ -19196,9 +19604,9 @@ function AetheryteHelper.FreeCompanyActionUse()
 				    end
 
 				    if FCAstep == 14 then
-				    	if #AetheryteHelper.FCAuseingList == 1 and HasBuff(fcaid01) then
+				    	if #AetheryteHelper.FCAuseingList == 1 and HasBuff(Player.id,fcaid01) then
 				    	 FCAstep = 99
-				    	elseif #AetheryteHelper.FCAuseingList == 2 and HasBuffs(fcaid01,fcaid02) then
+				    	elseif #AetheryteHelper.FCAuseingList == 2 and HasBuffs(Player.id,fcaid01+fcaid02) then
 				    	 FCAstep = 99
 				    	else
 				    	 FCAstep = 5	
@@ -23575,12 +23983,20 @@ function AetheryteHelper.UBDmode03func()
    end
 end
 ---------------------------------------------------------------
-
+function AetheryteHelper.CamHack_func()
+  if AetheryteHelper.CameraHacks.Enable == true then
+  Hacks:SetCamMaxZoom(AetheryteHelper.CameraHacks.min,AetheryteHelper.CameraHacks.max)
+  else
+  Hacks:ResetCamMaxZoom()
+  end
+end
+---------------------------------------------------------------
 function AetheryteHelper.mushsubtool()
 
 	if (GetGameState() == FFXIV.GAMESTATE.INGAME and TimeSince(lastUpdatePulse) > mushlooptimer) then
 	   lastUpdatePulse = Now()
 	 if not IsControlOpen("Title") or not IsControlOpen("CharaSelect") then
+	 	  AetheryteHelper.CamHack_func()
 	 	  AetheryteHelper.autoDCset()
       AetheryteHelper.AutoUpdateCheck()
 		  AetheryteHelper.UBDmode03func()
