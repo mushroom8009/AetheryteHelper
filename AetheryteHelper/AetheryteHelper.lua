@@ -39,8 +39,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.9.0",
-	  tag = 2022060503,--y0000m00d00h00
+	  Version =         "1.8.9.1",
+	  tag = 2022060716,--y0000m00d00h00
 	  VersionList = { "[0.9.0] - Pre Release",
 					  "[0.9.1] - hot fix",
 					  "[0.9.5] - Add tool・UIchange",
@@ -144,6 +144,7 @@ local kinokoProject = {
             "[1.8.8.2] - bug fix",
             "[1.8.8.3] - add auto use skill in PvP",
             "[1.8.9.0] - add Drow Job Icon",
+            "[1.8.9.1] - Patch 6.15 supported",
             --"[1.8.--] -  add of auto use of FC Actions",
 
 					},
@@ -2809,6 +2810,38 @@ local FCactionName = {
 }
 AetheryteHelper.FlagList = {}
 
+AetheryteHelper.MoActionSkills = {
+	[1] = {Job = "GLA", skill = {} },
+	[2] = {Job = "PGL", skill = {} },
+	[3] = {Job = "MRD", skill = {} },
+	[4] = {Job = "LNC", skill = {} },
+	[5] = {Job = "ARC", skill = {} },
+	[6] = {Job = "CNJ", skill = {} },
+	[7] = {Job = "THM", skill = {} },
+	[19] = {Job = "PLD", skill = {} },
+	[20] = {Job = "MNK", skill = {} },
+	[21] = {Job = "WAR", skill = {} },
+	[22] = {Job = "DRG", skill = {} },
+	[23] = {Job = "BRD", skill = {} },
+	[24] = {Job = "WHM", skill = {} },
+	[25] = {Job = "BLM", skill = {} },
+	[26] = {Job = "ACN", skill = {} },
+	[27] = {Job = "SMN", skill = {} },
+	[28] = {Job = "SCH", skill = {} },
+	[29] = {Job = "ROG", skill = {} },
+	[30] = {Job = "NIN", skill = {} },
+	[31] = {Job = "MCH", skill = {} },
+	[32] = {Job = "DRK", skill = {} },
+	[33] = {Job = "AST", skill = {} },
+	[34] = {Job = "SAM", skill = {} },
+	[35] = {Job = "RDM", skill = {} },
+	[36] = {Job = "BLU", skill = {} },
+	[37] = {Job = "GNB", skill = {} },
+	[38] = {Job = "DNC", skill = {} },
+	[39] = {Job = "RPR", skill = {} },
+	[40] = {Job = "SGE", skill = {} },
+}
+
 local MoveServer = { 132, 129, 130 }
 local ploc = { 956, 957, 958, 959, 960, 961 }
 local mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
@@ -3370,6 +3403,29 @@ function AHTimeSince(ms)
   return ms
 end
 
+function AH_MoActionAPI(key1,key2,action)
+  if Player:GetTarget() ~= nil then
+  mush_AH_TargetMemory = Player:GetTarget().id
+  end
+  if key2 == nil then
+    if GUI:IsKeyDown(key1) or GUI:IsKeyPressed(key1) then
+       Player:ClearTarget()
+       if Player:GetTarget() == nil then
+       SendTextCommand("/ac "..ActionList:Get(1,action).name.." <mo>")
+       Player:SetTarget(mush_AH_TargetMemory)
+       end
+    end
+  elseif key2 ~= nil then
+    if GUI:IsKeyDown(key1) and GUI:IsKeyDown(key2) or GUI:IsKeyPressed(key1) and GUI:IsKeyPressed(key2) then
+       Player:ClearTarget()
+       if Player:GetTarget() == nil then
+       SendTextCommand("/ac "..ActionList:Get(1,action).name.." <mo>")
+       Player:SetTarget(mush_AH_TargetMemory)
+       end
+    end
+  end
+  return key1,key2,action
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local mJTp = mushtooltips.jp
 local mETp = mushtooltips.en
@@ -10320,6 +10376,8 @@ end
 --------------------------------------------------------------------------------------------------------------------
 mushAH_JobIcontype01 = true
 mushAH_JobIcontype02 = false
+AH_virtualKey = 0
+AH_virtualKeyname = ""
 function AetheryteHelper.JobIconDraw()
 GUI:Spacing()
 GUI:BeginGroup()
@@ -10411,7 +10469,12 @@ GUI:EndGroup()
 if GUI:IsItemHovered() then
 	AetheryteHelper.SetToolTips(mJTp.tip284,mETp.tip284,mDTp.tip284,mFTp.tip284,mCTp.tip284,mKTp.tip284)
 end
-
+--GUI:BeginGroup()
+--AH_virtualKey,AH_virtualKeyname,changed = GUI:Keybind("key",AH_virtualKey,50)
+--if changed then
+--d(AH_virtualKey)
+--end
+--GUI:EndGroup()
 end
 
 --------------------------------------------------------------------------------------------------------------------
@@ -19463,7 +19526,8 @@ function AetheryteHelper.PvPAssistUseG_and_S()
       end
    end
    if AetheryteHelper.PvPAssist.sprint == true then
- 	    if ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,1342) and MissingBuff(Player.id,3054) then
+ 	    if ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,1342) and MissingBuff(Player.id,3054) or
+ 	       ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,1342) and MissingBuff(Player.id,1316) then
  	 	  mushlooptimer = 2000
       ActionList:Get(1,29057):Cast()
       end
@@ -23112,6 +23176,9 @@ function AetheryteHelper.PartyCall()
 		 end
    end
 end
+
+------------------------------------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.R_SE_notification()
