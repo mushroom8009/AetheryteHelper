@@ -1,166 +1,24 @@
------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
---[[
-this module is open source and anyone may modify it as they wish.
-however, please refrain from claiming that you created it all.
-that would be very embarrassing.
-i started making them as a hobby for myself, but people from all walks of life seem to like them.
-i did not intend to provide support, but now i provide some support as well.
-
-i also created a Discord server for support
-if you need support and haven't joined us yet, please do.
-
-[mushroom's Room]
-https://discord.gg/kCp95cpprd
-
-and here comes the most important part...
-
-who advised me and consulted with me in the creation of this module.
-Madao#2970
-denvo#5217
-
-some functions were created by kali#3326
-
-Chinese translation was done by 长院张#1544
-Deutsch translation was done by Thisnoob#2897
-
-I am so grateful to them!
-
-
-and now for you, who are using this module
-thank you usasing it
-]]
------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------
-AetheryteHelper = {}
+local AetheryteHelper = {}
 -----------------------------------------------------------------------------------------------------------------
 --table
 local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.8.9.1",
-	  tag = 2022060716,--y0000m00d00h00
-	  VersionList = { "[0.9.0] - Pre Release",
-					  "[0.9.1] - hot fix",
-					  "[0.9.5] - Add tool・UIchange",
-					  "[0.9.6] - Add tool・UIchange",
-					  "[0.9.9] - Add UI & bug fix",
-					  "[1.0.0] - Release",
-					  "[1.0.1] - hot fix",
-					  "[1.0.2] - Add Aetherial Reduction",
-					  "[1.0.25] - bug fix",
-					  "[1.1.0] - add desynthesise filter",
-					  "[1.1.1] - bug fix",
-					  "[1.1.2] - Changed so that saved data",
-					  "          is loaded correctly.",
-					  "[1.1.3] - linked bot status",
-					  "          in materia extract options",
-					  "[1.1.5] - Add Aetherial Reduction Botmode and more",
-					  "[1.2.0] - I done lot of add things.",
-					  "[1.2.1] - Adjust Aetherial Reduction Botmode & tooltips",
-					  "          Mouse over to view English",
-					  "          Right button Press to view Japanese.",
-					  "[1.2.2] - desynth bug fix & add Trust mode",
-					  "[1.3.0] - add trun in & Organize code",
-					  "          (just a little bit)",
-					  "[1.3.1] - add Jumbo cactpot assist",
-					  "[1.3.2] - bug fix",
-					  "[1.3.3] - add auto move to Main tool",
-					  "          & fewer error message in game.",
-					  "[1.3.4] - fine tuning of auto move (Mare Lamentorum)",
-					  "[1.3.5] - add Retrieve Materia & Exchange less max",
-					  "[1.4.0] - please read Readme.txt in UserSettings folder",
-					  "[1.4.1] - AR function was broken, and I fixed it",
-					  "[1.4.2] - add auto Repair in TrustMode(DEMO)",
-					  "          & bug fix",
-					  "[1.4.3] - add mini button",
-					  "[1.4.5] - Organize all code",
-					  "[1.4.6] - add DC & move to MB on switch",
-					  "[1.4.7] - adjusted behavior of trust mode",
-					  "[1.4.7.1] - fix MBmode",
-					  "[1.4.8] - Organize code for MBmode",
-					  "[1.4.9] - remake RetrieveMateria,",
-					  "          all function adjust delay",
-					  "          change contents in junk tab",
-					  "[1.5.0] - i've made some crazy stuff",
-					  "[1.5.1] - Only some design changes",
-					  "[1.5.2] - incorporated the code that kali created",
-					  "[1.5.3] - add new 3 text command",
-					  "          add youtube link",
-					  "          & jumbocactpot assist(remake)",
-					  "[1.6.0] - Renewal UI",
-					  "[1.6.1] - Stabilize text commands.",
-					  "          Speed adjustment of some functions",
-					  "          UI adjustment at the beginning of new game",
-					  "[1.6.2] - add text commands.",
-					  "          add mini World Visit window",
-					  "          adjustment of TrustMode",
-					  "[1.6.2.1] - adjust text commands.",
-					  "[1.6.3] - Changed the mechanics of text commands.",
-					  "[1.6.3.1] - adjust text commands.",
-					  "[1.6.3.2] - Remove AFK status.",
-					  "[1.6.3.3] - Changed from OS time to",
-					  "            Server time references for text command.",
-					  "            Changed to show bookmarks in MB mode.",
-					  "[1.6.4] - add Auto Player Commendation.",
-					  "          add Auto Start and End Call in Duty.",
-					  "[1.6.5] - add tool to organize inventory.",
-					  "[1.6.6] - Adjusted AR for some items.",
-					  "[1.7.0] - add automatic Item collection.",
-					  "[1.7.1] - adjustment automatic Item collection.",
-					  "[1.7.2] - Support for moving items from FCchest.",
-					  "[1.7.5] - add new function.",
-					  "[1.7.6] - add AetheryteTicket settings.",
-					  "[1.7.7] - Supports display of retainer bag deployment.",
-            "[1.7.8] - Supports CN・KR Server.",
-            "[1.8.0] - bug fix & Many additional features.",
-            "[1.8.1] - change CN ServerList.",
-            "[1.8.2] - Added ability to change tooltip language.",
-            "[1.8.3] - bug fix & add API.",
-            "[1.8.4] - add API & gil amount setting to ticket",
-            "          add Auto Updater",
-            "[1.8.4.1] - fix Exchange in patch 6.1",
-            "[1.8.4.2] - fix retainer(item search) in patch 6.1",
-            "[1.8.4.3] - fix retainer(item search) add retry function",
-            "[1.8.4.4] - few change to auto update feature",
-            "[1.8.4.5] - fix minor bug",
-            "[1.8.5] - add flag record tool",
-            "[1.8.6] - minor corrections and add Treasure Assist",
-            "[1.8.6.1] - minor corrections",
-            "[1.8.6.2] - fine tuning",
-            "[1.8.6.3] - add PvPAssistTool",
-            "[1.8.6.4] - bug fix",
-            "[1.8.7] - Updater Improvements",
-            "          add sound notification in Radar",
-            "[1.8.7.1] - bug fix",
-            "[1.8.7.5] - add TargetMe Recorder",
-            "[1.8.7.6] - bug fix & bug fix",
-            "[1.8.7.7] - Rewriting of some code",
-            "[1.8.7.8] - add take snap of screen function in TargetMeRecorder",
-            "[1.8.7.9] - bug fix",
-            "[1.8.8.0] - bug fix & add Camera Zoom Hacks",
-            "[1.8.8.1] - Process modification",
-            "[1.8.8.2] - bug fix",
-            "[1.8.8.3] - add auto use skill in PvP",
-            "[1.8.9.0] - add Drow Job Icon",
-            "[1.8.9.1] - Patch 6.15 supported",
-            --"[1.8.--] -  add of auto use of FC Actions",
-
-					},
-
+	  Version =         "1.9.0.0",
+	  tag = 2022070100,--y0000m00d00h00
   },
 --  ---------------
   HELP   = {
-	  linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
-	  linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
+	  --linkjp = [[https://github.com/mushroom8009/AutheryteHelper/wiki/Autheryte-Helper%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9]],
+	  --linken = [[https://github.com/mushroom8009/AutheryteHelper/wiki/How-to-use-%22-Autheryte-Helper-%22-in-minion]],
 	  mykofi = [[https://ko-fi.com/mushroom8009]],
 	  mypatreon = [[https://www.patreon.com/mushroom8009]],
   },
 --  ---------------
   Menu = {
 	Main = {
-	  Name =          "kinoko",
+	  Name =          "mushroom",
 	  Icon =          "love_mushroom.png",
 	  Id =            "kinoko",
 	  Tab =           ffxiv_kinoko_Menu,
@@ -169,7 +27,7 @@ local kinokoProject = {
 	  Name =          "AH",
 	  Icon =          "AetheryteHelper.png",
 	  Id =            "AetheryteHelper",
-	  Tooltip =       "Open AetheryteHelper",
+	  Tooltip =       "Open AH(mushroom tools)",
 	},
   },
 --  ---------------
@@ -196,6 +54,9 @@ local kinokoProject = {
 					+ GUI.WindowFlags_NoBringToFrontOnFocus
 					+ GUI.WindowFlags_NoScrollbar,
 	  Visible =       true,
+	  locked =        false,
+	  x = 0,
+	  y = 0,
 	},
 	
   },
@@ -227,7 +88,7 @@ AetheryteHelper.GUI = {
 	},
 	[4] = {
 	  isselected = false,
-	  name = "[Jank]"
+	  name = "[Wiki]"
 	},
 	[5] = {
 	  isselected = false,
@@ -338,6 +199,11 @@ AetheryteHelper.mush_CamHack = {
   open = false,
   visible = true,
 }
+AetheryteHelper.MoActionSetWindow = {
+  open = false,
+  visible = true,
+}
+
 AetheryteHelper.settingsSET = {
   delay = 200,
 	isMateriaEnabled = false,
@@ -517,6 +383,39 @@ AetheryteHelper.JobIconSetting = {
 	pos = 50,
 	myparty = false,
 	icontype = 1
+}
+AetheryteHelper.MouseActionSetting = {
+	--job
+	PLD = { Enable = false, Action = {}},
+	WAR = { Enable = false, Action = {}},
+	DRK = { Enable = false, Action = {}},
+	GNB = { Enable = false, Action = {}},
+	WHM = { Enable = false, Action = {}},
+	SCH = { Enable = false, Action = {}},
+	AST = { Enable = false, Action = {}},
+	SGE = { Enable = false, Action = {}},
+	MNK = { Enable = false, Action = {}},
+	SAM = { Enable = false, Action = {}},
+	DRG = { Enable = false, Action = {}},
+	RPR = { Enable = false, Action = {}},
+	NIN = { Enable = false, Action = {}},
+	BRD = { Enable = false, Action = {}},
+	MCH = { Enable = false, Action = {}},
+	DNC = { Enable = false, Action = {}},
+	BLM = { Enable = false, Action = {}},
+	SMN = { Enable = false, Action = {}},
+	RDM = { Enable = false, Action = {}},
+	BLU = { Enable = false, Action = {}},
+  --class
+	GLA = { Enable = false, Action = {}},
+	PGL = { Enable = false, Action = {}},
+	LNC = { Enable = false, Action = {}},
+	MRD = { Enable = false, Action = {}},
+	ARC = { Enable = false, Action = {}},
+	CNJ = { Enable = false, Action = {}},
+	THM = { Enable = false, Action = {}},
+	ACN = { Enable = false, Action = {}},
+	ROG = { Enable = false, Action = {}},
 }
 
 AetheryteHelper.TargetMeList = {}
@@ -729,7 +628,7 @@ AetheryteHelper.mushAHlanguage = {
 	KR = false,
 }
 
-mushtooltips = {
+local mushtooltips = {
   jp = { 
   	 tip00 = "対象エリア外",
 		 tip01 = "AH オン/オフ",
@@ -828,7 +727,7 @@ mushtooltips = {
 		 tip94 = "マケボへ移動切り替えスイッチ",
 		 tip95 = "移動先のサーバーを選択",
 		 tip96 = "良い物を作るためにサポートしてください\n\nうちのねこのご飯が豪華になります",
-		 tip97 = "不具合とか要望あればDMで教えて下さい\nあと褒められるとモチベーションあがります",
+		 tip97 = "不具合とか要望はこちらから\nあと褒められるとモチベーションあがります",
 		 tip98 = "左クリックでgitのAHのホーム\n右クリックでリリースページ",
 		 tip99 = "クエストをクリアしてしないのでスキルが使えません",
 		 tip100 = "[MEx]=マテリア錬成\n[SbP]=錬成薬\n[SbM]=スピリットマニュアル",
@@ -1016,6 +915,8 @@ mushtooltips = {
 		 tip282 = "パーティーメンバーのみジョブアイコンを表示",
 		 tip283 = "アイコンサイズ",
 		 tip284 = "位置調整",
+		 tip285 = "ACRの使用を前提としているのでキーの長押しで動作します\nゲーム内のショートカットキーが優先されます\n極力使用していないキーを設定してください",
+		 tip286 = "MouseOver Ability (Lite)",
 
 
   },
@@ -1117,7 +1018,7 @@ mushtooltips = {
 		 tip94 = "Switch to move to MB",
 		 tip95 = "Select World",
 		 tip96 = "please support me to make good\n\nfor my cat....",
-		 tip97 = "Please DM me if you have any problems or requests\nalso, please promote it.",
+		 tip97 = "if you have any problems or requests, please contact me\nalso, please promote it.",
 		 tip98 = "Github link,\nLeft click:home\nRight click:Release",
 		 tip99 = "Quest complete to Get skill!",
 		 tip100 = "[MEx]=MateriaExtract\n[SbP]=Spiritbond Potion\n[SbM]=Spiritbond Manual",
@@ -1305,6 +1206,8 @@ mushtooltips = {
 		 tip282 = "Show job icons for party members only",
 		 tip283 = "Icon size",
 		 tip284 = "Change of position",
+		 tip285 = "It assumes the use of ACR, so it works with a long press of the key\nIn-game shortcut keys have priority\nPlease set keys that are not used as much as possible",
+		 tip286 = "MouseOver Ability (Lite)",
   },
   fr = { 
   	 tip00 = "En dehors de la zone couverte",
@@ -1404,7 +1307,7 @@ mushtooltips = {
 		 tip94 = "Allez au panneau du marché ou passez en téléportation.",
 		 tip95 = "Sélectionner le monde de destination",
 		 tip96 = "Veuillez soutenir mes activités.\n\nLa nourriture de mon chat sera magnifique.",
-		 tip97 = "DM moi si vous avez des problèmes ou des demandes.\nJe suis motivé par les louanges.",
+		 tip97 = "Si vous avez des problèmes ou des demandes,\nfaites-le nous savoir sur Discord\nJe suis motivé par les louanges.",
 		 tip98 = "Clic gauche vers l'accueil AH de github\nFaites un clic gauche pour aller à la page Release.",
 		 tip99 = "La compétence n'est pas disponible car la quête n'est pas terminée.",
 		 tip100 = "[MEx]=Matérialisation\n[SbP]=l'Essence de symbiose\n[SbM]=Manuel militaire de méditation",
@@ -1592,6 +1495,8 @@ mushtooltips = {
 		 tip282 = "Afficher les icônes de jobs pour les membres du groupe uniquement",
 		 tip283 = "Taille de l'icône",
 		 tip284 = "Changement de poste",
+		 tip285 = "Il suppose l'utilisation de l'ACR, et fonctionne donc avec une longue pression sur la touche\nLes touches de raccourci du jeu sont prioritaires\nVeuillez définir les clés qui ne sont pas utilisées autant que possible",
+		 tip286 = "MouseOver Ability (Lite)",
   },
   de = { 
   	 tip00 = "Außerhalb des Einsatzgebietes",
@@ -1691,7 +1596,7 @@ mushtooltips = {
 		 tip94 = "Automatischer Umzug nach Marktbrett",
 		 tip95 = "Welt wählen",
 		 tip96 = "Bitte unterstützt mich,\ndamit es besser wird.\n\nFür meine Katze...",
-		 tip97 = "Bitte sende mir eine DM,\nwenn irgendwelche Probleme auftreten oder Wünsche hast.\nBitte werbt mein Addon",
+		 tip97 = "Sag es uns auf Discord,\nwenn irgendwelche Probleme auftreten oder Wünsche hast.\nBitte werbt mein Addon",
 		 tip98 = "Github-Link,\nLinks klicken: Home\nRechtsklick: Loslassen",
 		 tip99 = "Erhalte Fähigkeiten durch das Lösen von Quests!",
 		 tip100 = "[MEx]=Materia-Extrakition\n[SbP]=Trank der Bindung\n[SbM]=Gesellschafts-Leitfaden „Materialeinsatz“",
@@ -1879,6 +1784,8 @@ mushtooltips = {
 		 tip282 = "Job-Symbole nur für Gruppenmitglieder anzeigen",
 		 tip283 = "Größe des Symbols",
 		 tip284 = "Änderung der Position",
+		 tip285 = "Es wird davon ausgegangen, dass ACRs verwendet werden\nWird durch langes Drücken der Taste betätigt\nDie Tastenkombinationen im Spiel haben Vorrang\nWählen Sie Tastenkombinationen, die so wenig wie möglich verwendet werden",
+		 tip286 = "MouseOver Ability (Lite)",
   
   },
   cn = {
@@ -2167,6 +2074,8 @@ mushtooltips = {
 		 tip282 = "队伍显示职业图标",
 		 tip283 = "图标大小",
 		 tip284 = "改变立场",
+		 tip285 = "假设使用ACR\n它通过按住键盘来工作\n不能覆盖游戏中的快捷键\n尽可能地设置不使用的快捷键",
+		 tip286 = "MouseOver Ability (Lite)",
   
   },
   kr = { 
@@ -2455,6 +2364,8 @@ mushtooltips = {
 		 tip282 = "Show job icons for party members only",
 		 tip283 = "Icon size",
 		 tip284 = "Change of position",
+		 tip285 = "It assumes the use of ACR, so it works with a long press of the key\nIn-game shortcut keys have priority\nPlease set keys that are not used as much as possible",
+		 tip286 = "MouseOver Ability (Lite)",
   
   },
 
@@ -2669,7 +2580,7 @@ local WorldID = {
 {id=2080,Name="펜리르",DC="KR"},
 
 }
-mushPlayerGCrank = {
+local mushPlayerGCrank = {
 	  {rank = 1, max = "10000"},
 	  {rank = 2, max = "15000"},
 	  {rank = 3, max = "20000"},
@@ -2682,14 +2593,14 @@ mushPlayerGCrank = {
 	  {rank = 10, max = "80000"},
     {rank = 11, max = "90000"},
 }
-mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
-mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
-mushGCEN = {"Maelst","Adders","Flames","------"}
-mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
-mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
-mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
-mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
-mushGCKR = {"흑와단","쌍사당","불멸대","------"}
+local mushCD1 = {limsa = 4299025540, Gridania = 4298942321, Uldah = 4298610756 }
+local mushCD2 = {limsa = 4299025544, Gridania = 4298942322, Uldah = 4298610755 }
+local mushGCEN = {"Maelst","Adders","Flames","------"}
+local mushGCJP = {"黒渦団","双蛇党","不滅隊","------"}
+local mushGCDE = {"Mahlstrom","Bruderschaft","Legion","------"}
+local mushGCFR = {"Le Maelstrom","Deux Vipères","Immortels","------"}
+local mushGCCN = {"黑涡团","双蛇党","恒辉队","------"}
+local mushGCKR = {"흑와단","쌍사당","불멸대","------"}
 local GCexchangeItems = {
 		 jp = {"ベンチャースクリップ","ダークマターG8","グラスファイバー","特別支給コンテナ(新生・蒼天)","特別支給コンテナ(紅蓮)","転送網利用券(GC)"}, ---0
 		 En = {"Ventures","G8DarkMatter","GlassFiber","MaterielContainer3.0","MaterielContainer4.0","AetheryteTicket(GC)"},---1
@@ -2714,7 +2625,7 @@ local GCexchangeItems = {
 		 [6] = nil,
 		 },
 }
-mushAH_JobidList = {
+local mushAH_JobidList = {
 	{id = 0, Job = "Unknown", png = [[howto.png]], icon1 = [[Unknown.png]], icon2 = [[Unknown.png]]},
 	{id = 1, Job = "GLA", png = [[icon_t01c.png]], icon1 = [[T_GLA.png]], icon2 = [[T_GLA02.png]]},
 	{id = 2, Job = "PGL", png = [[icon_d01c.png]], icon1 = [[D_PGL.png]], icon2 = [[D_PGL02.png]]},
@@ -2757,7 +2668,7 @@ mushAH_JobidList = {
 	{id = 39, Job = "RPR", png = [[icon_d11.png]], icon1 = [[D_RPR.png]], icon2 = [[D_RPR02.png]]},
 	{id = 40, Job = "SGE", png = [[icon_h04.png]], icon1 = [[H_SGE.png]], icon2 = [[H_SGE02.png]]},
 }
-mushAH_ONLINE_Status = {
+local mushAH_ONLINE_Status = {
 	{id = 0, status = "Online", png = [[status_online.png]]},
 	{id = 2, status = "GM", png = [[status_gm.png]]},
 	{id = 3, status = "GM", png = [[status_gm.png]]},
@@ -2810,38 +2721,6 @@ local FCactionName = {
 }
 AetheryteHelper.FlagList = {}
 
-AetheryteHelper.MoActionSkills = {
-	[1] = {Job = "GLA", skill = {} },
-	[2] = {Job = "PGL", skill = {} },
-	[3] = {Job = "MRD", skill = {} },
-	[4] = {Job = "LNC", skill = {} },
-	[5] = {Job = "ARC", skill = {} },
-	[6] = {Job = "CNJ", skill = {} },
-	[7] = {Job = "THM", skill = {} },
-	[19] = {Job = "PLD", skill = {} },
-	[20] = {Job = "MNK", skill = {} },
-	[21] = {Job = "WAR", skill = {} },
-	[22] = {Job = "DRG", skill = {} },
-	[23] = {Job = "BRD", skill = {} },
-	[24] = {Job = "WHM", skill = {} },
-	[25] = {Job = "BLM", skill = {} },
-	[26] = {Job = "ACN", skill = {} },
-	[27] = {Job = "SMN", skill = {} },
-	[28] = {Job = "SCH", skill = {} },
-	[29] = {Job = "ROG", skill = {} },
-	[30] = {Job = "NIN", skill = {} },
-	[31] = {Job = "MCH", skill = {} },
-	[32] = {Job = "DRK", skill = {} },
-	[33] = {Job = "AST", skill = {} },
-	[34] = {Job = "SAM", skill = {} },
-	[35] = {Job = "RDM", skill = {} },
-	[36] = {Job = "BLU", skill = {} },
-	[37] = {Job = "GNB", skill = {} },
-	[38] = {Job = "DNC", skill = {} },
-	[39] = {Job = "RPR", skill = {} },
-	[40] = {Job = "SGE", skill = {} },
-}
-
 local MoveServer = { 132, 129, 130 }
 local ploc = { 956, 957, 958, 959, 960, 961 }
 local mushnoAH = { 132, 129, 130, 956, 957, 958, 959, 960, 961 }
@@ -2864,6 +2743,7 @@ AetheryteHelper.TMe = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSetti
 AetheryteHelper.TMList = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'TargetMeList.lua'
 AetheryteHelper.CamHack = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'CamHack.lua'
 AetheryteHelper.JIset = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'JobIconSettings.lua'
+AetheryteHelper.AHMoA = GetStartupPath() .. '\\LuaMods\\AetheryteHelper\\UserSettings\\' ..'MouseAction.lua'
 
 -------------------------------------------------------------------------------------------------------------------------------------
 -------------------
@@ -2909,14 +2789,14 @@ local LuaPath = GetLuaModsPath()
 local ModulePath = LuaPath .. [[AetheryteHelper\]]
 local ImageFolder = ModulePath .. [[image\]]
 local userImage = ModulePath .. [[CustomImage\]]
-local JobIcon = ModulePath .. [[jobicon\]]
+local JobIcon = ModulePath .. [[JobIcon\]]
 local GCdelistep = 0
 local GCStep = 0
 local limMBStep = 0
 local griMBStep = 0
 local uldMBStep = 0
-mushtruninGCitem = nil
-mushtruninGCseals = nil
+local mushtruninGCitem = nil
+local mushtruninGCseals = nil
 local sealstoitem = false
 mushadjustoff = false
 mushJumbocactpothelper = false
@@ -2925,13 +2805,13 @@ mushJumbocactpotrandom2 = false
 mushJumbocactpotrandom3 = false
 mushGSjcpstep = 0
 local Remateria = false
-mushTrustmode = false
+local mushTrustmode = false
 local Dawncloser = nil
 local times = os.time()
 mushlooptimer = mushlooptimer or 1000
 local GCexchangeT = false
 local sealstoitemT = false
-mushMBinterat = false
+local mushMBinterat = false
 local IDUSstep = 0
 local IDexstep = 0
 local MIPstep = 0
@@ -2994,6 +2874,7 @@ local R = AetheryteHelper.RadarColor
 local Rset = AetheryteHelper.RadarSettings
 local Rwroldname = ""
 local FCAstep = 0
+local mushPbtotal = 0
 mushAHflag = {}
 mushAHtempflags = {}
 mushAHAlltime = {}
@@ -3047,7 +2928,6 @@ function AetheryteHelper.Init()
   end
 end
 
-
 --------
 -------------------------------------------------------------------------------------------------------------------------------------------
 -- window open
@@ -3066,7 +2946,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --load fanction
 function AetheryteHelper.LoadSettings()
-if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
+ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("CharaSelect") then
   if FileExists(AetheryteHelper.settingfile) then
 	local setting = persistence.load(AetheryteHelper.settingfile)
@@ -3179,17 +3059,14 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	  table.merge(AetheryteHelper.JobIconSetting,JI)
 	end
   end
+ end
 end
-end
-
-
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 --save fanction
 AetheryteHelper.LoadSettings()
 function AetheryteHelper.SaveSettings()
-if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
+ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
 	GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("CharaSelect") then
   persistence.store(AetheryteHelper.settingfile, AetheryteHelper.settingsSET)
   persistence.store(AetheryteHelper.jobfile, AetheryteHelper.settingsJob)
@@ -3209,7 +3086,7 @@ if GetGameState() == FFXIV.GAMESTATE.INGAME and not IsControlOpen("Title") or
   persistence.store(AetheryteHelper.TMList, AetheryteHelper.TargetMeList)
   persistence.store(AetheryteHelper.CamHack, AetheryteHelper.CameraHacks)
   persistence.store(AetheryteHelper.JIset, AetheryteHelper.JobIconSetting)
-end
+ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -3320,6 +3197,9 @@ function AHfuncSwitch(kinou,bool)
 	if kinou == "TMe" and bool ~= nil then
 		 AetheryteHelper.RecordTargetMe.Enable = bool
 	end
+	if kinou == "JCA" and bool ~= nil then
+		 mushJumbocactpothelper = bool
+	end
 return tostring(kinou),bool
 end
 
@@ -3403,29 +3283,6 @@ function AHTimeSince(ms)
   return ms
 end
 
-function AH_MoActionAPI(key1,key2,action)
-  if Player:GetTarget() ~= nil then
-  mush_AH_TargetMemory = Player:GetTarget().id
-  end
-  if key2 == nil then
-    if GUI:IsKeyDown(key1) or GUI:IsKeyPressed(key1) then
-       Player:ClearTarget()
-       if Player:GetTarget() == nil then
-       SendTextCommand("/ac "..ActionList:Get(1,action).name.." <mo>")
-       Player:SetTarget(mush_AH_TargetMemory)
-       end
-    end
-  elseif key2 ~= nil then
-    if GUI:IsKeyDown(key1) and GUI:IsKeyDown(key2) or GUI:IsKeyPressed(key1) and GUI:IsKeyPressed(key2) then
-       Player:ClearTarget()
-       if Player:GetTarget() == nil then
-       SendTextCommand("/ac "..ActionList:Get(1,action).name.." <mo>")
-       Player:SetTarget(mush_AH_TargetMemory)
-       end
-    end
-  end
-  return key1,key2,action
-end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local mJTp = mushtooltips.jp
 local mETp = mushtooltips.en
@@ -3436,6 +3293,7 @@ local mKTp = mushtooltips.kr
 function AetheryteHelper.SetToolTips(tipsJ,tipsE,tipsD,tipsF,tipsC,tipsK)
 	  if AHSET.mushtooltips == true then
 	  if AuL.JP == true then
+	  	  GUI:SetTooltip(tipsJ)
 		elseif AuL.EN == true then
 			  GUI:SetTooltip(tipsE)
 		elseif AuL.DE == true then
@@ -3475,7 +3333,9 @@ function AetheryteHelper.IssueNotice(title,J,E,D,F,C,K)
 			  ffxiv_dialog_manager.IssueNotice(title,D)
 		elseif AuL.FR == true then
 			  ffxiv_dialog_manager.IssueNotice(title,F)
+	  elseif AuL.CN == true then
 			  ffxiv_dialog_manager.IssueNotice(title,C)
+		elseif AuL.KR == true then
 			  ffxiv_dialog_manager.IssueNotice(title,K)
 		elseif language == 0 and gRegion == 1 then
 			  ffxiv_dialog_manager.IssueNotice(title,J)
@@ -3495,7 +3355,7 @@ function AetheryteHelper.IssueNotice(title,J,E,D,F,C,K)
 	return title,J,E,D,F,C,K
 end
 
-function AetheryteHelper.Teleport(id,levelid)
+function AH_Teleport(id,levelid)
 	  local levelid = tonumber(levelid) or 0
 	  local alist = Player:GetAetheryteList()
 	  local ap = tonumber(ap) or 0
@@ -3683,7 +3543,7 @@ function AetheryteHelper.maininsButton()
 	  elseif isins == 3 then
 	  GUI:Text("select: 3")
 	  elseif isins == 4 then
-	  GUI:Text("no select")
+	  GUI:Text("Now ins "..Player.instancedarea)
 	  elseif isins == 0 then
 	  GUI:Text("select: Random")
 	  end
@@ -3867,7 +3727,7 @@ function AetheryteHelper.omikuji()
 		   end
 		   end
 	  end
-	  GUI:SameLine(110)
+	  GUI:SameLine(105)
 	  GUI:BeginGroup()
 	  if AHSET.minionclick >= 9999 then
 		GUI:ImageButton("###riset",ImageFolder..[[restart.png]],15,15)
@@ -4222,6 +4082,16 @@ function AetheryteHelper.DrawadWIP()
 			  AetheryteHelper.SetToolTips(mJTp.tip112,mETp.tip112,mDTp.tip112,mFTp.tip112,mCTp.tip112,mKTp.tip112)
 		end
 	  GUI:EndGroup()
+	  GUI:SameLine()
+	  GUI:BeginGroup()
+	  GUI:Image(ImageFolder..[[camhack.png]],30,30)
+	  if GUI:IsItemHovered() then
+			if GUI:IsItemClicked(0) then
+			AetheryteHelper.mush_CamHack.open = not AetheryteHelper.mush_CamHack.open
+			end
+			  AetheryteHelper.SetToolTips(mJTp.tip273,mETp.tip273,mDTp.tip273,mFTp.tip273,mCTp.tip273,mKTp.tip273)
+	  end
+	  GUI:EndGroup()
 	  --GUI:SameLine()
 	  --GUI:BeginGroup()
 	  --GUI:Image(ImageFolder..[[fc.png]],30,30)
@@ -4250,18 +4120,6 @@ end
 
 function AetheryteHelper.Drawadjank()
 	  GUI:Spacing(10)
-	  GUI:Dummy(80,30)
-	  GUI:SameLine()
-	  GUI:BeginGroup()
-	  GUI:Image(ImageFolder..[[camhack.png]],30,30)
-	  if GUI:IsItemHovered() then
-			if GUI:IsItemClicked(0) then
-			AetheryteHelper.mush_CamHack.open = not AetheryteHelper.mush_CamHack.open
-			end
-			  AetheryteHelper.SetToolTips(mJTp.tip273,mETp.tip273,mDTp.tip273,mFTp.tip273,mCTp.tip273,mKTp.tip273)
-	  end
-	  GUI:EndGroup()
-	  GUI:SameLine()
 	  GUI:BeginGroup()
 	  GUI:Image(ImageFolder..[[tube.png]],30,30)
 	  if GUI:IsItemHovered() then
@@ -4271,21 +4129,7 @@ function AetheryteHelper.Drawadjank()
 			  AetheryteHelper.SetToolTips(mJTp.tip20,mETp.tip20,mDTp.tip20,mFTp.tip20,mCTp.tip20,mKTp.tip20)
 	  end
 	  GUI:EndGroup()
-	  GUI:SameLine()
-	  GUI:BeginGroup()
-	  GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
-	  if GUI:IsItemHovered() then
-		if GUI:IsItemClicked(0)then
-		  AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
-		end
-		if GUI:IsMouseDown(0) then
-		AetheryteHelper.SetToolTips(mJTp.tip106,mETp.tip106,mDTp.tip106,mFTp.tip106,mCTp.tip106,mKTp.tip106)
-		else
-		AetheryteHelper.SetToolTips(mJTp.tip105,mETp.tip105,mDTp.tip105,mFTp.tip105,mCTp.tip105,mKTp.tip105)
-	  end
-	  end
-	  GUI:EndGroup()
-
+	  GUI:Text("old movie -- wip")
 	  GUI:Spacing()
 
 end
@@ -5077,7 +4921,31 @@ function AetheryteHelper.minimush()
    local Windows = kinokoProject.Windows.MainWindows
    if (minikinoko.Open) then
 	  GUI:SetNextWindowSize(40,40)
+	  local x, y = GUI:GetWindowPos()
+		local screenX,screenY = GUI:GetScreenSize()
+		minikinoko.x = x
+		minikinoko.y = y
+		if minikinoko.locked then
+		 local move = false
+		 if x ~= minikinoko.x then
+				move = true
+		 end
+		 if y ~= minikinoko.y then
+				move = true
+		 end
+		 if move then 
+		 GUI:SetWindowPos(minikinoko.x,minikinoko.y)
+		 end
+	  end
+		if x < 0 then GUI:SetWindowPos(0,y) end
+		if y < 0 then GUI:SetWindowPos(x,0) end
+		if x > screenX then GUI:SetWindowPos(screenX,y) end
+		if y > screenY then GUI:SetWindowPos(x,screenY) end
+		if minikinoko.locked then
+	  minikinoko.Visible, minikinoko.Open = GUI:Begin('mini', minikinoko.Open,minikinoko.Option + GUI.WindowFlags_NoMove)
+	  else
 	  minikinoko.Visible, minikinoko.Open = GUI:Begin('mini', minikinoko.Open,minikinoko.Option)
+	  end
 	  if (minikinoko.Visible) then
 	  	GUI:SameLine(5)
 	  	GUI:BeginGroup()
@@ -5087,12 +4955,123 @@ function AetheryteHelper.minimush()
 		 		if GUI:IsMouseDoubleClicked(0) then
 		 		Windows.Open = true
 		 		minikinoko.Open = false
+		 		AetheryteHelper.SaveSettings()
+		 		end
+		 		if GUI:IsItemClicked(1) then
+		 			 GUI:OpenPopup("windowlockedpopup")
 		 		end
 		 		AetheryteHelper.SetToolTips(mJTp.tip21,mETp.tip21,mDTp.tip21,mFTp.tip21,mCTp.tip21,mKTp.tip21)
+	   	end
+	   	local minipopupflag = GUI.WindowFlags_NoTitleBar + 
+	   	                      GUI.WindowFlags_NoResize + 
+	   	                      GUI.WindowFlags_NoMove + 
+	   	                      GUI.WindowFlags_NoScrollbar + 
+	   	                      GUI.WindowFlags_NoScrollWithMouse + 
+	   	                      GUI.WindowFlags_NoCollapse + 
+	   	                      GUI.WindowFlags_NoSavedSettings
+	   	local popuostr1
+	   	local popuostr2
+	   	if AuL.JP == true then
+	   		popuostr1 = "位置固定"
+	   		popuostr2 = "固定解除"
+		  elseif AuL.EN == true then
+			  popuostr1 = "Icon Lock"
+	   		popuostr2 = "Icon Unlock"
+		  elseif AuL.DE == true then
+			  popuostr1 = "Fixierung der Position"
+	   		popuostr2 = "Freischalten der Position"
+		  elseif AuL.FR == true then
+			  popuostr1 = "Fixation de la position"
+	   		popuostr2 = "Déverrouillage de la position"
+		  elseif AuL.CN == true then
+			  popuostr1 = "保持位置"
+	   		popuostr2 = "位置解锁"
+		  elseif AuL.KR == true then
+			  popuostr1 = "Icon Lock"
+	   		popuostr2 = "Icon Unlock"
+		  elseif language == 0 and gRegion == 1 then
+			  popuostr1 = "位置固定"
+	   		popuostr2 = "固定解除"
+		  elseif language == 1 and gRegion == 1 then
+			  popuostr1 = "Icon Lock"
+	   		popuostr2 = "Icon Unlock"
+		  elseif language == 2 and gRegion == 1 then
+			  popuostr1 = "Fixierung der Position"
+	   		popuostr2 = "Freischalten der Position"
+		  elseif language == 3 and gRegion == 1 then
+			  popuostr1 = "Fixation de la position"
+	   		popuostr2 = "Déverrouillage de la position"
+	    elseif gRegion == 2 then
+			  popuostr1 = "保持位置"
+	   		popuostr2 = "位置解锁"
+		  elseif gRegion == 3 then
+			  popuostr1 = "Icon Lock"
+	   		popuostr2 = "Icon Unlock"
+		  else
+			  popuostr1 = "Icon Lock"
+	   		popuostr2 = "Icon Unlock"
+		  end
+
+	   	if GUI:BeginPopup("windowlockedpopup",minipopupflag) then
+	   		 GUI:Text("open window")
+	   		 GUI:Separator()
+	   		 GUI:Image(ImageFolder..[[Radar.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("AH Radar"),false) then
+	   		 	  AetheryteHelper.RadarWindow.open = true
+	   		 end
+	   		 GUI:Image(ImageFolder..[[TMe_Rec.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("TargetMe History"),false) then
+	   		 	  AetheryteHelper.TargetMeWindow.open = true
+	   		 end
+	   		 GUI:Image(ImageFolder..[[flag.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("Flags Recorder"),false) then
+	   		 	  AetheryteHelper.flagsrecord.open = true
+	   		 end
+	   		 GUI:Image(ImageFolder..[[yoro.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("Duty Chat Support"),false) then
+	   		 	  AetheryteHelper.yoro_otu.open = true
+	   		 end
+	   		 GUI:Image(ImageFolder..[[mip.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("Auto Commendation"),false) then
+	   		 	  AetheryteHelper.mip.open = true
+	   		 end
+	   		 GUI:Image(ImageFolder..[[camhack.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("Camera Hacks"),false) then
+	   		 	  AetheryteHelper.mush_CamHack.open = true
+	   		 end
+	   		 GUI:Image(ImageFolder..[[jumbo.png]],10,10)
+	   		 GUI:SameLine()
+	   		 if GUI:Selectable(GetString("Jumbo cactpot assist"),false) then
+	   		 	  AetheryteHelper.Jumbocactpot.open = true
+	   		 end
+	   		 GUI:Separator()
+	   		 if minikinoko.locked then
+	   		 GUI:Image(ImageFolder..[[lock_on.png]],10,10)
+	   		 GUI:SameLine()
+	   	      if GUI:Selectable(GetString(popuostr2),false) then
+	   	   	  minikinoko.locked = false
+	   	      AetheryteHelper.SaveSettings()
+	   	      end
+	   	   elseif not minikinoko.locked then
+	   	   	GUI:Image(ImageFolder..[[lock_off.png]],10,10)
+	   		  GUI:SameLine()
+	   	   	  if GUI:Selectable(GetString(popuostr1),false) then
+	   	   	  minikinoko.locked = true
+	   	      AetheryteHelper.SaveSettings()
+	   	      end
+	   	   end
+	   	GUI:EndPopup()
 	   	end
 	  end
 	  GUI:End()
    end
+
 end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 local FCAG1select = true
@@ -5101,7 +5080,7 @@ local FCAG3select = false
 local tempFCA = {}
 function AetheryteHelper.FCAwindow()
    if (AetheryteHelper.FCactionWindow.open) then
-   local FCAflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+   local FCAflags = GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
 	 GUI:SetNextWindowSize(280,180)
 	  AetheryteHelper.FCactionWindow.visible, AetheryteHelper.FCactionWindow.open = GUI:Begin('FC Action Selector', AetheryteHelper.FCactionWindow.open,FCAflags)
 	  if (AetheryteHelper.FCactionWindow.visible) then
@@ -5709,26 +5688,6 @@ function AetheryteHelper.FCAwindow()
    end
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.TCListHeader()
 	  GUI:BeginGroup()
@@ -5765,23 +5724,6 @@ function AetheryteHelper.TCListHeader()
 	  servertime = servertime - temp
 	  end
 	  GUI:Text("ServerTime:"..string.format("%02d",hour)..":"..string.format("%02d",min)..":"..string.format("%02d",sec))
-	  GUI:EndGroup()
-	  GUI:SameLine()
-	  GUI:Dummy(20,20)
-	  GUI:SameLine()
-	  GUI:BeginGroup()
-	  GUI:Button("QoLBar",60,20)
-	  if GUI:IsItemHovered() then
-		if GUI:IsItemClicked(0) then
-		  GUI:SetClipboardText("H4sIAAAAAAAACqWTXWuDMBSG/0o42aW4xGprc1fL2lImg660F6MXQYML+FHUFkbpf9/J2DoFN8ZyIXoek+cc8c0F7tq3owIBChxoPBCXG8HKgRIfhODco3S2wroFwXHhI4iXwZVj5gcjSnXZIEoQ3SsyWxVVqgjnPjL9hFuZyxy8DlhuQJgKkucjvggd/3B1fjPvd13xfkcKXWo7bzCeUBpHXW8ckVwXjbQVhwPirNapLLW1ezrgPuWpfLUSB4z5lC7nXfFyTorqrCy9E05ptO56ozUpT4WN1g89kwmlHmRXTL6ITdpM5nWrCtJUdduzG/oJ/90ATwNjOLuJb1X29DdkMf3HXzSijUxl3TuLHWjRYMoDSreyzlQbm2R8j7+N1UYltunGsCxymTUEXVWdqt43kEX+5xYG/7RqD2Jk7nMQQX8uOGMvzx25zPXg+g4I/Z4+JwUAAA==")
-		  if language == 0 then
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]コピーしました \x02\x13\x02\xec\x03")
-		  else
-		  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Code was copied in clip board \x02\x13\x02\xec\x03")
-		  end
-		end
-			  AetheryteHelper.SetToolTips(mJTp.tip121,mETp.tip121,mDTp.tip121,mFTp.tip121,mCTp.tip121,mKTp.tip121)
-	  end
 	  GUI:EndGroup()
 	  GUI:Spacing()
 	  GUI:Separator()
@@ -6121,7 +6063,7 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.SubWindow()
   if (AetheryteHelper.miniGUI.open) then
-	local miniGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+	local miniGUIflags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
 	GUI:SetNextWindowSize(260,140)
 	 AetheryteHelper.miniGUI.visible, AetheryteHelper.miniGUI.open = GUI:Begin('miniinfo', AetheryteHelper.miniGUI.open,miniGUIflags)
 	if (AetheryteHelper.miniGUI.visible) then
@@ -6140,9 +6082,9 @@ function AetheryteHelper.SubWindow()
 			  AetheryteHelper.SetToolTips(mJTp.tip22,mETp.tip22,mDTp.tip22,mFTp.tip22,mCTp.tip22,mKTp.tip22)
 	  end
 	  GUI:Separator()
-	  --GUI:BeginGroup()
-	  --GUI:TextColored(1,0,0,1,"Probably (350) is limit")
-	  --GUI:EndGroup()
+	  GUI:BeginGroup()
+	  GUI:TextColored(1,0,0,1,"now ins "..Player.instancedarea)
+	  GUI:EndGroup()
 
 	  GUI:Spacing()
 	  if mushins == nil or selectins == false then
@@ -6222,7 +6164,7 @@ end
 
 function AetheryteHelper.CBcodeEditWindows()
   if (AetheryteHelper.CBcodeEditor.open) then
-	local CBEflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoFocusOnAppearing
+	local CBEflags =  GUI.WindowFlags_ShowBorders + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoScrollbar
 	GUI:SetNextWindowSize(200,200,GUI.SetCond_FirstUseEver)
 	if (AetheryteHelper.CreateButton.visible) then
 	GUI:SetNextWindowPos(CBwindowx+CBwindoww,CBwindowy+20)
@@ -6907,19 +6849,17 @@ end
 
 function AetheryteHelper.VlWindow()
   if (AetheryteHelper.VersionList.open) then
-	local Vlflags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
-	GUI:SetNextWindowSize(450,140)
+	local Vlflags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_AlwaysAutoResize
+	GUI:SetNextWindowSize(500,230)
 	 AetheryteHelper.VersionList.visible, AetheryteHelper.VersionList.open = GUI:Begin('AH VersionList', AetheryteHelper.VersionList.open,Vlflags)
 	if (AetheryteHelper.VersionList.visible) then
 	  GUI:Spacing()
 	  GUI:BeginGroup()
-	  GUI:TextColored(0,1,0,1,"AH History")
+	  GUI:TextColored(0,1,0,1,"to you who are reading this")
 	  GUI:EndGroup()
 	  GUI:Separator()
 	  GUI:BeginGroup()
-	  for id, e in pairs(kinokoProject.Addon.VersionList) do
-	  GUI:Text(e)
-	  end
+	  GUI:Text("who advised me and consulted with me in the creation of this addon\nMadao#2970\ndenvo#5217\n\nsome functions were created by kali#3326\n\nChinese translation was done by 长院张#1544\nDeutsch translation was done by Thisnoob#2897\n\nI am so grateful to them!\nand now for you, who are using this addon\nthank you usasing it")
 	  GUI:EndGroup()
 	  GUI:Separator()
 	  GUI:BeginGroup()
@@ -6938,7 +6878,7 @@ end
 
 function AetheryteHelper.CamHackwindow()
   if (AetheryteHelper.mush_CamHack.open) then
-	mushAH_camhack = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+	mushAH_camhack = GUI.WindowFlags_AlwaysAutoResize
 	GUI:SetNextWindowSize(200,160)
 	 AetheryteHelper.mush_CamHack.visible, AetheryteHelper.mush_CamHack.open = GUI:Begin('Camera Hacks', AetheryteHelper.mush_CamHack.open,mushAH_camhack)
 	if (AetheryteHelper.mush_CamHack.visible) then
@@ -6989,7 +6929,7 @@ end
 function AetheryteHelper.FLGsWindow()
   if (AetheryteHelper.flagsrecord.open) then
   --if IsControlOpen("TreasureMap") then AetheryteHelper.flagsrecord.open = false end
-	local FLGsf = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize
+	local FLGsf = GUI.WindowFlags_AlwaysAutoResize
 	GUI:SetNextWindowSize(280,500)
 	 AetheryteHelper.flagsrecord.visible, AetheryteHelper.flagsrecord.open = GUI:Begin('AH Flags Recorder', AetheryteHelper.flagsrecord.open,FLGsf)
 	if (AetheryteHelper.flagsrecord.visible) then
@@ -7179,22 +7119,22 @@ end
 
 
 function AetheryteHelper.flagsinitialize()
-mushAHflag = {}
-mushAHtempflags = {}
-mushAHAlltime = {}
-mushAHflagsnote = ""
-mushAHyear = ""
-mushAHmonth = ""
-mushAHday = ""
-mushAHhour = ""
-mushAHmin = ""
-mushAHsec = ""
-mushAHmid = ""
-mushAHlmid = ""
-mushAHx = ""
-mushAHz = ""
-mushAHflagsnote = ""
-Player:ClearTarget()
+ mushAHflag = {}
+ mushAHtempflags = {}
+ mushAHAlltime = {}
+ mushAHflagsnote = ""
+ mushAHyear = ""
+ mushAHmonth = ""
+ mushAHday = ""
+ mushAHhour = ""
+ mushAHmin = ""
+ mushAHsec = ""
+ mushAHmid = ""
+ mushAHlmid = ""
+ mushAHx = ""
+ mushAHz = ""
+ mushAHflagsnote = ""
+ Player:ClearTarget()
 end
 
 
@@ -7261,6 +7201,8 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+------------------------------------------------------------------------------------------------------------------------------------------------
 local NewVtext,tagtext,NowVtext,ziptext
 local mushVC = false
 local mushVUP = false
@@ -7357,17 +7299,12 @@ function AetheryteHelper.UpdateWindow()
   end
   GUI:End()
   end
-
 end
-
-
-
-
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.insSelecterWindow()
   if (AetheryteHelper.insSelectGUI.open) then
-	local insSelectGUIflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+	local insSelectGUIflags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
 	GUI:SetNextWindowSize(180,60)
 	 AetheryteHelper.insSelectGUI.visible, AetheryteHelper.insSelectGUI.open = GUI:Begin('insselecter', AetheryteHelper.insSelectGUI.open,insSelectGUIflags)
 	if (AetheryteHelper.insSelectGUI.visible) then
@@ -7769,11 +7706,8 @@ function AetheryteHelper.jumboWindow()
     end
 	  GUI:SameLine()
 	  GUI:BeginGroup()
-	  GUI:TextColored(1,0,0,1,"[[Warning]]")
+	  GUI:TextColored(1,0,0,1,"[[Home World only]]")
 	  GUI:EndGroup()
-	  if GUI:IsItemHovered() then
-		 	  AetheryteHelper.SetToolTips(mJTp.tip24,mETp.tip24,mDTp.tip24,mFTp.tip24,mCTp.tip24,mKTp.tip24)
-		end
 	end
 	GUI:End()
   end
@@ -9454,7 +9388,6 @@ function AetheryteHelper.PvPAssistWindow()
 			  AetheryteHelper.SetToolTips(mJTp.tip276,mETp.tip276,mDTp.tip276,mFTp.tip276,mCTp.tip276,mKTp.tip276)
   end
 	GUI:EndGroup()
-
 end
 
 
@@ -9480,7 +9413,7 @@ mushAH_pvp_GandMPDrow = {
 }
 
 function AetheryteHelper.PVPGandMPDrow()
- PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
+ local PvPflags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
    if Rset.RadarEnable == true and AetheryteHelper.PvPAssist.GUARD == true and mushAH_PVP_drow_self == true and MIsLoading() == false then
       local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
       local screenppos = RenderManager:WorldToScreen(ppos)
@@ -9550,7 +9483,7 @@ function AetheryteHelper.PVPGandMPDrow()
        mushAH_pvp_GandMPDrow.visible03 = false
        mushAH_pvp_GandMPDrow.visible04 = false
        mushAH_pvp_GandMPDrow.visible05 = false
-       elseif Player.localmapid ~= 1032 or Player.localmapid ~= 1033 or Player.localmapid ~= 1034 then
+       elseif Player.localmapid ~= 1032 or Player.localmapid ~= 1033 or Player.localmapid ~= 1034 or Player.localmapid ~= 1058 or Player.localmapid ~= 1059 or Player.localmapid ~= 1060 then
 	     mushAH_pvp_GandMP = {}	
 	     mushAH_pvp_GandMPDrow.visible01 = false
        mushAH_pvp_GandMPDrow.visible02 = false
@@ -9657,7 +9590,7 @@ function AetheryteHelper.PVPGandMPDrow()
 	    end
 
 	    if not IsControlOpen("HudLayout") and MIsLoading() == false and mushAH_screentpos1 ~= nil then
-	    	if Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 then
+	    	if Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 or Player.localmapid == 1058 or Player.localmapid == 1059 or Player.localmapid == 1060 then
 	    	if Player.onlinestatus ~= 15 then
 	    	if #mushAH_pvp_GandMP > 0 and mushAH_screentpos1 ~= nil then
         GUI:PushStyleColor(GUI.Col_WindowBg, 0, 0, 0, 0)
@@ -10376,111 +10309,104 @@ end
 --------------------------------------------------------------------------------------------------------------------
 mushAH_JobIcontype01 = true
 mushAH_JobIcontype02 = false
-AH_virtualKey = 0
-AH_virtualKeyname = ""
 function AetheryteHelper.JobIconDraw()
-GUI:Spacing()
-GUI:BeginGroup()
-GUI:TextColored(1,0,0,1,"[[Warning]]")
-GUI:EndGroup()
-if GUI:IsItemHovered() then
-	AetheryteHelper.SetToolTips(mJTp.tip279,mETp.tip279,mDTp.tip279,mFTp.tip279,mCTp.tip279,mKTp.tip279)
-end
-GUI:Spacing()
-GUI:BeginGroup()
-GUI:Checkbox("Drow JobIcon",AetheryteHelper.JobIconSetting.Enable)
-GUI:EndGroup()
-if GUI:IsItemHovered() then
-	if GUI:IsItemClicked(0) then
-	AetheryteHelper.JobIconSetting.Enable = not AetheryteHelper.JobIconSetting.Enable
-	AetheryteHelper.SaveSettings()
+	GUI:Spacing()
+	GUI:BeginGroup()
+	GUI:TextColored(1,0,0,1,"[[Warning]]")
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		AetheryteHelper.SetToolTips(mJTp.tip279,mETp.tip279,mDTp.tip279,mFTp.tip279,mCTp.tip279,mKTp.tip279)
 	end
-	AetheryteHelper.SetToolTips(mJTp.tip280,mETp.tip280,mDTp.tip280,mFTp.tip280,mCTp.tip280,mKTp.tip280)
-end
-GUI:SameLine()
-GUI:BeginGroup()
-GUI:RadioButton("Type1",mushAH_JobIcontype01)
-if GUI:IsItemHovered() then
-	if GUI:IsItemClicked(0) then
-	mushAH_JobIcontype01 = true
-	mushAH_JobIcontype02 = false
-	AetheryteHelper.JobIconSetting.icontype = 1
+	GUI:Spacing()
+	GUI:BeginGroup()
+	GUI:Checkbox("Drow JobIcon",AetheryteHelper.JobIconSetting.Enable)
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		AetheryteHelper.JobIconSetting.Enable = not AetheryteHelper.JobIconSetting.Enable
+		AetheryteHelper.SaveSettings()
+		end
+		AetheryteHelper.SetToolTips(mJTp.tip280,mETp.tip280,mDTp.tip280,mFTp.tip280,mCTp.tip280,mKTp.tip280)
 	end
-end
-GUI:EndGroup()
-GUI:SameLine()
-GUI:BeginGroup()
-GUI:RadioButton("Type2",mushAH_JobIcontype02)
-if GUI:IsItemHovered() then
-	if GUI:IsItemClicked(0) then
-	mushAH_JobIcontype01 = false
-	mushAH_JobIcontype02 = true
-	AetheryteHelper.JobIconSetting.icontype = 2
+	GUI:SameLine()
+	GUI:BeginGroup()
+	GUI:RadioButton("Type1",mushAH_JobIcontype01)
+	if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		mushAH_JobIcontype01 = true
+		mushAH_JobIcontype02 = false
+		AetheryteHelper.JobIconSetting.icontype = 1
+		end
 	end
-end
-GUI:EndGroup()
-GUI:Dummy(10,10)
-GUI:SameLine()
-GUI:BeginGroup()
-GUI:Checkbox("Self",AetheryteHelper.JobIconSetting.me)
-GUI:EndGroup()
-if GUI:IsItemHovered() then
-	if GUI:IsItemClicked(0) then
-	AetheryteHelper.JobIconSetting.me = not AetheryteHelper.JobIconSetting.me
-	AetheryteHelper.SaveSettings()
+	GUI:EndGroup()
+	GUI:SameLine()
+	GUI:BeginGroup()
+	GUI:RadioButton("Type2",mushAH_JobIcontype02)
+	if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		mushAH_JobIcontype01 = false
+		mushAH_JobIcontype02 = true
+		AetheryteHelper.JobIconSetting.icontype = 2
+		end
 	end
-	AetheryteHelper.SetToolTips(mJTp.tip281,mETp.tip281,mDTp.tip281,mFTp.tip281,mCTp.tip281,mKTp.tip281)
-end
-GUI:Dummy(10,10)
-GUI:SameLine()
-GUI:BeginGroup()
-GUI:Checkbox("Party Only",AetheryteHelper.JobIconSetting.myparty)
-GUI:EndGroup()
-if GUI:IsItemHovered() then
-	if GUI:IsItemClicked(0) then
-	AetheryteHelper.JobIconSetting.myparty = not AetheryteHelper.JobIconSetting.myparty
-	AetheryteHelper.SaveSettings()
+	GUI:EndGroup()
+	GUI:Dummy(10,10)
+	GUI:SameLine()
+	GUI:BeginGroup()
+	GUI:Checkbox("Self",AetheryteHelper.JobIconSetting.me)
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		AetheryteHelper.JobIconSetting.me = not AetheryteHelper.JobIconSetting.me
+		AetheryteHelper.SaveSettings()
+		end
+		AetheryteHelper.SetToolTips(mJTp.tip281,mETp.tip281,mDTp.tip281,mFTp.tip281,mCTp.tip281,mKTp.tip281)
 	end
-	AetheryteHelper.SetToolTips(mJTp.tip282,mETp.tip282,mDTp.tip282,mFTp.tip282,mCTp.tip282,mKTp.tip282)
-end
-GUI:BeginGroup()
-GUI:PushItemWidth(150)
-AetheryteHelper.JobIconSetting.Size, changed = GUI:InputFloat("Icon size",AetheryteHelper.JobIconSetting.Size,0.1,1,1)
-	   if changed then
-	   AetheryteHelper.SaveSettings()	
-	   end
-	   if AetheryteHelper.JobIconSetting.Size < 10 then AetheryteHelper.JobIconSetting.Size = 10 end
-	   if AetheryteHelper.JobIconSetting.Size > 40 then AetheryteHelper.JobIconSetting.Size = 40 end
-GUI:PopItemWidth()
-GUI:EndGroup()
-if GUI:IsItemHovered() then
-	AetheryteHelper.SetToolTips(mJTp.tip283,mETp.tip283,mDTp.tip283,mFTp.tip283,mCTp.tip283,mKTp.tip283)
-end
-GUI:BeginGroup()
-GUI:PushItemWidth(150)
-AetheryteHelper.JobIconSetting.pos, changed = GUI:InputFloat("Position",AetheryteHelper.JobIconSetting.pos,0.1,1,1)
+	GUI:Dummy(10,10)
+	GUI:SameLine()
+	GUI:BeginGroup()
+	GUI:Checkbox("Party Only",AetheryteHelper.JobIconSetting.myparty)
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		if GUI:IsItemClicked(0) then
+		AetheryteHelper.JobIconSetting.myparty = not AetheryteHelper.JobIconSetting.myparty
+		AetheryteHelper.SaveSettings()
+		end
+		AetheryteHelper.SetToolTips(mJTp.tip282,mETp.tip282,mDTp.tip282,mFTp.tip282,mCTp.tip282,mKTp.tip282)
+	end
+	GUI:BeginGroup()
+	GUI:PushItemWidth(150)
+	AetheryteHelper.JobIconSetting.Size, changed = GUI:InputFloat("Icon size",AetheryteHelper.JobIconSetting.Size,0.1,1,1)
+		   if changed then
+		   AetheryteHelper.SaveSettings()	
+		   end
+		   if AetheryteHelper.JobIconSetting.Size < 10 then AetheryteHelper.JobIconSetting.Size = 10 end
+		   if AetheryteHelper.JobIconSetting.Size > 40 then AetheryteHelper.JobIconSetting.Size = 40 end
+	GUI:PopItemWidth()
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		AetheryteHelper.SetToolTips(mJTp.tip283,mETp.tip283,mDTp.tip283,mFTp.tip283,mCTp.tip283,mKTp.tip283)
+	end
+	GUI:BeginGroup()
+	GUI:PushItemWidth(150)
+	AetheryteHelper.JobIconSetting.pos, changed = GUI:InputFloat("Position",AetheryteHelper.JobIconSetting.pos,0.1,1,1)
 	   if changed then
 	   AetheryteHelper.SaveSettings()	
 	   end
 	   if AetheryteHelper.JobIconSetting.pos < 0 then AetheryteHelper.JobIconSetting.pos = 0 end
 	   if AetheryteHelper.JobIconSetting.pos > 200 then AetheryteHelper.JobIconSetting.pos = 200 end
-GUI:PopItemWidth()
-GUI:EndGroup()
-if GUI:IsItemHovered() then
-	AetheryteHelper.SetToolTips(mJTp.tip284,mETp.tip284,mDTp.tip284,mFTp.tip284,mCTp.tip284,mKTp.tip284)
-end
---GUI:BeginGroup()
---AH_virtualKey,AH_virtualKeyname,changed = GUI:Keybind("key",AH_virtualKey,50)
---if changed then
---d(AH_virtualKey)
---end
---GUI:EndGroup()
+	GUI:PopItemWidth()
+	GUI:EndGroup()
+	if GUI:IsItemHovered() then
+		AetheryteHelper.SetToolTips(mJTp.tip284,mETp.tip284,mDTp.tip284,mFTp.tip284,mCTp.tip284,mKTp.tip284)
+	end
+
 end
 
 --------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.miniRadar()
   if (AetheryteHelper.miniRadarWindow.open) then
-	local Rflags =  GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+	local Rflags =  GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
 	GUI:SetNextWindowSize(120,40)
 	 AetheryteHelper.miniRadarWindow.visible, AetheryteHelper.miniRadarWindow.open = GUI:Begin('AHminiRadar', AetheryteHelper.miniRadarWindow.open,Rflags)
 	if (AetheryteHelper.miniRadarWindow.visible) then
@@ -11258,10 +11184,10 @@ function AetheryteHelper.Radar()
 end
 
 
-mushAH_TMEREC_temp = {}
+local mushAH_TMEREC_temp = {}
 function AetheryteHelper.TargetMeWin()
   if (AetheryteHelper.TargetMeWindow.open) then
-	local TMeflags = GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+	local TMeflags = GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
 	GUI:SetNextWindowSize(250,400)
 	 AetheryteHelper.TargetMeWindow.visible, AetheryteHelper.TargetMeWindow.open = GUI:Begin('AH TargetMe History', AetheryteHelper.TargetMeWindow.open,TMeflags)
 	 if (AetheryteHelper.TargetMeWindow.visible) then
@@ -11484,7 +11410,7 @@ function AetheryteHelper.TargetMeWin()
           mushAH_TMEREC_Link = "fr"
           end
           mushAH_TMEREC_APIname = v[1]:gsub("'","%%27")
-	   	 io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_TMEREC_APIname)..[[&server=]]..mushAH_TMEREC_wroldname..[[' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_TMEREC_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
+	   	 io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_TMEREC_APIname)..[[&server=]]..mushAH_TMEREC_wroldname..[[&private_key=465892ca7c16424f8156fb3ccfe19525a9ce43abd165419289e8ac6a8181a083' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_TMEREC_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
 	   	 end
 	   	 AetheryteHelper.SetToolTips(mJTp.tip268,mETp.tip268,mDTp.tip268,mFTp.tip268,mCTp.tip268,mKTp.tip268)
 	   end
@@ -11543,7 +11469,7 @@ function AetheryteHelper.MyTargetPlayerInfo()
     GUI:ImageButton("###MyTargetInfo",ImageFolder..[[lodestone_link.png]], 20,20)
     if GUI:IsItemHovered() then
   	  if GUI:IsItemClicked(0) then
-  	  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_MyTargetName)..[[&server=]]..mushAH_MyTargetWorld..[[' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_MyTargetInfo_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
+  	  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_MyTargetName)..[[&server=]]..mushAH_MyTargetWorld..[[&private_key=465892ca7c16424f8156fb3ccfe19525a9ce43abd165419289e8ac6a8181a083' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_MyTargetInfo_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
       end
       AetheryteHelper.SetToolTips(mJTp.tip268,mETp.tip268,mDTp.tip268,mFTp.tip268,mCTp.tip268,mKTp.tip268)
     end
@@ -11721,10 +11647,10 @@ function AetheryteHelper.targetingmeRectempReset()
 end
 
 ---------------------------------------------------------------
-function AHRadarline(str,Colour,thick)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
-local el = MEntityList(str)
+local function AHRadarline(str,Colour,thick)
+    local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+    local screenppos = RenderManager:WorldToScreen(ppos)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -11767,10 +11693,10 @@ local el = MEntityList(str)
 return str,Colour,thick
 end
 
-function AHRadarEXline(str,Colour,thick)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
-local el = MEntityList(str)
+local function AHRadarEXline(str,Colour,thick)
+    local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+    local screenppos = RenderManager:WorldToScreen(ppos)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -11814,10 +11740,10 @@ return str,Colour,thick
 end
 ----------------------------------------------------------------------------------------------------------
 
-function AHRadarlineNPC(str,Colour,thick)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
-local el = MEntityList(str)
+local function AHRadarlineNPC(str,Colour,thick)
+    local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+    local screenppos = RenderManager:WorldToScreen(ppos)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -11862,10 +11788,10 @@ end
 
 --------------------------------------------------------------------------------------------------------------
 
-function AHRadarRecetveline(str,Colour,thick)
-local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
-local screenppos = RenderManager:WorldToScreen(ppos)
-local el = MEntityList(str)
+local function AHRadarRecetveline(str,Colour,thick)
+    local ppos = {x = math.round(Player.pos.x,2), y = math.round(Player.pos.y,2), z = math.round(Player.pos.z,2)}
+    local screenppos = RenderManager:WorldToScreen(ppos)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local targetname = ""
@@ -11917,8 +11843,8 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-function AHRadardot(str,Colour,size)
-local el = MEntityList(str)
+local function AHRadardot(str,Colour,size)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -11961,8 +11887,8 @@ local el = MEntityList(str)
 return str,Colour,size
 end
 
-function AHRadarEXdot(str,Colour,size)
-local el = MEntityList(str)
+local function AHRadarEXdot(str,Colour,size)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -12006,8 +11932,8 @@ return str,Colour,size
 end
 ------------------------------------------------------------------------------------------
 
-function AHRadardotNPC(str,Colour,size)
-local el = MEntityList(str)
+local function AHRadardotNPC(str,Colour,size)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -12051,8 +11977,8 @@ return str,Colour,size
 end
 
 
-function AHRadarJobIconDrow(str,size,pos)
-local el = MEntityList(str)
+local function AHRadarJobIconDrow(str,size,pos)
+    local el = MEntityList(str)
 	  if table.valid(el) then
 	  for _,e in pairs(el) do
 	  local tpos = {x = math.round(e.pos.x,2), y = math.round(e.pos.y,2), z = math.round(e.pos.z,2)}
@@ -12060,7 +11986,7 @@ local el = MEntityList(str)
 	  local screentpos = RenderManager:WorldToScreen(tpos)
 	  if not IsControlOpen("HudLayout") and MIsLoading() == false and screentpos ~= nil and e.targetable == true then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
-				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) and Duty:GetQueueStatus() < 4 then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if e.job == v.id then
 				    	 if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12072,7 +11998,7 @@ local el = MEntityList(str)
 				    end
 				  end
 			   elseif Rset.gposeoff == true and Rset.cutoff == true then
-				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if e.job == v.id then
 				       if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12096,7 +12022,7 @@ local el = MEntityList(str)
 				    end
 				  end
 			   elseif Rset.cutoff == true and Rset.indutyoff == true then
-				  if Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				  if Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) and Duty:GetQueueStatus() < 4 then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if e.job == v.id then
 				       if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12120,7 +12046,7 @@ local el = MEntityList(str)
 				    end
 				  end
 			   elseif Rset.cutoff == true then
-				  if Player.onlinestatus ~= 15 then
+				  if Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if e.job == v.id then
 				       if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12165,7 +12091,7 @@ end
 function AetheryteHelper.DrawlineandDot(event, ticks)
 
   local maxWidth, maxHeight = GUI:GetScreenSize()
-  flags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
+  local flags = (GUI.WindowFlags_NoInputs + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_NoResize + GUI.WindowFlags_NoScrollbar + GUI.WindowFlags_NoCollapse)
   if MIsLoading() == false then
   GUI:SetNextWindowPos(0, 0, GUI.SetCond_Always)
   GUI:SetNextWindowSize(maxWidth,maxHeight,GUI.SetCond_Always)
@@ -12635,7 +12561,8 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   end
 
   if Rset.RadarEnable == true and AetheryteHelper.JobIconSetting.Enable == true and AetheryteHelper.JobIconSetting.myparty == false then
-  AHRadarJobIconDrow("type=1,maxdistance=50",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
+  AHRadarJobIconDrow("type=1,maxdistance=50,targetable",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
+  AHRadarJobIconDrow("type=2,maxdistance=50,ownerid=0,chartype=9",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
   elseif Rset.RadarEnable == true and AetheryteHelper.JobIconSetting.Enable == true and AetheryteHelper.JobIconSetting.myparty == true then
   AHRadarJobIconDrow("type=1,maxdistance=50,myparty",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
   AHRadarJobIconDrow("type=2,maxdistance=50,ownerid=0,chartype=9",AetheryteHelper.JobIconSetting.Size,AetheryteHelper.JobIconSetting.pos)
@@ -12643,7 +12570,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
   if Rset.RadarEnable == true and AetheryteHelper.JobIconSetting.Enable == true and AetheryteHelper.JobIconSetting.me == true then
     if not IsControlOpen("HudLayout") and MIsLoading() == false and screenppos ~= nil then
 			   if Rset.indutyoff == true and Rset.gposeoff == true and Rset.cutoff == true then
-				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) and Duty:GetQueueStatus() < 4 then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if Player.job == v.id then
 				    	 if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12655,7 +12582,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 				    end
 				  end
 			   elseif Rset.gposeoff == true and Rset.cutoff == true then
-				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 then
+				  if Player.onlinestatus ~= 18 and Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if Player.job == v.id then
 				       if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12679,7 +12606,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 				    end
 				  end
 			   elseif Rset.cutoff == true and Rset.indutyoff == true then
-				  if Player.onlinestatus ~= 15 and Duty:GetQueueStatus() < 4 then
+				  if Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) and Duty:GetQueueStatus() < 4 then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if Player.job == v.id then
 				       if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12703,7 +12630,7 @@ function AetheryteHelper.DrawlineandDot(event, ticks)
 				    end
 				  end
 			   elseif Rset.cutoff == true then
-				  if Player.onlinestatus ~= 15 then
+				  if Player.onlinestatus ~= 15 and MissingBuff(Player.id,1619) then
 				    for k,v in pairs(mushAH_JobidList) do
 				    if Player.job == v.id then
 				       if AetheryteHelper.JobIconSetting.icontype == 1 then
@@ -12748,7 +12675,7 @@ end
 --------------------------------------------------------------------------------------------------------------------
 mushAH_selectSE = 1
 function AetheryteHelper.Radarlist()
-if #AetheryteHelper.RadarCustomList ~= 0 then
+ if #AetheryteHelper.RadarCustomList ~= 0 then
   for k,v in pairs(AetheryteHelper.RadarCustomList) do
    GUI:Columns(3) GUI:SetColumnOffset(1, 50) GUI:SetColumnOffset(2, 350)
    if v[5] == 1 and v[17] == 0 then
@@ -13189,11 +13116,11 @@ if #AetheryteHelper.RadarCustomList ~= 0 then
    GUI:Columns()
    GUI:Separator()
    end
-else
-GUI:BeginGroup()
-GUI:Text("CustomList Empty")
-GUI:EndGroup()
-end
+ else
+ GUI:BeginGroup()
+ GUI:Text("CustomList Empty")
+ GUI:EndGroup()
+ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 local clx
@@ -13421,7 +13348,6 @@ end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 function AetheryteHelper.subtoolDesOPwindow()
   if (AetheryteHelper.subtoolDesOP.open) then
@@ -14465,7 +14391,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 	  GUI:Dummy(20,20)
 	  if AHeqjob.MCN == true then
 		  GUI:SameLine(5,-20)
-		  GUI:Image(ImageFolder..[[fil_jMCN.png]],20,20)
+		  GUI:Image(ImageFolder..[[fil_jMCH.png]],20,20)
 		  if GUI:IsItemHovered() then
 		  if GUI:IsItemClicked(0) then
 			  AHeqjob.MCN = not AHeqjob.MCN
@@ -14475,7 +14401,7 @@ function AetheryteHelper.subtoolDesOPwindow()
 		  end
 	  elseif AHeqjob.MCN == false then
 		  GUI:SameLine(5,-20)
-		  GUI:Image(ImageFolder..[[fil_jMCN_non.png]],20,20)
+		  GUI:Image(ImageFolder..[[fil_jMCH_non.png]],20,20)
 		  if GUI:IsItemHovered() then
 		  if GUI:IsItemClicked(0) then
 			  AHeqjob.MCN = not AHeqjob.MCN
@@ -14752,14 +14678,19 @@ end
 --materia UI(tab2) GUI
 function AetheryteHelper.Inventoryfree()
 	  local bags1 = {0} for _, e in pairs(bags1) do local bag1 = Inventory:Get(e)
-	  Pbfree1 = tonumber(bag1.free) end
+	  mush_Pbfree1 = tonumber(bag1.free) end
 	  local bags2 = {1} for _, e in pairs(bags2) do local bag2 = Inventory:Get(e)
-	  Pbfree2 = tonumber(bag2.free) end
+	  mush_Pbfree2 = tonumber(bag2.free) end
 	  local bags3 = {2} for _, e in pairs(bags3) do local bag3 = Inventory:Get(e)
-	  Pbfree3 = tonumber(bag3.free) end
+	  mush_Pbfree3 = tonumber(bag3.free) end
 	  local bags4 = {3} for _, e in pairs(bags4) do local bag4 = Inventory:Get(e)
-	  Pbfree4 = tonumber(bag4.free) end
-	  mushPbtotal = (Pbfree1 + Pbfree2 + Pbfree3 + Pbfree4)
+	  mush_Pbfree4 = tonumber(bag4.free) end
+	  mushPbtotal = (mush_Pbfree1 + mush_Pbfree2 + mush_Pbfree3 + mush_Pbfree4)
+    if mushPbtotal == 0 then
+    	return false
+      else
+      return true
+    end
 end
 
 function AetheryteHelper.AutoLegacy()
@@ -14986,7 +14917,7 @@ function AetheryteHelper.subtoolmateria()
 	  end
 	  GUI:BeginGroup()
 	  GUI:Spacing()
-	  if (mushPbtotal < 2) then AHSET.isMateriaEnabled = false GUI:TextColored(1,0,0,1,"inventory full!") end
+	  if (mushPbtotal < 2) then GUI:TextColored(1,0,0,1,"inventory full!") end
 	  GUI:EndGroup()
 end
 
@@ -15102,16 +15033,9 @@ function AetheryteHelper.subtoolDesynth()
 			  AetheryteHelper.SetToolTips(mJTp.tip101,mETp.tip101,mDTp.tip101,mFTp.tip101,mCTp.tip101,mKTp.tip101)
 	  end
 
-
-	  if AHSET.CrafterMode == true then
-		if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
-		Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
-		 AHSET.isSalvageEnabled = false
-		end
-	  end
 	  GUI:BeginGroup()
 	  GUI:Spacing()
-	  if (mushPbtotal < 2) then AHSET.isSalvageEnabled = false GUI:TextColored(1,0,0,1,"inventory full!") end
+	  if (mushPbtotal < 2) then GUI:TextColored(1,0,0,1,"inventory full!") end
 	  GUI:EndGroup()
 end
 
@@ -15190,7 +15114,7 @@ function AetheryteHelper.subtoolAR()
 	  end
 	  GUI:BeginGroup()
 	  GUI:Spacing()
-	  if (mushPbtotal < 1) then AHSET.isReductionEnabled = false GUI:TextColored(1,0,0,1,"inventory full!") end
+	  if (mushPbtotal < 1) then GUI:TextColored(1,0,0,1,"inventory full!") end
 	  GUI:EndGroup()
 
 end
@@ -15680,7 +15604,7 @@ end
 ----footer GUI
 
 function AetheryteHelper.Drawafooter()
-	  GUI:SameLine()
+	  GUI:SameLine(120)
 	  GUI:BeginGroup()
 	  GUI:Text("[")
 	  GUI:EndGroup()
@@ -15828,7 +15752,7 @@ end
 
 function AetheryteHelper.SVRSelectermini()
   if (AetheryteHelper.miniWV.open) then
-	local miniWVflags = GUI.WindowFlags_NoTitleBar +  GUI.WindowFlags_NoFocusOnAppearing + GUI.WindowFlags_NoBringToFrontOnFocus + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
+	local miniWVflags = GUI.WindowFlags_NoTitleBar + GUI.WindowFlags_AlwaysAutoResize + GUI.WindowFlags_NoScrollbar
 	GUI:SetNextWindowSize(220,60)
 	 AetheryteHelper.miniWV.visible, AetheryteHelper.miniWV.open = GUI:Begin('miniWV', AetheryteHelper.miniWV.open,miniWVflags)
 	if (AetheryteHelper.miniWV.visible) then
@@ -16049,34 +15973,48 @@ function AetheryteHelper.footerkofi()
 end
 
 function AetheryteHelper.UPCKB()
+	  --GUI:BeginGroup()
+	  --GUI:Image(ImageFolder..[[love_mushroom.png]],30,30)
+	  --if GUI:IsItemHovered() then
+		--if GUI:IsItemClicked(0)then
+		--  AetheryteHelper.VersionList.open = not AetheryteHelper.VersionList.open
+		--end
+		--if GUI:IsMouseDown(0) then
+		--AetheryteHelper.SetToolTips(mJTp.tip106,mETp.tip106,mDTp.tip106,mFTp.tip106,mCTp.tip106,mKTp.tip106)
+		--else
+		--AetheryteHelper.SetToolTips(mJTp.tip105,mETp.tip105,mDTp.tip105,mFTp.tip105,mCTp.tip105,mKTp.tip105)
+	  --end
+	  --end
+	  --GUI:EndGroup()
+   
    if mushVC == false then
      GUI:BeginGroup()
 	   GUI:Image(ImageFolder..[[CB_clear.png]],30,30)
 	   if GUI:IsItemHovered() then
-		  	if GUI:IsItemClicked(0) then
-				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
-			  end
-			     AetheryteHelper.SetToolTips(mJTp.tip220,mETp.tip220,mDTp.tip220,mFTp.tip220,mCTp.tip220,mKTp.tip220)
+	   	if GUI:IsItemClicked(0) then
+	 		AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
+	 		  end
+	 		     AetheryteHelper.SetToolTips(mJTp.tip220,mETp.tip220,mDTp.tip220,mFTp.tip220,mCTp.tip220,mKTp.tip220)
 	   end
 	   GUI:EndGroup()
 	 elseif mushVC == true then
 	 	 GUI:BeginGroup()
 	   GUI:Image(ImageFolder..[[download.png]],30,30)
 	   if GUI:IsItemHovered() then
-		  	if GUI:IsItemClicked(0) then
-				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
-			  end
-			     AetheryteHelper.SetToolTips(mJTp.tip223,mETp.tip223,mDTp.tip223,mFTp.tip223,mCTp.tip223,mKTp.tip223)
+	 	  	if GUI:IsItemClicked(0) then
+	 			AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
+	 		  end
+	 		     AetheryteHelper.SetToolTips(mJTp.tip223,mETp.tip223,mDTp.tip223,mFTp.tip223,mCTp.tip223,mKTp.tip223)
 	   end
 	   GUI:EndGroup()
 	 elseif mushVC == nil then
 	 	 GUI:BeginGroup()
 	   GUI:Image(ImageFolder..[[loading.png]],30,30)
 	   if GUI:IsItemHovered() then
-		  	if GUI:IsItemClicked(0) then
-				AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
-			  end
-			     AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
+	 	  	if GUI:IsItemClicked(0) then
+	 			AetheryteHelper.UpdateConfig.open = not AetheryteHelper.UpdateConfig.open
+	 		  end
+	 		     AetheryteHelper.SetToolTips(mJTp.tip225,mETp.tip225,mDTp.tip225,mFTp.tip225,mCTp.tip225,mKTp.tip225)
 	   end
 	   GUI:EndGroup()
 	 end
@@ -16098,12 +16036,7 @@ function AetheryteHelper.TMAPSupport()
 	 AetheryteHelper.TRmapSupport.visible, AetheryteHelper.TRmapSupport.open = GUI:Begin('TMAPSupport', AetheryteHelper.TRmapSupport.open,tmapf)
 	if (AetheryteHelper.TRmapSupport.visible) then
 
-	if GetControl("TreasureMap"):GetRawData()[2].value == 8 then
-		if GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/k5f1/00/k5f100_s.tex" or
-			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/m5f1/00/m5f100_s.tex" or
-			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/m5f2/00/m5f200_s.tex" or
-			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/u5f1/00/u5f100_s.tex" or
-			 GetControl("TreasureMap"):GetRawData()[4].value == "ui/map/u5f2/00/u5f200_s.tex" then
+	if GetControl("TreasureMap") then
 	     GUI:PushStyleColor(GUI.Col_Button,0,0,0,1)
 	     GUI:PushStyleColor(GUI.Col_ButtonHovered,.4,.4,.4,1)
 	     GUI:PushStyleColor(GUI.Col_ButtonActive,.8,.8,.8,1)
@@ -16177,43 +16110,6 @@ function AetheryteHelper.TMAPSupport()
 		      AetheryteHelper.SetToolTips(mJTp.tip245,mETp.tip245,mDTp.tip245,mFTp.tip245,mCTp.tip245,mKTp.tip245)
 	    end
 	    GUI:PopStyleColor(3)
-	  end
-	  else
-	  	GUI:BeginGroup()
-	  	GUI:Dummy(30,30)
-	    if GUI:IsItemHovered() then
-	    GUI:SameLine(-1,0)
-	    GUI:Image(ImageFolder..[[TMR.png]], 35,35)
-	    else
-	    GUI:SameLine(-1,0)
-	    GUI:Image(ImageFolder..[[TMR_non.png]], 35,35)
-	    end
-	    GUI:EndGroup()
-	    if GUI:IsItemHovered() then
-		    if GUI:IsItemClicked(0) then
-			  mushAH_TMareaid = Player.localmapid
-			  mushAH_TMarea = GetControl("TreasureMap"):GetRawData()[1].value
-			  mushAH_TMnop = GetControl("TreasureMap"):GetRawData()[2].value
-			  mushAH_TMtype = GetControl("TreasureMap"):GetRawData()[3].value
-			  mushAH_TMtex = GetControl("TreasureMap"):GetRawData()[4].value
-			  mushAH_TMyoko = GetControl("TreasureMap"):GetRawData()[6].value
-			  mushAH_TMtate = GetControl("TreasureMap"):GetRawData()[7].value
-			  if Player:GetTarget() ~= nil then
-			  mushAH_TMname = Player:GetTarget().name
-			  mushAH_TMtx = Player:GetTarget().pos.x
-			  mushAH_TMty = Player:GetTarget().pos.y
-			  mushAH_TMtz = Player:GetTarget().pos.z
-			  else
-			  mushAH_TMname = "non"
-			  mushAH_TMtx = "non"
-			  mushAH_TMty = "non"
-			  mushAH_TMtz = "non"
-			  end
-			  AetheryteHelper.mapreport(mushAH_TMareaid,mushAH_TMarea,mushAH_TMnop,mushAH_TMtype,mushAH_TMtex,mushAH_TMyoko,mushAH_TMtate,mushAH_TMname,mushAH_TMtx,mushAH_TMty,mushAH_TMtz,false)
-			  SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]Send Request <se.3> \x02\x13\x02\xec\x03")
-			  end
-		      AetheryteHelper.SetToolTips(mJTp.tip245,mETp.tip245,mDTp.tip245,mFTp.tip245,mCTp.tip245,mKTp.tip245)
-	    end
 	end
 	end
 	GUI:End()
@@ -16281,22 +16177,6 @@ mushAHparams = {
    onfailure = failed,
    getheaders = true, 
    body = [[ {"username":"map reporter","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Report : TreasureMap ]]..mushAHmG..[["} ]],
-   headers = {
-   ["Content-Type"] = "application/json",
-   }
-   }
- HttpRequest(mushAHparams)
- elseif bool == false then
- 	mushAHparams = {
-   host = "discord.com",
-   path = "/api/webhooks/967462107534749746/tSmRpgRnA7A-etRL17gLdPwPOLUJOgt7qgd9RKm3M19KP4NOd8N8kV46cU1yjLBR_a0k",
-   port = 443,
-   method = "POST", -- "GET","POST","PUT","DELETE"
-   https = true,
-   onsuccess = success,
-   onfailure = failed,
-   getheaders = true, 
-   body = [[ {"username":"map reporter","avatar_url":"","allowed_mentions:":false,"embeds":[{"title":"Map Report","description":"Playerlocation : ]]..GetMapName(Player.localmapid)..[[\rmapID : ]]..areaid..[[\rArea Name : ]]..area..[[\rmember : ]]..nop..[[\rMapType : ]]..type..[[\rTex : ]]..tex..[[\rside : ]]..yoko..[[\rvertical : ]]..tate..[[\rTarget : ]]..name..[[\rPosX : ]]..tx..[[\rPosY : ]]..ty..[[\rPosZ : ]]..tz..[["}],"content":"Request : TreasureMap ]]..mushAHmG..[["} ]],
    headers = {
    ["Content-Type"] = "application/json",
    }
@@ -16501,10 +16381,10 @@ function AetheryteHelper.DrawCall()
 		     AetheryteHelper.SaveSettings()
 	    end
 	  end
-	  GUI:SameLine(60)
-	  GUI:BeginGroup()
-	  GUI:Text("mushroom")
-	  GUI:EndGroup()
+	  --GUI:SameLine()
+	  --GUI:BeginGroup()
+	  --GUI:Text("mushroom#8009")
+	  --GUI:EndGroup()
 
 	  AetheryteHelper.Drawafooter()
 --------------------------------------------------------------------
@@ -16784,7 +16664,7 @@ function AetheryteHelper.movetoCOMPANYlimsa()
 		 if( Player.localmapid == 128 ) then GCStep = 3 end
 		 if ( Player.localmapid ~= 129 )and( Player.localmapid ~= 128 ) and (Player:GetTarget() == nil) then
 			 if(ActionList:Get(5,7):IsReady() == true) then
-			  AetheryteHelper.Teleport(8,0)
+			  AH_Teleport(8,0)
 			 end
 		 end
 
@@ -16844,7 +16724,7 @@ function AetheryteHelper.movetoCOMPANYgridania()
 			  elseif ( Player.localmapid ~= 132 ) then
 				  if Player.localmapid ~= 132  and (Player:GetTarget() == nil) then
 				  if(ActionList:Get(5,7):IsReady() == true) then
-				  AetheryteHelper.Teleport(2,0)
+				  AH_Teleport(2,0)
 				  end
 				  end
 			  end
@@ -16862,7 +16742,7 @@ function AetheryteHelper.movetoCOMPANYuldah()
 			  elseif ( Player.localmapid ~= 130 ) then
 				  if Player.localmapid ~= 130  and (Player:GetTarget() == nil) then
 				  if(ActionList:Get(5,7):IsReady() == true) then
-				  AetheryteHelper.Teleport(9,0)
+				  AH_Teleport(9,0)
 				  end
 				  end
 			  end
@@ -16889,7 +16769,7 @@ function AetheryteHelper.moveMBlimsa()
 			if limMBStep == 0 then
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
-				  AetheryteHelper.Teleport(8,0)
+				  AH_Teleport(8,0)
 				  mushlooptimer = 1000
 				  end
 				  if Player.localmapid == 129 then
@@ -16901,7 +16781,7 @@ function AetheryteHelper.moveMBlimsa()
 				  end
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 129) and (Player.localmapid ~= 128) then
-				  AetheryteHelper.Teleport(8,0)
+				  AH_Teleport(8,0)
 				  end
 				  if Player.localmapid == 129 then
 				  limMBStep = 1
@@ -17003,7 +16883,7 @@ function AetheryteHelper.moveMBgridania()
 			if griMBStep == 0 then
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
-				  AetheryteHelper.Teleport(2,0)
+				  AH_Teleport(2,0)
 				  mushlooptimer = 1000
 				  end
 				  if Player.localmapid == 132 then
@@ -17015,7 +16895,7 @@ function AetheryteHelper.moveMBgridania()
 				  end
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 132) and (Player.localmapid ~= 133) then
-				  AetheryteHelper.Teleport(2,0)
+				  AH_Teleport(2,0)
 				  end
 				  if Player.localmapid == 133 then
 				  griMBStep = 1
@@ -17129,7 +17009,7 @@ function AetheryteHelper.moveMBuldah()
 			if uldMBStep == 0 then
 			   if AHSET.mushmovetoMB == false then
 				  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-				  AetheryteHelper.Teleport(9,0)
+				  AH_Teleport(9,0)
 				  end
 				  if Player.localmapid == 130 then
 				  mushlooptimer = 1000
@@ -17140,7 +17020,7 @@ function AetheryteHelper.moveMBuldah()
 				  end
 			   elseif AHSET.mushmovetoMB == true then
 				  if ActionList:IsReady() and (Player.localmapid ~= 130) and (Player.localmapid ~= 131) then
-				  AetheryteHelper.Teleport(9,0)
+				  AH_Teleport(9,0)
 				  end
 				  if Player.localmapid == 130 then
 				  uldMBStep = 10
@@ -18189,8 +18069,10 @@ function AetheryteHelper.Jumbocactpothelper()
 	local jbc32 = AHSET.jumbo32
 	local jbc33 = AHSET.jumbo33
 	local jbc34 = AHSET.jumbo34
-  
-if (mushJumbocactpothelper) then
+if Player.homeworld ~= Player.currentworld then
+mushJumbocactpothelper = false
+end
+if (mushJumbocactpothelper) and Player.homeworld == Player.currentworld then
 	 mushAH_JCPA01 = MEntityList("ContentID=1010446,type=3,alive")
 	 if table.valid(mushAH_JCPA01) then
 	    for _,e in pairs(mushAH_JCPA01) do
@@ -18215,7 +18097,7 @@ if (mushJumbocactpothelper) then
 
 	 if mushGSjcpstep == 50 then
 	 	 if ActionList:IsReady() and MIsLoading() == false then
-	 	 AetheryteHelper.Teleport(62,0)
+	 	 AH_Teleport(62,0)
 	   end
 	   mushGSjcpstep = 0
 	 end
@@ -18537,15 +18419,7 @@ function AetheryteHelper.Salvagefilter()
 	 if (table.valid(ilist)) then
 	 for _, item in pairs(ilist) do
 	 local equipflag = item.equipslot > 0 and item.requiredlevel > 1 and item.desynthvalue > 0 and item.level > AHSET.dminil and item.level < AHSET.dmaxil
-	  if (eqFilter.Main) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13)) then
-	  if(ActionList:IsReady()) then
-	  item:Salvage()
-	  return
-	  end
-	  end
-	  end
-
+	  
 ---alljob
 
 	  if (eqFilter.Head) and ( AHeqjob.ALL ) then
@@ -19127,8 +19001,12 @@ function AetheryteHelper.Salvagefilter()
 ---gatherer
 
 	  if (eqFilter.Main) and ( AHeqjob.Gatherer ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13)
-		and (item.category == 17 or item.category == 18 or item.category == 19))then
+	  if (equipflag and item.Equipslot == 1 and item.category == 17 or 
+        equipflag and item.Equipslot == 13 and item.category == 17 or
+        equipflag and item.Equipslot == 1 and item.category == 18 or 
+        equipflag and item.Equipslot == 13 and item.category == 18 or
+        equipflag and item.Equipslot == 1 and item.category == 19 or 
+        equipflag and item.Equipslot == 13 and item.category == 19 )then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19136,8 +19014,9 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Sub) and ( AHeqjob.Gatherer ) then
-	  if (equipflag and item.Equipslot == 2
-		and (item.category == 17 or item.category == 18 or item.category == 19)) then
+	  if (equipflag and item.Equipslot == 2	and item.category == 17 or 
+        equipflag and item.Equipslot == 2	and item.category == 18 or 
+        equipflag and item.Equipslot == 2	and item.category == 19) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19220,8 +19099,7 @@ function AetheryteHelper.Salvagefilter()
 ---crafter
 
 	  if (eqFilter.Main) and ( AHeqjob.Crafter ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13)
-		and (item.category == 9 or item.category == 10 or item.category == 11 or item.category == 12 or item.category == 13 or item.category == 14 or item.category == 15 or item.category == 16))then
+	  if (equipflag and item.Equipslot == 1 and item.category >= 9 and item.category <= 16 or equipflag and item.Equipslot == 13 and item.category >= 9 and item.category <= 16) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19229,8 +19107,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Sub) and ( AHeqjob.Crafter ) then
-	  if (equipflag and item.Equipslot == 2
-		and (item.category == 9 or item.category == 10 or item.category == 11 or item.category == 12 or item.category == 13 or item.category == 14 or item.category == 15 or item.category == 16)) then
+	  if (equipflag and item.Equipslot == 2 and item.category >= 9 and item.category <= 16) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19313,7 +19190,7 @@ function AetheryteHelper.Salvagefilter()
 ---Weapon
 
 	  if (eqFilter.Main) and ( AHeqjob.PLD ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 38) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 38 or equipflag and item.Equipslot == 13 and item.category == 38 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19321,7 +19198,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.WAR ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 44 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 44 or equipflag and item.Equipslot == 13 and item.category == 44 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19329,7 +19206,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.DRK ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 98 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 98 or equipflag and item.Equipslot == 13 and item.category == 98 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19337,7 +19214,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.GNB ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 149 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 149 or equipflag and item.Equipslot == 13 and item.category == 149 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19345,7 +19222,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.WHM ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 53 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 53 or equipflag and item.Equipslot == 13 and item.category == 53 )then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19353,7 +19230,8 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.SCH ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 29 or item.category == 68 )) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 29 or equipflag and item.Equipslot == 13 and item.category == 29 ) or 
+	  	 (equipflag and item.Equipslot == 1 and item.category == 68 or equipflag and item.Equipslot == 13 and item.category == 68 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19361,7 +19239,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.AST ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 99 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 99 or equipflag and item.Equipslot == 13 and item.category == 99 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19369,7 +19247,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.SGE ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 181 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 181 or equipflag and item.Equipslot == 13 and item.category == 181 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19377,7 +19255,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.MNK ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 41 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 41 or equipflag and item.Equipslot == 13 and item.category == 41 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19385,7 +19263,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.DRG ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 47 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 47 or equipflag and item.Equipslot == 13 and item.category == 47 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19393,7 +19271,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.SAM ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 111 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 111 or equipflag and item.Equipslot == 13 and item.category == 111 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19401,7 +19279,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.NIN ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 93 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 93 or equipflag and item.Equipslot == 13 and item.category == 93 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19409,7 +19287,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.RPR ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 180 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 180 or equipflag and item.Equipslot == 13 and item.category == 180 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19417,7 +19295,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.BRD ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 50 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 50 or equipflag and item.Equipslot == 13 and item.category == 50 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19425,7 +19303,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.MCN ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 96 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 96 or equipflag and item.Equipslot == 13 and item.category == 96 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19433,7 +19311,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.DNC ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 150 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 150 or equipflag and item.Equipslot == 13 and item.category == 150 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19441,7 +19319,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.BLM ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 55 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 55 or equipflag and item.Equipslot == 13 and item.category == 55 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19449,7 +19327,7 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.RDM ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and item.category == 112 ) then
+	  if (equipflag and item.Equipslot == 1 and item.category == 112 or equipflag and item.Equipslot == 13 and item.category == 112 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19457,7 +19335,9 @@ function AetheryteHelper.Salvagefilter()
 	  end
 	  end
 	  if (eqFilter.Main) and ( AHeqjob.SMN ) then
-	  if (equipflag and (item.Equipslot == 1 or item.Equipslot == 13) and (item.category == 28 or item.category == 68 or item.category == 69 )) then
+	  if(equipflag and item.Equipslot == 1 and item.category == 28 or equipflag and item.Equipslot == 13 and item.category == 28 ) or
+	    (equipflag and item.Equipslot == 1 and item.category == 68 or equipflag and item.Equipslot == 13 and item.category == 68 ) or
+	    (equipflag and item.Equipslot == 1 and item.category == 69 or equipflag and item.Equipslot == 13 and item.category == 69 ) then
 	  if(ActionList:IsReady()) then
 	  item:Salvage()
 	  return
@@ -19507,18 +19387,25 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.nonAFK()
   if Player.OnlineStatus == 17 then
-	 mushlooptimer = 100
-	if Player:IsMoving() or Player.LastAction == 33 or Player.LastAction == 85 or IsControlOpen("MaterializeDialog") or
-	   Player.LastAction == 87 or Player.LastAction == 3191 or FFXIV_Common_BotRunning == true then
-	   SendTextCommand("/afk")
-	   mushlooptimer = 1000
-	end
+	   mushlooptimer = 10
+	   if Player:IsMoving() or Player.LastAction == 33 or Player.LastAction == 85 or IsControlOpen("MaterializeDialog") or
+	      Player.LastAction == 87 or Player.LastAction == 3191 or FFXIV_Common_BotRunning == true then
+	      SendTextCommand("/afk")
+	      mushlooptimer = 1000
+	   end
+	   for mushAH_afk_key = 1,255,1 do
+	 	    if GUI:IsKeyPressed(mushAH_afk_key) then
+	 	     	d("[AH][nonAFK]PressKey:"..mushAH_afk_key)
+	 	 	   SendTextCommand("/afk")
+	 	 	   mushlooptimer = 1000
+	 	     end
+	 	 end
   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.PvPAssistUseG_and_S()
- if Player.localmapid == 250 or Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 then
+ if Player.localmapid == 250 or Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 or Player.localmapid == 1058 or Player.localmapid == 1059 or Player.localmapid == 1060 then
    if AetheryteHelper.PvPAssist.autoGuard == true then
       if Player.hp.percent <= AetheryteHelper.PvPAssist.autoGuardHP and ActionList:Get(1,29054):IsReady() and MissingBuff(Player.id,3054) then
    	  mushlooptimer = 0
@@ -19526,8 +19413,7 @@ function AetheryteHelper.PvPAssistUseG_and_S()
       end
    end
    if AetheryteHelper.PvPAssist.sprint == true then
- 	    if ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,1342) and MissingBuff(Player.id,3054) or
- 	       ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,1342) and MissingBuff(Player.id,1316) then
+ 	    if ActionList:Get(1,29057):IsReady() and MissingBuff(Player.id,3054) and MissingBuff(Player.id,1316) and MissingBuff(Player.id,1342) then
  	 	  mushlooptimer = 2000
       ActionList:Get(1,29057):Cast()
       end
@@ -19695,12 +19581,12 @@ end
 -- sub function
 function AetheryteHelper.mushMaterialize()
    if (AHSET.DesynthTrust == true ) or ( mushTrustmode == true ) then
-		 if (AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:GetQueueStatus() == 4 and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
+		 if (AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and Duty:GetQueueStatus() == 4 and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") and AetheryteHelper.Inventoryfree()) then
 			if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
 			UseControlAction("MaterializeDialog","Yes")
 			return
 			end
-			local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+			local bags = {0,1,2,3,1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
 			for _, e in pairs(bags) do
 			local bag = Inventory:Get(e)
 			if (table.valid(bag)) then
@@ -19720,12 +19606,12 @@ function AetheryteHelper.mushMaterialize()
 			end
 		 end
    elseif (AHSET.DesynthTrust == false ) and ( mushTrustmode == false ) then
-	  if(AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade")) then
+	  if(AHSET.isMateriaEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and AetheryteHelper.Inventoryfree()) then
 			if (IsControlOpen("MaterializeDialog") and GetControlData("MaterializeDialog")) then
 			UseControlAction("MaterializeDialog","Yes")
 			return
 			end
-			local bags = {1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
+			local bags = {0,1,2,3,1000, 3200, 3201, 3202, 3203, 3204, 3205, 3206, 3207, 3208, 3209, 3300, 3500}
 			for _, e in pairs(bags) do
 			local bag = Inventory:Get(e)
 			if (table.valid(bag)) then
@@ -19793,10 +19679,9 @@ function AetheryteHelper.mushpotionmanual()
 end
 
 function AetheryteHelper.mushsRemateria()
-	AetheryteHelper.Inventoryfree()
 	local seisen = ActionList:Get(5,14)
 	if seisen.usable == false then Remateria = false end
-	if (Remateria) then
+	if (Remateria and AetheryteHelper.Inventoryfree()) then
 		if mushPbtotal < 1 then
 		Remateria = false
 		end
@@ -19835,13 +19720,12 @@ function AetheryteHelper.mushsRemateria()
  end
 
 function AetheryteHelper.mushsubAR()
-	AetheryteHelper.Inventoryfree()
 	   if (AHSET.isQuestmode == true and mushPbtotal < 5 and FFXIV_Common_BotRunning == true ) then
 		   Player:Stop()
 		   ml_global_information.ToggleRun()
 	   end
 	   local syusyuhin = 0
-	   if (AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
+	   if (AHSET.isQuestmode == true and FFXIV_Common_BotRunning == false and Player.IsMounted == false and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") and AetheryteHelper.Inventoryfree()) then
 		   if (IsControlOpen("PurifyResult")) then
 		   UseControlAction("PurifyResult", "Close")
 		   return
@@ -19885,11 +19769,12 @@ function AetheryteHelper.mushsubAR()
 	   end
 
 
-	if (AHSET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
+	if (AHSET.isReductionEnabled == true and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") and AetheryteHelper.Inventoryfree()) then
 		if (IsControlOpen("PurifyResult")) then
 		  UseControlAction("PurifyResult", "Close")
 		return
 		end
+
 		local bags = {0, 1, 2, 3}
 		for _, e in pairs(bags) do
 		local bag = Inventory:Get(e)
@@ -19897,7 +19782,7 @@ function AetheryteHelper.mushsubAR()
 		local Rlist = bag:GetList()
 		if (table.valid(Rlist)) then
 		for _, item in pairs(Rlist) do
-		if( item.IsCollectable == true and item.IsBinding == true and item.id ~= 19903 ) then
+		if( item.IsCollectable == true and item.IsBinding == true and item.searchcategory ~= 0 and item.isuntradeable == false and item.id ~= 19903 ) then
 		  syusyuhin = syusyuhin + 1
 		  mushlooptimer = 1000
 		   if(ActionList:IsReady()) then
@@ -19914,8 +19799,14 @@ function AetheryteHelper.mushsubAR()
 end
 
 function AetheryteHelper.Desynthseis()
+	  if AHSET.CrafterMode == true then
+		if (Player.Job == 8 or Player.Job == 9 or Player.Job == 10 or Player.Job == 11 or
+		Player.Job == 12 or Player.Job == 13 or Player.Job == 14 or Player.Job == 15) then
+		AHSET.isSalvageEnabled = false
+		end
+	  end
 if (AHSET.DesynthTrust) then
-	   if (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:GetQueueStatus() == 4 and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
+	   if (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and Duty:GetQueueStatus() == 4 and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") and AetheryteHelper.Inventoryfree()) then
 	   mushlooptimer = 1000
 	   if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
 	   UseControlAction("SalvageDialog","Confirm")
@@ -19926,7 +19817,7 @@ if (AHSET.DesynthTrust) then
 		  AetheryteHelper.SalvageAll()
 	   end
 	   end
-   elseif (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote")) then
+   elseif (AHSET.isSalvageEnabled and Player.IsMounted == false and Player:GetTarget() == nil and not IsControlOpen("Trade") and not IsControlOpen("Synthesis") and not IsControlOpen("RecipeNote") and AetheryteHelper.Inventoryfree()) then
 	   mushlooptimer = 1000
 	   if (IsControlOpen("SalvageDialog") and GetControlData("SalvageDialog")) then
 	   UseControlAction("SalvageDialog","Confirm")
@@ -20233,7 +20124,7 @@ function AetheryteHelper.itemSearch()
    end
 
    if ISstep == 2 then
-		local el = MEntityList("nearest,contentID=196630,contentID=2000401,contentID=2010284,contentID=2000441")
+		local el = MEntityList("nearest,contentID=196630,contentID=2000401,contentID=2010284,contentID=2000441,contentID=2006565")
 		if table.valid(el) then
 		for k,v in pairs(el) do
 		ritebel = v.id
@@ -23436,6 +23327,114 @@ function AHRadarSeNoticeAPI_F(str,SE,checktime)
     return str,SE,checktime
 end
 ------------------------------------------------------------------------------------------------------------------------
+function AetheryteHelper.Mouse_Over_Ability()
+	--[[
+AetheryteHelper.MouseActionSetting = {
+	GLA = { Enable = false, Action = {}},
+	PGL = { Enable = false, Action = {}},
+	LNC = { Enable = false, Action = {}},
+	MRD = { Enable = false, Action = {}},
+	ARC = { Enable = false, Action = {}},
+	CNJ = { Enable = false, Action = {}},
+	THM = { Enable = false, Action = {}},
+	ACN = { Enable = false, Action = {}},
+	ROG = { Enable = false, Action = {}},
+}
+table.insert(mush_AH_MOA_temp,35)--1 job
+table.insert(mush_AH_MOA_temp,v)--2 skill id
+table.insert(mush_AH_MOA_temp,1)--3 mo or gt
+table.insert(mush_AH_MOA_temp,1)--4 keytype
+table.insert(mush_AH_MOA_temp,0)--5 key1
+table.insert(mush_AH_MOA_temp,0)--6 key2
+table.insert(mush_AH_MOA_temp,0)--7 key3
+table.insert(mush_AH_MOA_temp,"")--8 keyname1
+table.insert(mush_AH_MOA_temp,"")--9 keyname2
+table.insert(mush_AH_MOA_temp,"")--10 keyname3
+table.insert(mush_AH_MOA_temp,0)--11 Reserve
+table.insert(mush_AH_MOA_temp,0)--12 Reserve
+table.insert(mush_AH_MOA_temp,0)--13 Reserve
+table.insert(mush_AH_MOA_temp,0)--14 Reserve
+table.insert(mush_AH_MOA_temp,0)--15 Reserve
+]]
+	if Player.job == 19 then
+    for k,v in pairs(AetheryteHelper.MouseActionSetting.PLD.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 21 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.WAR.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 32 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.DRK.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 37 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.GNB.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 24 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.WHM.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 28 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SCH.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 33 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.AST.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 40 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SGE.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 20 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.MNK.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 22 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.DRG.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 30 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.NIN.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 34 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SAM.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 39 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.RPR.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 23 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.BRD.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 31 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.MCH.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 38 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.DNC.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 25 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.BLM.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 27 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SMN.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+  elseif Player.job == 35 then
+  	for k,v in pairs(AetheryteHelper.MouseActionSetting.RDM.Action) do
+    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
+    end
+	end
+end
+------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.mushTextCommands()
 	local log = GetChatLines()
@@ -23941,6 +23940,8 @@ function AetheryteHelper.mushTextCommands()
 	 end
 end
 
+
+
 function AetheryteHelper.AutoUpdateCheck()
 if AHSET.AutoUpdate == true then
 	  mushlooptimer = 1000
@@ -23996,12 +23997,12 @@ function AetheryteHelper.AutoUpdate()
      io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value ']]..mushAH_AutoUpdate_Status_success..[['; stop-process -Id $PID"]]):close()
      mushAH_AutoUPdatestep = 4
   end
-  
+
   if mushAH_AutoUPdatestep == 4 then
      if mushAH_AutoUPdatetimer <= os.time() then
         mushAH_zip = io.open(ModulePath.."/cash/cash.txt")
 	   if mushAH_zip ~= nil then
- 	      mushAH_ziptextS = mushAH_zip:read() mushAH_zip:close()
+	      mushAH_ziptextS = mushAH_zip:read() mushAH_zip:close()
  	      if tostring(mushAH_ziptextS) == "success" then
 	         mushAH_AutoUPdatestep = 5
 	      else
@@ -24018,7 +24019,6 @@ function AetheryteHelper.AutoUpdate()
  	   mushAH_AutoUPdatefunc = false
  	end
   end
-
 end
 
 function AetheryteHelper.VersionCheck()
@@ -24097,6 +24097,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.targetingmeRec()
 			AetheryteHelper.Jumbocactpothelper()
 			AetheryteHelper.PvPAssistUseG_and_S()
+			AetheryteHelper.Mouse_Over_Ability()
 		end
 	 end
 end
