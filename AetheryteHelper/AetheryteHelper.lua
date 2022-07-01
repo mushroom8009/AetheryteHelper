@@ -11410,7 +11410,7 @@ function AetheryteHelper.TargetMeWin()
           mushAH_TMEREC_Link = "fr"
           end
           mushAH_TMEREC_APIname = v[1]:gsub("'","%%27")
-	   	 io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_TMEREC_APIname)..[[&server=]]..mushAH_TMEREC_wroldname..[[&private_key=465892ca7c16424f8156fb3ccfe19525a9ce43abd165419289e8ac6a8181a083' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_TMEREC_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
+	   	 io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_TMEREC_APIname)..[[&server=]]..mushAH_TMEREC_wroldname..[[' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_TMEREC_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
 	   	 end
 	   	 AetheryteHelper.SetToolTips(mJTp.tip268,mETp.tip268,mDTp.tip268,mFTp.tip268,mCTp.tip268,mKTp.tip268)
 	   end
@@ -11469,7 +11469,7 @@ function AetheryteHelper.MyTargetPlayerInfo()
     GUI:ImageButton("###MyTargetInfo",ImageFolder..[[lodestone_link.png]], 20,20)
     if GUI:IsItemHovered() then
   	  if GUI:IsItemClicked(0) then
-  	  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_MyTargetName)..[[&server=]]..mushAH_MyTargetWorld..[[&private_key=465892ca7c16424f8156fb3ccfe19525a9ce43abd165419289e8ac6a8181a083' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_MyTargetInfo_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
+  	  io.popen([[start /b powershell -Command "-Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11; $json = (Invoke-WebRequest -Uri 'https://xivapi.com/character/search?name=]]..tostring(mushAH_MyTargetName)..[[&server=]]..mushAH_MyTargetWorld..[[' -UseBasicParsing | ConvertFrom-Json); $lodestone = 'https://]]..mushAH_MyTargetInfo_Link..[[.finalfantasyxiv.com/lodestone/character/' + $json.Results[0].ID; start $lodestone; stop-process -Id $PID"]]):close()
       end
       AetheryteHelper.SetToolTips(mJTp.tip268,mETp.tip268,mDTp.tip268,mFTp.tip268,mCTp.tip268,mKTp.tip268)
     end
