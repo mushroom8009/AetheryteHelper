@@ -5,8 +5,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.9.0.1",
-	  tag = 2022070113,--y0000m00d00h00
+	  Version =         "1.9.0.2",
+	  tag = 2022070116,--y0000m00d00h00
   },
 --  ---------------
   HELP   = {
@@ -19369,6 +19369,35 @@ function AetheryteHelper.nonAFK()
   end
 end
 
+function AetheryteHelper.autoAFK()
+  if Player.OnlineStatus ~= 17 then
+	   if not Player:IsMoving() or Player:GetTarget() == nil and Player.LastAction ~= 33 and Player.LastAction ~= 85 and Player.LastAction ~= 87 and Player.LastAction ~= 3191
+	      or not IsControlOpen("MaterializeDialog") or FFXIV_Common_BotRunning == false or Duty:GetQueueStatus() < 4 or not IsControlOpen("Synthesis") then
+	      if GetGameSettings()[145] ~= nil and GetGameSettings()[157] ~= nil then
+	      	 if GetGameSettings()[157].value == 0 then
+	      	 if GetGameSettings()[145].value == 1 then
+	      	 	 if AHTimeSince(300000) then
+	              SendTextCommand("/afk")
+	           end
+	         elseif GetGameSettings()[145].value == 2 then
+	         	 if AHTimeSince(600000) then
+	              SendTextCommand("/afk")
+	           end
+	         elseif GetGameSettings()[145].value == 3 then
+	         	 if AHTimeSince(1800000) then
+	              SendTextCommand("/afk")
+	           end
+	         elseif GetGameSettings()[145].value == 4 then
+	         	 if AHTimeSince(3200000) then
+	              SendTextCommand("/afk")
+	           end
+	         end
+	         end
+	       end
+	   end
+  end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 function AetheryteHelper.PvPAssistUseG_and_S()
  if Player.localmapid == 250 or Player.localmapid == 1032 or Player.localmapid == 1033 or Player.localmapid == 1034 or Player.localmapid == 1058 or Player.localmapid == 1059 or Player.localmapid == 1060 then
@@ -23293,113 +23322,7 @@ function AHRadarSeNoticeAPI_F(str,SE,checktime)
     return str,SE,checktime
 end
 ------------------------------------------------------------------------------------------------------------------------
-function AetheryteHelper.Mouse_Over_Ability()
-	--[[
-AetheryteHelper.MouseActionSetting = {
-	GLA = { Enable = false, Action = {}},
-	PGL = { Enable = false, Action = {}},
-	LNC = { Enable = false, Action = {}},
-	MRD = { Enable = false, Action = {}},
-	ARC = { Enable = false, Action = {}},
-	CNJ = { Enable = false, Action = {}},
-	THM = { Enable = false, Action = {}},
-	ACN = { Enable = false, Action = {}},
-	ROG = { Enable = false, Action = {}},
-}
-table.insert(mush_AH_MOA_temp,35)--1 job
-table.insert(mush_AH_MOA_temp,v)--2 skill id
-table.insert(mush_AH_MOA_temp,1)--3 mo or gt
-table.insert(mush_AH_MOA_temp,1)--4 keytype
-table.insert(mush_AH_MOA_temp,0)--5 key1
-table.insert(mush_AH_MOA_temp,0)--6 key2
-table.insert(mush_AH_MOA_temp,0)--7 key3
-table.insert(mush_AH_MOA_temp,"")--8 keyname1
-table.insert(mush_AH_MOA_temp,"")--9 keyname2
-table.insert(mush_AH_MOA_temp,"")--10 keyname3
-table.insert(mush_AH_MOA_temp,0)--11 Reserve
-table.insert(mush_AH_MOA_temp,0)--12 Reserve
-table.insert(mush_AH_MOA_temp,0)--13 Reserve
-table.insert(mush_AH_MOA_temp,0)--14 Reserve
-table.insert(mush_AH_MOA_temp,0)--15 Reserve
-]]
-	if Player.job == 19 then
-    for k,v in pairs(AetheryteHelper.MouseActionSetting.PLD.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 21 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.WAR.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 32 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.DRK.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 37 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.GNB.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 24 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.WHM.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 28 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SCH.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 33 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.AST.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 40 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SGE.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 20 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.MNK.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 22 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.DRG.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 30 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.NIN.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 34 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SAM.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 39 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.RPR.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 23 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.BRD.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 31 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.MCH.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 38 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.DNC.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 25 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.BLM.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 27 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.SMN.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-  elseif Player.job == 35 then
-  	for k,v in pairs(AetheryteHelper.MouseActionSetting.RDM.Action) do
-    	 AH_MoActionAPI_mo(v[4],v[5],v[6],v[7],v[2])
-    end
-	end
-end
+
 ------------------------------------------------------------------------------------------------------------------------
 
 function AetheryteHelper.mushTextCommands()
@@ -24050,6 +23973,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.mushTextCommands()
 			--AetheryteHelper.FreeCompanyActionUse()
 			AetheryteHelper.nonAFK()
+			AetheryteHelper.autoAFK()
 			AetheryteHelper.voteMVP()
 			AetheryteHelper.PartyCall()
 			AetheryteHelper.itemsort()
@@ -24063,7 +23987,6 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.targetingmeRec()
 			AetheryteHelper.Jumbocactpothelper()
 			AetheryteHelper.PvPAssistUseG_and_S()
-			AetheryteHelper.Mouse_Over_Ability()
 		end
 	 end
 end
