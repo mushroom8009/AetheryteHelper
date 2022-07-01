@@ -19355,7 +19355,7 @@ function AetheryteHelper.nonAFK()
   if Player.OnlineStatus == 17 then
 	   mushlooptimer = 10
 	   if Player:IsMoving() or Player.LastAction == 33 or Player.LastAction == 85 or IsControlOpen("MaterializeDialog") or
-	      Player.LastAction == 87 or Player.LastAction == 3191 or FFXIV_Common_BotRunning == true then
+	      Player.LastAction == 87 or Player.LastAction == 3191 or FFXIV_Common_BotRunning == true or IsControlOpen("Synthesis") or Player:GetTarget() ~= nil then
 	      SendTextCommand("/afk")
 	      mushlooptimer = 1000
 	   end
@@ -19371,8 +19371,8 @@ end
 
 function AetheryteHelper.autoAFK()
   if Player.OnlineStatus ~= 17 then
-	   if not Player:IsMoving() or Player:GetTarget() == nil and Player.LastAction ~= 33 and Player.LastAction ~= 85 and Player.LastAction ~= 87 and Player.LastAction ~= 3191
-	      or not IsControlOpen("MaterializeDialog") or FFXIV_Common_BotRunning == false or Duty:GetQueueStatus() < 4 or not IsControlOpen("Synthesis") then
+	   if not Player:IsMoving() and Player:GetTarget() == nil and Player.LastAction ~= 33 and Player.LastAction ~= 85 and Player.LastAction ~= 87 and Player.LastAction ~= 3191
+	      and not IsControlOpen("MaterializeDialog") and FFXIV_Common_BotRunning == false and Duty:GetQueueStatus() < 4 and not IsControlOpen("Synthesis") then
 	      if GetGameSettings()[145] ~= nil and GetGameSettings()[157] ~= nil then
 	      	 if GetGameSettings()[157].value == 0 then
 	      	 if GetGameSettings()[145].value == 1 then
