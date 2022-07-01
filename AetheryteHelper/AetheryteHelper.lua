@@ -5,8 +5,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.9.0.0",
-	  tag = 2022070100,--y0000m00d00h00
+	  Version =         "1.9.0.1",
+	  tag = 2022070113,--y0000m00d00h00
   },
 --  ---------------
   HELP   = {
@@ -383,39 +383,6 @@ AetheryteHelper.JobIconSetting = {
 	pos = 50,
 	myparty = false,
 	icontype = 1
-}
-AetheryteHelper.MouseActionSetting = {
-	--job
-	PLD = { Enable = false, Action = {}},
-	WAR = { Enable = false, Action = {}},
-	DRK = { Enable = false, Action = {}},
-	GNB = { Enable = false, Action = {}},
-	WHM = { Enable = false, Action = {}},
-	SCH = { Enable = false, Action = {}},
-	AST = { Enable = false, Action = {}},
-	SGE = { Enable = false, Action = {}},
-	MNK = { Enable = false, Action = {}},
-	SAM = { Enable = false, Action = {}},
-	DRG = { Enable = false, Action = {}},
-	RPR = { Enable = false, Action = {}},
-	NIN = { Enable = false, Action = {}},
-	BRD = { Enable = false, Action = {}},
-	MCH = { Enable = false, Action = {}},
-	DNC = { Enable = false, Action = {}},
-	BLM = { Enable = false, Action = {}},
-	SMN = { Enable = false, Action = {}},
-	RDM = { Enable = false, Action = {}},
-	BLU = { Enable = false, Action = {}},
-  --class
-	GLA = { Enable = false, Action = {}},
-	PGL = { Enable = false, Action = {}},
-	LNC = { Enable = false, Action = {}},
-	MRD = { Enable = false, Action = {}},
-	ARC = { Enable = false, Action = {}},
-	CNJ = { Enable = false, Action = {}},
-	THM = { Enable = false, Action = {}},
-	ACN = { Enable = false, Action = {}},
-	ROG = { Enable = false, Action = {}},
 }
 
 AetheryteHelper.TargetMeList = {}
@@ -12900,7 +12867,7 @@ function AetheryteHelper.Radarlist()
    if v[17] == 0 then
    GUI:PushStyleColor(GUI.Col_Button,0,.5,0,1)
    GUI:Button("Normal",60,20)
-   GUI:PopStyleColor()
+   GUI:PopStyleColor(1)
    if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 	  v[17] = 1
@@ -12910,7 +12877,7 @@ function AetheryteHelper.Radarlist()
    elseif v[17] == 1 then
    GUI:PushStyleColor(GUI.Col_Button,1,0,0,1)
    GUI:Button("Hazard",60,20)
-   GUI:PopStyleColor()
+   GUI:PopStyleColor(1)
    if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 	  v[17] = 0
@@ -12938,7 +12905,7 @@ function AetheryteHelper.Radarlist()
     if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip199,mETp.tip199,mDTp.tip199,mFTp.tip199,mCTp.tip199,mKTp.tip199)
 	  end
-   if v[11] == 1 then AetheryteHelper.HazardPlayer(v[18],v[3]) end
+    if v[11] == 1 then AetheryteHelper.HazardPlayer(v[18],v[3]) end
    end
    GUI:BeginGroup()
    GUI:ImageButton("###SEReload",ImageFolder..[[CB_clear.png]], 15,15)
@@ -12963,7 +12930,7 @@ function AetheryteHelper.Radarlist()
    GUI:SameLine()
    GUI:BeginGroup()
    GUI:PushItemWidth(150)
-   mushAH_selectSE,changed = GUI:Combo("",mushAH_selectSE,mushAH_wavsList,5)
+   mushAH_selectSE,changed = GUI:Combo("##selectSE",mushAH_selectSE,mushAH_wavsList,5)
    if changed then
    	  for k,v in pairs(mushAH_wavsList) do
 	      	if mushAH_selectSE == k then
@@ -13033,7 +13000,7 @@ function AetheryteHelper.Radarlist()
  	 GUI:EndGroup()
  	 GUI:SameLine()
    GUI:BeginGroup()
-	 GUI:ImageButton("###SEdel",ImageFolder..[[R_trash.png]], 15,15)
+	 GUI:ImageButton("###SEdel"..tostring(k),ImageFolder..[[R_trash.png]], 15,15)
 	 if GUI:IsItemHovered() then
 	    if GUI:IsItemClicked(0) then
 	     v[19] = 0
@@ -13045,7 +13012,7 @@ function AetheryteHelper.Radarlist()
  	 GUI:EndGroup()
  	 if v[20] == 0 or v[19] == 0 then
  	 GUI:BeginGroup()
-	 GUI:ImageButton("###SEoff",ImageFolder..[[R_alarm_non.png]], 15,15)
+	 GUI:ImageButton("###SEoff"..tostring(k),ImageFolder..[[R_alarm_non.png]], 15,15)
 	 if GUI:IsItemHovered() then
 	    if GUI:IsItemClicked(0) then
 	     v[20] = 1
@@ -13056,7 +13023,7 @@ function AetheryteHelper.Radarlist()
  	 GUI:EndGroup()
  	 elseif v[20] == 1 and v[19] ~= 0 then
  	 GUI:BeginGroup()
-	 GUI:ImageButton("###SEon",ImageFolder..[[R_alarm.png]], 15,15)
+	 GUI:ImageButton("###SEon"..tostring(k),ImageFolder..[[R_alarm.png]], 15,15)
 	 if GUI:IsItemHovered() then
 	    if GUI:IsItemClicked(0) then
 	     v[20] = 0
@@ -13092,7 +13059,7 @@ function AetheryteHelper.Radarlist()
    end
    GUI:NextColumn()
    GUI:BeginGroup()
-   GUI:ImageButton("###del",ImageFolder..[[R_trash.png]], 25,25)
+   GUI:ImageButton("###del"..tostring(k),ImageFolder..[[R_trash.png]], 25,25)
    if GUI:IsItemHovered() then
 	  if GUI:IsItemClicked(0) then
 	  table.remove(AetheryteHelper.RadarCustomList,k)
@@ -13112,7 +13079,6 @@ function AetheryteHelper.Radarlist()
    GUI:Image(ImageFolder..[[R_alarm.png]], 20,20)
    GUI:EndGroup()
    end
-   GUI:PopStyleColor(1)
    GUI:Columns()
    GUI:Separator()
    end
