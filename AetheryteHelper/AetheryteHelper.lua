@@ -5,8 +5,8 @@ local kinokoProject = {
   Addon  = {
 	  Folder =        "AetheryteHelper",
 	  Name =          "AH(mushroom tools)",
-	  Version =         "1.9.0.2",
-	  tag = 2022070116,--y0000m00d00h00
+	  Version =         "1.9.0.5",
+	  tag = 2022070500,--y0000m00d00h00
   },
 --  ---------------
   HELP   = {
@@ -2367,39 +2367,20 @@ AHnormalError = {
 }
 ----------------------------------------------------
 
-
-local FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
---FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Meteor", "Aether", "Primal", "Chaos", "Light", "Crystal","Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
+local FFXIVDClist = { "------", "Elemental", "Gaia", "Mana", "Meteor", "Aether", "Crystal", "Primal", "Chaos", "Light", "Materia", "豆豆柴", "猫小胖", "莫古力", "陆行鸟", "KR"}
 local noDClist = { "sorry" }
 
 local FFXIVServerlist = {
 	[1] = { "------" },
-	[2] = { "------", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Ramuh", "Tonberry", "Typhon", "Unicorn" },
-	[3] = { "------", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima", "Valefor", "Yojimbo", "Zeromus" },
-	[4] = { "------", "Anima", "Asura", "Belias", "Chocobo", "Hades", "Ixion", "Mandragora", "Masamune", "Pandaemonium", "Shinryu", "Titan",  },
-	[5] = { "------", "Adamantoise", "Cactuar", "Faerie", "Gilgamesh", "Jenova", "Midgardsormr", "Sargatanas", "Siren" },
-	[6] = { "------", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
-	[7] = { "------", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" ,"Spriggan" },
-	[8] = { "------", "Lich", "Odin", "Phoenix","Shiva","Twintania","Zodiark" },
-	[9] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
-	[10] = { "------", "Bismarck", "Ravana", "Sephirot", "Sophia", "Zurvan"},
-  [11] = { "------", "水晶塔", "银泪湖","太阳海岸","伊修加德","红茶川",},
-  [12] = { "------", "延夏", "摩杜纳","柔风海湾","海猫茶屋","琥珀原","紫水栈桥","静语庄园",},
-  [13] = { "------", "拂晓之间", "旅人栈桥","梦羽宝境","潮风亭","白金幻象","白银乡","神拳痕","龙巢神殿",},
-  [14] = { "------", "宇宙和音", "幻影群岛","拉诺西亚","晨曦王座","沃仙曦染","神意之地","红玉海","萌芽池",},
-	[15] = { "------", "모그리","초코보","카벙클","톤베리","펜리르",},
-  [16] = { "Error" },
-  --[[
-	[1] = { "------" },
 	[2] = { "------", "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir", "Kujata", "Tonberry", "Typhon" },
 	[3] = { "------", "Alexander", "Bahamut", "Durandal", "Fenrir", "Ifrit", "Ridill", "Tiamat", "Ultima" },
 	[4] = { "------", "Anima", "Asura", "Chocobo", "Hades", "Ixion", "Masamune", "Pandaemonium", "Titan" },
-	[5] = { "------", "Ramuh", "Unicorn", "Valefor", "Yojimbo", "Zeromus", "Belias", "Mandragora", "Shinryu" },
+	[5] = { "------", "Belias", "Mandragora", "Ramuh", "Shinryu", "Unicorn", "Valefor", "Yojimbo", "Zeromus" },
 	[6] = { "------", "Adamantoise", "Cactuar", "Faerie", "Gilgamesh", "Jenova", "Midgardsormr", "Sargatanas", "Siren" },
-	[7] = { "------", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
-	[8] = { "------", "Cerberus", "Louisoix", "Moogle", "Omega", "Ragnarok" ,"Spriggan" },
-	[9] = { "------", "Lich", "Odin", "Phoenix","Shiva","Twintania","Zodiark" },
-	[10] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
+	[7] = { "------", "Balmung", "Brynhildr", "Coeurl", "Diabolos", "Goblin", "Malboro", "Mateus", "Zalera" },
+	[8] = { "------", "Behemoth", "Excalibur", "Exodus", "Famfrit", "Hyperion", "Lamia", "Leviathan", "Ultros" },
+	[9] = { "------", "Cerberus", "Louisoix", "Moogle", "Omega", "Phantom", "Ragnarok", "Sagittarius", "Spriggan" },
+	[10] = { "------", "Alpha", "Lich", "Odin", "Phoenix", "Raiden", "Shiva", "Twintania", "Zodiark" },
 	[11] = { "------", "Bismarck", "Ravana", "Sephirot", "Sophia", "Zurvan"},
 	[12] = { "------", "水晶塔", "银泪湖","太阳海岸","伊修加德","红茶川",},
   [13] = { "------", "延夏", "摩杜纳","柔风海湾","海猫茶屋","琥珀原","紫水栈桥","静语庄园",},
@@ -2407,7 +2388,6 @@ local FFXIVServerlist = {
   [15] = { "------", "宇宙和音", "幻影群岛","拉诺西亚","晨曦王座","沃仙曦染","神意之地","红玉海","萌芽池",},
   [16] = { "------", "모그리","초코보","카벙클","톤베리","펜리르",},
   [17] = { "Error" },
-  ]]
   }
 
 local WorldID = {
@@ -2434,15 +2414,15 @@ local WorldID = {
 {id=21,Name="Ravana",DC="Materia"},
 {id=22,Name="Bismarck",DC="Materia"},
 {id=23,Name="Asura",DC="Mana"},
-{id=24,Name="Belias",DC="Mana"}, --"Meteor"
+{id=24,Name="Belias",DC="Meteor"}, --"Meteor"
 {id=25,Name="Chaos",DC="-"},
 {id=26,Name="Hecatoncheir",DC="-"},
 {id=27,Name="Moomba",DC="-"},
 {id=28,Name="Pandaemonium",DC="Mana"},
-{id=29,Name="Shinryu",DC="Mana"}, --"Meteor"
-{id=30,Name="Unicorn",DC="Elemental"}, --"Meteor"
-{id=31,Name="Yojimbo",DC="Gaia"}, --"Meteor"
-{id=32,Name="Zeromus",DC="Gaia"}, --"Meteor"
+{id=29,Name="Shinryu",DC="Meteor"}, --"Meteor"
+{id=30,Name="Unicorn",DC="Meteor"}, --"Meteor"
+{id=31,Name="Yojimbo",DC="Meteor"}, --"Meteor"
+{id=32,Name="Zeromus",DC="Meteor"}, --"Meteor"
 {id=33,Name="Twintania",DC="Light"},
 {id=34,Name="Brynhildr",DC="Crystal"},
 {id=35,Name="Famfrit",DC="Primal"},
@@ -2470,7 +2450,7 @@ local WorldID = {
 {id=57,Name="Siren",DC="Aether"},
 {id=58,Name="Garuda",DC="Elemental"},
 {id=59,Name="Ifrit",DC="Gaia"},
-{id=60,Name="Ramuh",DC="Elemental"}, --"Meteor"
+{id=60,Name="Ramuh",DC="Meteor"}, --"Meteor"
 {id=61,Name="Titan",DC="Mana"},
 {id=62,Name="Diabolos",DC="Crystal"},
 {id=63,Name="Gilgamesh",DC="Aether"},
@@ -2492,7 +2472,7 @@ local WorldID = {
 {id=79,Name="Cactuar",DC="Aether"},
 {id=80,Name="Cerberus",DC="Chaos"},
 {id=81,Name="Goblin",DC="Crystal"},
-{id=82,Name="Mandragora",DC="Mana"}, --"Meteor"
+{id=82,Name="Mandragora",DC="Meteor"}, --"Meteor"
 {id=83,Name="Louisoix",DC="Chaos"},
 {id=84,Name="Syldra",DC="-"},
 {id=85,Name="Spriggan",DC="Chaos"},
@@ -2510,6 +2490,11 @@ local WorldID = {
 {id=97,Name="Ragnarok",DC="Chaos"},
 {id=98,Name="Ridill",DC="Gaia"},
 {id=99,Name="Sargatanas",DC="Aether"},
+
+{id=400,Name="Sagittarius",DC="Chaos"},
+{id=401,Name="Phantom",DC="Chaos"},
+{id=402,Name="Alpha",DC="Light"},
+{id=403,Name="Raiden",DC="Light"},
 --CN
 {id=1042,Name="拉诺西亚",DC="陆行鸟"},
 {id=1043,Name="紫水栈桥",DC="猫小胖"},
@@ -3240,7 +3225,7 @@ return tostring(name)
 end
 
 local AHtimeset = Now()
-function AHTimeSince(ms)
+local function AHTimeSince(ms)
       if AHtimeset + tonumber(ms) < Now() then
       AHtimeset = Now()
       return true
@@ -15642,32 +15627,15 @@ end
 -------------------------------------------------------------------------------------------------------------------------------------------
 -----DCset
 function AetheryteHelper.autoDCset()
-	 if (AH_AutoDC == "Elemental") then AHSET.selectDC = 2
-		 elseif (AH_AutoDC == "Gaia" ) then AHSET.selectDC = 3
-		 elseif (AH_AutoDC == "Mana" ) then AHSET.selectDC = 4
-		 elseif (AH_AutoDC == "Aether" ) then AHSET.selectDC = 5
-		 elseif (AH_AutoDC == "Primal" ) then AHSET.selectDC = 6
-		 elseif (AH_AutoDC == "Chaos" ) then AHSET.selectDC = 7
-		 elseif (AH_AutoDC == "Light" ) then AHSET.selectDC = 8
-		 elseif (AH_AutoDC == "Crystal" ) then AHSET.selectDC = 9
-		 elseif (AH_AutoDC == "Materia" ) then AHSET.selectDC = 10
-     elseif (AH_AutoDC == "豆豆柴" ) then AHSET.selectDC = 11
-     elseif (AH_AutoDC == "猫小胖" ) then AHSET.selectDC = 12
-     elseif (AH_AutoDC == "莫古力" ) then AHSET.selectDC = 13
-     elseif (AH_AutoDC == "陆行鸟" ) then AHSET.selectDC = 14
-     elseif (AH_AutoDC == "KR" ) then AHSET.selectDC = 15
-     else AHSET.selectDC = 1
-	  end
-	  --[[
-	  if (AH_AutoDC == "Elemental") then AHSET.selectDC = 2
+     if (AH_AutoDC == "Elemental") then AHSET.selectDC = 2
 		 elseif (AH_AutoDC == "Gaia" ) then AHSET.selectDC = 3
 		 elseif (AH_AutoDC == "Mana" ) then AHSET.selectDC = 4
 		 elseif (AH_AutoDC == "Meteor" ) then AHSET.selectDC = 5
 		 elseif (AH_AutoDC == "Aether" ) then AHSET.selectDC = 6
-		 elseif (AH_AutoDC == "Primal" ) then AHSET.selectDC = 7
-		 elseif (AH_AutoDC == "Chaos" ) then AHSET.selectDC = 8
-		 elseif (AH_AutoDC == "Light" ) then AHSET.selectDC = 9
-		 elseif (AH_AutoDC == "Crystal" ) then AHSET.selectDC = 10
+		 elseif (AH_AutoDC == "Crystal" ) then AHSET.selectDC = 7
+		 elseif (AH_AutoDC == "Primal" ) then AHSET.selectDC = 8
+		 elseif (AH_AutoDC == "Chaos" ) then AHSET.selectDC = 9
+		 elseif (AH_AutoDC == "Light" ) then AHSET.selectDC = 10
 		 elseif (AH_AutoDC == "Materia" ) then AHSET.selectDC = 11
      elseif (AH_AutoDC == "豆豆柴" ) then AHSET.selectDC = 12
      elseif (AH_AutoDC == "猫小胖" ) then AHSET.selectDC = 13
@@ -15676,7 +15644,6 @@ function AetheryteHelper.autoDCset()
      elseif (AH_AutoDC == "KR" ) then AHSET.selectDC = 16
 		 else AHSET.selectDC = 1
 	  end
-	  ]]
 	  AetheryteHelper.Origin()
 			MushmoveServerlist = Origin_list
 			MushmoveServer_templist = MushmoveServerlist
@@ -15761,8 +15728,7 @@ function AetheryteHelper.SVRSelectermini()
 	 selectSVR = GUI:Combo( "###server",selectSVR,MushmoveServerlist,height or 20)
 	 else
 	 GUI:Combo( "DC",1,noDClist,1)
-	 GUI:Combo( "server",1,FFXIVServerlist[16],1)
-	 --GUI:Combo( "server",1,FFXIVServerlist[17],1)
+	 GUI:Combo( "server",1,FFXIVServerlist[17],1)
 	 end
 	 if GUI:IsItemHovered() then
 			  AetheryteHelper.SetToolTips(mJTp.tip95,mETp.tip95,mDTp.tip95,mFTp.tip95,mCTp.tip95,mKTp.tip95)
@@ -17130,10 +17096,10 @@ function AetheryteHelper.Exchange()
 			  end
 			  if (mushEXstep == 3) then
 				d("[AH][Exchange]step:FilterCheck")
-				  if GetControl("GrandCompanySupplyList"):GetRawData()[7].value < 20 then
-				  mushEXstep = 4
-				  else
-				  mushEXstep = 10
+				  if GetControl("GrandCompanySupplyList"):GetRawData()[7].value > 0 then
+				  	mushEXstep = 4
+				    else
+			    	mushEXstep = 10
 				  end
 			  end
 			  if (mushEXstep == 4) then
@@ -19354,7 +19320,7 @@ end
 function AetheryteHelper.nonAFK()
   if Player.OnlineStatus == 17 then
 	   mushlooptimer = 10
-	   if Player:IsMoving() or Player.LastAction == 33 or Player.LastAction == 85 or IsControlOpen("MaterializeDialog") or
+	   if Player:IsMoving() or Player.castinginfo.casttime ~= 0 or Player.castinginfo.castingid ~= 0 or Player.LastAction == 33 or Player.LastAction == 85 or IsControlOpen("MaterializeDialog") or
 	      Player.LastAction == 87 or Player.LastAction == 3191 or FFXIV_Common_BotRunning == true or IsControlOpen("Synthesis") or Player:GetTarget() ~= nil then
 	      SendTextCommand("/afk")
 	      mushlooptimer = 1000
@@ -19378,22 +19344,28 @@ function AetheryteHelper.autoAFK()
 	      	 if GetGameSettings()[145].value == 1 then
 	      	 	 if AHTimeSince(300000) then
 	              SendTextCommand("/afk")
+	              SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]placed in AFK status because no operation was performed for certain period of time \x02\x13\x02\xec\x03")
 	           end
 	         elseif GetGameSettings()[145].value == 2 then
 	         	 if AHTimeSince(600000) then
 	              SendTextCommand("/afk")
+	              SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]placed in AFK status because no operation was performed for certain period of time \x02\x13\x02\xec\x03")
 	           end
 	         elseif GetGameSettings()[145].value == 3 then
 	         	 if AHTimeSince(1800000) then
 	              SendTextCommand("/afk")
+	              SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]placed in AFK status because no operation was performed for certain period of time \x02\x13\x02\xec\x03")
 	           end
 	         elseif GetGameSettings()[145].value == 4 then
 	         	 if AHTimeSince(3200000) then
 	              SendTextCommand("/afk")
+	              SendTextCommand("/e \x02\x13\x06\xfe\xff\xff\xff\x11 [AH][notice]placed in AFK status because no operation was performed for certain period of time \x02\x13\x02\xec\x03")
 	           end
 	         end
 	         end
 	       end
+	   else
+	   AHtimeset = Now()
 	   end
   end
 end
@@ -23855,10 +23827,10 @@ mushAH_AutoUPdatestep = 0
 mushAH_AutoUPdatetimer = os.time()
 
 function AetheryteHelper.AutoUpdate()
-	mushlooptimer = 1000
 	mushAH_AutoUpdate_Status_Progress = "Progress"
 	mushAH_AutoUpdate_Status_success = "success"
   if mushAH_AutoUPdatefunc == true then
+  mushlooptimer = 1000
   if mushAH_AutoUPdatestep == 0 then
 	   io.popen([[start /b powershell -Command "Set-Content -Path ']] ..ModulePath.. [[\cash\cash.txt' -Value ']]..mushAH_AutoUpdate_Status_Progress..[['; stop-process -Id $PID"]]):close()
 	   mushAH_AutoUPdatestep = 1 
@@ -23962,7 +23934,6 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.mushSealstoItem()
 			AetheryteHelper.movetoGCAll()
 			AetheryteHelper.mushpotionmanual()
-			AetheryteHelper.mushEXchangeTrust()
 			AetheryteHelper.moveMBlimsa()
 			AetheryteHelper.moveMBgridania()
 			AetheryteHelper.moveMBuldah()
@@ -23972,8 +23943,8 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.Desynthseis()
 			AetheryteHelper.mushTextCommands()
 			--AetheryteHelper.FreeCompanyActionUse()
-			AetheryteHelper.nonAFK()
 			AetheryteHelper.autoAFK()
+			AetheryteHelper.mushEXchangeTrust()
 			AetheryteHelper.voteMVP()
 			AetheryteHelper.PartyCall()
 			AetheryteHelper.itemsort()
@@ -23987,6 +23958,7 @@ function AetheryteHelper.mushsubtool()
 			AetheryteHelper.targetingmeRec()
 			AetheryteHelper.Jumbocactpothelper()
 			AetheryteHelper.PvPAssistUseG_and_S()
+			AetheryteHelper.nonAFK()
 		end
 	 end
 end
