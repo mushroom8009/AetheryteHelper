@@ -2,7 +2,7 @@
 
 # Aetheryte Helper(mushroom tools)
 this is a module in MMOminion(FFXIV Minion64)
- it is no longer developed in open source and is available for free download at the Minion Store
+# it is no longer developed in open source and is available for free download at the Minion Store
 
 ![Latest Version Release note & Download](https://github.com/mushroom8009/AetheryteHelper/releases)<br>
 
